@@ -248,21 +248,16 @@ The library comprises eighteen skills organized by audience (\Cref{fig:skill-arc
 \texttt{fix-issue} auto-corrects mechanical quality failures (formatting, missing fields) and brainstorms substantive fixes with the maintainer for issues that require domain judgment.
 \texttt{release} determines the appropriate version bump from the diff, runs the test suite, and tags a release.
 
-\textbf{Automation.}
-\texttt{run-pipeline} picks the highest-priority Ready issue from the project board and drives it through implementation to the review pool---fully autonomously, in a loop.
-\texttt{issue-to-pr} converts a validated issue into an executable pull request: it researches references, writes a step-by-step plan, creates the PR, and invokes \texttt{add-model} or \texttt{add-rule} to generate the implementation.
-\texttt{add-model} implements a new problem model end-to-end: Rust types, trait implementations, unit tests, CLI registration, and a paper entry.
-\texttt{add-rule} does the same for a reduction rule, including the overhead expression, round-trip tests, and a proof sketch.
-\texttt{review-pipeline} orchestrates three read-only sub-reviews in parallel:
-\texttt{check-issue} validates issue quality (usefulness, non-triviality, correctness of literature claims);
-\texttt{review-structural} verifies project-specific checklists, build success, and semantic correctness;
-\texttt{review-quality} evaluates generic code quality (DRY, KISS, test coverage, cohesion).
-\texttt{fix-pr} addresses CI failures, review comments, and coverage gaps without human input.
-\texttt{topology-check} detects orphan problems, NP-hardness proof gaps, and redundant rules in the reduction graph.
-\texttt{write-model} and \texttt{write-rule} draft the corresponding Typst paper entries with formal definitions, proof sketches, and worked examples.
+\textbf{Agent.}
+Three top-level skills run without human intervention.
+\texttt{run-pipeline} picks the highest-priority Ready issue from the project board and drives it through implementation to the review pool, in a loop.
+\texttt{review-pipeline} orchestrates three read-only sub-reviews in parallel---structural completeness, code quality, and issue validation---then posts a combined verdict.
+\texttt{check-issue} validates issue quality: usefulness, non-triviality, and correctness of literature claims.
+Each top-level skill internally composes additional subskills not shown in \Cref{fig:skill-architecture}.
+For example, \texttt{run-pipeline} invokes \texttt{issue-to-pr}, which in turn calls \texttt{add-model} or \texttt{add-rule} to generate a complete implementation---Rust types, trait implementations, unit tests, CLI registration, and a paper entry---then \texttt{fix-pr} to address CI failures, and \texttt{write-model}/\texttt{write-rule} to draft Typst paper entries with formal definitions and proof sketches.
+Similarly, \texttt{review-pipeline} dispatches \texttt{review-structural}, \texttt{review-quality}, and \texttt{topology-check} (which detects orphan problems and NP-hardness proof gaps) as parallel subagents.
 
-Five of the eighteen---\texttt{tutorial}, \texttt{propose}, \texttt{dev-setup}, \texttt{final-review}, and \texttt{fix-issue}---are \emph{mentor} skills (tinted in \Cref{fig:skill-architecture}): they interactively guide their user, pausing for human judgment where creativity is required.
-The remaining twelve run autonomously; \texttt{release} is triggered by the maintainer but executes without interaction.
+Four of the eighteen---\texttt{tutorial}, \texttt{propose}, \texttt{fix-issue}, and \texttt{final-review}---are \emph{mentor} skills (tinted in \Cref{fig:skill-architecture}): they interactively guide their user, pausing for human judgment where creativity is required.
 
 \subsection{From Contributor to Verified Code}\label{sec:pipeline-overview}
 

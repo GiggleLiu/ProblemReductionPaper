@@ -66,12 +66,12 @@
   skill((c3x, s0 - sp*3), "release", "m4")
 
   // Automation (12): fully autonomous
-  skill((c4x, s0), "run-pipeline", "a1")
+  skill((c4x, s0), "check-issue", "a6")
+  skill((c4x, s0 - sp), "run-pipeline", "a1")
   //skill((c4x, s0 - sp), "issue-to-pr", "a2")
   //skill((c4x, s0 - sp*2), "add-model", "a3")
   //skill((c4x, s0 - sp*3), "add-rule", "a4")
-  skill((c4x, s0 - sp*1), "review-pipeline", "a5")
-  skill((c4x, s0 - sp*2), "check-issue", "a6")
+  skill((c4x, s0 - sp*2), "review-pipeline", "a5")
   //skill((c4x, s0 - sp*6), "review-structural", "a7")
   //skill((c4x, s0 - sp*7), "review-quality", "a8")
   //skill((c4x, s0 - sp*8), "fix-pr", "a9")
