@@ -233,7 +233,23 @@ A single \texttt{run-pipeline} command triggers the full cascade---validate, imp
 The maintainer's effort scales with the number of \emph{skill types}, not the number of tasks.
 Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \lstinline{pub fn run()} entry point, and that the paper entry requires a proof sketch.
 
-The library comprises 14~skills in six categories: orchestration~(3), community contribution~(1), implementation~(2), quality gates~(4), documentation~(2), and onboarding~(2).
+The library comprises eighteen skills organized by audience (\Cref{fig:skill-architecture}).
+\emph{User} skills lower the barrier to entry:
+\texttt{propose} guides a domain expert through brainstorming a new model or rule and files a GitHub issue;
+\texttt{tutorial} walks a newcomer through the CLI.
+\emph{Contributor} skills automate routine development:
+\texttt{dev-setup} configures the toolchain,
+\texttt{add-model} and \texttt{add-rule} guide step-by-step implementation of new problems and reductions,
+\texttt{issue-to-pr} converts a validated issue into an executable pull request,
+\texttt{fix-issue} and \texttt{fix-pr} address review feedback,
+and \texttt{write-model}/\texttt{write-rule} draft the corresponding paper entries.
+\emph{Maintainer} skills handle orchestration and quality:
+\texttt{run-pipeline} drives an issue end-to-end from selection to merge,
+\texttt{review-pipeline} composes three sub-reviews (\texttt{check-issue}, \texttt{review-structural}, \texttt{review-quality}),
+\texttt{final-review} presents a structured decision to the human maintainer,
+\texttt{topology-check} verifies reduction-graph consistency,
+and \texttt{release} manages versioning.
+Six of the eighteen---\texttt{propose}, \texttt{tutorial}, \texttt{dev-setup}, \texttt{add-model}, \texttt{add-rule}, and \texttt{final-review}---are \emph{mentor} skills: they interactively guide their user, pausing for human judgment where creativity is required.
 
 \subsection{From Contributor to Verified Code}\label{sec:pipeline-overview}
 
