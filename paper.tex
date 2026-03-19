@@ -206,14 +206,40 @@ This limitation defines the central design challenge: separating \emph{creative}
 Adding a reduction to the graph requires answering questions that only a domain expert can answer: which problem is worth adding, what is its formal definition, what example reveals correctness, what is the polynomial overhead?
 Everything else---writing Rust code, constructing tests, generating documentation, fixing CI---is routine work that a skill can encode.
 
-Our answer is a pipeline of \emph{progressive quality gates} built around this separation.
-The creative elements are captured in structured issue templates whose fields correspond exactly to the questions above.
-The \texttt{propose} skill helps contributors fill in these fields interactively, asking one question at a time in mathematical language.
-Once the creative decisions are recorded, the remaining stages are fully automated.
+\subsection{Skill Design}\label{sec:skills}
+
+Traditional automation---Makefiles, CI pipelines, shell scripts---is \emph{mechanical}: every step is predetermined, and human involvement is impossible mid-execution.
+Skills are a different kind of automation: \emph{abstract}.
+A skill defines \emph{what} must happen (validate references, construct an example, write a proof sketch) without fixing \emph{how}.
+When the task is routine, the agent executes autonomously.
+When the task requires creativity or deep judgment---choosing which example best reveals correctness, deciding whether a proposed reduction is non-trivial---the skill can pause and involve a human, then resume.
+The same skill thus operates headlessly in a pipeline and interactively with a contributor, adapting its execution mode to the context.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/skill-map.pdf}
+\caption{Project knowledge architecture.
+  \texttt{CLAUDE.md} defines conventions, architecture, and commands;
+  skills in four categories encode reusable workflows that reference it.
+  Inner nodes show key source directories the skills operate on.}
+\label{fig:skill-architecture}
+\end{figure}
+
+Skills differ from per-invocation prompts in three ways that matter for sustainability (\Cref{fig:skill-architecture}).
+First, skills are \emph{versioned}: committed to the repository and evolved through pull requests, just like code.
+A bug in a skill is fixed once and benefits all future invocations; a per-invocation prompt must be re-crafted each time.
+Second, skills are \emph{compositional}: orchestration skills invoke implementation skills, which invoke quality gates.
+A single \texttt{project-pipeline} command triggers the full cascade---validate, implement, test, review, document, and produce a pull request.
+The maintainer's effort scales with the number of \emph{skill types}, not the number of tasks.
+Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \lstinline{pub fn run()} entry point, and that the paper entry requires a proof sketch.
+
+The library comprises 14~skills in six categories: orchestration~(3), community contribution~(1), implementation~(2), quality gates~(4), documentation~(2), and onboarding~(2).
 
 \subsection{From Contributor to Verified Code}\label{sec:pipeline-overview}
 
-The pipeline has five stages, each backed by one or more \emph{skills}---persistent, versioned markdown documents that decompose complex tasks into numbered agent-executable steps (\Cref{fig:pipeline}).
+Skills compose into a pipeline of progressive quality gates (\Cref{fig:pipeline}).
+The maintainer makes exactly two decisions: selecting which issue to work on, and approving the final merge.
+Everything between is automated.
 
 \begin{figure}[t]
   \centering
@@ -226,110 +252,27 @@ The pipeline has five stages, each backed by one or more \emph{skills}---persist
 
 \textbf{Stage~1: Propose.}
 A domain expert---who need not know the codebase or even the programming language---provides the creative elements that only a human can supply.
-Two paths are available.
 The \texttt{propose} skill guides the contributor interactively, asking one question at a time in mathematical language: what is the motivation, what is the formal definition, what is a small example that exercises the core structure?
-Alternatively, the contributor fills in a structured GitHub issue template directly---the template fields mirror the same creative questions.
-Either way, the output is an issue whose fields capture every creative decision needed for implementation.
-
-Crucially, the agent first analyzes the graph's topology to identify the most valuable contributions (\Cref{app:topology}).
-Three categories guide the analysis:
-\emph{orphan nodes}---problem types with no reductions to or from any other node;
-\emph{redundant rules}---direct reductions dominated by a cheaper composite path;
-and \emph{missing proof paths}---problems with no reduction chain from 3-SAT.
-The agent ranks proposals by priority: rules that connect orphans or fill proof-chain gaps are suggested first.
-Before filing the issue, the agent runs the quality checks from Stage~2 on the draft, catching problems before they reach review.
+Alternatively, the contributor fills in a structured GitHub issue template directly.
+The agent first analyzes the graph's topology to identify the most valuable contributions (\Cref{app:topology}): orphan nodes, redundant rules, and missing proof paths.
+Before filing, it pre-validates the draft against Stage~2's quality checks.
 
 \textbf{Stage~2: Validate.}
-The \texttt{check-issue} skill applies four independent tests to every proposal: \emph{usefulness} (does a reduction path already exist? is this one dominated by a cheaper composite path?), \emph{non-triviality} (is this a genuine structural transformation, not a variable substitution?), \emph{correctness} (do the cited references exist and support the claims?), and \emph{writing quality} (are all symbols defined, all template sections complete, all examples fully worked?).
-References are verified through a fallback chain: project bibliography, then web search---never hallucinated.
-Only proposals passing all four checks receive a \texttt{Good} label and proceed.
+The \texttt{check-issue} skill applies four independent tests: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+Only proposals passing all four checks proceed.
 
 \textbf{Stage~3: Implement.}
-The \texttt{issue-to-pr} skill converts a validated issue into a pull request.
-It enforces a strict \emph{one item per PR} rule: a reduction rule cannot be bundled with its source model, because the model must exist on main before the rule can be tested.
-The skill reads the issue and all its comments, researches references to resolve ambiguities, generates an implementation plan, and dispatches to the appropriate implementation skill (\texttt{add-model} or \texttt{add-rule}).
-Each implementation skill encodes a complete checklist---9~items for rules, 11~for models---that must be satisfied before any code is written.
+The \texttt{issue-to-pr} skill converts a validated issue into a pull request, enforcing a strict \emph{one item per PR} rule.
+It dispatches to \texttt{add-model} or \texttt{add-rule}, each encoding a complete checklist (9~items for rules, 11~for models).
 
 \textbf{Stage~4: Review.}
-Two parallel sub-agents, each operating in a fresh context window, review the implementation: one checks structural completeness (file registration, macro usage, test coverage), the other checks code quality and semantic correctness against the original issue specification.
-Fresh context prevents the confirmation bias that arises when an agent reviews its own work.
-CI failures trigger up to three automated fix-and-retry cycles.
-
-A third review layer---\emph{agentic feature testing}---simulates a downstream user.
-An agent reads the documentation, installs the library, exercises the new feature through the CLI, and judges whether the results are consistent with its domain knowledge.
-This replaces the community feedback loop that open-source projects normally rely on: rather than waiting for users to discover issues post-release, agent-users test the feature before merge.
-The CLI design is essential here---because agents and humans share the same command-line interface, the agent tests exactly what a real user would invoke.
-Unlike unit tests (which verify internal correctness), agentic feature tests verify that the feature is \emph{usable}: that the documentation is accurate, that the CLI output is interpretable, and that the reduction produces results consistent with the agent's knowledge of the underlying mathematics.
+Two parallel sub-agents in fresh context windows review the implementation---one for structural completeness, one for semantic correctness.
+Fresh context prevents confirmation bias.
+A third layer, \emph{agentic feature testing}, simulates a downstream user: an agent reads the documentation, exercises the feature through the CLI, and judges whether results are consistent with domain knowledge.
+This replaces the community feedback loop that niche libraries lack.
 
 \textbf{Stage~5: Merge.}
 The maintainer makes the final quality judgment and merges.
-This is one of only two human decisions in the pipeline; the other is moving an issue from Backlog to Ready (Stage~3).
-
-\paragraph{Three agent roles.}
-The pipeline uses agents in three distinct roles, each backed by a set of skills.
-
-\emph{Mentors} (4~skills) interact with humans.
-%
-\begin{center}
-\includegraphics[height=1.8cm]{figures/role-mentor.pdf}
-\end{center}
-%
-\noindent
-The \texttt{propose} skill conducts an interactive session in mathematical language, asking one question at a time: what is the problem, what is the formal definition, what does a worked example look like?
-Before filing, it pre-validates the draft against Stage~2's quality checks.
-The \texttt{fix-issue} skill brainstorms with contributors to resolve quality problems.
-The \texttt{final-review} skill guides the maintainer through merge decisions.
-The \texttt{dev-setup} skill onboards new developers.
-
-\emph{Orchestrators} (12~skills) know less than the human about \emph{what} should be built, but execute routine heavy-lifting that follows fixed patterns.
-%
-\begin{center}
-\includegraphics[width=\columnwidth]{figures/role-worker.pdf}
-\end{center}
-%
-\noindent
-Orchestration workers manage the pipeline headlessly: \texttt{project-pipeline} picks the highest-ranked Ready issue, creates an isolated git worktree, dispatches an implementation worker, and moves the result to the review queue; \texttt{review-pipeline} addresses code-review comments, runs agentic feature tests, and retries CI failures.
-Implementation workers produce artifacts: \texttt{add-model} and \texttt{add-rule} write code following skill checklists; \texttt{write-model-in-paper} and \texttt{write-rule-in-paper} generate paper entries with proof sketches and worked examples.
-Quality workers validate against rubrics: \texttt{check-issue} validates proposals before implementation; \texttt{review-implementation} dispatches parallel sub-agents in fresh context to review code; \texttt{fix-pr} resolves CI failures and review comments.
-\texttt{release} handles version bumps and publishing.
-The maintainer makes exactly two decisions in the entire pipeline: moving an issue from Backlog to Ready, and merging the final pull request.
-
-\subsection{Why Skills, Not Prompts or Scripts}\label{sec:skills}
-
-Traditional automation---Makefiles, CI pipelines, shell scripts---is \emph{mechanical}: every step is predetermined, and human involvement is impossible mid-execution.
-Skills are a different kind of automation: \emph{abstract}.
-A skill defines \emph{what} must happen (validate references, construct an example, write a proof sketch) without fixing \emph{how}.
-When the task is routine, the agent executes autonomously.
-When the task requires creativity or deep judgment---choosing which example best reveals correctness, deciding whether a proposed reduction is non-trivial---the skill can pause and involve a human as a resource, then resume.
-The same skill thus operates headlessly in the pipeline (\texttt{make run-pipeline}) and interactively with a contributor (\texttt{propose}), adapting its execution mode to the context.
-
-Skills also differ from per-invocation prompts in three ways that matter for sustainability.
-
-\emph{Skills are versioned.}
-They are committed to the repository and evolve through pull requests, just like code.
-A bug in a skill is fixed once and benefits all future invocations.
-A per-invocation prompt must be re-crafted each time, and improvements are lost.
-
-\emph{Skills are compositional.}
-Orchestration skills invoke implementation skills, which invoke quality gates.
-A single \texttt{project-pipeline} command triggers the full cascade---pick a task from the project board, create an isolated workspace, validate the issue, implement, test, review, document, and produce a pull request.
-The maintainer's effort scales with the number of \emph{skill types}, not the number of tasks.
-
-\emph{Skills encode domain knowledge that cannot be inferred from code.}
-The \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \lstinline{pub fn run()} entry point, and that the paper entry requires a proof sketch.
-An agent reading only the codebase might infer some conventions but would miss others---the skill makes all conventions explicit.
-
-The library comprises 14~skills in six categories: orchestration~(3), community contribution~(1), implementation~(2), quality gates~(4), documentation~(2), and onboarding~(2).
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{figures/skill-map.pdf}
-\caption{Project knowledge architecture.
-  \texttt{CLAUDE.md} defines conventions, architecture, and commands;
-  skills in four categories encode reusable workflows that reference it.
-  Inner nodes show key source directories the skills operate on.}
-\label{fig:skill-architecture}
-\end{figure}
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
