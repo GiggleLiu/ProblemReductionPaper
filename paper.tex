@@ -229,7 +229,7 @@ Skills differ from per-invocation prompts in three ways that matter for sustaina
 First, skills are \emph{versioned}: committed to the repository and evolved through pull requests, just like code.
 A bug in a skill is fixed once and benefits all future invocations; a per-invocation prompt must be re-crafted each time.
 Second, skills are \emph{compositional}: orchestration skills invoke implementation skills, which invoke quality gates.
-A single \texttt{project-pipeline} command triggers the full cascade---validate, implement, test, review, document, and produce a pull request.
+A single \texttt{run-pipeline} command triggers the full cascade---validate, implement, test, review, document, and produce a pull request.
 The maintainer's effort scales with the number of \emph{skill types}, not the number of tasks.
 Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \lstinline{pub fn run()} entry point, and that the paper entry requires a proof sketch.
 
