@@ -48,7 +48,7 @@
   content((c1x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [user]))
   content((c2x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [contributor]))
   content((c3x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [maintainer]))
-  content((c4x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [automation]))
+  content((c4x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [agent]))
 
   // ── Skills ──
   let s0 = hdr-y - 0.65
@@ -60,22 +60,22 @@
   skill((c2x, s0), "propose", "c1", mentor: true)
 
   // Maintainer (4): interactive, requires human judgment
-  skill((c3x, s0), "dev-setup", "m1", mentor: true)
   skill((c3x, s0 - sp), "final-review", "m2", mentor: true)
-  skill((c3x, s0 - sp*2), "fix-issue", "m3", mentor: true)
+  skill((c3x, s0), "fix-issue", "m3", mentor: true)
+  skill((c3x, s0 - sp*2), "dev-setup", "m1", mentor: false)
   skill((c3x, s0 - sp*3), "release", "m4")
 
   // Automation (12): fully autonomous
   skill((c4x, s0), "run-pipeline", "a1")
-  skill((c4x, s0 - sp), "issue-to-pr", "a2")
-  skill((c4x, s0 - sp*2), "add-model", "a3")
-  skill((c4x, s0 - sp*3), "add-rule", "a4")
-  skill((c4x, s0 - sp*4), "review-pipeline", "a5")
-  skill((c4x, s0 - sp*5), "check-issue", "a6")
-  skill((c4x, s0 - sp*6), "review-structural", "a7")
-  skill((c4x, s0 - sp*7), "review-quality", "a8")
-  skill((c4x, s0 - sp*8), "fix-pr", "a9")
-  skill((c4x, s0 - sp*9), "topology-check", "a10")
-  skill((c4x, s0 - sp*10), "write-model", "a11")
-  skill((c4x, s0 - sp*11), "write-rule", "a12")
+  //skill((c4x, s0 - sp), "issue-to-pr", "a2")
+  //skill((c4x, s0 - sp*2), "add-model", "a3")
+  //skill((c4x, s0 - sp*3), "add-rule", "a4")
+  skill((c4x, s0 - sp*1), "review-pipeline", "a5")
+  skill((c4x, s0 - sp*2), "check-issue", "a6")
+  //skill((c4x, s0 - sp*6), "review-structural", "a7")
+  //skill((c4x, s0 - sp*7), "review-quality", "a8")
+  //skill((c4x, s0 - sp*8), "fix-pr", "a9")
+  //skill((c4x, s0 - sp*9), "topology-sanity-check", "a10")
+  //skill((c4x, s0 - sp*10), "write-model-in-paper", "a11")
+  //skill((c4x, s0 - sp*11), "write-rule-in-paper", "a12")
 })
