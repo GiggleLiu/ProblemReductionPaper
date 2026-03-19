@@ -6,17 +6,7 @@
 #canvas(length: 0.55cm, {
   import draw: *
 
-  // Helper: core node (inner ring)
-  let core(pos, label, name-id) = {
-    let (x, y) = pos
-    rect((x - 1.5, y - 0.35 + 0.06), (x + 1.5, y + 0.35 + 0.06),
-      radius: 4pt, fill: shadow-col, stroke: none)
-    rect((x - 1.5, y - 0.35), (x + 1.5, y + 0.35),
-      radius: 4pt, fill: fill-light, stroke: stroke-box, name: name-id)
-    content(name-id, text(7pt, weight: "bold", fill: fg, raw(label)))
-  }
-
-  // Helper: skill node (outer ring)
+  // Helper: skill node
   let skill(pos, label, name-id) = {
     let (x, y) = pos
     rect((x - 1.6, y - 0.28), (x + 1.6, y + 0.28),
@@ -30,7 +20,7 @@
   }
 
   let cx = 8
-  let cy = 5.5
+  let cy = 6
 
   // ── Center: CLAUDE.md ──
   rect((cx - 1.8 + 0.08, cy - 0.45 + 0.08), (cx + 1.8 + 0.08, cy + 0.45 + 0.08),
@@ -39,51 +29,43 @@
     radius: 5pt, fill: fill-accent, stroke: stroke-accent, name: "claude")
   content("claude", text(9pt, weight: "bold", fill: accent.darken(20%), raw("CLAUDE.md")))
 
-  // ── Inner ring: key project files ──
-  core((cx, cy + 2.0), "src/traits.rs", "traits")
-  core((cx, cy - 2.0), "Makefile", "make")
-  core((cx - 3.0, cy), "src/models/", "models")
-  core((cx + 3.0, cy), "src/rules/", "rules")
-
-  // Links from center to inner ring
-  line("claude.north", "traits.south", stroke: (thickness: 0.6pt, paint: edge-col, dash: "densely-dashed"), mark: arrow-end)
-  line("claude.south", "make.north", stroke: (thickness: 0.6pt, paint: edge-col, dash: "densely-dashed"), mark: arrow-end)
-  line("claude.west", "models.east", stroke: (thickness: 0.6pt, paint: edge-col, dash: "densely-dashed"), mark: arrow-end)
-  line("claude.east", "rules.west", stroke: (thickness: 0.6pt, paint: edge-col, dash: "densely-dashed"), mark: arrow-end)
-
-  // ── Outer ring: skill groups ──
-
-  // Top-left: Orchestration
-  let ol = (cx - 5.5, cy + 4.5)
+  // ── Top-left: Orchestration ──
+  let ol = (cx - 5.5, cy + 4.0)
   cat((ol.at(0), ol.at(1) + 0.5), [orchestration])
-  skill((ol.at(0), ol.at(1)), "project-pipeline", "s1")
-  skill((ol.at(0), ol.at(1) - 0.7), "review-pipeline", "s2")
-  skill((ol.at(0), ol.at(1) - 1.4), "issue-to-pr", "s3")
+  skill((ol.at(0), ol.at(1)), "run-pipeline", "s1")
+  skill((ol.at(0), ol.at(1) - 0.7), "issue-to-pr", "s2")
+  skill((ol.at(0), ol.at(1) - 1.4), "review-pipeline", "s3")
+  skill((ol.at(0), ol.at(1) - 2.1), "release", "s4")
 
-  // Top-right: Quality gates
-  let qr = (cx + 5.5, cy + 4.5)
-  cat((qr.at(0), qr.at(1) + 0.5), [quality gates])
-  skill((qr.at(0), qr.at(1)), "check-issue", "s4")
-  skill((qr.at(0), qr.at(1) - 0.7), "review-impl", "s5")
-  skill((qr.at(0), qr.at(1) - 1.4), "fix-pr", "s6")
-  skill((qr.at(0), qr.at(1) - 2.1), "topology-check", "s7")
+  // ── Top-right: Verification ──
+  let vr = (cx + 5.5, cy + 4.0)
+  cat((vr.at(0), vr.at(1) + 0.5), [verification])
+  skill((vr.at(0), vr.at(1)), "check-issue", "s5")
+  skill((vr.at(0), vr.at(1) - 0.7), "review-structural", "s6")
+  skill((vr.at(0), vr.at(1) - 1.4), "review-quality", "s7")
+  skill((vr.at(0), vr.at(1) - 2.1), "final-review", "s8")
+  skill((vr.at(0), vr.at(1) - 2.8), "topology-check", "s9")
 
-  // Bottom-left: Implementation
-  let il = (cx - 5.5, cy - 3.0)
-  cat((il.at(0), il.at(1) + 0.5), [implementation])
-  skill((il.at(0), il.at(1)), "add-model", "s8")
-  skill((il.at(0), il.at(1) - 0.7), "add-rule", "s9")
+  // ── Bottom-left: Authoring ──
+  let al = (cx - 5.5, cy - 3.0)
+  cat((al.at(0), al.at(1) + 0.5), [authoring])
+  skill((al.at(0), al.at(1)), "add-model", "s10")
+  skill((al.at(0), al.at(1) - 0.7), "add-rule", "s11")
+  skill((al.at(0), al.at(1) - 1.4), "fix-issue", "s12")
+  skill((al.at(0), al.at(1) - 2.1), "fix-pr", "s13")
 
-  // Bottom-right: Docs / community
+  // ── Bottom-right: Onboarding & docs ──
   let dr = (cx + 5.5, cy - 3.0)
-  cat((dr.at(0), dr.at(1) + 0.5), [docs / community])
-  skill((dr.at(0), dr.at(1)), "write-in-paper", "s10")
-  skill((dr.at(0), dr.at(1) - 0.7), "propose", "s11")
-  skill((dr.at(0), dr.at(1) - 1.4), "dev-setup", "s12")
+  cat((dr.at(0), dr.at(1) + 0.5), [onboarding & docs])
+  skill((dr.at(0), dr.at(1)), "propose", "s14")
+  skill((dr.at(0), dr.at(1) - 0.7), "dev-setup", "s15")
+  skill((dr.at(0), dr.at(1) - 1.4), "tutorial", "s16")
+  skill((dr.at(0), dr.at(1) - 2.1), "write-model", "s17")
+  skill((dr.at(0), dr.at(1) - 2.8), "write-rule", "s18")
 
-  // Dashed links from skill groups to center
-  line("s3.east", "claude.north-west", stroke: stroke-dashed, mark: arrow-end)
-  line("s7.west", "claude.north-east", stroke: stroke-dashed, mark: arrow-end)
-  line("s9.east", "claude.south-west", stroke: stroke-dashed, mark: arrow-end)
-  line("s12.west", "claude.south-east", stroke: stroke-dashed, mark: arrow-end)
+  // Dashed links from nearest skill in each group to CLAUDE.md
+  line("s4.east", "claude.north-west", stroke: stroke-dashed, mark: arrow-end)
+  line("s9.west", "claude.north-east", stroke: stroke-dashed, mark: arrow-end)
+  line("s10.east", "claude.south-west", stroke: stroke-dashed, mark: arrow-end)
+  line("s14.west", "claude.south-east", stroke: stroke-dashed, mark: arrow-end)
 })
