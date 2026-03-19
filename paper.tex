@@ -110,78 +110,14 @@ The evidence is a Rust library of 27~problem types and 45~reduction rules with $
 Three ideas make this possible:
 \begin{enumerate}
   \item A \emph{no-code contribution route} that lets domain experts add reductions by filing structured issues---no familiarity with the implementation language is needed (\Cref{sec:method}).
-  \item A \emph{multilayer verification stack} that checks each reduction from type signatures through round-trip tests to agentic feature tests, ensuring agent output matches contributor-specified ground truth (\Cref{sec:bridge}).
-  \item \emph{Skills}: versioned, composable workflow documents that encode project conventions and domain knowledge, so that every agent invocation follows the same process (\Cref{sec:method}).
+  \item A \emph{multilayer verification stack} that checks each reduction from type signatures through round-trip tests to agentic feature tests, ensuring agent output matches contributor-specified ground truth (\Cref{sec:verification}).
+  \item \emph{Skills}: versioned, composable workflow documents that encode project conventions and domain knowledge, so that every agent invocation follows the same process (\Cref{sec:skills}).
 \end{enumerate}
-We formalize the class of projects where this approach applies as \emph{bridge problems} (\Cref{sec:bridge}) and present the reduction graph as a case study (\Cref{sec:graph}).
-\Cref{sec:evaluation} provides quantitative evidence, \Cref{sec:related} surveys related work, and \Cref{sec:conclusion} discusses limitations and future directions.
+We present the reduction graph as a case study (\Cref{sec:graph}), describe the methodology (\Cref{sec:method}), and provide quantitative evidence (\Cref{sec:evaluation}).
+\Cref{sec:related} surveys related work and \Cref{sec:conclusion} discusses limitations and future directions.
 
 %======================================================================
-%  SECTION 2: BRIDGE PROBLEMS
-%======================================================================
-\section{Bridge Problems}\label{sec:bridge}
-
-A \emph{bridge problem} is a software project whose subtasks are homogeneous and formally verifiable, but whose scale exceeds what human teams can sustain.
-We identify three structural barriers that distinguish bridge problems from ordinary large projects.
-
-\subsection{Three Barriers to Human-Scale Development}
-
-\paragraph{Convention drift.}
-A reduction library demands strict uniformity: every rule file follows the same naming convention, implements the same trait, includes the same test pattern, and produces the same documentation artifacts.
-Human teams cannot maintain this discipline across hundreds of contributions.
-Conventions drift, shortcuts accumulate, and style guides go unread.
-In our approach, the project specification (\texttt{CLAUDE.md}) and reusable skills encode every convention as a machine-readable document.
-The agent reads it on every invocation and never deviates---convention compliance becomes a property of the tool, not a discipline of the team.
-
-\paragraph{Effort exhaustion.}
-Each new problem type requires definitions, examples, reductions, tests, overhead formulas, and documentation.
-Verifying each component one by one---running the same round-trip test for the 45th time, checking the same overhead formula against the same symbolic expressions---requires sustained, detail-oriented effort that no individual or small team can maintain indefinitely.
-A niche mathematical library also lacks the user base to surface issues through organic community usage.
-Agents execute the same verification loop without fatigue, and agentic feature tests---where an agent role-plays as a downstream user---provide the testing frequency that the community size cannot.
-
-\paragraph{Knowledge discontinuity.}
-Human maintainers graduate, change jobs, or lose interest.
-New contributors face a steep onboarding curve: understanding the architecture, the conventions, the testing patterns, and the implicit knowledge accumulated over years.
-Skills encode this knowledge in executable, versionable form.
-A new maintainer does not need to reconstruct the original developer's mental model from scattered comments and commit messages---they invoke the same skills that produced the codebase.
-The \texttt{dev-setup} skill configures the development environment; the \texttt{add-rule} skill encodes the complete workflow for adding a reduction.
-Open-source contribution, traditionally gated by the ability to absorb a project's implicit culture, becomes gated only by domain knowledge.
-
-\subsection{Verification Constrains Agent Output}\label{sec:verification-bridge}
-
-The natural concern is correctness: how can agent-written mathematical software be trusted?
-Our answer is that contributor-specified ground truth flows through a verification stack that constrains what agents can produce.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/verification-funnel.pdf}
-  \caption{Verification funnel.
-    Agent-generated code is progressively filtered: the type system rejects structural errors, round-trip tests reject semantic errors, overhead validation rejects incorrect complexity claims, and agentic feature tests reject usability issues.
-    Only code matching contributor-specified ground truth survives.}
-  \label{fig:verification-funnel}
-\end{figure}
-
-A contributor supplies the creative elements that define correctness: formal problem definitions, worked examples with known solutions, and expected overhead formulas.
-These flow through four verification layers:
-\begin{enumerate}
-  \item \textbf{Type system}: the Rust compiler rejects structural errors---wrong return types, missing inverse maps, references to nonexistent problem attributes---at compile time.
-  \item \textbf{Round-trip tests}: for each reduction, a small instance is transformed forward, solved by brute force, mapped back, and verified optimal for the source. This catches the most mathematically subtle errors without per-reduction test logic.
-  \item \textbf{Overhead validation}: symbolic size expressions are evaluated against actual target sizes, catching formula errors that are type-correct but mathematically wrong.
-  \item \textbf{Agentic feature tests}: an agent reads the documentation, exercises the feature through the CLI, and judges whether results are consistent with domain knowledge---replacing the community feedback loop that niche libraries lack.
-\end{enumerate}
-
-The agent has freedom in \emph{how} to implement; verification eliminates freedom in \emph{what} the result must be.
-Agent output $\subseteq$ contributor intent.
-
-\subsection{Other Candidate Domains}
-
-NP-hard reductions are not the only bridge problem.
-Algorithm libraries, compiler optimization passes, numerical linear algebra routines, and hardware description languages share the same structure: homogeneous subtasks, formal correctness criteria, and a scale that exceeds what small teams can sustain.
-In each case, domain experts can encode the ``how'' into reusable skills while the ``what'' remains a human judgment call.
-The methodology does \emph{not} generalize to heterogeneous tasks---the staple of SWE-Bench---where each issue is structurally unique and resists skill-based decomposition.
-
-%======================================================================
-%  SECTION 3: CASE STUDY --- THE REDUCTION GRAPH
+%  SECTION 2: CASE STUDY --- THE REDUCTION GRAPH
 %======================================================================
 \section{Case Study: The Reduction Graph}\label{sec:graph}
 
@@ -253,15 +189,25 @@ See \Cref{app:architecture} for the complete type architecture.
 %======================================================================
 \section{Methodology}\label{sec:method}
 
-The central design challenge is separating \emph{creative} decisions from \emph{routine} execution.
-Adding a reduction to the graph requires answering questions that only a domain expert can answer: which problem is industrially relevant and worth adding?
-What is the formal definition?
-Which small example would be both illustrative and sufficient to check correctness?
-What is the polynomial overhead?
-Everything else---writing Rust code, constructing tests, generating documentation, fixing CI---is routine work that follows a fixed pattern regardless of the mathematical content.
+An AI coding agent can be viewed as an operating system.
+Like any OS, it needs two things to do useful work: an \emph{environment} that defines the context, and \emph{functions} that encode executable workflows.
+
+Modern agents---Claude Code~\cite{Anthropic2025ClaudeCode}, OpenAI Codex~\cite{OpenAI2025Codex}, OpenHands~\cite{Wang2024OpenHands}, and others---realize this through two kinds of specification file.
+A \emph{project specification} (\texttt{CLAUDE.md} or \texttt{AGENTS.md}) is a markdown file at the repository root that describes architecture, conventions, commands, and constraints.
+It functions as the environment variables of the agent OS: read on every invocation, it provides a single source of truth that never drifts---unlike style guides that human contributors may not read.
+
+A \emph{skill} is a versioned, composable workflow document---also plain markdown---that decomposes a multi-step task into numbered steps.
+Skills are the functions of the agent OS, written in an extraordinarily abstract instruction set: natural language.
+This instruction set is powerful enough to include human beings in the loop---a skill can pause mid-execution, ask a domain expert for a formal definition, and resume with the answer.
+But it inherits a fundamental limitation: natural-language instructions cannot perform creative thinking or deep mathematical reasoning.
+They can orchestrate, verify, and enforce conventions; they cannot decide which problems are worth solving or invent new proof techniques.
+
+This limitation defines the central design challenge: separating \emph{creative} decisions from \emph{routine} execution.
+Adding a reduction to the graph requires answering questions that only a domain expert can answer: which problem is worth adding, what is its formal definition, what example reveals correctness, what is the polynomial overhead?
+Everything else---writing Rust code, constructing tests, generating documentation, fixing CI---is routine work that a skill can encode.
 
 Our answer is a pipeline of \emph{progressive quality gates} built around this separation.
-The creative elements are captured in structured issue templates---one for models, one for rules---whose fields correspond exactly to the questions above.
+The creative elements are captured in structured issue templates whose fields correspond exactly to the questions above.
 The \texttt{propose} skill helps contributors fill in these fields interactively, asking one question at a time in mathematical language.
 Once the creative decisions are recorded, the remaining stages are fully automated.
 
@@ -388,7 +334,16 @@ The library comprises 14~skills in six categories: orchestration~(3), community 
 \subsection{Correctness by Construction}\label{sec:verification}
 
 Correctness assurance comes from a seven-layer verification stack (\Cref{app:verification}).
-The key insight is that different layers catch different classes of errors, and no single layer suffices.
+The key insight is that different layers catch different classes of errors, and no single layer suffices (\Cref{fig:verification-funnel}).
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/verification-funnel.pdf}
+  \caption{Verification funnel.
+    Agent-generated code is progressively filtered: the type system rejects structural errors, round-trip tests reject semantic errors, overhead validation rejects incorrect complexity claims, and agentic feature tests reject usability issues.
+    Only code matching contributor-specified ground truth survives.}
+  \label{fig:verification-funnel}
+\end{figure}
 
 \textbf{Layers~1--2} (type system and unit tests) catch structural errors cheaply.
 The type system prevents entire categories of mistakes: an agent cannot implement a reduction without providing solution extraction, reference nonexistent problem attributes in overhead expressions, or omit required variant declarations.
@@ -604,6 +559,13 @@ On research-level mathematics, the best models score below 2\% on FrontierMath~\
 
 Skills are our response: rather than encoding domain expertise in model weights (expensive retraining) or prompts (ephemeral), skills encode it in versionable documents that persist across sessions.
 Creative decisions remain with humans; routine execution is delegated to agents.
+
+\subsection{Generalization to Other Domains}
+
+NP-hard reductions are not the only bridge problem.
+Algorithm libraries, compiler optimization passes, numerical linear algebra routines, and hardware description languages share the same structure: homogeneous subtasks, formal correctness criteria, and a scale that exceeds what small teams can sustain.
+In each case, domain experts can encode the ``how'' into reusable skills while the ``what'' remains a human judgment call.
+The methodology does \emph{not} generalize to heterogeneous tasks---the staple of SWE-Bench---where each issue is structurally unique and resists skill-based decomposition.
 
 \subsection{Future Work}
 

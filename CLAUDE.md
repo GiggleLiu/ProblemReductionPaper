@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Academic paper about using AI coding agents to build a verified library of NP-hard problem reductions. The paper is written in LaTeX (IEEE conference format) with figures authored in Typst. The subject project is the Rust library at `CodingThrust/problem-reductions` on GitHub.
+Academic paper about using AI coding agents to build a verified library of NP-hard problem reductions. The paper is written in LaTeX (IEEE conference format) with figures authored in Typst. The subject Rust library is included as a git submodule at `problem-reductions/` (upstream: `CodingThrust/problem-reductions`).
 
 **Paper title:** "Grand Assembly of Computational Hard Problems: The Art of Agentic Coding"
 
@@ -27,19 +27,19 @@ typst compile figures/<name>.typ figures/<name>.pdf
 - **references.bib** — BibTeX bibliography.
 - **figures/** — Typst sources (`.typ`) that compile to PDF. All figures import `figures/lib.typ` for shared theme (palette, strokes, arrow presets). Uses `@preview/cetz:0.4.2` for drawing.
 - **data/** — Supporting data: `git-mining-results.json` (PR history from GitHub), `graph-metrics.json`, `peer-review-round1.md`.
+- **problem-reductions/** — Git submodule of the Rust library this paper studies. Use `git submodule update --init` to populate after a fresh clone.
 - **scripts/mine-git-history.py** — Fetches merged PRs from `CodingThrust/problem-reductions` via `gh` CLI, classifies by type/phase/author.
 - **paper-redesign-spec.md** — Redesign specification with section structure, figure specs, and framing decisions.
 - **writing-guidelines.md** — Writing style rules derived from "Attention Is All You Need". Key principles: lead with the answer, one idea per sentence, define before use, cut ruthlessly.
 
 ## Paper Structure (Sections)
 
-1. Introduction — NP-hard problems, reduction graph concept, bridge problem claim
-2. Bridge Problems — Three barriers (convention drift, effort exhaustion, knowledge discontinuity) + verification
-3. Case Study: The Reduction Graph — 27 problems, 45 rules, 56 edges, emergent compositionality
-4. Methodology — Skills, 6-stage pipeline, verification stack
-5. Evidence — Timeline, metrics, quality gate, barrier-by-barrier evidence
-6. Related Work
-7. Discussion/Conclusion — Limitations, future work
+1. Introduction — Problem, bridging via reduction graph, challenge (bridge problem concept + prior work survey), contributions
+2. Case Study: The Reduction Graph — Reduction definition, graph structure, emergent compositionality, round-trip testing
+3. Methodology — No-code pipeline, skills, verification stack, why Rust
+4. Evidence — Development metrics, quality gate, case studies
+5. Related Work
+6. Discussion/Conclusion — Limitations, generalization to other domains, future work
 
 ## Key Conventions
 

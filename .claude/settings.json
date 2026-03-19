@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && if git status --short | grep -q .; then git add -A && git commit -m \"Auto-commit: Claude Code edits [$(date +%H:%M:%S)]\" || true; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
