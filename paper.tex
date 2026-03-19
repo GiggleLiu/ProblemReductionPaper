@@ -236,11 +236,12 @@ Third, skills \emph{encode domain knowledge that cannot be inferred from code}: 
 The library comprises eighteen skills organized by audience (\Cref{fig:skill-architecture}).
 A \emph{user} invokes \texttt{tutorial} to explore the CLI without touching code.
 A \emph{contributor}---typically a domain expert who need not know Rust---invokes \texttt{propose} to brainstorm a new model or reduction and file a GitHub issue.
-The \emph{maintainer} uses three interactive skills:
+The \emph{maintainer} uses four skills:
 \texttt{dev-setup} configures the toolchain,
 \texttt{final-review} presents a structured merge-or-hold decision,
-and \texttt{fix-issue} brainstorms fixes for failing quality checks.
-The remaining thirteen skills are fully \emph{autonomous}:
+\texttt{fix-issue} brainstorms fixes for failing quality checks,
+and \texttt{release} manages versioning.
+The remaining twelve skills are fully \emph{autonomous}:
 \texttt{run-pipeline} drives an issue end-to-end from selection to merge;
 \texttt{issue-to-pr} converts a validated issue into a pull request, invoking \texttt{add-model} or \texttt{add-rule} to generate the implementation;
 \texttt{review-pipeline} composes three sub-reviews (\texttt{check-issue}, \texttt{review-structural}, \texttt{review-quality});
