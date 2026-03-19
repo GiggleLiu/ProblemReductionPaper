@@ -37,16 +37,13 @@
   // ── Fork: trunk + bar + ticks ──
   let bar-y = 11.0
   let tick-len = 0.6
-  // Trunk
   line("root.south", (rx, bar-y), stroke: stroke-edge)
-  // Horizontal bar
   line((c1x, bar-y), (c4x, bar-y), stroke: stroke-edge)
-  // Tick marks
   for x in (c1x, c2x, c3x, c4x) {
     line((x, bar-y), (x, bar-y - tick-len), stroke: stroke-edge)
   }
 
-  // ── Column headers (plain text, not boxes) ──
+  // ── Column headers ──
   let hdr-y = bar-y - tick-len - 0.25
   content((c1x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [user]))
   content((c2x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [contributor]))
@@ -56,20 +53,20 @@
   // ── Skills ──
   let s0 = hdr-y - 0.65
 
-  // User (1 skill)
+  // User (1): learn the library
   skill((c1x, s0), "tutorial", "u1", mentor: true)
 
-  // Contributor (4 mentor skills)
+  // Contributor (1): propose ideas, no coding
   skill((c2x, s0), "propose", "c1", mentor: true)
-  skill((c2x, s0 - sp), "dev-setup", "c2", mentor: true)
-  skill((c2x, s0 - sp*2), "add-model", "c3", mentor: true)
-  skill((c2x, s0 - sp*3), "add-rule", "c4", mentor: true)
 
-  // Maintainer (2 interactive skills)
-  skill((c3x, s0), "final-review", "m1", mentor: true)
-  skill((c3x, s0 - sp), "fix-issue", "m2", mentor: true)
+  // Maintainer (5): interactive, requires human judgment
+  skill((c3x, s0), "dev-setup", "m1", mentor: true)
+  skill((c3x, s0 - sp), "add-model", "m2", mentor: true)
+  skill((c3x, s0 - sp*2), "add-rule", "m3", mentor: true)
+  skill((c3x, s0 - sp*3), "final-review", "m4", mentor: true)
+  skill((c3x, s0 - sp*4), "fix-issue", "m5", mentor: true)
 
-  // Automation (11 fully autonomous skills)
+  // Automation (11): fully autonomous
   skill((c4x, s0), "run-pipeline", "a1")
   skill((c4x, s0 - sp), "issue-to-pr", "a2")
   skill((c4x, s0 - sp*2), "review-pipeline", "a3")
