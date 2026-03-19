@@ -59,12 +59,13 @@
   // Contributor (1): propose ideas, no coding
   skill((c2x, s0), "propose", "c1", mentor: true)
 
-  // Maintainer (3): interactive, requires human judgment
+  // Maintainer (4): interactive, requires human judgment
   skill((c3x, s0), "dev-setup", "m1", mentor: true)
   skill((c3x, s0 - sp), "final-review", "m2", mentor: true)
   skill((c3x, s0 - sp*2), "fix-issue", "m3", mentor: true)
+  skill((c3x, s0 - sp*3), "release", "m4")
 
-  // Automation (13): fully autonomous
+  // Automation (12): fully autonomous
   skill((c4x, s0), "run-pipeline", "a1")
   skill((c4x, s0 - sp), "issue-to-pr", "a2")
   skill((c4x, s0 - sp*2), "add-model", "a3")
@@ -77,5 +78,4 @@
   skill((c4x, s0 - sp*9), "topology-check", "a10")
   skill((c4x, s0 - sp*10), "write-model", "a11")
   skill((c4x, s0 - sp*11), "write-rule", "a12")
-  skill((c4x, s0 - sp*12), "release", "a13")
 })
