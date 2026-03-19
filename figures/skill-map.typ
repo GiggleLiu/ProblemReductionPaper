@@ -59,23 +59,23 @@
   // Contributor (1): propose ideas, no coding
   skill((c2x, s0), "propose", "c1", mentor: true)
 
-  // Maintainer (5): interactive, requires human judgment
+  // Maintainer (3): interactive, requires human judgment
   skill((c3x, s0), "dev-setup", "m1", mentor: true)
-  skill((c3x, s0 - sp), "add-model", "m2", mentor: true)
-  skill((c3x, s0 - sp*2), "add-rule", "m3", mentor: true)
-  skill((c3x, s0 - sp*3), "final-review", "m4", mentor: true)
-  skill((c3x, s0 - sp*4), "fix-issue", "m5", mentor: true)
+  skill((c3x, s0 - sp), "final-review", "m2", mentor: true)
+  skill((c3x, s0 - sp*2), "fix-issue", "m3", mentor: true)
 
-  // Automation (11): fully autonomous
+  // Automation (13): fully autonomous
   skill((c4x, s0), "run-pipeline", "a1")
   skill((c4x, s0 - sp), "issue-to-pr", "a2")
-  skill((c4x, s0 - sp*2), "review-pipeline", "a3")
-  skill((c4x, s0 - sp*3), "check-issue", "a4")
-  skill((c4x, s0 - sp*4), "review-structural", "a5")
-  skill((c4x, s0 - sp*5), "review-quality", "a6")
-  skill((c4x, s0 - sp*6), "fix-pr", "a7")
-  skill((c4x, s0 - sp*7), "topology-check", "a8")
-  skill((c4x, s0 - sp*8), "write-model", "a9")
-  skill((c4x, s0 - sp*9), "write-rule", "a10")
-  skill((c4x, s0 - sp*10), "release", "a11")
+  skill((c4x, s0 - sp*2), "add-model", "a3")
+  skill((c4x, s0 - sp*3), "add-rule", "a4")
+  skill((c4x, s0 - sp*4), "review-pipeline", "a5")
+  skill((c4x, s0 - sp*5), "check-issue", "a6")
+  skill((c4x, s0 - sp*6), "review-structural", "a7")
+  skill((c4x, s0 - sp*7), "review-quality", "a8")
+  skill((c4x, s0 - sp*8), "fix-pr", "a9")
+  skill((c4x, s0 - sp*9), "topology-check", "a10")
+  skill((c4x, s0 - sp*10), "write-model", "a11")
+  skill((c4x, s0 - sp*11), "write-rule", "a12")
+  skill((c4x, s0 - sp*12), "release", "a13")
 })
