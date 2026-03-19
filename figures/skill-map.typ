@@ -28,13 +28,14 @@
 
   let sp = 0.6   // vertical spacing between skills
 
-  // Column x-positions
-  let ux = 2      // user
-  let cx = 7.5    // contributor
-  let mx = 13     // maintainer
+  // Column x-positions (4 columns)
+  let c1x = 1.8    // user
+  let c2x = 6.0    // contributor
+  let c3x = 10.2   // maintainer
+  let c4x = 14.4   // automation
 
   // ── Root: CLAUDE.md / AGENTS.md ──
-  let rx = 7.5
+  let rx = 8.1
   let ry = 13
   rect((rx - 2.0 + 0.08, ry - 0.55 + 0.08), (rx + 2.0 + 0.08, ry + 0.55 + 0.08),
     radius: 5pt, fill: shadow-col, stroke: none)
@@ -45,57 +46,59 @@
 
   // ── Fork structure ──
   let bar-y = 11.5
-  // Trunk
   line("root.south", (rx, bar-y), stroke: stroke-edge)
-  // Horizontal bar
-  line((ux, bar-y), (mx, bar-y), stroke: stroke-edge)
+  line((c1x, bar-y), (c4x, bar-y), stroke: stroke-edge)
 
   // ── Role nodes ──
   let role-y = 10.3
-  // Drops from bar to role nodes
-  line((ux, bar-y), (ux, role-y + 0.35), stroke: stroke-edge)
-  line((cx, bar-y), (cx, role-y + 0.35), stroke: stroke-edge)
-  line((mx, bar-y), (mx, role-y + 0.35), stroke: stroke-edge)
+  line((c1x, bar-y), (c1x, role-y + 0.35), stroke: stroke-edge)
+  line((c2x, bar-y), (c2x, role-y + 0.35), stroke: stroke-edge)
+  line((c3x, bar-y), (c3x, role-y + 0.35), stroke: stroke-edge)
+  line((c4x, bar-y), (c4x, role-y + 0.35), stroke: stroke-edge)
 
-  role-node((ux, role-y), [user], "r-user")
-  role-node((cx, role-y), [contributor], "r-contrib")
-  role-node((mx, role-y), [maintainer], "r-maint")
+  role-node((c1x, role-y), [user], "r-user")
+  role-node((c2x, role-y), [contributor], "r-contrib")
+  role-node((c3x, role-y), [maintainer], "r-maint")
+  role-node((c4x, role-y), [automation], "r-auto")
 
   // ── Skill columns ──
-  let s0 = role-y - 0.95   // first skill y
+  let s0 = role-y - 0.95
 
   // Stems from role nodes to first skill
-  line("r-user.south", (ux, s0 + 0.28), stroke: stroke-edge)
-  line("r-contrib.south", (cx, s0 + 0.28), stroke: stroke-edge)
-  line("r-maint.south", (mx, s0 + 0.28), stroke: stroke-edge)
+  line("r-user.south", (c1x, s0 + 0.28), stroke: stroke-edge)
+  line("r-contrib.south", (c2x, s0 + 0.28), stroke: stroke-edge)
+  line("r-maint.south", (c3x, s0 + 0.28), stroke: stroke-edge)
+  line("r-auto.south", (c4x, s0 + 0.28), stroke: stroke-edge)
 
   // User (1 skill)
-  skill((ux, s0), "tutorial", "u1", mentor: true)
+  skill((c1x, s0), "tutorial", "u1", mentor: true)
 
-  // Contributor (9 skills)
-  skill((cx, s0), "propose", "c1", mentor: true)
-  skill((cx, s0 - sp), "dev-setup", "c2", mentor: true)
-  skill((cx, s0 - sp*2), "add-model", "c3", mentor: true)
-  skill((cx, s0 - sp*3), "add-rule", "c4", mentor: true)
-  skill((cx, s0 - sp*4), "issue-to-pr", "c5")
-  skill((cx, s0 - sp*5), "fix-issue", "c6")
-  skill((cx, s0 - sp*6), "fix-pr", "c7")
-  skill((cx, s0 - sp*7), "write-model", "c8")
-  skill((cx, s0 - sp*8), "write-rule", "c9")
+  // Contributor (4 mentor skills)
+  skill((c2x, s0), "propose", "c1", mentor: true)
+  skill((c2x, s0 - sp), "dev-setup", "c2", mentor: true)
+  skill((c2x, s0 - sp*2), "add-model", "c3", mentor: true)
+  skill((c2x, s0 - sp*3), "add-rule", "c4", mentor: true)
 
-  // Maintainer (8 skills)
-  skill((mx, s0), "run-pipeline", "m1")
-  skill((mx, s0 - sp), "review-pipeline", "m2")
-  skill((mx, s0 - sp*2), "check-issue", "m3")
-  skill((mx, s0 - sp*3), "review-structural", "m4")
-  skill((mx, s0 - sp*4), "review-quality", "m5")
-  skill((mx, s0 - sp*5), "final-review", "m6", mentor: true)
-  skill((mx, s0 - sp*6), "topology-check", "m7")
-  skill((mx, s0 - sp*7), "release", "m8")
+  // Maintainer (2 interactive skills)
+  skill((c3x, s0), "final-review", "m1", mentor: true)
+  skill((c3x, s0 - sp), "fix-issue", "m2", mentor: true)
+
+  // Automation (11 fully autonomous skills)
+  skill((c4x, s0), "run-pipeline", "a1")
+  skill((c4x, s0 - sp), "issue-to-pr", "a2")
+  skill((c4x, s0 - sp*2), "review-pipeline", "a3")
+  skill((c4x, s0 - sp*3), "check-issue", "a4")
+  skill((c4x, s0 - sp*4), "review-structural", "a5")
+  skill((c4x, s0 - sp*5), "review-quality", "a6")
+  skill((c4x, s0 - sp*6), "fix-pr", "a7")
+  skill((c4x, s0 - sp*7), "topology-check", "a8")
+  skill((c4x, s0 - sp*8), "write-model", "a9")
+  skill((c4x, s0 - sp*9), "write-rule", "a10")
+  skill((c4x, s0 - sp*10), "release", "a11")
 
   // Legend
-  let lx = ux
-  let ly = s0 - sp*8 - 0.8
+  let lx = c1x
+  let ly = s0 - sp*10 - 0.7
   rect((lx - 0.3, ly - 0.15), (lx + 0.3, ly + 0.15),
     radius: 2pt, fill: fill-accent, stroke: (thickness: 0.8pt, paint: accent))
   content((lx + 1.7, ly), text(5.5pt, fill: fg-light, [= mentor skill]))
