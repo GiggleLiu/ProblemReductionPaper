@@ -105,22 +105,16 @@ The agent produces volume; verification ensures correctness.
 
 \subsection{Contributions}
 
-Over nine weeks, a single maintainer and AI agents produced a Rust library with 27~problem types, 45~reduction rules, and $>$95\% test coverage.
-Our contributions are:
-\begin{itemize}
-  \item \textbf{The bridge problem concept}: a characterization of software projects where homogeneous, verifiable subtasks create scale barriers that agents can overcome (\Cref{sec:bridge}).
-  \item \textbf{A verified reduction graph} connecting 27~NP-hard problem types to specialized solvers, with emergent compositionality through automatic path composition (\Cref{sec:graph}).
-  \item \textbf{A skill-based methodology} for mathematical software engineering, encoding workflow knowledge as reusable, versioned scripts that decompose multi-file tasks into agent-executable steps (\Cref{sec:method}).
-  \item \textbf{Quantitative evidence}: a 15:1 agent-to-human message ratio, a 75\% rejection rate on 322~batch-submitted proposals demonstrating the quality gate's selectivity, and a 9-week development timeline (\Cref{sec:evaluation}).
-\end{itemize}
-
-The rest of this paper is organized as follows.
-\Cref{sec:bridge} defines bridge problems and the three barriers.
-\Cref{sec:graph} presents the reduction graph as a case study.
-\Cref{sec:method} describes the methodology.
-\Cref{sec:evaluation} provides evidence.
-\Cref{sec:related} surveys related work.
-\Cref{sec:conclusion} discusses limitations and future directions.
+We demonstrate that AI coding agents, constrained by systematic verification, can build mathematical software at a scale that human teams have not achieved.
+The evidence is a Rust library of 27~problem types and 45~reduction rules with $>$95\% test coverage, built in nine weeks by a single maintainer and AI agents.
+Three ideas make this possible:
+\begin{enumerate}
+  \item A \emph{no-code contribution route} that lets domain experts add reductions by filing structured issues---no familiarity with the implementation language is needed (\Cref{sec:method}).
+  \item A \emph{multilayer verification stack} that checks each reduction from type signatures through round-trip tests to agentic feature tests, ensuring agent output matches contributor-specified ground truth (\Cref{sec:bridge}).
+  \item \emph{Skills}: versioned, composable workflow documents that encode project conventions and domain knowledge, so that every agent invocation follows the same process (\Cref{sec:method}).
+\end{enumerate}
+We formalize the class of projects where this approach applies as \emph{bridge problems} (\Cref{sec:bridge}) and present the reduction graph as a case study (\Cref{sec:graph}).
+\Cref{sec:evaluation} provides quantitative evidence, \Cref{sec:related} surveys related work, and \Cref{sec:conclusion} discusses limitations and future directions.
 
 %======================================================================
 %  SECTION 2: BRIDGE PROBLEMS
