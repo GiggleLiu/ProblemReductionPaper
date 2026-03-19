@@ -16,27 +16,17 @@
     content(name-id, text(6pt, fill: fg, raw(label)))
   }
 
-  // Role node (intermediate tree level)
-  let role-node(pos, label, name-id) = {
-    let (x, y) = pos
-    rect((x - 1.6 + 0.06, y - 0.35 + 0.06), (x + 1.6 + 0.06, y + 0.35 + 0.06),
-      radius: 4pt, fill: shadow-col, stroke: none)
-    rect((x - 1.6, y - 0.35), (x + 1.6, y + 0.35),
-      radius: 4pt, fill: fill-light, stroke: stroke-box, name: name-id)
-    content(name-id, text(7pt, weight: "bold", fill: fg, label))
-  }
-
-  let sp = 0.6   // vertical spacing between skills
+  let sp = 0.6
 
   // Column x-positions (4 columns)
-  let c1x = 1.8    // user
-  let c2x = 6.0    // contributor
-  let c3x = 10.2   // maintainer
-  let c4x = 14.4   // automation
+  let c1x = 1.8
+  let c2x = 6.0
+  let c3x = 10.2
+  let c4x = 14.4
 
-  // ── Root: CLAUDE.md / AGENTS.md ──
+  // ── Root ──
   let rx = 8.1
-  let ry = 13
+  let ry = 12.5
   rect((rx - 2.0 + 0.08, ry - 0.55 + 0.08), (rx + 2.0 + 0.08, ry + 0.55 + 0.08),
     radius: 5pt, fill: shadow-col, stroke: none)
   rect((rx - 2.0, ry - 0.55), (rx + 2.0, ry + 0.55),
@@ -44,31 +34,27 @@
   content((rx, ry + 0.15), text(8pt, weight: "bold", fill: accent.darken(20%), raw("CLAUDE.md")))
   content((rx, ry - 0.25), text(8pt, weight: "bold", fill: accent.darken(20%), raw("AGENTS.md")))
 
-  // ── Fork structure ──
-  let bar-y = 11.5
+  // ── Fork: trunk + bar + ticks ──
+  let bar-y = 11.0
+  let tick-len = 0.6
+  // Trunk
   line("root.south", (rx, bar-y), stroke: stroke-edge)
+  // Horizontal bar
   line((c1x, bar-y), (c4x, bar-y), stroke: stroke-edge)
+  // Tick marks
+  for x in (c1x, c2x, c3x, c4x) {
+    line((x, bar-y), (x, bar-y - tick-len), stroke: stroke-edge)
+  }
 
-  // ── Role nodes ──
-  let role-y = 10.3
-  line((c1x, bar-y), (c1x, role-y + 0.35), stroke: stroke-edge)
-  line((c2x, bar-y), (c2x, role-y + 0.35), stroke: stroke-edge)
-  line((c3x, bar-y), (c3x, role-y + 0.35), stroke: stroke-edge)
-  line((c4x, bar-y), (c4x, role-y + 0.35), stroke: stroke-edge)
+  // ── Column headers (plain text, not boxes) ──
+  let hdr-y = bar-y - tick-len - 0.25
+  content((c1x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [user]))
+  content((c2x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [contributor]))
+  content((c3x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [maintainer]))
+  content((c4x, hdr-y), text(7pt, weight: "bold", fill: fg-light, [automation]))
 
-  role-node((c1x, role-y), [user], "r-user")
-  role-node((c2x, role-y), [contributor], "r-contrib")
-  role-node((c3x, role-y), [maintainer], "r-maint")
-  role-node((c4x, role-y), [automation], "r-auto")
-
-  // ── Skill columns ──
-  let s0 = role-y - 0.95
-
-  // Stems from role nodes to first skill
-  line("r-user.south", (c1x, s0 + 0.28), stroke: stroke-edge)
-  line("r-contrib.south", (c2x, s0 + 0.28), stroke: stroke-edge)
-  line("r-maint.south", (c3x, s0 + 0.28), stroke: stroke-edge)
-  line("r-auto.south", (c4x, s0 + 0.28), stroke: stroke-edge)
+  // ── Skills ──
+  let s0 = hdr-y - 0.65
 
   // User (1 skill)
   skill((c1x, s0), "tutorial", "u1", mentor: true)
