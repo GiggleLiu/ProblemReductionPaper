@@ -78,11 +78,4 @@
   skill((c4x, s0 - sp*8), "write-model", "a9")
   skill((c4x, s0 - sp*9), "write-rule", "a10")
   skill((c4x, s0 - sp*10), "release", "a11")
-
-  // Legend
-  let lx = c1x
-  let ly = s0 - sp*10 - 0.7
-  rect((lx - 0.3, ly - 0.15), (lx + 0.3, ly + 0.15),
-    radius: 2pt, fill: fill-accent, stroke: (thickness: 0.8pt, paint: accent))
-  content((lx + 1.7, ly), text(5.5pt, fill: fg-light, [= mentor skill]))
 })
