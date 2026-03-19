@@ -234,21 +234,34 @@ The maintainer's effort scales with the number of \emph{skill types}, not the nu
 Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \lstinline{pub fn run()} entry point, and that the paper entry requires a proof sketch.
 
 The library comprises eighteen skills organized by audience (\Cref{fig:skill-architecture}).
-A \emph{user} invokes \texttt{tutorial} to explore the CLI without touching code.
-A \emph{contributor}---typically a domain expert who need not know Rust---invokes \texttt{propose} to brainstorm a new model or reduction and file a GitHub issue.
-The \emph{maintainer} uses four skills:
-\texttt{dev-setup} configures the toolchain,
-\texttt{final-review} presents a structured merge-or-hold decision,
-\texttt{fix-issue} brainstorms fixes for failing quality checks,
-and \texttt{release} manages versioning.
-The remaining twelve skills are fully \emph{autonomous}:
-\texttt{run-pipeline} drives an issue end-to-end from selection to merge;
-\texttt{issue-to-pr} converts a validated issue into a pull request, invoking \texttt{add-model} or \texttt{add-rule} to generate the implementation;
-\texttt{review-pipeline} composes three sub-reviews (\texttt{check-issue}, \texttt{review-structural}, \texttt{review-quality});
-\texttt{fix-pr} addresses CI failures and review comments;
-\texttt{topology-check} verifies reduction-graph consistency;
-and \texttt{write-model}/\texttt{write-rule} draft paper entries.
-Five of the eighteen are \emph{mentor} skills (tinted in \Cref{fig:skill-architecture}): they interactively guide their user, pausing for human judgment where creativity is required.
+
+\textbf{User.}
+\texttt{tutorial} is an interactive walkthrough of the \texttt{pred} CLI that teaches a newcomer to explore the reduction graph, invoke reductions, and solve problem instances---without touching source code.
+
+\textbf{Contributor.}
+\texttt{propose} guides a domain expert---who need not know Rust or the codebase---through a one-question-at-a-time brainstorming session, clarifies the formal definition, and files a GitHub issue ready for implementation.
+
+\textbf{Maintainer.}
+\texttt{dev-setup} is an interactive wizard that detects the platform, installs dependencies, and configures the toolchain for a new maintainer.
+\texttt{final-review} presents a structured merge-or-hold decision: it summarizes the PR, asks the maintainer to assess usefulness, safety, and completeness, then merges or labels accordingly.
+\texttt{fix-issue} auto-corrects mechanical quality failures (formatting, missing fields) and brainstorms substantive fixes with the maintainer for issues that require domain judgment.
+\texttt{release} determines the appropriate version bump from the diff, runs the test suite, and tags a release.
+
+\textbf{Automation.}
+\texttt{run-pipeline} picks the highest-priority Ready issue from the project board and drives it through implementation to the review pool---fully autonomously, in a loop.
+\texttt{issue-to-pr} converts a validated issue into an executable pull request: it researches references, writes a step-by-step plan, creates the PR, and invokes \texttt{add-model} or \texttt{add-rule} to generate the implementation.
+\texttt{add-model} implements a new problem model end-to-end: Rust types, trait implementations, unit tests, CLI registration, and a paper entry.
+\texttt{add-rule} does the same for a reduction rule, including the overhead expression, round-trip tests, and a proof sketch.
+\texttt{review-pipeline} orchestrates three read-only sub-reviews in parallel:
+\texttt{check-issue} validates issue quality (usefulness, non-triviality, correctness of literature claims);
+\texttt{review-structural} verifies project-specific checklists, build success, and semantic correctness;
+\texttt{review-quality} evaluates generic code quality (DRY, KISS, test coverage, cohesion).
+\texttt{fix-pr} addresses CI failures, review comments, and coverage gaps without human input.
+\texttt{topology-check} detects orphan problems, NP-hardness proof gaps, and redundant rules in the reduction graph.
+\texttt{write-model} and \texttt{write-rule} draft the corresponding Typst paper entries with formal definitions, proof sketches, and worked examples.
+
+Five of the eighteen---\texttt{tutorial}, \texttt{propose}, \texttt{dev-setup}, \texttt{final-review}, and \texttt{fix-issue}---are \emph{mentor} skills (tinted in \Cref{fig:skill-architecture}): they interactively guide their user, pausing for human judgment where creativity is required.
+The remaining thirteen run without human intervention.
 
 \subsection{From Contributor to Verified Code}\label{sec:pipeline-overview}
 
