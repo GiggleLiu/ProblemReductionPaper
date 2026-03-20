@@ -84,7 +84,7 @@
     text(8pt, weight: "bold", fill: col-core.darken(20%), [Core Library]))
 
   // Row 1
-  let r1y = y2 - 0.9
+  let r1y = y2 - 1.0
   ibox((x1, r1y), bw, bh, col-core, "problems",
     [Problem Types],
     [`Problem` trait · `evaluate()`],
