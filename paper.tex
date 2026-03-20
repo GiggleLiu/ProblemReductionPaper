@@ -66,7 +66,7 @@ In particular, a problem's NP-hardness is certified whenever a directed path fro
   \includegraphics[width=0.88\columnwidth]{figures/reduction-graph-concept.pdf}
   \caption{Conceptual reduction graph.
   Nodes are problem types, directed edges are reduction rules.
-  Following a path through the graph leads from any supported problem to a solver backend.}
+  Following a path through the graph leads from any supported problem to a solver backend. $f$ and $g$ are reduction overheads annotated on the edges.}
   \label{fig:reduction-graph}
 \end{figure}
 
@@ -104,9 +104,9 @@ We demonstrate that AI coding agents, constrained by systematic verification, ca
 The evidence is a Rust library of 27~problem types and 45~reduction rules with $>$95\% test coverage, built in nine weeks by a single maintainer and AI agents.
 Three ideas make this possible:
 \begin{enumerate}
-  \item A \emph{no-code contribution route} that lets domain experts add reductions by filing structured issues---no familiarity with the implementation language is needed (\Cref{sec:method}).
-  \item A \emph{multilayer verification stack} that checks each reduction from type signatures through round-trip tests to agentic feature tests, ensuring agent output matches contributor-specified ground truth (\Cref{sec:verification}).
-  \item \emph{Skills}: versioned, composable workflow documents that encode project conventions and domain knowledge, so that every agent invocation follows the same process (\Cref{sec:skills}).
+  \item A \emph{skill-based automation pipeline} built on two kinds of skills: \emph{implementation skills} that let agents autonomously code, test, and document each reduction, and \emph{contributor-facing skills} that guide new contributors and maintainers through the project's conventions (\Cref{sec:skills}).
+  \item A \emph{no-code contribution route} that lets domain experts continuously integrate new reduction rules by filing structured issues---no familiarity with the implementation language is needed (\Cref{sec:method}).
+  \item A \emph{multilayer verification stack} that ensures correctness at every stage: automated unit tests and round-trip tests validate each reduction programmatically, while domain experts perform end-to-end checks against contributor-specified ground truth (\Cref{sec:verification}).
 \end{enumerate}
 We present the reduction graph as a case study (\Cref{sec:graph}), describe the methodology (\Cref{sec:method}), and provide quantitative evidence (\Cref{sec:evaluation}).
 \Cref{sec:related} surveys related work and \Cref{sec:conclusion} discusses limitations and future directions.
