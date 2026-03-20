@@ -27,7 +27,7 @@
       pos, (pos.at(0) + w, pos.at(1) - h),
       radius: 3pt,
       fill: col.lighten(80%),
-      stroke: (thickness: 0.6pt, paint: col.lighten(10%)),
+      stroke: (thickness: 0.8pt, paint: col.darken(10%)),
       name: name-id,
     )
     let body = {
