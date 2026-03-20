@@ -477,7 +477,7 @@ Layer~3 (round-trip testing) catches a different class of error: off-by-one mist
 Both layers are necessary: correct indices with wrong overhead, or correct overhead with wrong indices, would each pass one layer but fail the other.
 
 \paragraph{Factoring $\to$ CircuitSAT $\to$ ILP (emergent composition).}
-As described in \Cref{sec:compositionality}, this chains two independently implemented reductions (272 + 225~lines) to factor integers via linear programming.
+This chains two independently implemented reductions (272 + 225~lines) to factor integers via linear programming.
 The Factoring $\to$ CircuitSAT step exercises the full verification stack: the multiplier circuit involves $\Theta(mn)$ full-adder cells (where $m$ and $n$ are the bit lengths of the two factors), and errors in carry propagation are caught by Layer~3 while overhead formula errors are caught by Layer~4.
 
 \paragraph{MVC $\leftrightarrow$ MIS (trivial complement).}
