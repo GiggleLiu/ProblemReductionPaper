@@ -114,21 +114,16 @@ We present the reduction graph as a case study (\Cref{sec:graph}), describe the 
 %======================================================================
 %  SECTION 2: CASE STUDY --- THE REDUCTION GRAPH
 %======================================================================
-\section{Case Study: The Reduction Graph}\label{sec:graph}
-
-\subsection{What Is a Reduction?}
-
-A \emph{reduction} from problem~$A$ to problem~$B$ is a pair of functions: a \emph{forward map} that transforms any instance of~$A$ into an instance of~$B$ in polynomial time, and an \emph{inverse map} that converts any solution of the $B$-instance back into a solution of the original $A$-instance.
-If the reduction is correct, the extracted solution is optimal (or satisfying) for the original problem.
-
-For example, the complement relationship between Minimum Vertex Cover (MVC) and Maximum Independent Set (MIS) gives a simple reduction: given a graph, the vertex cover problem asks for the smallest set of vertices that touches every edge, while the independent set problem asks for the largest set of vertices with no edges between them.
-A set~$S$ is independent if and only if its complement $V \setminus S$ is a vertex cover, so the forward map is the identity (the same graph), and the inverse map complements the solution.
-This 96-line implementation connects MVC to every solver reachable from MIS.
+\section{The Reduction Graph}\label{sec:graph}
 
 \subsection{Graph Structure}\label{sec:graph-structure}
 
-We organize reductions into a directed graph $G = (V, E)$, where each vertex $v \in V$ represents an NP-hard problem type and each directed edge $(u, v) \in E$ represents a verified reduction from problem~$u$ to problem~$v$.
-The graph contains 27~vertices (problem types) and 56~directed edges: 45~hand-coded reduction rules plus 11~edges inferred from subtype relationships (e.g., MIS on a geometric subgraph can always be treated as MIS on a general graph, because the geometric structure is a special case).
+The simplest edge in the graph illustrates the pattern.
+Minimum Vertex Cover (MVC) asks for the smallest set of vertices touching every edge; Maximum Independent Set (MIS) asks for the largest set with no edges between them.
+A set~$S$ is independent if and only if its complement $V \setminus S$ is a vertex cover, so the forward map is the identity (the same graph) and the inverse map complements the solution.
+This 96-line implementation connects MVC to every solver reachable from MIS.
+
+The full graph contains 27~problem types and 56~directed edges: 45~hand-coded reduction rules plus 11~edges inferred from subtype relationships (e.g., MIS on a geometric subgraph is a special case of MIS on a general graph).
 
 Three problems serve as ``compilation targets,'' each corresponding to a class of specialized solvers (\Cref{fig:reduction-graph}, bottom layer):
 \begin{itemize}
