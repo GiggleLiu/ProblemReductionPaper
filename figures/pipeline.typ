@@ -17,12 +17,11 @@
   import draw: *
 
   // --- Helpers ---
-  // All cards neutral — roles conveyed by arrow color
   let board-card(x, y, label, id) = {
     rect(
       (x - card-w / 2, y - card-h / 2),
       (x + card-w / 2, y + card-h / 2),
-      radius: 3pt, fill: fill-light, stroke: stroke-box, name: id,
+      radius: 3pt, fill: fill-light, stroke: 0.8pt + border, name: id,
     )
     content(id, text(7pt, weight: "bold", fill: fg, label))
   }
@@ -116,26 +115,31 @@
   // 7. Done
   board-card(cx, y6, "Done", "done")
 
-  // --- On Hold: receives arrows from In Progress and Final Review ---
-  let oh-w = 2.0
-  let oh-x = cx + card-w / 2 + 3.2
+  // --- On Hold ---
+  let oh-w = 1.8
+  let oh-x = cx + card-w / 2 + 4.5
   let oh-y = (y2 + y5) / 2
   board-card(oh-x, oh-y, "On Hold", "onhold")
+
+  // L-shaped arrows: go right past labels, then angle to On Hold
+  let bend-x = cx + card-w / 2 + 2.5   // x past right-side labels
 
   // Arrow from In Progress → On Hold
   line(
     (cx + card-w / 2, y2),
-    (oh-x - oh-w / 2 + 0.2, oh-y + card-h / 2 + 0.05),
-    stroke: (thickness: 1pt, paint: col-fail),
-    mark: (end: "straight", scale: 0.35),
+    (bend-x, y2),
+    (oh-x - oh-w / 2 - 0.05, oh-y + card-h / 2 + 0.05),
+    stroke: (thickness: 0.8pt, paint: col-fail),
+    mark: (end: "straight", scale: 0.3),
   )
 
   // Arrow from Final Review → On Hold
   line(
     (cx + card-w / 2, y5),
-    (oh-x - oh-w / 2 + 0.2, oh-y - card-h / 2 - 0.05),
-    stroke: (thickness: 1pt, paint: col-fail),
-    mark: (end: "straight", scale: 0.35),
+    (bend-x, y5),
+    (oh-x - oh-w / 2 - 0.05, oh-y - card-h / 2 - 0.05),
+    stroke: (thickness: 0.8pt, paint: col-fail),
+    mark: (end: "straight", scale: 0.3),
   )
 
   // --- Implementation Agent bracket ---
