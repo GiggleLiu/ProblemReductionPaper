@@ -147,7 +147,7 @@
   // ══════════════════════════════════════════
   let arr = (end: "straight", scale: 0.35)
   let s-down = (thickness: 1pt, paint: black)
-  let s-up   = (thickness: 1pt, paint: black, dash: "dashed")
+  let s-up   = (thickness: 1pt, paint: black)
   let sh = (start: 0.06, end: 0.06)
 
   // Layer 1 → Layer 2 (three vertical arrows, centered on each column)
