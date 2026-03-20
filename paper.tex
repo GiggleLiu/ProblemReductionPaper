@@ -55,11 +55,15 @@ Reductions are the central tool of computational complexity theory~\cite{karp197
 
 A single reduction bridges one problem to one solver.
 To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as a \emph{directed graph} (\Cref{fig:reduction-graph}).
-Each node is a problem type; each directed edge is a verified reduction that transforms instances forward and maps solutions back.
+Each node is a problem type annotated with its \emph{size measures} and \emph{best-known algorithm complexity}; each directed edge is a verified reduction annotated with its \emph{reduction overhead}---a multivariate polynomial mapping the source's size measures to the target's.
 A problem~$A$ is \emph{reducible} to a problem~$C$ whenever a directed path from~$A$ to~$C$ exists in the graph.
+Overheads compose symbolically along paths, so the system can find the cheapest route from any problem to a solver backend.
+
 The key insight is \emph{compositionality}: independently contributed edges combine into longer chains, so every new reduction opens many new paths through the graph.
-In particular, a problem's NP-hardness is certified whenever a directed path from 3-SAT reaches it, while an efficient path to Integer Linear Programming (ILP) enables automated verification of each reduction rule (\Cref{sec:verification}).
-%Orphan nodes---problems with no incident edges---represent missing connections and are actively avoided as the graph grows.
+Three structural properties guide the graph's growth.
+A problem's \emph{NP-hardness is verified} whenever a directed path from 3-SAT reaches it---no external certificate is needed.
+An \emph{orphan node} has no edges and cannot reach any solver, representing a gap to be filled.
+A rule is \emph{redundant} when a composite path with equal or lower overhead already connects the same endpoints; redundant rules cause combinatorial explosion of equally-optimal routes and are rejected automatically.
 
 \begin{figure}[t]
   \centering
