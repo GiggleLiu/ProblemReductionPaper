@@ -126,7 +126,7 @@
   content((m, y3 - 0.35), anchor: "west",
     text(8pt, weight: "bold", fill: col-macro.darken(20%), [Compile-time Validation]))
 
-  let my = y3 - 0.9
+  let my = y3 - 1.0
   ibox((x1, my), bw, bh, col-macro, "m-overhead",
     [Overhead Validation],
     [Symbolic expression parsing],
