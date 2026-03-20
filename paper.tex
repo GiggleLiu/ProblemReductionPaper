@@ -122,7 +122,7 @@ A typical workflow creates a problem instance, finds the cheapest reduction path
 \subsection{Problem Types}\label{sec:graph-structure}
 
 Every problem type implements the \texttt{Problem} trait, which requires a uniform evaluation interface: given any configuration, return a score (\Cref{app:architecture}).
-Each type defines its own \emph{size measures}---Satisfiability has \texttt{num_vars}, \texttt{num_clauses}, and \texttt{num_literals}; MIS has \texttt{num_vertices} and \texttt{num_edges}; Factoring has \texttt{num_bits_first} and \texttt{num_bits_second}.
+Each type defines its own \emph{size measures}---Satisfiability has \texttt{num\_vars}, \texttt{num\_clauses}, and \texttt{num\_literals}; MIS has \texttt{num\_vertices} and \texttt{num\_edges}; Factoring has \texttt{num\_bits\_first} and \texttt{num\_bits\_second}.
 Each type also declares its \emph{best-known algorithm complexity} in these measures (e.g., $O(1.1996^{n_v})$ for MIS).
 The uniform evaluation interface enables brute-force solving on small instances, which powers the round-trip testing described in \Cref{sec:roundtrip}.
 
@@ -133,6 +133,7 @@ Three serve as \emph{compilation targets}, each backed by a class of specialized
   \item \textbf{QUBO} (Quadratic Unconstrained Binary Optimization): target for D-Wave quantum annealers.
   \item \textbf{ILP} (Integer Linear Programming): target for commercial solvers like Gurobi and CPLEX.
 \end{itemize}
+Most problem types have a reduction path to ILP, directly or through intermediate types, enabling larger-scale solving via commercial optimizers.
 
 \subsection{Reduction Rules}
 
@@ -143,7 +144,7 @@ Overheads compose symbolically along paths: the output expressions of one edge a
 
 The library contains 56~directed edges: 45~hand-coded reduction rules plus 11~inferred from subtype relationships.
 To route a problem instance to a solver, the system finds the cheapest reduction path using Dijkstra's algorithm.
-The cost function is configurable: minimize the number of reduction steps, or minimize a specific output dimension such as \texttt{num_vars}.
+The cost function is configurable: minimize the number of reduction steps, or minimize a specific output dimension such as \texttt{num\_vars}.
 Because overheads compose symbolically, the optimal path depends on the source instance's actual dimensions.
 
 \subsection{Emergent Compositionality}\label{sec:compositionality}
@@ -567,7 +568,7 @@ As the graph scales toward 100+ problem types, it evolves from a library into a 
 \section{System Architecture}\label{app:architecture}
 
 The library's type system reduces the space of possible agent errors by making incorrect code fail to compile.
-This appendix describes four mechanisms---the \texttt{Problem} trait, the \texttt{ReduceTo} trait, the \texttt{#[reduction(overhead)]} macro, and the \texttt{declare_variants!} registry---that enforce correctness structurally (\Cref{fig:architecture}).
+This appendix describes four mechanisms---the \texttt{Problem} trait, the \texttt{ReduceTo} trait, the \texttt{\#[reduction(overhead)]} macro, and the \texttt{declare\_variants!} registry---that enforce correctness structurally (\Cref{fig:architecture}).
 
 \begin{figure}[t]
   \centering
@@ -582,16 +583,16 @@ Every problem type implements \texttt{Problem}, which requires: a constant name,
 The key member is \texttt{evaluate()}: because every problem maps configurations to metrics through this uniform interface, a brute-force solver can enumerate the space and select the best solution, enabling the round-trip testing described in \Cref{sec:roundtrip} without problem-specific oracles.
 
 \paragraph{The ReduceTo trait.}
-The generic \texttt{ReduceTo<T>} trait requires a \texttt{reduce_to()} method returning a \texttt{ReductionResult} that bundles \texttt{target_problem()} and \texttt{extract_solution()}.
+The generic \texttt{ReduceTo<T>} trait requires a \texttt{reduce\_to()} method returning a \texttt{ReductionResult} that bundles \texttt{target\_problem()} and \texttt{extract\_solution()}.
 By requiring both forward and inverse in a single implementation, the type system ensures every reduction is round-trip capable---an agent cannot compile a forward reduction without providing the extraction logic.
 
 \paragraph{Compile-time overhead validation.}
 The \texttt{\#[reduction(overhead = \{...\})]} procedural macro attaches symbolic size expressions to each reduction.
-These expressions are parsed at compile time; variable names are validated against getter methods on the source type, so a typo (e.g., referencing \texttt{num_vertex} when the method is \texttt{num_vertices}) causes a compile error rather than a silent bug.
+These expressions are parsed at compile time; variable names are validated against getter methods on the source type, so a typo (e.g., referencing \texttt{num\_vertex} when the method is \texttt{num\_vertices}) causes a compile error rather than a silent bug.
 
 \paragraph{Variant registry.}
 Problem types are parameterized by graph type (SimpleGraph, KingsSubgraph, etc.) and weight type (unit weight, \texttt{i32}, \texttt{f64}).
-The \texttt{declare_variants!} macro registers concrete instantiations with their best-known complexity, enabling automated graph export, documentation completeness checking, and redundancy analysis.
+The \texttt{declare\_variants!} macro registers concrete instantiations with their best-known complexity, enabling automated graph export, documentation completeness checking, and redundancy analysis.
 
 \section{Verification Stack Details}\label{app:verification}
 
