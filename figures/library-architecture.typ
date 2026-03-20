@@ -56,7 +56,7 @@
   // Layer 1: User Interfaces
   // ══════════════════════════════════════════
   let y1 = 0
-  let h1 = 3.0
+  let h1 = 3.6
   layer-box((0, y1), W, h1, col-cli, "L1")
   content((m, y1 - 0.35), anchor: "west",
     text(8pt, weight: "bold", fill: col-cli.darken(20%), [User Interfaces]))
