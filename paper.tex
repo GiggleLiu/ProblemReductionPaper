@@ -116,18 +116,23 @@ We describe the library architecture (\Cref{sec:graph}), the methodology (\Cref{
 %======================================================================
 \section{Library Architecture}\label{sec:graph}
 
-The library is implemented in Rust as three crates: a \emph{core library} defining problem types, reduction rules, and graph infrastructure; a \emph{command-line interface} (\texttt{pred}) for graph exploration, path search, and end-to-end solving; and a \emph{compile-time validation layer} that checks overhead expressions and type registrations before the code can compile.
-A typical workflow creates a problem instance, finds the cheapest reduction path to a solver backend, and extracts the solution---all through the \texttt{pred} CLI or the library API.
-The build system also produces an auto-compiled PDF manual containing formal definitions, reduction theorems with proof sketches, and worked round-trip test examples for every implemented model and rule.
 \Cref{fig:library-architecture} shows the three-layer architecture.
+The \emph{core library} (\Cref{fig:library-architecture}, middle) defines problem types, reduction rules, and a graph engine that composes them.
+A \emph{symbolic engine} supports both reduction overhead and algorithm complexity as mathematical expressions---enabling symbolic composition along paths, asymptotic comparison for redundancy detection, and numeric evaluation for cost-based path search.
+Two solvers operate on the graph: a brute-force enumerator for small instances (used in round-trip testing) and an ILP solver for larger-scale solving.
+An example database stores canonical instances that serve as the single source of truth for tests, documentation, and the CLI (\Cref{fig:roundtrip-pipeline}).
+
+Three user-facing interfaces sit above the core (\Cref{fig:library-architecture}, top): the \texttt{pred} CLI for graph exploration, path search, and end-to-end solving; the Rust library API; and an auto-compiled PDF manual containing formal definitions, reduction theorems with proof sketches, and worked examples for every implemented model and rule.
+
+A compile-time validation layer (\Cref{fig:library-architecture}, bottom, dashed arrows) checks overhead expressions and type registrations before the code can compile, catching variable-name typos and malformed expressions at build time rather than at runtime.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/library-architecture.pdf}
   \caption{Library architecture.
-    \textbf{Top}: user-facing interfaces---the \texttt{pred} CLI, the Rust library API, and an auto-compiled PDF manual.
-    \textbf{Middle}: the core crate with problem types, reduction rules, graph engine, solvers, and example database.
-    \textbf{Bottom}: compile-time validation layer that checks overhead expressions and type registrations before compilation succeeds (dashed arrows).}
+    The core library (green) defines problem types, reduction rules, a graph engine, solvers, a symbolic engine for overhead and complexity expressions, and an example database.
+    User interfaces (blue) expose the core via CLI, library API, and an auto-compiled PDF manual.
+    Compile-time validation (gold, dashed arrows) checks overhead expressions and type registrations before compilation succeeds.}
   \label{fig:library-architecture}
 \end{figure}
 
