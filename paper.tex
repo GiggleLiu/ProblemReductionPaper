@@ -104,7 +104,7 @@ We demonstrate that AI coding agents, constrained by systematic verification, ca
 The evidence is a Rust library of 27~problem types and 45~reduction rules with $>$95\% test coverage, built in nine weeks by a single maintainer and AI agents.
 Three ideas make this possible:
 \begin{enumerate}
-  \item A \emph{skill-based automation pipeline} built on two kinds of skills: \emph{implementation skills} that let agents autonomously code, test, and document each reduction, and \emph{contributor-facing skills} that guide new contributors and maintainers through the project's conventions (\Cref{sec:skills}).
+  \item A \emph{skill-based automation pipeline} built on two kinds of skills: \emph{implementation skills} that let agents autonomously code, test, and document each reduction, and \emph{human-facing skills} that guide users, contributors, and maintainers through the project's conventions (\Cref{sec:skills}).
   \item A \emph{no-code contribution route} that lets domain experts continuously integrate new reduction rules by filing structured issues---no familiarity with the implementation language is needed (\Cref{sec:method}).
   \item A \emph{multilayer verification stack} that ensures correctness at every stage: automated unit tests and round-trip tests validate each reduction programmatically, while domain experts perform end-to-end checks against contributor-specified ground truth (\Cref{sec:verification}).
 \end{enumerate}
