@@ -243,12 +243,15 @@ This replaces the community feedback loop that niche libraries lack.
 Fully automatable.
 
 \textbf{Stage~5: Merge.}
-The maintainer makes the final quality judgment and merges.
-This decision requires human creativity: assessing whether the reduction is useful, safe, and complete.
+The maintainer reviews the agentic verdict, resolves any merge conflicts, and merges the pull request.
+
+\textbf{Stage~6: Verify.}
+After merge, the domain expert who filed the original issue verifies that the implementation matches their intent---the formal definition, the canonical example, and the proof sketch.
+This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments that are formally correct but mathematically unconvincing.
 
 The pipeline reveals a clean separation.
-Three stages---validate, implement, review---are routine: they follow deterministic checklists and run without human intervention.
-Two stages---propose and merge---require creativity and domain judgment.
+Four stages---validate, implement, review, merge---are routine: they follow deterministic checklists and run without human intervention.
+Two stages---propose and verify---require creativity and domain judgment.
 The design challenge is encoding this separation so that an agent runs the routine stages autonomously while invoking human judgment at precisely the right moments.
 
 \subsection{Skill Design}\label{sec:skills}
