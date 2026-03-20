@@ -10,9 +10,9 @@
 #let col-bg-agent = accent-light
 #let col-fail = rgb("#e15759")
 
-#let card-w = 2.6
-#let card-h = 0.55
-#let gap-y = 0.95
+#let card-w = 3.2
+#let card-h = 0.6
+#let gap-y = 1.0
 
 #canvas(length: 0.55cm, {
   import draw: *
@@ -24,7 +24,7 @@
       (x + card-w / 2, y + card-h / 2),
       radius: 3pt, fill: bg, stroke: 1pt + stroke-col, name: id,
     )
-    content(id, text(7.5pt, weight: "bold", fill: stroke-col.darken(15%), label))
+    content(id, text(7pt, weight: "bold", fill: stroke-col.darken(15%), label))
   }
 
   let arrow(from-y, to-y, col, cx) = {
@@ -37,7 +37,7 @@
 
   let label-right(from-y, to-y, col, txt, cx) = {
     content(
-      (cx + card-w / 2 + 0.15, (from-y + to-y) / 2), anchor: "west",
+      (cx + card-w / 2 + 0.2, (from-y + to-y) / 2), anchor: "west",
       text(6.5pt, fill: col, txt),
     )
   }
@@ -46,20 +46,20 @@
   let y0 = 0
 
   // --- Entry: Domain Expert files issue → Backlog ---
-  let entry-x = cx - card-w / 2 - 1.6
+  let entry-x = cx - card-w / 2 - 2.0
   content(
     (entry-x, y0), anchor: "center",
     text(6.5pt, fill: col-human.darken(10%), weight: "bold",
       align(center, [Domain\ Expert])),
   )
   line(
-    (entry-x + 0.7, y0), (cx - card-w / 2 - 0.05, y0),
+    (entry-x + 0.85, y0), (cx - card-w / 2 - 0.05, y0),
     stroke: (thickness: 1pt, paint: col-human),
     mark: (end: "straight", scale: 0.35),
   )
   content(
-    ((entry-x + 0.7 + cx - card-w / 2 - 0.05) / 2, y0 + 0.22),
-    anchor: "south",
+    ((entry-x + 0.85 + cx - card-w / 2 - 0.05) / 2, y0 - 0.25),
+    anchor: "north",
     text(5.5pt, fill: col-human, style: "italic", [files issue]),
   )
 
@@ -115,10 +115,11 @@
   board-card(cx, y6, "Done", col-bg-human, col-human, "done")
 
   // --- On Hold: dashed side branch from Final Review ---
-  let oh-x = cx + card-w / 2 + 3.2
+  let oh-w = 1.6
+  let oh-x = cx + card-w / 2 + 2.5
   rect(
-    (oh-x - 0.65, y5 - card-h / 2),
-    (oh-x + 0.65, y5 + card-h / 2),
+    (oh-x - oh-w / 2, y5 - card-h / 2),
+    (oh-x + oh-w / 2, y5 + card-h / 2),
     radius: 3pt,
     fill: col-fail.lighten(88%),
     stroke: 1pt + col-fail,
@@ -127,20 +128,21 @@
   content("onhold", text(7pt, weight: "bold", fill: col-fail.darken(10%), [On Hold]))
   line(
     (cx + card-w / 2, y5),
-    (oh-x - 0.65 - 0.05, y5),
+    (oh-x - oh-w / 2 - 0.05, y5),
     stroke: (thickness: 1pt, paint: col-fail, dash: "dashed"),
     mark: (end: "straight", scale: 0.35),
   )
   content(
-    ((cx + card-w / 2 + oh-x - 0.65) / 2, y5 + 0.25),
-    anchor: "south",
-    text(5.5pt, fill: col-fail, style: "italic", [fails]),
+    ((cx + card-w / 2 + oh-x - oh-w / 2) / 2, y5 - 0.3),
+    anchor: "north",
+    text(5.5pt, fill: col-fail, style: "italic", [fails review]),
   )
 
   // --- Agent zone bracket on the left ---
   let bx = cx - card-w / 2 - 0.5
-  let bracket-top = y1 - card-h / 2 - 0.05
-  let bracket-bot = y5 + card-h / 2 + 0.05
+  // Spans from below Ready to above Final Review (the 4 agent transitions)
+  let bracket-top = y2 + card-h / 2 + 0.08
+  let bracket-bot = y4 - card-h / 2 - 0.08
   line(
     (bx + 0.12, bracket-top), (bx, bracket-top),
     (bx, bracket-bot), (bx + 0.12, bracket-bot),
@@ -152,10 +154,10 @@
   )
 
   // --- Legend at bottom ---
-  let ly = y6 - card-h / 2 - 0.6
-  let lx = cx - 2.5
+  let ly = y6 - card-h / 2 - 0.7
+  let lx = cx - 3.0
   line((lx, ly), (lx + 0.5, ly), stroke: 1.2pt + col-human)
   content((lx + 0.65, ly), anchor: "west", text(6pt, [Human decision]))
-  line((lx + 3.0, ly), (lx + 3.5, ly), stroke: 1.2pt + col-agent)
-  content((lx + 3.65, ly), anchor: "west", text(6pt, [Agent action]))
+  line((lx + 3.5, ly), (lx + 4.0, ly), stroke: 1.2pt + col-agent)
+  content((lx + 4.15, ly), anchor: "west", text(6pt, [Agent action]))
 })
