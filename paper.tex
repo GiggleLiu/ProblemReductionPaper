@@ -267,6 +267,27 @@ This replaces the community feedback loop that niche libraries lack.
 \textbf{Stage~5: Merge.}
 The maintainer makes the final quality judgment and merges.
 
+\subsection{Verification by Round-Trip Testing}\label{sec:roundtrip}
+
+How do we know each reduction is correct?
+Every reduction admits a fully automatable correctness test that requires no problem-specific oracle.
+The test, which we call \emph{round-trip testing}, works as follows:
+
+\begin{enumerate}
+  \item Construct a small source instance (e.g., a graph with 5--8 vertices).
+  \item Apply the forward map to produce a target instance.
+  \item Solve the target by brute-force enumeration (feasible for small instances).
+  \item Apply the inverse map to extract a solution for the source.
+  \item Verify that the extracted solution is optimal for the source (also by brute force).
+\end{enumerate}
+
+This pattern is the same for all 45~reductions.
+It catches the most mathematically subtle errors---incorrect variable mappings, off-by-one indexing in literal-to-vertex transformations, forgotten negations---without requiring a human to write problem-specific test logic.
+
+The library's type system enforces this pattern structurally: the \lstinline{ReduceTo<T>} trait requires both a forward map and an inverse map in a single implementation.
+An agent cannot compile a forward reduction without providing solution extraction.
+See \Cref{app:architecture} for the complete type architecture.
+
 \subsection{Correctness by Construction}\label{sec:verification}
 
 Correctness assurance comes from a seven-layer verification stack (\Cref{app:verification}).
