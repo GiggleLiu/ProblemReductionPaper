@@ -136,4 +136,19 @@
     text(6pt, fill: col-human,
       align(center, [contributor\ cross-check])),
   )
+
+  // ── Feedback: CLI → Issue (contributor cross-check, right side) ──
+  let fb-right-x = cx + bw / 2 + 5.0
+  let issue-right = cx + bw / 2
+  let cli-right = x-start + 2 * out-w + out-gap
+  let cli-mid-y = y3 - bh-s / 2
+
+  line(
+    (cli-right, cli-mid-y),
+    (fb-right-x, cli-mid-y),
+    (fb-right-x, issue-mid-y),
+    (issue-right, issue-mid-y),
+    stroke: (thickness: 1pt, paint: col-human, dash: "dashed"),
+    mark: (end: "straight", scale: 0.35),
+  )
 })
