@@ -322,7 +322,7 @@ The key insight is that different layers catch different classes of errors, and 
 
 \textbf{Layers~1--2} (type system and unit tests) catch structural errors cheaply.
 The type system prevents entire categories of mistakes: an agent cannot implement a reduction without providing solution extraction, reference nonexistent problem attributes in overhead expressions, or omit required variant declarations.
-These constraints are enforced at compile time by procedural macros that validate expression variable names against actual getter methods.
+These constraints are enforced at compile time: variable names in overhead expressions are validated against actual getter methods, so a typo causes a compile error rather than a silent bug.
 
 \textbf{Layer~3} (round-trip tests, described in \Cref{sec:roundtrip}) is the workhorse, catching the most mathematically subtle errors---incorrect variable mappings, off-by-one indexing, forgotten negations---without per-reduction test logic.
 
