@@ -306,6 +306,18 @@ The library's type system enforces this pattern structurally: the \texttt{Reduce
 An agent cannot compile a forward reduction without providing solution extraction.
 See \Cref{app:architecture} for the complete type architecture.
 
+The test instances are not ad-hoc: they originate from the contributor's GitHub issue and are stored in a central example database that serves as the single source of truth (\Cref{fig:roundtrip-pipeline}).
+The same canonical instance powers three outputs: round-trip tests that verify correctness, JSON fixtures rendered into the PDF manual as visual diagrams with proof sketches, and the \texttt{pred create --example} command for interactive exploration.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline.pdf}
+  \caption{Example data flow.
+    A contributor's issue provides the canonical instance, which is extracted into the example database.
+    From this single source, the same data feeds round-trip tests, JSON fixtures rendered in the PDF manual, and the CLI's example mode.}
+  \label{fig:roundtrip-pipeline}
+\end{figure}
+
 \subsection{Correctness by Construction}\label{sec:verification}
 
 Correctness assurance comes from a seven-layer verification stack (\Cref{app:verification}).
