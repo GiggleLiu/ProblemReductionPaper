@@ -110,18 +110,14 @@ Three ideas make this possible:
   \item A \emph{no-code contribution route} that lets domain experts continuously integrate new reduction rules by filing structured issues---no familiarity with the implementation language is needed (\Cref{sec:method}).
   \item A \emph{multilayer verification stack} that ensures correctness at every stage: automated unit tests and round-trip tests validate each reduction programmatically, while domain experts perform end-to-end checks against contributor-specified ground truth (\Cref{sec:verification}).
 \end{enumerate}
-The rest of the paper is organized as follows.
-\Cref{sec:graph} describes the library that implements the reduction graph.
-\Cref{sec:method} presents the skill-based automation pipeline.
-\Cref{sec:evaluation} provides quantitative evidence.
-\Cref{sec:related} surveys related work and \Cref{sec:conclusion} discusses limitations and future directions.
-
 %======================================================================
 %  SECTION 2: LIBRARY ARCHITECTURE
 %======================================================================
 \section{Library Architecture}\label{sec:graph}
 
-The reduction graph described in the introduction is realized as a Rust library with three layers (\Cref{fig:library-architecture}): user-facing interfaces at the top, a core library implementing the graph and its algorithms in the middle, and a compile-time validation layer at the bottom.
+The reduction graph introduced above is a mathematical object.
+To be useful, it must be embedded in software that can create problem instances, search for optimal reduction paths, solve through solver backends, and verify each reduction automatically.
+This section describes the Rust library that does so, organized in three layers (\Cref{fig:library-architecture}): user-facing interfaces, a core library, and a compile-time validation layer.
 
 \begin{figure}[t]
   \centering
