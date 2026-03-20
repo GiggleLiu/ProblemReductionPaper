@@ -356,7 +356,7 @@ A typical round-trip test compiles and runs in under 3~seconds, enabling agents 
 High feedback rate---short cycles between edit and result---is the single most important factor in agent productivity.
 
 Rust's well-known strengths---memory safety eliminating entire bug categories at compile time, high performance, a 7\,MB binary, and Cargo's integrated toolchain---further reduce the surface area of errors agents must debug.
-Procedural macros deserve special mention: they enable the compile-time validation of overhead expressions and variant registrations that powers Layers~1 and~4 of the verification stack.
+The language's metaprogramming facilities enable compile-time validation of overhead expressions and type registrations, powering Layers~1 and~4 of the verification stack (\Cref{app:architecture}).
 
 %======================================================================
 %  SECTION 5: EVIDENCE
