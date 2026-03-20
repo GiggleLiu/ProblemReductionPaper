@@ -95,7 +95,7 @@
 
   // ── Row 4: PDF Manual (below JSON) ──
   let y4 = y3 - bh-s - 1.8
-  let manual-w = 6.0
+  let manual-w = 7.0
   let json-cx = x-start + out-w + out-gap + out-w / 2
   rbox((json-cx - manual-w/2, y4), manual-w, bh-s, col-output, "manual",
     [Typst PDF Manual],
