@@ -22,10 +22,10 @@
       name: name-id,
     )
     let body = {
-      text(7.5pt, weight: "bold", fill: col.darken(40%), title)
+      text(7.5pt, weight: "bold", fill: black, title)
       for d in details.pos() {
         linebreak()
-        text(6pt, fill: col.darken(25%), d)
+        text(6pt, fill: black, d)
       }
     }
     content(name-id, anchor: "center", body)

@@ -31,10 +31,10 @@
       name: name-id,
     )
     let body = {
-      text(7pt, weight: "bold", fill: col.darken(40%), title)
+      text(7pt, weight: "bold", fill: black, title)
       for d in details.pos() {
         linebreak()
-        text(5.5pt, fill: col.darken(25%), d)
+        text(5.5pt, fill: black, d)
       }
     }
     content(name-id, anchor: "center", body)
@@ -59,7 +59,7 @@
   let h1 = 3.6
   layer-box((0, y1), W, h1, col-cli, "L1")
   content((m, y1 - 0.4), anchor: "west",
-    text(8pt, weight: "bold", fill: col-cli.darken(40%), [User Interfaces]))
+    text(8pt, weight: "bold", fill: black, [User Interfaces]))
 
   let uy = y1 - 1.0
   ibox((x1, uy), bw, bh, col-cli, "cli",
@@ -81,7 +81,7 @@
   let h2 = 6.6
   layer-box((0, y2), W, h2, col-core, "L2")
   content((m, y2 - 0.4), anchor: "west",
-    text(8pt, weight: "bold", fill: col-core.darken(40%), [Core Library]))
+    text(8pt, weight: "bold", fill: black, [Core Library]))
 
   // Row 1
   let r1y = y2 - 1.0
@@ -98,7 +98,7 @@
   ibox((x3, r1y), bw, bh, col-core, "graph",
     [Graph Engine],
     [Dijkstra path search],
-    [Symbolic overhead composition])
+    [Path composition])
 
   // Row 2
   let r2y = r1y - bh - g
@@ -107,15 +107,15 @@
     [Brute-force enumerator],
     [ILP: HiGHS / CBC / SCIP])
 
-  ibox((x2, r2y), bw, bh, col-core, "exdb",
+  ibox((x2, r2y), bw, bh, col-core, "symbolic",
+    [Symbolic Engine],
+    [Overhead & complexity expressions],
+    [Composition · comparison · evaluation])
+
+  ibox((x3, r2y), bw, bh, col-core, "exdb",
     [Example Database],
     [Canonical instances],
     [Ground-truth fixtures])
-
-  ibox((x3, r2y), bw, bh, col-core, "registry",
-    [Variant Registry],
-    [Dynamic dispatch],
-    [Complexity metadata])
 
   // ══════════════════════════════════════════
   // Layer 3: Procedural Macros
@@ -124,7 +124,7 @@
   let h3 = 3.4
   layer-box((0, y3), W, h3, col-macro, "L3")
   content((m, y3 - 0.4), anchor: "west",
-    text(8pt, weight: "bold", fill: col-macro.darken(40%), [Compile-time Validation]))
+    text(8pt, weight: "bold", fill: black, [Compile-time Validation]))
 
   let my = y3 - 1.0
   ibox((x1, my), bw, bh, col-macro, "m-overhead",
@@ -147,7 +147,7 @@
   // ══════════════════════════════════════════
   let arr = (end: "straight", scale: 0.35)
   let s-down = (thickness: 1pt, paint: black)
-  let s-up   = (thickness: 1pt, paint: col-macro.darken(10%), dash: "dashed")
+  let s-up   = (thickness: 1pt, paint: black, dash: "dashed")
   let sh = (start: 0.06, end: 0.06)
 
   // Layer 1 → Layer 2 (three vertical arrows, centered on each column)
