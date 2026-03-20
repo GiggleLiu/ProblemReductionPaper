@@ -1,153 +1,182 @@
-#import "@preview/cetz:0.4.2": canvas, draw
+#import "lib.typ": *
 
-#set page(width: auto, height: auto, margin: 5pt)
-#set text(size: 8pt, font: "New Computer Modern")
+#set page(..fig-page)
+#set text(..fig-text)
 
-// Color coding: human = orange, agent = blue
-#let col-human = rgb("#f28e2b")
-#let col-agent = rgb("#4e79a7")
-#let col-bg-human = col-human.lighten(85%)
-#let col-bg-agent = col-agent.lighten(85%)
-#let col-neutral = luma(240)
+// Three roles — color on lines only, not nodes
+#let col-human = rgb("#f28e2b")   // orange — human decisions
+#let col-impl = accent             // steel blue — implementation agent
+#let col-review = rgb("#76b7b2")   // teal — review agent
+#let col-fail = rgb("#e15759")     // red — failure path
 
-// Column card style
-#let card-w = 2.4
+#let card-w = 3.2
 #let card-h = 0.7
-#let gap-y = 1.3  // vertical spacing between cards
+#let gap-y = 1.3
 
 #canvas(length: 0.55cm, {
   import draw: *
 
-  // --- Helper: draw a board column card ---
-  let board-card(x, y, label, fill-col, stroke-col, name-id) = {
+  // --- Helpers ---
+  let board-card(x, y, label, id) = {
     rect(
       (x - card-w / 2, y - card-h / 2),
       (x + card-w / 2, y + card-h / 2),
-      radius: 4pt,
-      fill: fill-col,
-      stroke: (thickness: 1pt, paint: stroke-col),
-      name: name-id,
+      radius: 3pt, fill: fill-light, stroke: 0.8pt + border, name: id,
     )
-    content(name-id, text(8pt, weight: "bold", fill: stroke-col.darken(15%), label))
+    content(id, text(7pt, fill: fg, label))
   }
 
-  // --- Layout: vertical pipeline ---
-  let cx = 0  // center x for column cards
-  let y0 = 0  // top
+  let varrow(from-y, to-y, col, cx) = {
+    line(
+      (cx, from-y - card-h / 2), (cx, to-y + card-h / 2 + 0.05),
+      stroke: (thickness: 1.2pt, paint: col),
+      mark: (end: "straight", scale: 0.4),
+    )
+  }
 
-  // Contributor + Issue at top
-  content((cx - 3.5, y0), anchor: "east", text(7pt, fill: luma(100), [Contributor]))
-  rect(
-    (cx - 3.2, y0 - 0.3), (cx - 1.8, y0 + 0.3),
-    radius: 3pt, fill: col-neutral, stroke: 0.5pt + luma(180), name: "issue",
+  let label-right(from-y, to-y, col, txt, cx) = {
+    content(
+      (cx + card-w / 2 + 0.2, (from-y + to-y) / 2), anchor: "west",
+      text(6.5pt, fill: col, txt),
+    )
+  }
+
+  let label-left(from-y, to-y, col, txt, cx) = {
+    content(
+      (cx - card-w / 2 - 0.2, (from-y + to-y) / 2), anchor: "east",
+      text(6.5pt, fill: col, txt),
+    )
+  }
+
+  let cx = 0
+  let y0 = 0
+
+  // --- Entry: Domain Expert → Backlog ---
+  let entry-x = cx - card-w / 2 - 2.0
+  content(
+    (entry-x, y0), anchor: "center",
+    text(6.5pt, fill: col-human.darken(10%),
+      align(center, [Domain\ Expert])),
   )
-  content("issue", text(7pt, [Issue]))
   line(
-    (cx - 1.8, y0), (cx - card-w / 2 - 0.05, y0),
-    stroke: 0.6pt + luma(150),
+    (entry-x + 0.85, y0), (cx - card-w / 2 - 0.05, y0),
+    stroke: (thickness: 1pt, paint: col-human),
     mark: (end: "straight", scale: 0.35),
   )
 
-  // Backlog
-  board-card(cx, y0, "Backlog", col-neutral, luma(130), "backlog")
+  // 1. Backlog
+  board-card(cx, y0, "Backlog", "backlog")
 
-  // Arrow: Backlog -> Ready (human)
+  // Backlog → Ready (Maintainer)
   let y1 = y0 - gap-y
-  line(
-    (cx, y0 - card-h / 2), (cx, y1 + card-h / 2 + 0.05),
-    stroke: (thickness: 1.2pt, paint: col-human),
-    mark: (end: "straight", scale: 0.4),
-  )
-  content(
-    (cx + card-w / 2 + 0.2, (y0 + y1) / 2), anchor: "west",
-    text(6.5pt, fill: col-human, [Maintainer\ moves card]),
-  )
+  varrow(y0, y1, col-human, cx)
+  label-right(y0, y1, col-human, [Maintainer triages (`fix-issue`)], cx)
 
-  // Ready
-  board-card(cx, y1, "Ready", col-bg-human, col-human, "ready")
+  // 2. Ready
+  board-card(cx, y1, "Ready", "ready")
 
-  // Arrow: Ready -> In Progress (agent: project-pipeline)
+  // Ready → In Progress (Impl Agent)
   let y2 = y1 - gap-y
-  line(
-    (cx, y1 - card-h / 2), (cx, y2 + card-h / 2 + 0.05),
-    stroke: (thickness: 1.2pt, paint: col-agent),
-    mark: (end: "straight", scale: 0.4),
-  )
-  content(
-    (cx + card-w / 2 + 0.2, (y1 + y2) / 2), anchor: "west",
-    text(6.5pt, fill: col-agent, [`project-pipeline`]),
-  )
+  varrow(y1, y2, col-impl, cx)
+  label-right(y1, y2, col-impl, [picks issue], cx)
 
-  // In Progress
-  board-card(cx, y2, "In Progress", col-bg-agent, col-agent, "inprog")
+  // 3. In Progress
+  board-card(cx, y2, "In Progress", "inprog")
 
-  // Arrow: In Progress -> review-agentic (agent substeps)
+  // In Progress → Review Pool (Impl Agent)
   let y3 = y2 - gap-y
-  line(
-    (cx, y2 - card-h / 2), (cx, y3 + card-h / 2 + 0.05),
-    stroke: (thickness: 1.2pt, paint: col-agent),
-    mark: (end: "straight", scale: 0.4),
-  )
-  // Substep labels
-  content(
-    (cx + card-w / 2 + 0.2, (y2 + y3) / 2), anchor: "west",
-    text(6pt, fill: col-agent, [`issue-to-pr` #sym.arrow `check` #sym.arrow `implement` #sym.arrow `review`]),
-  )
+  varrow(y2, y3, col-impl, cx)
+  label-right(y2, y3, col-impl, [creates PR], cx)
 
-  // review-agentic
-  board-card(cx, y3, "review-agentic", col-bg-agent, col-agent, "rev-agent")
+  // 4. Review Pool
+  board-card(cx, y3, "Review Pool", "revpool")
 
-  // Arrow: review-agentic -> In Review (agent: review-pipeline)
+  // Review Pool → Under Review (Review Agent)
   let y4 = y3 - gap-y
-  line(
-    (cx, y3 - card-h / 2), (cx, y4 + card-h / 2 + 0.05),
-    stroke: (thickness: 1.2pt, paint: col-agent),
-    mark: (end: "straight", scale: 0.4),
-  )
-  content(
-    (cx + card-w / 2 + 0.2, (y3 + y4) / 2), anchor: "west",
-    text(6.5pt, fill: col-agent, [`review-pipeline`]),
-  )
+  varrow(y3, y4, col-review, cx)
 
-  // In Review
-  board-card(cx, y4, "In Review", col-bg-agent, col-agent, "inrev")
+  // 5. Under Review
+  board-card(cx, y4, "Under Review", "underrev")
 
-  // Arrow: In Review -> Done (human)
+  // Under Review → Final Review (Review Agent)
   let y5 = y4 - gap-y
+  varrow(y4, y5, col-review, cx)
+  label-right(y4, y5, col-review, [posts verdict], cx)
+
+  // 6. Final Review
+  board-card(cx, y5, "Final Review", "finalrev")
+
+  // Final Review → Done (Maintainer)
+  let y6 = y5 - gap-y
+  varrow(y5, y6, col-human, cx)
+  label-left(y5, y6, col-human, [Maintainer merges], cx)
+
+  // 7. Done
+  board-card(cx, y6, "Done", "done")
+
+  // --- On Hold ---
+  let oh-w = 1.8
+  let oh-x = cx + card-w / 2 + 6.0
+  let oh-y = y3
+  board-card(oh-x, oh-y, "On Hold", "onhold")
+
+  // L-shaped arrows: go right past labels, then angle to On Hold
+  let bend-x = cx + card-w / 2 + 3.5   // x past right-side labels
+
+  // Arrow from In Progress → On Hold
   line(
-    (cx, y4 - card-h / 2), (cx, y5 + card-h / 2 + 0.05),
-    stroke: (thickness: 1.2pt, paint: col-human),
-    mark: (end: "straight", scale: 0.4),
+    (cx + card-w / 2, y2),
+    (bend-x, y2),
+    (oh-x - oh-w / 2 - 0.05, oh-y + card-h / 2 + 0.05),
+    stroke: (thickness: 0.8pt, paint: col-fail),
+    mark: (end: "straight", scale: 0.3),
+  )
+
+  // Arrow from Final Review → On Hold
+  line(
+    (cx + card-w / 2, y5),
+    (bend-x, y5),
+    (oh-x - oh-w / 2 - 0.05, oh-y - card-h / 2 - 0.05),
+    stroke: (thickness: 0.8pt, paint: col-fail),
+    mark: (end: "straight", scale: 0.3),
+  )
+
+  // --- Implementation Agent bracket ---
+  let bx = cx - card-w / 2 - 0.5
+  let impl-top = y1 - card-h / 2 - 0.05
+  let impl-bot = y3 + card-h / 2 + 0.05
+  line(
+    (bx + 0.12, impl-top), (bx, impl-top),
+    (bx, impl-bot), (bx + 0.12, impl-bot),
+    stroke: (thickness: 0.8pt, paint: col-impl),
   )
   content(
-    (cx + card-w / 2 + 0.2, (y4 + y5) / 2), anchor: "west",
-    text(6.5pt, fill: col-human, [Maintainer\ merges PR]),
+    (bx - 0.1, (impl-top + impl-bot) / 2), anchor: "east",
+    text(6pt, fill: col-impl,
+      align(center, [Impl.\ Agent])),
   )
 
-  // Done
-  board-card(cx, y5, "Done", col-bg-human, col-human, "done")
-
-  // --- Bracket annotations on the left ---
-  // Agent zone bracket (Ready -> In Review)
-  let bx = cx - card-w / 2 - 0.6
-  let bracket-top = y1 - card-h / 2 - 0.05
-  let bracket-bot = y4 + card-h / 2 + 0.05
+  // --- Review Agent bracket ---
+  let rev-top = y3 - card-h / 2 - 0.05
+  let rev-bot = y5 + card-h / 2 + 0.05
   line(
-    (bx + 0.15, bracket-top), (bx, bracket-top), (bx, bracket-bot), (bx + 0.15, bracket-bot),
-    stroke: (thickness: 0.8pt, paint: col-agent, dash: "dashed"),
+    (bx + 0.12, rev-top), (bx, rev-top),
+    (bx, rev-bot), (bx + 0.12, rev-bot),
+    stroke: (thickness: 0.8pt, paint: col-review),
   )
   content(
-    (bx - 0.15, (bracket-top + bracket-bot) / 2), anchor: "east",
-    text(6pt, fill: col-agent, weight: "bold", [Agent\ zone]),
+    (bx - 0.1, (rev-top + rev-bot) / 2), anchor: "east",
+    text(6pt, fill: col-review,
+      align(center, [Review\ Agent])),
   )
 
-  // --- Legend at bottom ---
-  let ly = y5 - card-h / 2 - 0.7
-  let lx = cx - 2.5
-  // Human
-  line((lx, ly), (lx + 0.6, ly), stroke: (thickness: 1.2pt, paint: col-human))
-  content((lx + 0.8, ly), anchor: "west", text(6pt, [Human decision]))
-  // Agent
-  line((lx + 3.2, ly), (lx + 3.8, ly), stroke: (thickness: 1.2pt, paint: col-agent))
-  content((lx + 4.0, ly), anchor: "west", text(6pt, [Agent action]))
+  // --- Legend ---
+  let ly = y6 - card-h / 2 - 0.7
+  let lx = cx - 4.5
+  line((lx, ly), (lx + 0.5, ly), stroke: 1.2pt + col-human)
+  content((lx + 0.65, ly), anchor: "west", text(6pt, [Human]))
+  line((lx + 2.0, ly), (lx + 2.5, ly), stroke: 1.2pt + col-impl)
+  content((lx + 2.65, ly), anchor: "west", text(6pt, [Impl. agent]))
+  line((lx + 5.0, ly), (lx + 5.5, ly), stroke: 1.2pt + col-review)
+  content((lx + 5.65, ly), anchor: "west", text(6pt, [Review agent]))
 })
