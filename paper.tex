@@ -339,7 +339,7 @@ Each layer catches a different class of error; no single layer suffices.
   \includegraphics[width=\columnwidth]{figures/verification-funnel.pdf}
   \caption{Verification funnel.
     Candidate contributions are progressively filtered: issue checks reject invalid proposals, tests reject implementation errors, agentic reviews reject behavioral issues, and contributor verification catches quality gaps.
-    Only code matching contributor-specified ground truth survives to merge.}
+    After merge, the domain expert verifies that the result matches their original intent.}
   \label{fig:verification-funnel}
 \end{figure}
 
