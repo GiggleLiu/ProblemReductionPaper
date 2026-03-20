@@ -42,10 +42,17 @@
     )
   }
 
+  let label-left(from-y, to-y, col, txt, cx) = {
+    content(
+      (cx - card-w / 2 - 0.2, (from-y + to-y) / 2), anchor: "east",
+      text(6.5pt, fill: col, txt),
+    )
+  }
+
   let cx = 0
   let y0 = 0
 
-  // --- Entry: Domain Expert files issue → Backlog ---
+  // --- Entry: Domain Expert → Backlog ---
   let entry-x = cx - card-w / 2 - 2.0
   content(
     (entry-x, y0), anchor: "center",
@@ -56,11 +63,6 @@
     (entry-x + 0.85, y0), (cx - card-w / 2 - 0.05, y0),
     stroke: (thickness: 1pt, paint: col-human),
     mark: (end: "straight", scale: 0.35),
-  )
-  content(
-    ((entry-x + 0.85 + cx - card-w / 2 - 0.05) / 2, y0 - 0.25),
-    anchor: "north",
-    text(5.5pt, fill: col-human, style: "italic", [files issue]),
   )
 
   // 1. Backlog
@@ -106,17 +108,17 @@
   // 6. Final Review
   board-card(cx, y5, "Final Review", col-bg-human, col-human, "finalrev")
 
-  // Final Review → Done (Maintainer merges)
+  // Final Review → Done (Maintainer merges) — label on LEFT to avoid On Hold
   let y6 = y5 - gap-y
   arrow(y5, y6, col-human, cx)
-  label-right(y5, y6, col-human, [Maintainer merges], cx)
+  label-left(y5, y6, col-human, [Maintainer merges], cx)
 
   // 7. Done
   board-card(cx, y6, "Done", col-bg-human, col-human, "done")
 
-  // --- On Hold: dashed side branch from Final Review ---
-  let oh-w = 1.6
-  let oh-x = cx + card-w / 2 + 2.5
+  // --- On Hold: dashed side branch from Final Review (right side) ---
+  let oh-w = 1.8
+  let oh-x = cx + card-w / 2 + 2.2
   rect(
     (oh-x - oh-w / 2, y5 - card-h / 2),
     (oh-x + oh-w / 2, y5 + card-h / 2),
@@ -132,17 +134,12 @@
     stroke: (thickness: 1pt, paint: col-fail, dash: "dashed"),
     mark: (end: "straight", scale: 0.35),
   )
-  content(
-    ((cx + card-w / 2 + oh-x - oh-w / 2) / 2, y5 - 0.3),
-    anchor: "north",
-    text(5.5pt, fill: col-fail, style: "italic", [fails review]),
-  )
 
   // --- Agent zone bracket on the left ---
+  // Spans all 4 agent transitions: Ready→InProgress through UnderReview→FinalReview
   let bx = cx - card-w / 2 - 0.5
-  // Spans from below Ready to above Final Review (the 4 agent transitions)
-  let bracket-top = y2 + card-h / 2 + 0.08
-  let bracket-bot = y4 - card-h / 2 - 0.08
+  let bracket-top = y1 - card-h / 2 - 0.05
+  let bracket-bot = y5 + card-h / 2 + 0.05
   line(
     (bx + 0.12, bracket-top), (bx, bracket-top),
     (bx, bracket-bot), (bx + 0.12, bracket-bot),
