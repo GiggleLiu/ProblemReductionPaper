@@ -45,30 +45,29 @@
 
   // Middle row
   node((2.7, 4.6), [], "csat", label-anchor: "west")
-  node((6.0, 4.6), [A], "sat")
-  node((9.9, 4.6), [H], "mc")
+  node((6.0, 4.6), [$A$], "sat")
+  node((9.9, 4.6), [$H$], "mc")
   content((rel: (0, 0.7), to: "mc"), text(6pt)[NP-hard verified])
 
   // Lower row
-  node((4.4, 2.3), [B], "mis")
+  node((4.4, 2.3), [$B$], "mis")
   node((8.5, 2.3), [], "ising", label-anchor: "south")
 
   // Orphan
   node((11.5, 2.8), [$O$], "orphan")
 
   // Solvers
-  node((4.0, 0.4), [S], "s-rydberg")
+  node((4.0, 0.4), [$S$], "s-rydberg")
   content((rel: (0, -0.7), to: "s-rydberg"), text(6pt)[Hardware accelerated])
   content((rel: (0.7, 0), to: "s-rydberg"), text(6pt)[$t_(S)$])
-  node((6.5, 1.4), [C], "s-dwave")
-  node((10.3, 0.4), [I], "s-ilp", highlight: true)
+  node((6.5, 1.4), [$C$], "s-dwave")
+  node((10.3, 0.4), [$I$], "s-ilp", highlight: true)
   content((rel: (0.7, 0), to: "s-ilp"), text(6pt)[$t_(I)$])
   content((rel: (0, -0.7), to: "s-ilp"), text(6pt)[Integer linear programming])
 
   // ── Normal edges ──
   edge("sat", "mis", name:"mis-sat")
   edge("sat", "s-dwave", name:"sat-dwave", dash: "dashed")
-  content((rel: (0.7, 0), to: "sat-dwave.mid"), text(6pt)[Keep?])
   edge("sat", "ising")
   edge("gc", "sat")
   edge("csat", "mis")

@@ -81,7 +81,7 @@
   let h2 = 6.6
   layer-box((0, y2), W, h2, col-core, "L2")
   content((m, y2 - 0.4), anchor: "west",
-    text(8pt, weight: "bold", fill: black, [Core Library]))
+    text(8pt, weight: "bold", fill: black, [Core Library (Rust)]))
 
   // Row 1
   let r1y = y2 - 1.0
@@ -117,37 +117,11 @@
     [Canonical instances],
     [Ground-truth fixtures])
 
-  // ══════════════════════════════════════════
-  // Layer 3: Procedural Macros
-  // ══════════════════════════════════════════
-  let y3 = y2 - h2 - 1.0
-  let h3 = 3.4
-  layer-box((0, y3), W, h3, col-macro, "L3")
-  content((m, y3 - 0.4), anchor: "west",
-    text(8pt, weight: "bold", fill: black, [Compile-time Validation]))
-
-  let my = y3 - 1.0
-  ibox((x1, my), bw, bh, col-macro, "m-overhead",
-    [Overhead Validation],
-    [Symbolic expression parsing],
-    [Variable name checking])
-
-  ibox((x2, my), bw, bh, col-macro, "m-variants",
-    [Type Registration],
-    [Variant enumeration],
-    [Complexity metadata])
-
-  ibox((x3, my), bw, bh, col-macro, "m-checks",
-    [Correctness Guards],
-    [Getter method matching],
-    [Expression well-formedness])
-
-  // ══════════════════════════════════════════
+ // ══════════════════════════════════════════
   // Arrows between layers
   // ══════════════════════════════════════════
   let arr = (end: "straight", scale: 0.35)
   let s-down = (thickness: 1pt, paint: black)
-  let s-up   = (thickness: 1pt, paint: black)
   let sh = (start: 0.06, end: 0.06)
 
   // Layer 1 → Layer 2 (three vertical arrows, centered on each column)
@@ -157,9 +131,4 @@
   line((a1x, y1 - h1), (a1x, y2), stroke: s-down, mark: arr, shorten: sh)
   line((a2x, y1 - h1), (a2x, y2), stroke: s-down, mark: arr, shorten: sh)
   line((a3x, y1 - h1), (a3x, y2), stroke: s-down, mark: arr, shorten: sh)
-
-  // Layer 3 → Layer 2 (dashed upward, compile-time injection)
-  line((a1x, y3), (a1x, y2 - h2), stroke: s-up, mark: arr, shorten: sh)
-  line((a2x, y3), (a2x, y2 - h2), stroke: s-up, mark: arr, shorten: sh)
-  line((a3x, y3), (a3x, y2 - h2), stroke: s-up, mark: arr, shorten: sh)
 })
