@@ -116,7 +116,7 @@ We describe the library architecture (\Cref{sec:graph}), the methodology (\Cref{
 %======================================================================
 \section{Library Architecture}\label{sec:graph}
 
-The library is implemented in Rust as three crates: a \emph{core library} defining problem types, reduction rules, and graph infrastructure; a \emph{command-line interface} (\texttt{pred}) for graph exploration, path search, and end-to-end solving; and \emph{procedural macros} for compile-time validation of reduction metadata.
+The library is implemented in Rust as three crates: a \emph{core library} defining problem types, reduction rules, and graph infrastructure; a \emph{command-line interface} (\texttt{pred}) for graph exploration, path search, and end-to-end solving; and a \emph{compile-time validation layer} that checks overhead expressions and type registrations before the code can compile.
 A typical workflow creates a problem instance, finds the cheapest reduction path to a solver backend, and extracts the solution---all through the \texttt{pred} CLI or the library API.
 The build system also produces an auto-compiled PDF manual containing formal definitions, reduction theorems with proof sketches, and worked round-trip test examples for every implemented model and rule.
 \Cref{fig:library-architecture} shows the three-layer architecture.
