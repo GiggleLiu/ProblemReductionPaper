@@ -86,16 +86,16 @@
     [Interactive exploration])
 
   // ── Arrows: Example DB → three outputs ──
-  line("exdb.south", "tests.north",
+  line("exdb", "tests.north",
     stroke: s, mark: arr, shorten: sh)
-  line("exdb.south", "json.north",
+  line("exdb", "json.north",
     stroke: s, mark: arr, shorten: sh)
-  line("exdb.south", "cli.north",
+  line("exdb", "cli.north",
     stroke: s, mark: arr, shorten: sh)
 
   // ── Row 4: PDF Manual (below JSON) ──
   let y4 = y3 - bh-s - 1.8
-  let manual-w = 7.0
+  let manual-w = 7.5
   let json-cx = x-start + out-w + out-gap + out-w / 2
   rbox((json-cx - manual-w/2, y4), manual-w, bh-s, col-output, "manual",
     [Typst PDF Manual],
