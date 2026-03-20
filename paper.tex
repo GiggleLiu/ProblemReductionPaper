@@ -120,13 +120,13 @@ We describe the library architecture (\Cref{sec:graph}), the methodology (\Cref{
 %======================================================================
 \section{Library Architecture}\label{sec:graph}
 
-The library is implemented in Rust as three crates: a \emph{core library} defining problem types, reduction rules, and graph infrastructure; a \emph{command-line interface} (\lstinline{pred}) for graph exploration, path search, and end-to-end solving; and \emph{procedural macros} for compile-time validation of reduction metadata.
-A typical workflow creates a problem instance, finds the cheapest reduction path to a solver backend, and extracts the solution---all through the \lstinline{pred} CLI or the library API.
+The library is implemented in Rust as three crates: a \emph{core library} defining problem types, reduction rules, and graph infrastructure; a \emph{command-line interface} (\texttt{pred}) for graph exploration, path search, and end-to-end solving; and \emph{procedural macros} for compile-time validation of reduction metadata.
+A typical workflow creates a problem instance, finds the cheapest reduction path to a solver backend, and extracts the solution---all through the \texttt{pred} CLI or the library API.
 
 \subsection{Problem Types}\label{sec:graph-structure}
 
-Every problem type implements the \lstinline{Problem} trait, which requires a uniform evaluation interface: given any configuration, return a score (\Cref{app:architecture}).
-Each type defines its own \emph{size measures}---Satisfiability has \lstinline{num_vars}, \lstinline{num_clauses}, and \lstinline{num_literals}; MIS has \lstinline{num_vertices} and \lstinline{num_edges}; Factoring has \lstinline{num_bits_first} and \lstinline{num_bits_second}.
+Every problem type implements the \texttt{Problem} trait, which requires a uniform evaluation interface: given any configuration, return a score (\Cref{app:architecture}).
+Each type defines its own \emph{size measures}---Satisfiability has \texttt{num_vars}, \texttt{num_clauses}, and \texttt{num_literals}; MIS has \texttt{num_vertices} and \texttt{num_edges}; Factoring has \texttt{num_bits_first} and \texttt{num_bits_second}.
 Each type also declares its \emph{best-known algorithm complexity} in these measures (e.g., $O(1.1996^{n_v})$ for MIS).
 The uniform evaluation interface enables brute-force solving on small instances, which powers the round-trip testing described in \Cref{sec:roundtrip}.
 
@@ -140,14 +140,14 @@ Three serve as \emph{compilation targets}, each backed by a class of specialized
 
 \subsection{Reduction Rules}
 
-A reduction rule implements the \lstinline{ReduceTo<T>} trait, which requires both a forward map and an inverse map in a single implementation---an agent cannot compile a forward reduction without providing solution extraction (\Cref{app:architecture}).
+A reduction rule implements the \texttt{ReduceTo<T>} trait, which requires both a forward map and an inverse map in a single implementation---an agent cannot compile a forward reduction without providing solution extraction (\Cref{app:architecture}).
 Each rule carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's.
 For example, the Satisfiability $\to$ MIS reduction maps a formula with $n_l$ literals to a graph with $O(n_l)$ vertices and $O(n_l^2)$ edges.
 Overheads compose symbolically along paths: the output expressions of one edge are substituted into the input variables of the next.
 
 The library contains 56~directed edges: 45~hand-coded reduction rules plus 11~inferred from subtype relationships.
 To route a problem instance to a solver, the system finds the cheapest reduction path using Dijkstra's algorithm.
-The cost function is configurable: minimize the number of reduction steps, or minimize a specific output dimension such as \lstinline{num_vars}.
+The cost function is configurable: minimize the number of reduction steps, or minimize a specific output dimension such as \texttt{num_vars}.
 Because overheads compose symbolically, the optimal path depends on the source instance's actual dimensions.
 
 \subsection{Emergent Compositionality}\label{sec:compositionality}
@@ -216,7 +216,7 @@ A bug in a skill is fixed once and benefits all future invocations; a per-invoca
 Second, skills are \emph{compositional}: orchestration skills invoke implementation skills, which invoke quality gates.
 A single \texttt{run-pipeline} command triggers the full cascade---validate, implement, test, review, document, and produce a pull request.
 The maintainer's effort scales with the number of \emph{skill types}, not the number of tasks.
-Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \lstinline{pub fn run()} entry point, and that the paper entry requires a proof sketch.
+Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \texttt{pub fn run()} entry point, and that the paper entry requires a proof sketch.
 
 The library comprises eighteen skills organized by audience (\Cref{fig:skill-architecture}).
 
@@ -299,7 +299,7 @@ The test, which we call \emph{round-trip testing}, works as follows:
 This pattern is the same for all 45~reductions.
 It catches the most mathematically subtle errors---incorrect variable mappings, off-by-one indexing in literal-to-vertex transformations, forgotten negations---without requiring a human to write problem-specific test logic.
 
-The library's type system enforces this pattern structurally: the \lstinline{ReduceTo<T>} trait requires both a forward map and an inverse map in a single implementation.
+The library's type system enforces this pattern structurally: the \texttt{ReduceTo<T>} trait requires both a forward map and an inverse map in a single implementation.
 An agent cannot compile a forward reduction without providing solution extraction.
 See \Cref{app:architecture} for the complete type architecture.
 
@@ -570,7 +570,7 @@ As the graph scales toward 100+ problem types, it evolves from a library into a 
 \section{System Architecture}\label{app:architecture}
 
 The library's type system reduces the space of possible agent errors by making incorrect code fail to compile.
-This appendix describes four mechanisms---the \texttt{Problem} trait, the \texttt{ReduceTo} trait, the \lstinline{#[reduction(overhead)]} macro, and the \lstinline{declare_variants!} registry---that enforce correctness structurally (\Cref{fig:architecture}).
+This appendix describes four mechanisms---the \texttt{Problem} trait, the \texttt{ReduceTo} trait, the \texttt{#[reduction(overhead)]} macro, and the \texttt{declare_variants!} registry---that enforce correctness structurally (\Cref{fig:architecture}).
 
 \begin{figure}[t]
   \centering
@@ -581,20 +581,20 @@ This appendix describes four mechanisms---the \texttt{Problem} trait, the \textt
 \end{figure}
 
 \paragraph{The Problem trait.}
-Every problem type implements \texttt{Problem}, which requires: a constant name, an associated metric type (\texttt{SolutionSize<W>} for optimization problems, \texttt{bool} for decision problems), a method returning the configuration space dimensions, an \lstinline{evaluate()} method that scores any configuration, and variant metadata for type-parameter tracking.
-The key member is \lstinline{evaluate()}: because every problem maps configurations to metrics through this uniform interface, a brute-force solver can enumerate the space and select the best solution, enabling the round-trip testing described in \Cref{sec:roundtrip} without problem-specific oracles.
+Every problem type implements \texttt{Problem}, which requires: a constant name, an associated metric type (\texttt{SolutionSize<W>} for optimization problems, \texttt{bool} for decision problems), a method returning the configuration space dimensions, an \texttt{evaluate()} method that scores any configuration, and variant metadata for type-parameter tracking.
+The key member is \texttt{evaluate()}: because every problem maps configurations to metrics through this uniform interface, a brute-force solver can enumerate the space and select the best solution, enabling the round-trip testing described in \Cref{sec:roundtrip} without problem-specific oracles.
 
 \paragraph{The ReduceTo trait.}
-The generic \lstinline{ReduceTo<T>} trait requires a \lstinline{reduce_to()} method returning a \texttt{ReductionResult} that bundles \lstinline{target_problem()} and \lstinline{extract_solution()}.
+The generic \texttt{ReduceTo<T>} trait requires a \texttt{reduce_to()} method returning a \texttt{ReductionResult} that bundles \texttt{target_problem()} and \texttt{extract_solution()}.
 By requiring both forward and inverse in a single implementation, the type system ensures every reduction is round-trip capable---an agent cannot compile a forward reduction without providing the extraction logic.
 
 \paragraph{Compile-time overhead validation.}
 The \texttt{\#[reduction(overhead = \{...\})]} procedural macro attaches symbolic size expressions to each reduction.
-These expressions are parsed at compile time; variable names are validated against getter methods on the source type, so a typo (e.g., referencing \lstinline{num_vertex} when the method is \lstinline{num_vertices}) causes a compile error rather than a silent bug.
+These expressions are parsed at compile time; variable names are validated against getter methods on the source type, so a typo (e.g., referencing \texttt{num_vertex} when the method is \texttt{num_vertices}) causes a compile error rather than a silent bug.
 
 \paragraph{Variant registry.}
 Problem types are parameterized by graph type (SimpleGraph, KingsSubgraph, etc.) and weight type (unit weight, \texttt{i32}, \texttt{f64}).
-The \lstinline{declare_variants!} macro registers concrete instantiations with their best-known complexity, enabling automated graph export, documentation completeness checking, and redundancy analysis.
+The \texttt{declare_variants!} macro registers concrete instantiations with their best-known complexity, enabling automated graph export, documentation completeness checking, and redundancy analysis.
 
 \section{Verification Stack Details}\label{app:verification}
 
@@ -632,7 +632,7 @@ The overhead macro validates variable names against source-type methods.
 Errors are caught in seconds, before any test runs.
 
 \paragraph{Layer 2: Unit tests.}
-Each problem includes tests verifying \lstinline{evaluate()} on small, hand-crafted instances.
+Each problem includes tests verifying \texttt{evaluate()} on small, hand-crafted instances.
 Serialization round-trip tests catch graph and weight encoding issues.
 
 \paragraph{Layer 3: Closed-loop (round-trip) tests.}
