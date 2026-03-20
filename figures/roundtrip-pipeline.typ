@@ -63,8 +63,8 @@
 
   // ── Row 3: Three outputs, fanning out ──
   let y3 = y2 - bh - 2.0
-  let out-w = 6.0
-  let out-gap = 1.0
+  let out-w = 6.8
+  let out-gap = 0.8
 
   // Total width of 3 boxes + 2 gaps
   let total = 3 * out-w + 2 * out-gap  // 20.0
