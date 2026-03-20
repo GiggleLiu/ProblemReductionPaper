@@ -58,7 +58,7 @@
   let y1 = 0
   let h1 = 3.6
   layer-box((0, y1), W, h1, col-cli, "L1")
-  content((m, y1 - 0.35), anchor: "west",
+  content((m, y1 - 0.4), anchor: "west",
     text(8pt, weight: "bold", fill: col-cli.darken(20%), [User Interfaces]))
 
   let uy = y1 - 1.0
@@ -80,7 +80,7 @@
   let y2 = y1 - h1 - 1.0
   let h2 = 6.6
   layer-box((0, y2), W, h2, col-core, "L2")
-  content((m, y2 - 0.35), anchor: "west",
+  content((m, y2 - 0.4), anchor: "west",
     text(8pt, weight: "bold", fill: col-core.darken(20%), [Core Library]))
 
   // Row 1
@@ -123,7 +123,7 @@
   let y3 = y2 - h2 - 1.0
   let h3 = 3.4
   layer-box((0, y3), W, h3, col-macro, "L3")
-  content((m, y3 - 0.35), anchor: "west",
+  content((m, y3 - 0.4), anchor: "west",
     text(8pt, weight: "bold", fill: col-macro.darken(20%), [Compile-time Validation]))
 
   let my = y3 - 1.0
