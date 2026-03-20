@@ -61,7 +61,7 @@
   content((m, y1 - 0.35), anchor: "west",
     text(8pt, weight: "bold", fill: col-cli.darken(20%), [User Interfaces]))
 
-  let uy = y1 - 0.9
+  let uy = y1 - 1.0
   ibox((x1, uy), bw, bh, col-cli, "cli",
     [`pred` CLI],
     [create · path · solve · reduce])
