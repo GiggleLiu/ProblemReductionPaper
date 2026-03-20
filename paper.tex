@@ -359,24 +359,6 @@ Proof sketches force articulation of mathematical arguments; a completeness chec
 The skill system ensures all seven layers are invoked for every task.
 Without skills, an agent might skip overhead validation or omit the paper entry---errors that would accumulate silently over many contributions.
 
-\subsection{Why Rust?}\label{sec:why-rust}
-
-The choice of implementation language has outsized impact in agentic workflows, because the agent's edit--compile--test loop runs hundreds of times per session.
-None of the maintainers had written Rust before this project---the language was chosen for properties that benefit agents, not developers.
-
-\emph{Explicit, actionable error messages.}
-The Rust compiler produces diagnostics that include the error location, the conflicting types or lifetimes, and often a suggested fix.
-Agents parse these messages and resolve errors without human intervention---a property we rely on throughout the pipeline.
-Languages with less structured diagnostics (e.g., C++ template errors) would require more agent reasoning per cycle.
-
-\emph{Fast feedback.}
-Incremental compilation and the built-in test harness produce results in seconds.
-A typical round-trip test compiles and runs in under 3~seconds, enabling agents to iterate rapidly.
-High feedback rate---short cycles between edit and result---is the single most important factor in agent productivity.
-
-Rust's well-known strengths---memory safety eliminating entire bug categories at compile time, high performance, a 7\,MB binary, and Cargo's integrated toolchain---further reduce the surface area of errors agents must debug.
-The language's metaprogramming facilities enable compile-time validation of overhead expressions and type registrations, powering Layers~1 and~4 of the verification stack (\Cref{app:architecture}).
-
 %======================================================================
 %  SECTION 5: EVIDENCE
 %======================================================================
