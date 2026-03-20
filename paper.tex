@@ -56,10 +56,10 @@ Reductions are the central tool of computational complexity theory~\cite{karp197
 A single reduction bridges one problem to one solver.
 To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as a \emph{directed graph} (\Cref{fig:reduction-graph}).
 Each node is a problem type; each directed edge is a verified reduction that transforms instances forward and maps solutions back.
-A problem~$A$ is \emph{reducible} to a problem~$B$ whenever a directed path from~$A$ to~$B$ exists in the graph.
+A problem~$A$ is \emph{reducible} to a problem~$C$ whenever a directed path from~$A$ to~$C$ exists in the graph.
 The key insight is \emph{compositionality}: independently contributed edges combine into longer chains, so every new reduction opens many new paths through the graph.
 In particular, a problem's NP-hardness is certified whenever a directed path from 3-SAT reaches it, while an efficient path to Integer Linear Programming (ILP) enables automated verification of each reduction rule (\Cref{sec:verification}).
-Orphan nodes---problems with no incident edges---represent missing connections and are actively avoided as the graph grows.
+%Orphan nodes---problems with no incident edges---represent missing connections and are actively avoided as the graph grows.
 
 \begin{figure}[t]
   \centering

@@ -12,8 +12,10 @@
   let r = 0.32
 
   // ── Node helper (uniform style) ──
-  let node(pos, label, name-id, label-anchor: "center", label-pad: 0.12) = {
-    circle(pos, radius: r, fill: fill-light, stroke: (thickness: 0.7pt, paint: border), name: name-id)
+  let node(pos, label, name-id, label-anchor: "center", label-pad: 0.12, highlight: false) = {
+    let nfill = if highlight { fill-accent } else { fill-light }
+    let nstroke = if highlight { (thickness: 1.0pt, paint: accent) } else { (thickness: 0.7pt, paint: border) }
+    circle(pos, radius: r, fill: nfill, stroke: nstroke, name: name-id)
     if label-anchor == "center" {
       content(name-id, text(6pt, fill: fg, label))
     } else {
