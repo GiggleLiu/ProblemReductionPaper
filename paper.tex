@@ -118,6 +118,9 @@ We present the reduction graph as a case study (\Cref{sec:graph}), describe the 
 
 \subsection{Graph Structure}\label{sec:graph-structure}
 
+The introduction described the reduction graph at a conceptual level---nodes are problems, edges are reductions, paths compose.
+This section makes the structure precise.
+
 Each node carries two annotations: the problem's \emph{size measures} and the \emph{best-known algorithm complexity} expressed in those measures.
 Different problems define different size measures---Satisfiability has three (\lstinline{num_vars}, \lstinline{num_clauses}, \lstinline{num_literals}); MIS has two (\lstinline{num_vertices}, \lstinline{num_edges}); Factoring has two (\lstinline{num_bits_first}, \lstinline{num_bits_second}).
 Each directed edge carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's.
