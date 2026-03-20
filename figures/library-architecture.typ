@@ -121,7 +121,7 @@
   // Layer 3: Procedural Macros
   // ══════════════════════════════════════════
   let y3 = y2 - h2 - 1.0
-  let h3 = 2.8
+  let h3 = 3.4
   layer-box((0, y3), W, h3, col-macro, "L3")
   content((m, y3 - 0.35), anchor: "west",
     text(8pt, weight: "bold", fill: col-macro.darken(20%), [Compile-time Validation]))
