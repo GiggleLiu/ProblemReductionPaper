@@ -32,7 +32,7 @@
   }
 
   let arr = (end: "straight", scale: 0.35)
-  let s = (thickness: 0.9pt, paint: luma(100))
+  let s = (thickness: 1pt, paint: luma(40))
   let sh = (start: 0.08, end: 0.08)
 
   // ── Layout ──
