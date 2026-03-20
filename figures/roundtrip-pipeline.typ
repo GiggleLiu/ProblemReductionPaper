@@ -17,8 +17,8 @@
     rect(
       pos, (pos.at(0) + w, pos.at(1) - h),
       radius: 4pt,
-      fill: col.lighten(88%),
-      stroke: (thickness: 1pt, paint: col),
+      fill: col.lighten(80%),
+      stroke: (thickness: 1.2pt, paint: col.darken(10%)),
       name: name-id,
     )
     let body = {
