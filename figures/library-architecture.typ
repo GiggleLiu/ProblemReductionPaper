@@ -41,11 +41,11 @@
   }
 
   // ── Layout ──
-  let W = 20.0          // total width
-  let m = 0.6           // margin inside layer boxes
-  let g = 0.5           // gap between inner boxes
-  let bw = (W - 2*m - 2*g) / 3   // inner box width ≈ 6.13
-  let bh = 1.8          // inner box height
+  let W = 22.0          // total width
+  let m = 0.8           // margin inside layer boxes
+  let g = 0.6           // gap between inner boxes
+  let bw = (W - 2*m - 2*g) / 3   // inner box width ≈ 6.53
+  let bh = 2.2          // inner box height
 
   // x-positions for 3-column grid
   let x1 = m
