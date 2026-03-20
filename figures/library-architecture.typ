@@ -146,8 +146,8 @@
   // Arrows between layers
   // ══════════════════════════════════════════
   let arr = (end: "straight", scale: 0.35)
-  let s-down = (thickness: 0.9pt, paint: luma(120))
-  let s-up   = (thickness: 0.9pt, paint: col-macro, dash: "dashed")
+  let s-down = (thickness: 1pt, paint: black)
+  let s-up   = (thickness: 1pt, paint: col-macro.darken(10%), dash: "dashed")
   let sh = (start: 0.06, end: 0.06)
 
   // Layer 1 → Layer 2 (three vertical arrows, centered on each column)
