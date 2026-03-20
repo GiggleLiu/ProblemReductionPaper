@@ -122,7 +122,7 @@
   board-card(oh-x, oh-y, "On Hold", "onhold")
 
   // L-shaped arrows: go right past labels, then angle to On Hold
-  let bend-x = cx + card-w / 2 + 2.5   // x past right-side labels
+  let bend-x = cx + card-w / 2 + 3.5   // x past right-side labels
 
   // Arrow from In Progress → On Hold
   line(
