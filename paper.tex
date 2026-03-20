@@ -359,8 +359,8 @@ Fresh context prevents confirmation bias.
 A simulated downstream user exercises the feature through the CLI and judges whether results are consistent with domain knowledge, replacing the community feedback loop that niche libraries lack.
 
 \textbf{Layer~4: Contributor verification.}
-The maintainer makes the final quality judgment.
-This layer catches errors invisible to automated tests: whether the reduction is genuinely useful, whether the proof sketch is convincing, whether the implementation matches the intent of the original proposal.
+After merge, the domain expert who filed the original issue verifies the result.
+This layer catches errors invisible to automated tests: whether the reduction matches the intent of the original proposal, whether the proof sketch is convincing, and whether the formal definition faithfully captures the problem.
 
 The skill system ensures all four layers are invoked for every contribution.
 Without skills, an agent might skip overhead validation or omit the paper entry---errors that would accumulate silently over many contributions.
