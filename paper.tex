@@ -115,9 +115,7 @@ Three ideas make this possible:
 %======================================================================
 \section{Library Architecture}\label{sec:graph}
 
-The reduction graph introduced above is a mathematical object.
-To be useful, it must be embedded in software that can create problem instances, search for optimal reduction paths, solve through solver backends, and verify each reduction automatically.
-This section describes the Rust library that does so, organized in three layers (\Cref{fig:library-architecture}): user-facing interfaces, a core library, and a compile-time validation layer.
+The library implements the reduction graph as a Rust crate, organized in three layers (\Cref{fig:library-architecture}).
 
 \begin{figure}[t]
   \centering
