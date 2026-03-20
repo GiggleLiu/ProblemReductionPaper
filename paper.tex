@@ -43,7 +43,9 @@ A logistics company needs to route delivery trucks.
 Each of these is an instance of an NP-hard problem---a class of problems for which no efficient general-purpose algorithm is known, but which can be solved in practice for moderate sizes by specialized solvers.
 
 The difficulty is that each solver speaks its own narrow language.
-Quantum hardware targets independent set problems on specific graph geometries~\cite{lucas2014, pichler2018}, quantum annealers target binary optimization~\cite{glover2019}, and commercial engines like Gurobi and CPLEX target integer linear programs.
+Rydberg atom arrays~\cite{lucas2014, pichler2018}---a type of quantum hardware---natively solve the Maximum Independent Set problem on geometric graphs.
+D-Wave quantum annealers~\cite{glover2019} solve Quadratic Unconstrained Binary Optimization.
+Commercial engines like Gurobi and CPLEX solve Integer Linear Programs.
 A practitioner with a graph coloring problem cannot directly use any of these solvers without first \emph{translating} the problem into a form the solver understands.
 
 This translation is called a \emph{reduction}: a polynomial-time algorithm that converts an instance of one problem into an instance of another, together with an inverse map that translates the solution back.
