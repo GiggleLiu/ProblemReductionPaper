@@ -127,8 +127,7 @@ Each type also declares its \emph{best-known algorithm complexity} in these meas
 The uniform evaluation interface enables brute-force solving on small instances, which powers the round-trip testing described in \Cref{sec:roundtrip}.
 
 The current library contains 27~problem types.
-Three---MIS, QUBO, and ILP---have direct solver backends as introduced in \Cref{sec:intro}.
-Most problem types have a reduction path to ILP, directly or through intermediate types, enabling larger-scale solving via commercial optimizers.
+Most have a reduction path to ILP, directly or through intermediate types, enabling solving via commercial optimizers like Gurobi and CPLEX.
 
 \subsection{Reduction Rules}
 
