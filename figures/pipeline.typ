@@ -11,7 +11,7 @@
 
 #let card-w = 3.2
 #let card-h = 0.7
-#let gap-y = 1.0
+#let gap-y = 1.3
 
 #canvas(length: 0.55cm, {
   import draw: *
@@ -117,8 +117,8 @@
 
   // --- On Hold ---
   let oh-w = 1.8
-  let oh-x = cx + card-w / 2 + 4.5
-  let oh-y = (y2 + y5) / 2
+  let oh-x = cx + card-w / 2 + 6.0
+  let oh-y = y3
   board-card(oh-x, oh-y, "On Hold", "onhold")
 
   // L-shaped arrows: go right past labels, then angle to On Hold
@@ -170,14 +170,4 @@
     text(6pt, fill: col-review, weight: "bold",
       align(center, [Review\ Agent])),
   )
-
-  // --- Legend ---
-  let ly = y6 - card-h / 2 - 0.7
-  let lx = cx - 4.5
-  line((lx, ly), (lx + 0.5, ly), stroke: 1.2pt + col-human)
-  content((lx + 0.65, ly), anchor: "west", text(6pt, [Human]))
-  line((lx + 2.0, ly), (lx + 2.5, ly), stroke: 1.2pt + col-impl)
-  content((lx + 2.65, ly), anchor: "west", text(6pt, [Impl. agent]))
-  line((lx + 5.0, ly), (lx + 5.5, ly), stroke: 1.2pt + col-review)
-  content((lx + 5.65, ly), anchor: "west", text(6pt, [Review agent]))
 })
