@@ -3,31 +3,31 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-// Two-color scheme: human = orange, agent = accent blue
-#let col-human = rgb("#f28e2b")
-#let col-agent = accent
-#let col-bg-human = col-human.lighten(85%)
-#let col-bg-agent = accent-light
-#let col-fail = rgb("#e15759")
+// Three roles — color on lines only, not nodes
+#let col-human = rgb("#f28e2b")   // orange — human decisions
+#let col-impl = accent             // steel blue — implementation agent
+#let col-review = rgb("#76b7b2")   // teal — review agent
+#let col-fail = rgb("#e15759")     // red — failure path
 
 #let card-w = 3.2
-#let card-h = 0.6
+#let card-h = 0.7
 #let gap-y = 1.0
 
 #canvas(length: 0.55cm, {
   import draw: *
 
   // --- Helpers ---
-  let board-card(x, y, label, bg, stroke-col, id) = {
+  // All cards neutral — roles conveyed by arrow color
+  let board-card(x, y, label, id) = {
     rect(
       (x - card-w / 2, y - card-h / 2),
       (x + card-w / 2, y + card-h / 2),
-      radius: 3pt, fill: bg, stroke: 1pt + stroke-col, name: id,
+      radius: 3pt, fill: fill-light, stroke: stroke-box, name: id,
     )
-    content(id, text(7pt, weight: "bold", fill: stroke-col.darken(15%), label))
+    content(id, text(7pt, weight: "bold", fill: fg, label))
   }
 
-  let arrow(from-y, to-y, col, cx) = {
+  let varrow(from-y, to-y, col, cx) = {
     line(
       (cx, from-y - card-h / 2), (cx, to-y + card-h / 2 + 0.05),
       stroke: (thickness: 1.2pt, paint: col),
@@ -66,95 +66,114 @@
   )
 
   // 1. Backlog
-  board-card(cx, y0, "Backlog", fill-light, fg-light, "backlog")
+  board-card(cx, y0, "Backlog", "backlog")
 
   // Backlog → Ready (Maintainer)
   let y1 = y0 - gap-y
-  arrow(y0, y1, col-human, cx)
+  varrow(y0, y1, col-human, cx)
   label-right(y0, y1, col-human, [Maintainer triages], cx)
 
   // 2. Ready
-  board-card(cx, y1, "Ready", col-bg-human, col-human, "ready")
+  board-card(cx, y1, "Ready", "ready")
 
-  // Ready → In Progress (Agent picks)
+  // Ready → In Progress (Impl Agent)
   let y2 = y1 - gap-y
-  arrow(y1, y2, col-agent, cx)
-  label-right(y1, y2, col-agent, [picks issue], cx)
+  varrow(y1, y2, col-impl, cx)
+  label-right(y1, y2, col-impl, [picks issue], cx)
 
   // 3. In Progress
-  board-card(cx, y2, "In Progress", col-bg-agent, col-agent, "inprog")
+  board-card(cx, y2, "In Progress", "inprog")
 
-  // In Progress → Review Pool (Agent creates PR)
+  // In Progress → Review Pool (Impl Agent)
   let y3 = y2 - gap-y
-  arrow(y2, y3, col-agent, cx)
-  label-right(y2, y3, col-agent, [creates PR], cx)
+  varrow(y2, y3, col-impl, cx)
+  label-right(y2, y3, col-impl, [creates PR], cx)
 
   // 4. Review Pool
-  board-card(cx, y3, "Review Pool", col-bg-agent, col-agent, "revpool")
+  board-card(cx, y3, "Review Pool", "revpool")
 
-  // Review Pool → Under Review (Agent reviews)
+  // Review Pool → Under Review (Review Agent)
   let y4 = y3 - gap-y
-  arrow(y3, y4, col-agent, cx)
-  label-right(y3, y4, col-agent, [parallel review], cx)
+  varrow(y3, y4, col-review, cx)
+  label-right(y3, y4, col-review, [parallel review], cx)
 
   // 5. Under Review
-  board-card(cx, y4, "Under Review", col-bg-agent, col-agent, "underrev")
+  board-card(cx, y4, "Under Review", "underrev")
 
-  // Under Review → Final Review (Agent posts verdict)
+  // Under Review → Final Review (Review Agent)
   let y5 = y4 - gap-y
-  arrow(y4, y5, col-agent, cx)
-  label-right(y4, y5, col-agent, [posts verdict], cx)
+  varrow(y4, y5, col-review, cx)
+  label-right(y4, y5, col-review, [posts verdict], cx)
 
   // 6. Final Review
-  board-card(cx, y5, "Final Review", col-bg-human, col-human, "finalrev")
+  board-card(cx, y5, "Final Review", "finalrev")
 
-  // Final Review → Done (Maintainer merges) — label on LEFT to avoid On Hold
+  // Final Review → Done (Maintainer)
   let y6 = y5 - gap-y
-  arrow(y5, y6, col-human, cx)
+  varrow(y5, y6, col-human, cx)
   label-left(y5, y6, col-human, [Maintainer merges], cx)
 
   // 7. Done
-  board-card(cx, y6, "Done", col-bg-human, col-human, "done")
+  board-card(cx, y6, "Done", "done")
 
-  // --- On Hold: dashed side branch from Final Review (right side) ---
+  // --- On Hold: receives arrows from In Progress and Final Review ---
   let oh-w = 2.0
-  let oh-x = cx + card-w / 2 + 2.2
-  rect(
-    (oh-x - oh-w / 2, y5 - card-h / 2),
-    (oh-x + oh-w / 2, y5 + card-h / 2),
-    radius: 3pt,
-    fill: col-fail.lighten(88%),
-    stroke: 1pt + col-fail,
-    name: "onhold",
-  )
-  content("onhold", text(7pt, weight: "bold", fill: col-fail.darken(10%), [On Hold]))
+  let oh-x = cx + card-w / 2 + 3.2
+  let oh-y = (y2 + y5) / 2
+  board-card(oh-x, oh-y, "On Hold", "onhold")
+
+  // Arrow from In Progress → On Hold
   line(
-    (cx + card-w / 2, y5),
-    (oh-x - oh-w / 2 - 0.05, y5),
-    stroke: (thickness: 1pt, paint: col-fail, dash: "dashed"),
+    (cx + card-w / 2, y2),
+    (oh-x - oh-w / 2 + 0.2, oh-y + card-h / 2 + 0.05),
+    stroke: (thickness: 1pt, paint: col-fail),
     mark: (end: "straight", scale: 0.35),
   )
 
-  // --- Agent zone bracket on the left ---
-  // Spans all 4 agent transitions: Ready→InProgress through UnderReview→FinalReview
-  let bx = cx - card-w / 2 - 0.5
-  let bracket-top = y1 - card-h / 2 - 0.05
-  let bracket-bot = y5 + card-h / 2 + 0.05
+  // Arrow from Final Review → On Hold
   line(
-    (bx + 0.12, bracket-top), (bx, bracket-top),
-    (bx, bracket-bot), (bx + 0.12, bracket-bot),
-    stroke: (thickness: 0.8pt, paint: col-agent, dash: "dashed"),
-  )
-  content(
-    (bx - 0.1, (bracket-top + bracket-bot) / 2), anchor: "east",
-    text(6pt, fill: col-agent, weight: "bold", [Agent]),
+    (cx + card-w / 2, y5),
+    (oh-x - oh-w / 2 + 0.2, oh-y - card-h / 2 - 0.05),
+    stroke: (thickness: 1pt, paint: col-fail),
+    mark: (end: "straight", scale: 0.35),
   )
 
-  // --- Legend at bottom ---
+  // --- Implementation Agent bracket ---
+  let bx = cx - card-w / 2 - 0.5
+  let impl-top = y1 - card-h / 2 - 0.05
+  let impl-bot = y3 + card-h / 2 + 0.05
+  line(
+    (bx + 0.12, impl-top), (bx, impl-top),
+    (bx, impl-bot), (bx + 0.12, impl-bot),
+    stroke: (thickness: 0.8pt, paint: col-impl),
+  )
+  content(
+    (bx - 0.1, (impl-top + impl-bot) / 2), anchor: "east",
+    text(6pt, fill: col-impl, weight: "bold",
+      align(center, [Impl.\ Agent])),
+  )
+
+  // --- Review Agent bracket ---
+  let rev-top = y3 - card-h / 2 - 0.05
+  let rev-bot = y5 + card-h / 2 + 0.05
+  line(
+    (bx + 0.12, rev-top), (bx, rev-top),
+    (bx, rev-bot), (bx + 0.12, rev-bot),
+    stroke: (thickness: 0.8pt, paint: col-review),
+  )
+  content(
+    (bx - 0.1, (rev-top + rev-bot) / 2), anchor: "east",
+    text(6pt, fill: col-review, weight: "bold",
+      align(center, [Review\ Agent])),
+  )
+
+  // --- Legend ---
   let ly = y6 - card-h / 2 - 0.7
-  let lx = cx - 3.0
+  let lx = cx - 4.5
   line((lx, ly), (lx + 0.5, ly), stroke: 1.2pt + col-human)
-  content((lx + 0.65, ly), anchor: "west", text(6pt, [Human decision]))
-  line((lx + 3.5, ly), (lx + 4.0, ly), stroke: 1.2pt + col-agent)
-  content((lx + 4.15, ly), anchor: "west", text(6pt, [Agent action]))
+  content((lx + 0.65, ly), anchor: "west", text(6pt, [Human]))
+  line((lx + 2.0, ly), (lx + 2.5, ly), stroke: 1.2pt + col-impl)
+  content((lx + 2.65, ly), anchor: "west", text(6pt, [Impl. agent]))
+  line((lx + 5.0, ly), (lx + 5.5, ly), stroke: 1.2pt + col-review)
+  content((lx + 5.65, ly), anchor: "west", text(6pt, [Review agent]))
 })
