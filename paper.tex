@@ -326,7 +326,9 @@ The same canonical instance powers three outputs: round-trip tests that verify c
   \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline.pdf}
   \caption{Example data flow.
     A contributor's issue provides the canonical instance, which is extracted into the example database.
-    From this single source, the same data feeds round-trip tests, JSON fixtures rendered in the PDF manual, and the CLI's example mode.}
+    Round-trip tests run as a closed loop on the database.
+    The same data feeds JSON fixtures rendered in the PDF manual and the CLI's example mode.
+    The contributor cross-checks the manual against the original issue (dashed arrow).}
   \label{fig:roundtrip-pipeline}
 \end{figure}
 
@@ -340,7 +342,9 @@ Each layer catches a different class of error; no single layer suffices.
   \includegraphics[width=\columnwidth]{figures/verification-funnel.pdf}
   \caption{Verification funnel.
     Candidate contributions are progressively filtered: issue checks reject invalid proposals, tests reject implementation errors, agentic reviews reject behavioral issues, and contributor verification catches quality gaps.
-    After merge, the domain expert verifies that the result matches their original intent.}
+    After merge, the domain expert verifies that the result matches their original intent.
+    \text{red}{add example}
+    }
   \label{fig:verification-funnel}
 \end{figure}
 
