@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Academic paper about using AI coding agents to build a verified library of NP-hard problem reductions. The paper is written in LaTeX (IEEE conference format) with figures authored in Typst. The subject Rust library is included as a git submodule at `problem-reductions/` (upstream: `CodingThrust/problem-reductions`).
+Academic paper about using AI coding agents to build a verified library of NP-hard problem reductions. The paper is written in LaTeX (IEEE conference format) with figures authored in Typst. The subject Rust library is included as a git submodule at `problem-reductions/` (upstream: `CodingThrust/problem-reductions`). Before any any paper edits, you must read the `paper.tex` file and understand the project structure and conventions.
 
 **Paper title:** "Grand Assembly of Computational Hard Problems: The Art of Agentic Coding"
 

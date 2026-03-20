@@ -54,27 +54,22 @@ Reductions are the central tool of computational complexity theory~\cite{karp197
 \subsection{Bridging Problems to Solvers}
 
 A single reduction bridges one problem to one solver.
-To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as a \emph{directed graph}.
-Each node is a problem type (e.g., Satisfiability, Max-Cut, Traveling Salesman).
-Each directed edge is a verified reduction---code that transforms instances forward and maps solutions back.
-A path through the graph bridges any supported problem to any reachable solver.
+To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as a \emph{directed graph} (\Cref{fig:reduction-graph}).
+Each node is a problem type; each directed edge is a verified reduction that transforms instances forward and maps solutions back.
+A problem~$A$ is \emph{reducible} to a problem~$B$ whenever a directed path from~$A$ to~$B$ exists in the graph.
+The key insight is \emph{compositionality}: independently contributed edges combine into longer chains, so every new reduction opens many new paths through the graph.
+In particular, a problem's NP-hardness is certified whenever a directed path from 3-SAT reaches it, while an efficient path to Integer Linear Programming (ILP) enables automated verification of each reduction rule (\Cref{sec:verification}).
+Orphan nodes---problems with no incident edges---represent missing connections and are actively avoided as the graph grows.
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
-  \includegraphics[width=0.88\textwidth]{figures/problemtree.pdf}
-  \caption{The reduction graph connects 27~NP-hard problem types to three solver families through 45~verified transformation rules.
-    \textbf{Bottom layer}: solvers---Maximum Independent Set on unit-disk graphs (UD-MIS) for Rydberg atom arrays, QUBO for D-Wave quantum annealers, and ILP for commercial solvers.
-    \textbf{Middle layer}: 27~problem types with color-coded edges showing solver reachability.
-    MIS is the dominant hub with 14~incoming and 13~outgoing edges.
-    Each new edge creates composite paths through the entire graph.}
+  \includegraphics[width=0.88\columnwidth]{figures/reduction-graph-concept.pdf}
+  \caption{Conceptual reduction graph.
+  Nodes are problem types, directed edges are reduction rules.
+  Following a path through the graph leads from any supported problem to a solver backend.}
   \label{fig:reduction-graph}
-\end{figure*}
+\end{figure}
 
-The graph currently contains 27~problem types connected by 56~directed edges (\Cref{fig:reduction-graph}).
-Reductions implemented independently compose automatically through the graph.
-For example, one contributor implemented Factoring $\to$ Circuit Satisfiability, and another implemented Circuit Satisfiability $\to$ Integer Linear Programming.
-Neither intended the composition, yet the graph enables factoring integers via linear programming by chaining the two reductions.
-Each new edge creates not just one connection but new paths through the entire graph.
 
 \subsection{The Challenge}
 
