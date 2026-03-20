@@ -40,7 +40,7 @@
 
   // ── Layout ──
   // Top row
-  node((4.8, 6.9), [3-SAT], "3sat", label-anchor: "north")
+  node((4.8, 6.9), [3-SAT], "3sat", label-anchor: "north", highlight: true)
   node((8.1, 6.9), [], "gc", label-anchor: "north")
 
   // Middle row
