@@ -170,4 +170,14 @@
     text(6pt, fill: col-review, weight: "bold",
       align(center, [Review\ Agent])),
   )
+
+  // --- Legend ---
+  let ly = y6 - card-h / 2 - 0.7
+  let lx = cx - 4.5
+  line((lx, ly), (lx + 0.5, ly), stroke: 1.2pt + col-human)
+  content((lx + 0.65, ly), anchor: "west", text(6pt, [Human]))
+  line((lx + 2.0, ly), (lx + 2.5, ly), stroke: 1.2pt + col-impl)
+  content((lx + 2.65, ly), anchor: "west", text(6pt, [Impl. agent]))
+  line((lx + 5.0, ly), (lx + 5.5, ly), stroke: 1.2pt + col-review)
+  content((lx + 5.65, ly), anchor: "west", text(6pt, [Review agent]))
 })
