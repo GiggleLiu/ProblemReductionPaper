@@ -16,8 +16,8 @@
     rect(
       pos, (pos.at(0) + w, pos.at(1) - h),
       radius: 5pt,
-      fill: col.lighten(92%),
-      stroke: (thickness: 1.2pt, paint: col),
+      fill: col.lighten(85%),
+      stroke: (thickness: 1.2pt, paint: col.darken(10%)),
       name: name-id,
     )
   }
