@@ -126,8 +126,7 @@ Each type defines its own \emph{size measures}---Satisfiability has \texttt{num\
 Each type also declares its \emph{best-known algorithm complexity} in these measures (e.g., $O(1.1996^{n_v})$ for MIS).
 The uniform evaluation interface enables brute-force solving on small instances, which powers the round-trip testing described in \Cref{sec:roundtrip}.
 
-The current library contains 27~problem types.
-Most have a reduction path to ILP, directly or through intermediate types, enabling solving via commercial optimizers like Gurobi and CPLEX.
+Most problem types have a reduction path to ILP, directly or through intermediate types, enabling solving via commercial optimizers like Gurobi and CPLEX.
 
 \subsection{Reduction Rules}
 
