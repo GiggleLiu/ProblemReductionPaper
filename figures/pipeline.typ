@@ -117,7 +117,7 @@
   board-card(cx, y6, "Done", col-bg-human, col-human, "done")
 
   // --- On Hold: dashed side branch from Final Review (right side) ---
-  let oh-w = 1.8
+  let oh-w = 2.0
   let oh-x = cx + card-w / 2 + 2.2
   rect(
     (oh-x - oh-w / 2, y5 - card-h / 2),
