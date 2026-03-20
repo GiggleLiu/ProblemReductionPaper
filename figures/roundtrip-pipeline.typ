@@ -56,14 +56,14 @@
     [Single source of truth])
 
   // Arrow: Issue → Example DB
-  line("issue.south", "exdb.north",
+  line("issue", "exdb.north",
     stroke: s, mark: arr, shorten: sh, name: "e1")
   content((rel: (0.6, 0), to: "e1.mid"), anchor: "west",
     text(6pt, fill: luma(100), [extract]))
 
   // ── Row 3: Three outputs, fanning out ──
   let y3 = y2 - bh - 2.0
-  let out-w = 6.8
+  let out-w = 7.0
   let out-gap = 0.8
 
   // Total width of 3 boxes + 2 gaps
