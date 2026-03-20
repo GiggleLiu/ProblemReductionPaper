@@ -118,32 +118,29 @@ We present the reduction graph as a case study (\Cref{sec:graph}), describe the 
 
 \subsection{Graph Structure}\label{sec:graph-structure}
 
-The introduction described the reduction graph at a conceptual level---nodes are problems, edges are reductions, paths compose.
-This section makes the structure precise.
-
-Each node carries two annotations: the problem's \emph{size measures} and the \emph{best-known algorithm complexity} expressed in those measures.
-Different problems define different size measures---Satisfiability has three (\lstinline{num_vars}, \lstinline{num_clauses}, \lstinline{num_literals}); MIS has two (\lstinline{num_vertices}, \lstinline{num_edges}); Factoring has two (\lstinline{num_bits_first}, \lstinline{num_bits_second}).
+Each problem type defines its own \emph{size measures}---Satisfiability has \lstinline{num_vars}, \lstinline{num_clauses}, and \lstinline{num_literals}; MIS has \lstinline{num_vertices} and \lstinline{num_edges}; Factoring has \lstinline{num_bits_first} and \lstinline{num_bits_second}.
+Each node in the graph stores these measures together with the problem's \emph{best-known algorithm complexity} expressed in them (e.g., $O(1.1996^{n_v})$ for MIS).
 Each directed edge carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's.
 For example, the Satisfiability $\to$ MIS reduction maps a formula with $n_l$ literals to a graph with $O(n_l)$ vertices and $O(n_l^2)$ edges (\Cref{fig:reduction-graph}).
 Overheads compose symbolically along paths: the output expressions of one edge are substituted into the input variables of the next.
 
-The full graph contains 27~problem types and 56~directed edges: 45~hand-coded reduction rules plus 11~edges inferred from subtype relationships.
-Three problems serve as ``compilation targets,'' each backed by a class of specialized solvers:
+The current graph contains 27~problem types and 56~directed edges: 45~hand-coded reduction rules plus 11~inferred from subtype relationships.
+Three problems serve as \emph{compilation targets}, each backed by a class of specialized solvers:
 \begin{itemize}
-  \item \textbf{MIS} (Maximum Independent Set): target for Rydberg atom arrays, with best-known complexity $O(1.1996^{n_v})$.
-  \item \textbf{QUBO} (Quadratic Unconstrained Binary Optimization): target for D-Wave quantum annealers, with complexity $O(2^{n_v})$.
+  \item \textbf{MIS} (Maximum Independent Set): target for Rydberg atom arrays.
+  \item \textbf{QUBO} (Quadratic Unconstrained Binary Optimization): target for D-Wave quantum annealers.
   \item \textbf{ILP} (Integer Linear Programming): target for commercial solvers like Gurobi and CPLEX.
 \end{itemize}
-
-To route a problem to a solver, the system finds the cheapest reduction path using Dijkstra's algorithm with a configurable cost function---minimizing the number of reduction steps, or minimizing a specific output dimension such as \lstinline{num_vars}.
+To route a problem instance to a solver, the system finds the cheapest reduction path using Dijkstra's algorithm.
+The cost function is configurable: minimize the number of reduction steps, or minimize a specific output dimension such as \lstinline{num_vars}.
 Because overheads compose symbolically, the optimal path depends on the source instance's actual dimensions.
 
-Three structural properties guide the graph's development (\Cref{fig:reduction-graph}).
-A problem's \emph{NP-hardness is verified} within the graph whenever a directed path from 3-SAT reaches it---no external certificate is needed.
-An \emph{orphan node} has no edges and cannot reach any solver, representing a gap that should be filled.
+Maintaining the graph requires monitoring three structural properties (\Cref{fig:reduction-graph}).
+A problem's \emph{NP-hardness is verified} whenever a directed path from 3-SAT reaches it---no external certificate is needed.
+An \emph{orphan node} has no edges and cannot reach any solver, representing a gap to be filled.
 A rule is \emph{redundant} when a composite path with equal or lower overhead already connects the same endpoints.
-Redundant rules cause path explosion: QUBO and SpinGlass are connected by linear-overhead bidirectional reductions, so any new rule to QUBO whose overhead matches an existing composite path through SpinGlass doubles the number of equally-optimal routes without reducing cost.
-The system checks each proposed rule against existing composite paths and accepts it only if it genuinely reduces the overhead between its endpoints.
+Redundant rules cause path explosion: QUBO and SpinGlass are connected by linear-overhead bidirectional reductions, so any new rule to QUBO whose overhead matches an existing path through SpinGlass doubles the number of equally-optimal routes without reducing cost.
+The system checks each proposed rule against existing composite paths and accepts it only if it genuinely reduces the overhead.
 
 \subsection{Emergent Compositionality}\label{sec:compositionality}
 
