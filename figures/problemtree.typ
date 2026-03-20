@@ -24,7 +24,7 @@
 
   rect((-4.5, -0.45), (-4.5 + plat-w, 0.45),
     fill: col-platform-fill, stroke: 1.2pt + col-platform, radius: 4pt, name: "udmis")
-  content("udmis", text(9pt, weight: "bold", fill: col-platform, "UD-MIS on grids"))
+  content("udmis", text(9pt, weight: "bold", fill: col-platform, "UD-MIS"))
   content((-2.8, -0.85), text(6.5pt, fill: col-platform.lighten(20%), "(Rydberg atom arrays)"))
 
   rect((1.1, -0.45), (1.1 + plat-w, 0.45),
