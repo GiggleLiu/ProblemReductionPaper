@@ -170,9 +170,10 @@ The same instance feeds round-trip tests, JSON fixtures rendered in the PDF manu
 
 \subsection{Compile-time Validation}\label{sec:compile-time}
 
-The bottom layer (\Cref{fig:library-architecture}, dashed arrows) catches errors before the code can compile.
+The bottom layer (\Cref{fig:library-architecture}, dashed arrows) uses Rust's procedural macro system to catch errors before the code can compile.
 Overhead expressions are parsed into a symbolic AST at build time; variable names are validated against actual getter methods on the source type, so a typo causes a compile error rather than a silent bug.
 Type registrations ensure that every concrete problem variant is enumerated with its best-known complexity, enabling automated graph export, documentation completeness checking, and redundancy analysis.
+See \Cref{app:architecture} for implementation details.
 
 \subsection{Emergent Compositionality}\label{sec:compositionality}
 
