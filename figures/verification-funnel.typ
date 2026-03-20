@@ -1,20 +1,20 @@
-#import "@preview/cetz:0.4.2": canvas, draw
+#import "lib.typ": *
 
-#set page(width: auto, height: auto, margin: 5pt)
-#set text(size: 7pt, font: "New Computer Modern")
+#set page(..fig-page)
+#set text(..fig-text)
 
-// Filter layer data: (name, description)
+// Four-layer verification funnel
 #let filters = (
-  ("Type system", "rejects structural errors"),
-  ("Round-trip tests", "rejects semantic errors"),
-  ("Overhead validation", "rejects incorrect complexity claims"),
-  ("Agentic feature tests", "rejects usability issues"),
+  ("Issue check", "rejects invalid proposals"),
+  ("Unit & round-trip tests", "rejects implementation errors"),
+  ("Agentic feature tests", "rejects behavioral issues"),
+  ("Contributor verification", "rejects quality gaps"),
 )
 
 // Color palette: gradient from soft red (top) to green (bottom)
-#let col-top = rgb("#d94f4f")     // red — many errors
-#let col-bot = rgb("#4ea45e")     // green — correct
-#let col-ground = rgb("#4e79a7")  // steel blue — ground truth
+#let col-top = rgb("#d94f4f")     // red — many candidates
+#let col-bot = rgb("#4ea45e")     // green — verified
+#let col-ground = accent          // steel blue — ground truth
 
 #let lerp-color(t) = {
   color.mix((col-top, (1 - t) * 100%), (col-bot, t * 100%))
@@ -26,22 +26,20 @@
   let n = 4              // number of filter layers
   let layer-h = 1.3      // height of each filter layer
   let gap = 0.3          // gap between layers
-  let max-w = 13.0       // width at top (agent output)
-  let min-w = 5.0        // width at bottom (correct code)
+  let max-w = 13.0       // width at top
+  let min-w = 5.0        // width at bottom
   let cx = 0             // center x
   let cap-h = 1.3        // height of top/bottom cap regions
   let right-x = max-w / 2 + 0.8   // x for right-side descriptions
 
   // Compute total funnel geometry
   let funnel-top = cap-h + 0.6     // y where first filter starts
-  let funnel-bot = -(n * (layer-h + gap) - gap) - 0.4  // y where last filter ends
-  let total-h = funnel-top - funnel-bot
+  let funnel-bot = -(n * (layer-h + gap) - gap) - 0.4
 
   // --- Top cap: "Agent output" ---
   let top-y = funnel-top + cap-h
   let top-w = max-w + 1.0
 
-  // Wide entry region
   merge-path(
     close: true,
     fill: col-top.lighten(85%),
@@ -59,34 +57,29 @@
   content(
     (cx, (top-y + funnel-top) / 2 + 0.15),
     anchor: "center",
-    text(8.5pt, weight: "bold", fill: col-top.darken(20%), [Agent output]),
+    text(8.5pt, weight: "bold", fill: col-top.darken(20%), [Candidate contributions]),
   )
   content(
     (cx, (top-y + funnel-top) / 2 - 0.4),
     anchor: "center",
-    text(6.5pt, fill: col-top.darken(5%), style: "italic", [many candidate implementations]),
+    text(6.5pt, fill: col-top.darken(5%), style: "italic", [proposals, implementations, reviews]),
   )
 
   // --- Filter layers (narrowing from top to bottom) ---
   for i in range(n) {
-    // t ranges from 0 (top filter) to 1 (bottom filter)
     let t-top = i / n
     let t-bot = (i + 1) / n
 
-    // Widths: linear interpolation from max-w to min-w
     let w-top = max-w - (max-w - min-w) * t-top
     let w-bot = max-w - (max-w - min-w) * t-bot
 
-    // Y coordinates (growing downward from funnel-top)
     let y-top = funnel-top - i * (layer-h + gap)
     let y-bot = y-top - layer-h
     let y-mid = (y-top + y-bot) / 2
 
-    // Width at midpoint
     let t-mid = (i + 0.5) / n
     let w-mid = max-w - (max-w - min-w) * t-mid
 
-    // Color for this layer
     let col = lerp-color(t-mid)
     let col-fill = col.lighten(75%)
     let col-stroke = col.darken(10%)
@@ -126,7 +119,7 @@
       text(6.5pt, fill: col-text.lighten(20%), style: "italic", desc),
     )
 
-    // Right-side connecting dotted line + filter icon
+    // Right-side connecting dotted line + rejected icon
     let edge-x = cx + w-mid / 2
     line(
       (edge-x + 0.05, y-mid), (right-x - 0.15, y-mid),
@@ -139,7 +132,7 @@
     )
   }
 
-  // --- Bottom cap: "Correct code" ---
+  // --- Bottom cap: "Verified code" ---
   let last-y-bot = funnel-top - (n - 1) * (layer-h + gap) - layer-h
   let bot-y = last-y-bot - 0.4
   let bot-cap-y = bot-y - cap-h
@@ -162,12 +155,12 @@
   content(
     (cx, (bot-y + bot-cap-y) / 2 + 0.1),
     anchor: "center",
-    text(8.5pt, weight: "bold", fill: col-bot.darken(30%), [Correct code]),
+    text(8.5pt, weight: "bold", fill: col-bot.darken(30%), [Verified code]),
   )
   content(
     (cx, (bot-y + bot-cap-y) / 2 - 0.45),
     anchor: "center",
-    text(6.5pt, fill: col-bot.darken(10%), style: "italic", [matches contributor ground truth]),
+    text(6.5pt, fill: col-bot.darken(10%), style: "italic", [merged to main]),
   )
 
   // --- Left side: "Contributor-specified ground truth" vertical arrow ---
@@ -175,14 +168,12 @@
   let gt-top = funnel-top + cap-h * 0.5
   let gt-bot = bot-cap-y + 0.3
 
-  // Main vertical arrow
   line(
     (gt-x, gt-top), (gt-x, gt-bot),
     stroke: (thickness: 1.4pt, paint: col-ground),
     mark: (end: "straight", scale: 0.5),
   )
 
-  // Label for the vertical arrow
   content(
     (gt-x - 0.25, (gt-top + gt-bot) / 2),
     anchor: "east",
