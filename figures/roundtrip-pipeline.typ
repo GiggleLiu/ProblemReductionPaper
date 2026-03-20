@@ -59,7 +59,7 @@
   line("issue", "exdb.north",
     stroke: s, mark: arr, shorten: sh, name: "e1")
   content((rel: (0.6, 0), to: "e1.mid"), anchor: "west",
-    text(6pt, fill: luma(40), [extract]))
+    text(6pt, fill: black, [extract]))
 
   // ── Row 3: Three outputs, fanning out ──
   let y3 = y2 - bh - 2.0
@@ -105,5 +105,5 @@
   line("json.south", "manual.north",
     stroke: s, mark: arr, shorten: sh, name: "e5")
   content((rel: (0.6, 0), to: "e5.mid"), anchor: "west",
-    text(6pt, fill: luma(40), [render]))
+    text(6pt, fill: black, [render]))
 })
