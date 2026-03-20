@@ -201,24 +201,67 @@ Like any OS, it needs two things to do useful work: an \emph{environment} that d
 Modern agents---Claude Code~\cite{Anthropic2025ClaudeCode}, OpenAI Codex~\cite{OpenAI2025Codex}, OpenHands~\cite{Wang2024OpenHands}, and others---realize this through two kinds of specification file.
 A \emph{project specification} (\texttt{CLAUDE.md} or \texttt{AGENTS.md}) is a markdown file at the repository root that describes architecture, conventions, commands, and constraints.
 It functions as the environment variables of the agent OS: read on every invocation, it provides a single source of truth that never drifts---unlike style guides that human contributors may not read.
-
 A \emph{skill} is a versioned, composable workflow document---also plain markdown---that decomposes a multi-step task into numbered steps.
-Skills are the functions of the agent OS, written in an extraordinarily abstract instruction set: natural language.
-This instruction set is powerful enough to include human beings in the loop---a skill can pause mid-execution, ask a domain expert for a formal definition, and resume with the answer.
-But it inherits a fundamental limitation: natural-language instructions cannot perform creative thinking or deep mathematical reasoning.
-They can orchestrate, verify, and enforce conventions; they cannot decide which problems are worth solving or invent new proof techniques.
+Skills are the functions of the agent OS, written in natural language.
 
-This limitation defines the central design challenge: separating \emph{creative} decisions from \emph{routine} execution.
-Adding a reduction to the graph requires answering questions that only a domain expert can answer: which problem is worth adding, what is its formal definition, what example reveals correctness, what is the polynomial overhead?
-Everything else---writing Rust code, constructing tests, generating documentation, fixing CI---is routine work that a skill can encode.
+\subsection{The Automation Pipeline}\label{sec:pipeline-overview}
+
+Adding a reduction to the graph involves five stages, from initial proposal to merged code (\Cref{fig:pipeline}).
+Not all stages are equal: some are routine work that an agent can execute autonomously; others require creativity and domain judgment that no instruction can encode.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/pipeline.pdf}
+  \caption{Contribution pipeline from proposal to merged code.
+    Orange transitions require human judgment (selecting work and approving results); blue transitions are fully automated by skills.
+    Each stage independently validates before passing to the next.}
+  \label{fig:pipeline}
+\end{figure}
+
+\textbf{Stage~1: Propose.}
+A domain expert provides the creative elements that no agent can supply: which problem is worth adding, what is its formal definition, what example reveals correctness, what is the polynomial overhead?
+The contributor need not know the codebase or even the programming language.
+The agent analyzes the graph's topology to rank proposals by value (\Cref{app:topology}).
+Three structural properties guide this ranking: a problem's \emph{NP-hardness is verified} whenever a directed path from 3-SAT reaches it, so rules that complete such paths are prioritized; an \emph{orphan node} has no edges and cannot reach any solver, so connecting orphans is high-value; a rule is \emph{redundant} when a composite path with equal or lower overhead already connects the same endpoints---redundant rules are rejected.
+Before filing, the agent pre-validates the draft against Stage~2's quality checks.
+
+\textbf{Stage~2: Validate.}
+Four independent tests are applied: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+Only proposals passing all four checks proceed.
+This stage is fully automatable---it follows a deterministic checklist.
+
+\textbf{Stage~3: Implement.}
+A validated issue is converted into a pull request, enforcing a strict \emph{one item per PR} rule.
+The agent dispatches to a model-addition or rule-addition workflow, each encoding a complete checklist (9~items for rules, 11~for models): Rust types, trait implementations, unit tests, CLI registration, and a paper entry with formal definitions and proof sketches.
+Fully automatable.
+
+\textbf{Stage~4: Review.}
+Three parallel sub-agents in fresh context windows review the implementation---one for structural completeness, one for code quality, one for issue validation---then post a combined verdict.
+Fresh context prevents confirmation bias.
+A fourth layer, \emph{agentic feature testing}, simulates a downstream user: an agent reads the documentation, exercises the feature through the CLI, and judges whether results are consistent with domain knowledge.
+This replaces the community feedback loop that niche libraries lack.
+Fully automatable.
+
+\textbf{Stage~5: Merge.}
+The maintainer makes the final quality judgment and merges.
+This decision requires human creativity: assessing whether the reduction is useful, safe, and complete.
+
+The pipeline reveals a clean separation.
+Three stages---validate, implement, review---are routine: they follow deterministic checklists and run without human intervention.
+Two stages---propose and merge---require creativity and domain judgment.
+The design challenge is encoding this separation so that an agent runs the routine stages autonomously while invoking human judgment at precisely the right moments.
 
 \subsection{Skill Design}\label{sec:skills}
 
+Skills are the mechanism that realizes this separation.
 Traditional automation---Makefiles, CI pipelines, shell scripts---is \emph{mechanical}: every step is predetermined, and human involvement is impossible mid-execution.
 Skills are a different kind of automation: \emph{abstract}.
 A skill defines \emph{what} must happen (validate references, construct an example, write a proof sketch) without fixing \emph{how}.
+This abstraction gives skills a capability that mechanical automation lacks: they can invoke human beings as a callable resource.
+
 When the task is routine, the agent executes autonomously.
-When the task requires creativity or deep judgment---choosing which example best reveals correctness, deciding whether a proposed reduction is non-trivial---the skill can pause and involve a human, then resume.
+When the task requires creativity or deep reasoning---choosing which example best reveals correctness, deciding whether a proposed reduction is non-trivial---the skill pauses, asks the human, and resumes with the answer.
+We call these \emph{mentor} skills (tinted in \Cref{fig:skill-architecture}): the agent orchestrates the workflow while the human supplies the creative judgment.
 The same skill thus operates headlessly in a pipeline and interactively with a contributor, adapting its execution mode to the context.
 
 \begin{figure}[t]
@@ -238,72 +281,17 @@ A bug in a skill is fixed once and benefits all future invocations; a per-invoca
 Second, skills are \emph{compositional}: orchestration skills invoke implementation skills, which invoke quality gates.
 A single \texttt{run-pipeline} command triggers the full cascade---validate, implement, test, review, document, and produce a pull request.
 The maintainer's effort scales with the number of \emph{skill types}, not the number of tasks.
+For example, \texttt{run-pipeline} invokes \texttt{issue-to-pr}, which in turn calls \texttt{add-model} or \texttt{add-rule} to generate a complete implementation, then \texttt{fix-pr} to address CI failures, and \texttt{write-model}/\texttt{write-rule} to draft paper entries.
+Similarly, \texttt{review-pipeline} dispatches \texttt{review-structural}, \texttt{review-quality}, and \texttt{topology-check} (which detects orphan problems and NP-hardness proof gaps) as parallel subagents.
 Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \texttt{pub fn run()} entry point, and that the paper entry requires a proof sketch.
 
 The library comprises eighteen skills organized by audience (\Cref{fig:skill-architecture}).
-
-\textbf{User.}
-\texttt{tutorial} is an interactive walkthrough of the \texttt{pred} CLI that teaches a newcomer to explore the reduction graph, invoke reductions, and solve problem instances---without touching source code.
-
-\textbf{Contributor.}
-\texttt{propose} guides a domain expert---who need not know Rust or the codebase---through a one-question-at-a-time brainstorming session, clarifies the formal definition, and files a GitHub issue ready for implementation.
-
-\textbf{Maintainer.}
-\texttt{dev-setup} is an interactive wizard that detects the platform, installs dependencies, and configures the toolchain for a new maintainer.
+Four are mentor skills that treat the human as a callable resource for creativity.
+\texttt{propose} guides a domain expert---who need not know Rust or the codebase---through a one-question-at-a-time brainstorming session, eliciting formal definitions and filing a GitHub issue ready for implementation.
+\texttt{tutorial} teaches a newcomer to explore the reduction graph through an interactive walkthrough of the \texttt{pred} CLI.
+\texttt{fix-issue} auto-corrects mechanical quality failures and brainstorms substantive fixes with the maintainer for issues that require domain judgment.
 \texttt{final-review} presents a structured merge-or-hold decision: it summarizes the PR, asks the maintainer to assess usefulness, safety, and completeness, then merges or labels accordingly.
-\texttt{fix-issue} auto-corrects mechanical quality failures (formatting, missing fields) and brainstorms substantive fixes with the maintainer for issues that require domain judgment.
-\texttt{release} determines the appropriate version bump from the diff, runs the test suite, and tags a release.
-
-\textbf{Agent.}
-Three top-level skills run without human intervention.
-\texttt{run-pipeline} picks the highest-priority Ready issue from the project board and drives it through implementation to the review pool, in a loop.
-\texttt{review-pipeline} orchestrates three read-only sub-reviews in parallel---structural completeness, code quality, and issue validation---then posts a combined verdict.
-\texttt{check-issue} validates issue quality: usefulness, non-triviality, and correctness of literature claims.
-Each top-level skill internally composes additional subskills not shown in \Cref{fig:skill-architecture}.
-For example, \texttt{run-pipeline} invokes \texttt{issue-to-pr}, which in turn calls \texttt{add-model} or \texttt{add-rule} to generate a complete implementation---Rust types, trait implementations, unit tests, CLI registration, and a paper entry---then \texttt{fix-pr} to address CI failures, and \texttt{write-model}/\texttt{write-rule} to draft Typst paper entries with formal definitions and proof sketches.
-Similarly, \texttt{review-pipeline} dispatches \texttt{review-structural}, \texttt{review-quality}, and \texttt{topology-check} (which detects orphan problems and NP-hardness proof gaps) as parallel subagents.
-
-Four of the eighteen---\texttt{tutorial}, \texttt{propose}, \texttt{fix-issue}, and \texttt{final-review}---are \emph{mentor} skills (tinted in \Cref{fig:skill-architecture}): they interactively guide their user, pausing for human judgment where creativity is required.
-
-\subsection{From Contributor to Verified Code}\label{sec:pipeline-overview}
-
-Skills compose into a pipeline of progressive quality gates (\Cref{fig:pipeline}).
-The maintainer makes exactly two decisions: selecting which issue to work on, and approving the final merge.
-Everything between is automated.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/pipeline.pdf}
-  \caption{Contribution pipeline from proposal to merged code.
-    Orange transitions require human judgment (selecting work and approving results); blue transitions are fully automated by skills.
-    Each stage independently validates before passing to the next.}
-  \label{fig:pipeline}
-\end{figure}
-
-\textbf{Stage~1: Propose.}
-A domain expert---who need not know the codebase or even the programming language---provides the creative elements that only a human can supply.
-The \texttt{propose} skill guides the contributor interactively, asking one question at a time in mathematical language: what is the motivation, what is the formal definition, what is a small example that exercises the core structure?
-Alternatively, the contributor fills in a structured GitHub issue template directly.
-The agent first analyzes the graph's topology to rank proposals by value (\Cref{app:topology}).
-Three structural properties guide this ranking: a problem's \emph{NP-hardness is verified} whenever a directed path from 3-SAT reaches it, so rules that complete such paths are prioritized; an \emph{orphan node} has no edges and cannot reach any solver, so connecting orphans is high-value; and a rule is \emph{redundant} when a composite path with equal or lower overhead already connects the same endpoints---redundant rules cause combinatorial explosion of equally-optimal routes and are rejected.
-Before filing, it pre-validates the draft against Stage~2's quality checks.
-
-\textbf{Stage~2: Validate.}
-The \texttt{check-issue} skill applies four independent tests: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
-Only proposals passing all four checks proceed.
-
-\textbf{Stage~3: Implement.}
-The \texttt{issue-to-pr} skill converts a validated issue into a pull request, enforcing a strict \emph{one item per PR} rule.
-It dispatches to \texttt{add-model} or \texttt{add-rule}, each encoding a complete checklist (9~items for rules, 11~for models).
-
-\textbf{Stage~4: Review.}
-Two parallel sub-agents in fresh context windows review the implementation---one for structural completeness, one for semantic correctness.
-Fresh context prevents confirmation bias.
-A third layer, \emph{agentic feature testing}, simulates a downstream user: an agent reads the documentation, exercises the feature through the CLI, and judges whether results are consistent with domain knowledge.
-This replaces the community feedback loop that niche libraries lack.
-
-\textbf{Stage~5: Merge.}
-The maintainer makes the final quality judgment and merges.
+The remaining fourteen---including \texttt{run-pipeline}, \texttt{review-pipeline}, \texttt{check-issue}, \texttt{dev-setup}, and \texttt{release}---run autonomously, driving the routine stages of the pipeline without human intervention.
 
 \subsection{Verification by Round-Trip Testing}\label{sec:roundtrip}
 
