@@ -66,7 +66,7 @@ In particular, a problem's NP-hardness is certified whenever a directed path fro
   \includegraphics[width=0.80\columnwidth]{figures/reduction-graph-concept.pdf}
   \caption{Conceptual reduction graph.
   Nodes are problem types, directed edges are reduction rules, meaning source problem can be reduced to target problem for solving.
-  Following a path through the graph leads from any supported problem to a solver backend. $f$ and $g$ are reduction overheads (polynomials) annotated on the edges.}
+  Following a path through the graph leads from any supported problem to a solver backend. $r_{A \rightarrow B}$ and $r_{B \rightarrow C}$ are reduction overheads (polynomials) annotated on the edges, $t_S$ and $t_I$ are the best-known algorithm complexities for the solvers.}
   \label{fig:reduction-graph}
 \end{figure}
 
@@ -117,11 +117,6 @@ We present the reduction graph as a case study (\Cref{sec:graph}), describe the 
 \section{The Reduction Graph}\label{sec:graph}
 
 \subsection{Graph Structure}\label{sec:graph-structure}
-
-The simplest edge in the graph illustrates the pattern.
-Minimum Vertex Cover (MVC) asks for the smallest set of vertices touching every edge; Maximum Independent Set (MIS) asks for the largest set with no edges between them.
-A set~$S$ is independent if and only if its complement $V \setminus S$ is a vertex cover, so the forward map is the identity (the same graph) and the inverse map complements the solution.
-This 96-line implementation connects MVC to every solver reachable from MIS.
 
 Each node carries two annotations: the problem's \emph{size measures} and the \emph{best-known algorithm complexity} expressed in those measures.
 Different problems define different size measures---Satisfiability has three (\lstinline{num_vars}, \lstinline{num_clauses}, \lstinline{num_literals}); MIS has two (\lstinline{num_vertices}, \lstinline{num_edges}); Factoring has two (\lstinline{num_bits_first}, \lstinline{num_bits_second}).
