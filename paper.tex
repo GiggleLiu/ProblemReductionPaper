@@ -258,7 +258,8 @@ Everything between is automated.
 A domain expert---who need not know the codebase or even the programming language---provides the creative elements that only a human can supply.
 The \texttt{propose} skill guides the contributor interactively, asking one question at a time in mathematical language: what is the motivation, what is the formal definition, what is a small example that exercises the core structure?
 Alternatively, the contributor fills in a structured GitHub issue template directly.
-The agent first analyzes the graph's topology to identify the most valuable contributions (\Cref{app:topology}): orphan nodes, redundant rules, and missing proof paths.
+The agent first analyzes the graph's topology to rank proposals by value (\Cref{app:topology}).
+Three structural properties guide this ranking: a problem's \emph{NP-hardness is verified} whenever a directed path from 3-SAT reaches it, so rules that complete such paths are prioritized; an \emph{orphan node} has no edges and cannot reach any solver, so connecting orphans is high-value; and a rule is \emph{redundant} when a composite path with equal or lower overhead already connects the same endpoints---redundant rules cause combinatorial explosion of equally-optimal routes and are rejected.
 Before filing, it pre-validates the draft against Stage~2's quality checks.
 
 \textbf{Stage~2: Validate.}
