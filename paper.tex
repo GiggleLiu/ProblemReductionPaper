@@ -116,6 +116,9 @@ We present the reduction graph as a case study (\Cref{sec:graph}), describe the 
 %======================================================================
 \section{The Reduction Graph}\label{sec:graph}
 
+The reduction graph is implemented as a Rust library with three components: a \emph{core crate} that defines problem types, reduction rules, and graph infrastructure; a \emph{command-line interface} (\lstinline{pred}) that exposes the graph for exploration, path search, and end-to-end solving; and \emph{procedural macros} that validate reduction overhead expressions and variant registrations at compile time.
+A typical workflow creates a problem instance, finds the cheapest reduction path to a solver backend, and extracts the solution---all through the \lstinline{pred} CLI or the library API.
+
 \subsection{Graph Structure}\label{sec:graph-structure}
 
 Each problem type defines its own \emph{size measures}---Satisfiability has \lstinline{num_vars}, \lstinline{num_clauses}, and \lstinline{num_literals}; MIS has \lstinline{num_vertices} and \lstinline{num_edges}; Factoring has \lstinline{num_bits_first} and \lstinline{num_bits_second}.
