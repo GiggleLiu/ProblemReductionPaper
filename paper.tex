@@ -127,7 +127,7 @@ The build system also produces an auto-compiled PDF manual containing formal def
   \caption{Library architecture.
     \textbf{Top}: user-facing interfaces---the \texttt{pred} CLI, the Rust library API, and an auto-compiled PDF manual.
     \textbf{Middle}: the core crate with problem types, reduction rules, graph engine, solvers, and example database.
-    \textbf{Bottom}: procedural macros that validate overhead expressions and variant registrations at compile time (dashed arrows).}
+    \textbf{Bottom}: compile-time validation layer that checks overhead expressions and type registrations before compilation succeeds (dashed arrows).}
   \label{fig:library-architecture}
 \end{figure}
 
