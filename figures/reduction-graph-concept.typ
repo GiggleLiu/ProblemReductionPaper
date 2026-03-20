@@ -59,8 +59,10 @@
   // Solvers
   node((4.0, 0.4), [S], "s-rydberg")
   content((rel: (0, -0.7), to: "s-rydberg"), text(6pt)[Hardware accelerated])
+  content((rel: (0.7, 0), to: "s-rydberg"), text(6pt)[$t_(S)$])
   node((6.5, 1.4), [C], "s-dwave")
   node((10.3, 0.4), [I], "s-ilp", highlight: true)
+  content((rel: (0.7, 0), to: "s-ilp"), text(6pt)[$t_(I)$])
   content((rel: (0, -0.7), to: "s-ilp"), text(6pt)[Integer linear programming])
 
   // ── Normal edges ──
@@ -73,7 +75,7 @@
   edge("mis", "s-rydberg")
   edge("ising", "s-dwave", name: "ising-dwave")
 
-  content((rel: (0.3, 0), to: "mis-sat.mid"), [$f$])
+  content((rel: (-0.6, 0.3), to: "mis-sat.mid"), [$r_(A arrow.r B)$])
 
   // ── Bidirectional reductions (two curved bezier arrows) ──
   // Max-Cut ↔ Ising
@@ -93,7 +95,7 @@
   edge("gc", "sat")
   edge("sat", "mis")
   edge("mis", "s-dwave", name: "mis-dwave")
-  content((rel: (0.3, 0.2), to: "mis-dwave.mid"), [$g$])
+  content((rel: (0.25, 0.4), to: "mis-dwave.mid"), [$r_(B arrow.r C)$])
 
   content((rel: (0.0, -0.6), to: "orphan"), anchor: "north",
     text(6pt)[orphan])
