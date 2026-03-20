@@ -116,64 +116,80 @@ We describe the library architecture (\Cref{sec:graph}), the methodology (\Cref{
 %======================================================================
 \section{Library Architecture}\label{sec:graph}
 
-\Cref{fig:library-architecture} shows the three-layer architecture.
-The \emph{core library} (\Cref{fig:library-architecture}, middle) defines problem types, reduction rules, and a graph engine that composes them.
-A \emph{symbolic engine} supports both reduction overhead and algorithm complexity as mathematical expressions---enabling symbolic composition along paths, asymptotic comparison for redundancy detection, and numeric evaluation for cost-based path search.
-Two solvers operate on the graph: a brute-force enumerator for small instances (used in round-trip testing) and an ILP solver for larger-scale solving.
-An example database stores canonical instances that serve as the single source of truth for tests, documentation, and the CLI (\Cref{fig:roundtrip-pipeline}).
-
-Three user-facing interfaces sit above the core (\Cref{fig:library-architecture}, top): the \texttt{pred} CLI for graph exploration, path search, and end-to-end solving; the Rust library API; and an auto-compiled PDF manual containing formal definitions, reduction theorems with proof sketches, and worked examples for every implemented model and rule.
-
-A compile-time validation layer (\Cref{fig:library-architecture}, bottom, dashed arrows) checks overhead expressions and type registrations before the code can compile, catching variable-name typos and malformed expressions at build time rather than at runtime.
+The library is implemented in Rust as three layers (\Cref{fig:library-architecture}): user-facing interfaces, a core library, and a compile-time validation layer.
+We walk through each from top to bottom.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/library-architecture.pdf}
-  \caption{Library architecture.
-    The core library (green) defines problem types, reduction rules, a graph engine, solvers, a symbolic engine for overhead and complexity expressions, and an example database.
-    User interfaces (blue) expose the core via CLI, library API, and an auto-compiled PDF manual.
+  \caption{Three-layer library architecture.
+    User interfaces (blue) expose the reduction graph via CLI, library API, and an auto-compiled PDF manual.
+    The core library (green) implements problem types, reduction rules, a graph engine, solvers, a symbolic engine, and an example database.
     Compile-time validation (gold, dashed arrows) checks overhead expressions and type registrations before compilation succeeds.}
   \label{fig:library-architecture}
 \end{figure}
 
-\subsection{Problem Types}\label{sec:graph-structure}
+\subsection{User Interfaces}\label{sec:user-interfaces}
 
-Every problem type implements the \texttt{Problem} trait, which requires a uniform evaluation interface: given any configuration, return a score (\Cref{app:architecture}).
+The \texttt{pred} CLI is the primary entry point.
+A user creates a problem instance, finds the cheapest reduction path to a solver, and extracts the solution---all from the command line.
+The same functionality is available through the Rust library API for programmatic use.
+The build system also produces an auto-compiled PDF manual containing formal definitions, reduction theorems with proof sketches, and worked examples for every implemented model and rule.
+
+\subsection{Core Library}\label{sec:graph-structure}
+
+The core crate contains six modules (\Cref{fig:library-architecture}, middle).
+
+\emph{Problem types.}
+Every problem type implements a uniform evaluation interface: given any configuration, return a score (\Cref{app:architecture}).
 Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, MIS is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm.
 The uniform evaluation interface enables brute-force solving on small instances, which powers the round-trip testing described in \Cref{sec:roundtrip}.
 
-Most problem types have a reduction path to ILP, directly or through intermediate types.
-The ILP solver backend is swappable via Cargo features: the default is the open-source HiGHS~\cite{Huangfu2018HiGHS}, with Coin-CBC, SCIP, and others available as drop-in alternatives.
-
-\subsection{Reduction Rules}
-
-A reduction rule implements the \texttt{ReduceTo<T>} trait, which requires both a forward map and an inverse map in a single implementation---an agent cannot compile a forward reduction without providing solution extraction (\Cref{app:architecture}).
+\emph{Reduction rules.}
+Each rule requires both a forward map and an inverse map in a single implementation---an agent cannot compile a forward reduction without providing solution extraction (\Cref{app:architecture}).
 Each rule carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's.
 For example, the Satisfiability $\to$ MIS reduction maps a formula with $n_l$ literals to a graph with $O(n_l)$ vertices and $O(n_l^2)$ edges.
-Overheads compose symbolically along paths: the output expressions of one edge are substituted into the input variables of the next.
 
-The library contains 56~directed edges: 45~hand-coded reduction rules plus 11~inferred from subtype relationships.
-To route a problem instance to a solver, the system finds the cheapest reduction path using Dijkstra's algorithm.
+\emph{Graph engine.}
+Problem types and reduction rules compose into a directed graph.
+To route a problem instance to a solver, the engine finds the cheapest reduction path using Dijkstra's algorithm.
 The cost function is configurable: minimize the number of reduction steps, or minimize a specific output dimension such as \texttt{num\_vars}.
-Because overheads compose symbolically, the optimal path depends on the source instance's actual dimensions.
+
+\emph{Symbolic engine.}
+Both reduction overhead and algorithm complexity are represented as symbolic mathematical expressions.
+The symbolic engine supports three operations: \emph{composition} (substituting one edge's output into the next edge's input), \emph{comparison} (checking whether a composite path dominates a direct rule, for redundancy detection), and \emph{evaluation} (computing numeric cost for a concrete instance size, enabling instance-dependent path search).
+
+\emph{Solvers.}
+A brute-force enumerator exhaustively searches small instances---used in round-trip testing where correctness, not speed, matters.
+An ILP solver handles larger instances; the backend is swappable, defaulting to the open-source HiGHS~\cite{Huangfu2018HiGHS} with Coin-CBC, SCIP, and others as drop-in alternatives.
+Most problem types have a reduction path to ILP, directly or through intermediate types.
+
+\emph{Example database.}
+Canonical instances---extracted from contributor issues---serve as the single source of truth (\Cref{fig:roundtrip-pipeline}).
+The same instance feeds round-trip tests, JSON fixtures rendered in the PDF manual, and the \texttt{pred create --example} command for interactive exploration.
+
+\subsection{Compile-time Validation}\label{sec:compile-time}
+
+The bottom layer (\Cref{fig:library-architecture}, dashed arrows) catches errors before the code can compile.
+Overhead expressions are parsed into a symbolic AST at build time; variable names are validated against actual getter methods on the source type, so a typo causes a compile error rather than a silent bug.
+Type registrations ensure that every concrete problem variant is enumerated with its best-known complexity, enabling automated graph export, documentation completeness checking, and redundancy analysis.
 
 \subsection{Emergent Compositionality}\label{sec:compositionality}
 
-The library's most valuable property is that independently implemented reductions compose automatically to solve problems that no single reduction was designed for.
+The architecture's payoff is that independently implemented reductions compose automatically to solve problems that no single reduction was designed for.
 
-Consider the problem of integer factoring---decomposing a number $N$ into its prime factors.
-The Factoring $\to$ CircuitSAT reduction (272~lines of code) constructs a Boolean circuit representing an array multiplier: two bit-vector inputs $p$ and $q$, a grid of full-adder cells computing their product, and output constraints fixing the result to~$N$.
+Consider integer factoring---decomposing a number $N$ into its prime factors.
+The Factoring $\to$ CircuitSAT reduction (272~lines) constructs a Boolean circuit representing an array multiplier: two bit-vector inputs $p$ and $q$, a grid of full-adder cells computing their product, and output constraints fixing the result to~$N$.
 Any satisfying assignment to this circuit yields factors of~$N$.
 
 Separately, the CircuitSAT $\to$ ILP reduction (225~lines) linearizes a Boolean circuit into integer constraints, encoding each logic gate as a set of linear inequalities.
 
 Neither reduction was designed with the other in mind---they were implemented in separate pull requests, weeks apart.
-Yet the graph infrastructure enables automatic chaining: given a Factoring instance, the system finds the path Factoring $\to$ CircuitSAT $\to$ ILP, applies both reductions in sequence, solves the resulting integer program with a commercial solver, and extracts the factors by composing the inverse maps in reverse order.
-This works because every reduction provides type-safe solution extraction through a common interface, and the path-finding algorithm composes extractors automatically.
+Yet the graph engine chains them automatically: given a Factoring instance, it finds the path Factoring $\to$ CircuitSAT $\to$ ILP, applies both reductions in sequence, solves the resulting integer program, and extracts the factors by composing the inverse maps in reverse order.
 
 Each new edge amplifies the graph.
-Adding a single reduction from problem~$X$ to MIS does not just connect $X$ to MIS---it connects $X$ to every solver reachable from MIS, and it connects every problem with a path to~$X$ to MIS.
-This multiplier effect---where value grows faster than the number of edges---justifies the investment in verified reduction infrastructure over ad-hoc, one-off transformations.
+Adding a single reduction from problem~$X$ to MIS connects $X$ to every solver reachable from MIS, and connects every problem with a path to~$X$ to MIS.
+This multiplier effect---where value grows faster than the number of edges---justifies the investment in verified reduction infrastructure over ad-hoc transformations.
 
 %======================================================================
 %  SECTION 4: METHODOLOGY

@@ -109,8 +109,8 @@
 
   ibox((x2, r2y), bw, bh, col-core, "symbolic",
     [Symbolic Engine],
-    [Overhead & complexity expressions],
-    [Composition · comparison · evaluation])
+    [Overhead & complexity],
+    [Composition · comparison])
 
   ibox((x3, r2y), bw, bh, col-core, "exdb",
     [Example Database],
