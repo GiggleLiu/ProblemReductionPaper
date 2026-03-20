@@ -78,7 +78,7 @@
   // Layer 2: Core Library
   // ══════════════════════════════════════════
   let y2 = y1 - h1 - 1.0
-  let h2 = 5.6
+  let h2 = 6.6
   layer-box((0, y2), W, h2, col-core, "L2")
   content((m, y2 - 0.35), anchor: "west",
     text(8pt, weight: "bold", fill: col-core.darken(20%), [Core Library]))
