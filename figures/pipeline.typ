@@ -70,7 +70,7 @@
   // Backlog → Ready (Maintainer)
   let y1 = y0 - gap-y
   varrow(y0, y1, col-human, cx)
-  label-right(y0, y1, col-human, [Maintainer triages], cx)
+  label-right(y0, y1, col-human, [Maintainer triages (`fix-issue`)], cx)
 
   // 2. Ready
   board-card(cx, y1, "Ready", "ready")

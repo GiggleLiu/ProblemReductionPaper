@@ -105,7 +105,7 @@ The agent produces volume; verification ensures correctness.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.5\columnwidth]{problem-reductions/docs/logo.png}
-  \caption{The Problem-Reductions library logo, reflecting its goal of assembling 100+ NP-hard problem types into a connected reduction graph.}
+  \caption{The Problem-Reductions library logo, reflecting its goal of assembling 100+ NP-hard problem types into a connected reduction graph. \textcolor{red}{show reduction graph here!!!}}
   \label{fig:logo}
 \end{figure}
 
@@ -135,6 +135,8 @@ The library implements the reduction graph as a Rust crate, organized in three l
 \end{figure}
 
 \subsection{User Interfaces}\label{sec:user-interfaces}
+
+\textcolor{red}{Add typical using cases, like a mini tutorial for using pred.}
 
 The \texttt{pred} CLI is the primary entry point.
 A user creates a problem instance, finds the cheapest reduction path to a solver, and extracts the solution---all from the command line.
@@ -323,7 +325,7 @@ The same canonical instance powers three outputs: round-trip tests that verify c
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline.pdf}
+  \includegraphics[width=0.75\columnwidth]{figures/roundtrip-pipeline.pdf}
   \caption{Example data flow.
     A contributor's issue provides the canonical instance, which is extracted into the example database.
     Round-trip tests run as a closed loop on the database.
@@ -343,7 +345,7 @@ Each layer catches a different class of error; no single layer suffices.
   \caption{Verification funnel.
     Candidate contributions are progressively filtered: issue checks reject invalid proposals, tests reject implementation errors, agentic reviews reject behavioral issues, and contributor verification catches quality gaps.
     After merge, the domain expert verifies that the result matches their original intent.
-    \text{red}{add example}
+    \color{red}{add example, focus on the lens of issue check, agentic tests.}
     }
   \label{fig:verification-funnel}
 \end{figure}
@@ -380,6 +382,10 @@ All development used Claude Code~\cite{Anthropic2025ClaudeCode} with Claude mode
 Skills are plain markdown documents portable to any coding agent.
 
 \subsection{Development Metrics}\label{sec:metrics}
+
+\textcolor{red}{Show the real reduction graph.}
+
+\textcolor{red}{Community contribution guideline, how to get involved, for automated integration.}
 
 The repository contains 59~merged pull requests and 253~commits on main spanning nine weeks (January~9 to March~13, 2026), authored by four contributors.
 Session metadata across 283~agent sessions (300~MB of conversation transcripts) reveals the scale of agent involvement: 9,429~assistant messages in response to 630~user messages---a \textbf{15:1 automation amplification ratio}.
@@ -427,61 +433,61 @@ All pull requests are attributed to human GitHub accounts because the agent oper
 Of 1,089~commits across all branches, 1,510~carry a \texttt{Co-Authored-By: Claude} trailer (the count exceeds total commits because branch commits are squash-merged on main).
 This observability gap---the difficulty of distinguishing human-authored from agent-assisted work in git metadata---is itself a finding about current agentic workflows.
 
-\subsection{Issue Quality Gate}\label{sec:quality-gate}
+% \subsection{Issue Quality Gate}\label{sec:quality-gate}
 
-The \texttt{check-issue} skill was stress-tested when a contributor batch-submitted 414~issues---including 251~in a single day---proposing new reductions for the graph.
-Of the 322~issues checked, only \textbf{81~(25\%) passed} all quality criteria (\Cref{tab:quality-gate}).
+% The \texttt{check-issue} skill was stress-tested when a contributor batch-submitted 414~issues---including 251~in a single day---proposing new reductions for the graph.
+% Of the 322~issues checked, only \textbf{81~(25\%) passed} all quality criteria (\Cref{tab:quality-gate}).
 
-\begin{table}[t]
-\caption{Issue quality gate results (322 checked).}\label{tab:quality-gate}
-\centering
-\small
-\begin{tabular}{@{}lr@{}}
-\toprule
-Verdict & Count (\%) \\
-\midrule
-Good & 81 (25\%) \\
-PoorWritten (incomplete specification) & 124 (39\%) \\
-Wrong (factually incorrect) & 64 (20\%) \\
-Trivial (obvious, adds no value) & 43 (13\%) \\
-Useless (no practical application) & 18 (6\%) \\
-\bottomrule
-\end{tabular}
-\end{table}
+% \begin{table}[t]
+% \caption{Issue quality gate results (322 checked).}\label{tab:quality-gate}
+% \centering
+% \small
+% \begin{tabular}{@{}lr@{}}
+% \toprule
+% Verdict & Count (\%) \\
+% \midrule
+% Good & 81 (25\%) \\
+% PoorWritten (incomplete specification) & 124 (39\%) \\
+% Wrong (factually incorrect) & 64 (20\%) \\
+% Trivial (obvious, adds no value) & 43 (13\%) \\
+% Useless (no practical application) & 18 (6\%) \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
 
-The \textbf{75\% rejection rate} demonstrates the necessity of automated quality gates in agentic pipelines.
-Without \texttt{check-issue}, the pipeline would waste agent compute implementing incorrect or trivial reductions.
-The most common failure was \emph{PoorWritten}---issues lacking complete mathematical specifications, making them unimplementable even by a skilled agent.
-The \emph{Wrong} category~(20\%) included citations to non-existent papers, incorrect complexity claims, and reductions that do not actually preserve solution structure---errors that would be expensive to discover during implementation rather than at triage.
+% The \textbf{75\% rejection rate} demonstrates the necessity of automated quality gates in agentic pipelines.
+% Without \texttt{check-issue}, the pipeline would waste agent compute implementing incorrect or trivial reductions.
+% The most common failure was \emph{PoorWritten}---issues lacking complete mathematical specifications, making them unimplementable even by a skilled agent.
+% The \emph{Wrong} category~(20\%) included citations to non-existent papers, incorrect complexity claims, and reductions that do not actually preserve solution structure---errors that would be expensive to discover during implementation rather than at triage.
 
-\subsection{Case Studies}\label{sec:cases}
+% \subsection{Case Studies}\label{sec:cases}
 
-\paragraph{Satisfiability $\to$ MIS (gadget construction).}
-The classical Karp reduction~\cite{karp1972} works as follows.
-Given a Boolean formula in conjunctive normal form (a conjunction of clauses, each a disjunction of literals), create one graph vertex per literal occurrence.
-Add edges within each clause (so at most one literal per clause can be selected) and between complementary literals across clauses (so a variable cannot be both true and false).
-A satisfying assignment corresponds to an independent set of size~$m$ (the number of clauses).
-The implementation spans 171~lines.
+% \paragraph{Satisfiability $\to$ MIS (gadget construction).}
+% The classical Karp reduction~\cite{karp1972} works as follows.
+% Given a Boolean formula in conjunctive normal form (a conjunction of clauses, each a disjunction of literals), create one graph vertex per literal occurrence.
+% Add edges within each clause (so at most one literal per clause can be selected) and between complementary literals across clauses (so a variable cannot be both true and false).
+% A satisfying assignment corresponds to an independent set of size~$m$ (the number of clauses).
+% The implementation spans 171~lines.
 
-This case illustrates how verification layers interact.
-The number of edges in the constructed graph is worst-case \emph{quadratic} in the number of literals---but an agent might assume linear overhead.
-Layer~4 (overhead validation) catches this by comparing symbolic expressions against actual target sizes.
-Layer~3 (round-trip testing) catches a different class of error: off-by-one mistakes in literal-to-vertex mapping.
-Both layers are necessary: correct indices with wrong overhead, or correct overhead with wrong indices, would each pass one layer but fail the other.
+% This case illustrates how verification layers interact.
+% The number of edges in the constructed graph is worst-case \emph{quadratic} in the number of literals---but an agent might assume linear overhead.
+% Layer~4 (overhead validation) catches this by comparing symbolic expressions against actual target sizes.
+% Layer~3 (round-trip testing) catches a different class of error: off-by-one mistakes in literal-to-vertex mapping.
+% Both layers are necessary: correct indices with wrong overhead, or correct overhead with wrong indices, would each pass one layer but fail the other.
 
-\paragraph{Factoring $\to$ CircuitSAT $\to$ ILP (emergent composition).}
-This chains two independently implemented reductions (272 + 225~lines) to factor integers via linear programming.
-The Factoring $\to$ CircuitSAT step exercises the full verification stack: the multiplier circuit involves $\Theta(mn)$ full-adder cells (where $m$ and $n$ are the bit lengths of the two factors), and errors in carry propagation are caught by Layer~3 while overhead formula errors are caught by Layer~4.
+% \paragraph{Factoring $\to$ CircuitSAT $\to$ ILP (emergent composition).}
+% This chains two independently implemented reductions (272 + 225~lines) to factor integers via linear programming.
+% The Factoring $\to$ CircuitSAT step exercises the full verification stack: the multiplier circuit involves $\Theta(mn)$ full-adder cells (where $m$ and $n$ are the bit lengths of the two factors), and errors in carry propagation are caught by Layer~3 while overhead formula errors are caught by Layer~4.
 
-\paragraph{MVC $\leftrightarrow$ MIS (trivial complement).}
-At the opposite extreme, this 96-line reduction exploits the complement relationship described in \Cref{sec:graph} with identity overhead.
-The pipeline's primary value here is enforcing conventions---file naming, type registration, documentation---rather than catching logical errors.
+% \paragraph{MVC $\leftrightarrow$ MIS (trivial complement).}
+% At the opposite extreme, this 96-line reduction exploits the complement relationship described in \Cref{sec:graph} with identity overhead.
+% The pipeline's primary value here is enforcing conventions---file naming, type registration, documentation---rather than catching logical errors.
 
 %======================================================================
 %  SECTION 6: RELATED WORK
 %======================================================================
 \section{Related Work}\label{sec:related}
-
+\textcolor{red}{merge to intro}
 \paragraph{AI coding agents.}
 The evolution from SWE-agent~\cite{Yang2024SWEagent} and Devin~\cite{Wu2024Devin} to OpenHands~\cite{Wang2024OpenHands} and Claude Code~\cite{Anthropic2025ClaudeCode} has expanded single-task capabilities to 70--80\% on SWE-Bench~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}.
 Roychoudhury~\cite{Roychoudhury2025AgenticAI} identifies specification inference as the central difficulty.
@@ -699,25 +705,5 @@ The \texttt{topology-sanity-check} skill detects three categories of graph quali
 \emph{Redundant rules} waste implementation effort when a cheaper composite path exists.
 \emph{Missing proof paths} indicate problems whose NP-hardness is not machine-verifiable within the graph.
 The agent uses these categories to rank proposals by priority: rules that connect orphans or fill proof-chain gaps are suggested first.
-
-\section{Ablation Study Design}\label{app:ablation}
-
-To isolate the effect of skills on development outcomes, we design a controlled comparison on identical tasks.
-
-\paragraph{Setup.}
-Select 5--10 reductions spanning the complexity spectrum---from complement relationships (MVC $\to$ MIS, 96~lines) through gadget constructions (Satisfiability $\to$ MIS, 171~lines) to circuit encodings (Factoring $\to$ CircuitSAT, 272~lines).
-Prepare identical issues for two configurations:
-(1)~\emph{Skill-based}: the full pipeline including issue validation, implementation skills, multi-agent review, and CI fixing.
-(2)~\emph{No-skill baseline}: the same agent, same codebase, and same project instructions, but no skill files---the agent must infer the workflow from context.
-
-\paragraph{Metrics.}
-(1)~First-attempt CI pass rate; (2)~review rounds before merge readiness; (3)~correctness (all round-trip tests pass); (4)~convention adherence (file naming, type registration, documentation completeness).
-
-\paragraph{Expected outcomes.}
-Skills should excel on convention adherence (encoding project-specific patterns that are not inferrable from code alone) and first-attempt CI pass rate (the verification stack catches errors before the pull request is created).
-The baseline agent likely produces functionally correct code that fails CI due to missing type registrations, incorrect overhead declarations, or misplaced test files.
-
-This ablation has not yet been executed.
-We present the design as a replicable protocol for evaluating skill-based methodologies.
 
 \end{document}
