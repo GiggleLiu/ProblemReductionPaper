@@ -23,7 +23,7 @@
       (x + card-w / 2, y + card-h / 2),
       radius: 3pt, fill: fill-light, stroke: 0.8pt + border, name: id,
     )
-    content(id, text(7pt, weight: "bold", fill: fg, label))
+    content(id, text(7pt, fill: fg, label))
   }
 
   let varrow(from-y, to-y, col, cx) = {
@@ -55,7 +55,7 @@
   let entry-x = cx - card-w / 2 - 2.0
   content(
     (entry-x, y0), anchor: "center",
-    text(6.5pt, fill: col-human.darken(10%), weight: "bold",
+    text(6.5pt, fill: col-human.darken(10%),
       align(center, [Domain\ Expert])),
   )
   line(
@@ -94,7 +94,6 @@
   // Review Pool → Under Review (Review Agent)
   let y4 = y3 - gap-y
   varrow(y3, y4, col-review, cx)
-  label-right(y3, y4, col-review, [parallel review], cx)
 
   // 5. Under Review
   board-card(cx, y4, "Under Review", "underrev")
@@ -153,7 +152,7 @@
   )
   content(
     (bx - 0.1, (impl-top + impl-bot) / 2), anchor: "east",
-    text(6pt, fill: col-impl, weight: "bold",
+    text(6pt, fill: col-impl,
       align(center, [Impl.\ Agent])),
   )
 
@@ -167,7 +166,7 @@
   )
   content(
     (bx - 0.1, (rev-top + rev-bot) / 2), anchor: "east",
-    text(6pt, fill: col-review, weight: "bold",
+    text(6pt, fill: col-review,
       align(center, [Review\ Agent])),
   )
 
