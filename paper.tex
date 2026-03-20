@@ -126,7 +126,8 @@ Each type defines its own \emph{size measures}---Satisfiability has \texttt{num\
 Each type also declares its \emph{best-known algorithm complexity} in these measures (e.g., $O(1.1996^{n_v})$ for MIS).
 The uniform evaluation interface enables brute-force solving on small instances, which powers the round-trip testing described in \Cref{sec:roundtrip}.
 
-Most problem types have a reduction path to ILP, directly or through intermediate types, enabling solving via the open-source HiGHS solver by default or commercial optimizers like Gurobi and CPLEX.
+Most problem types have a reduction path to ILP, directly or through intermediate types.
+The ILP solver backend is swappable via Cargo features: the default is the open-source HiGHS~\cite{Huangfu2018HiGHS}, with Coin-CBC, SCIP, and others available as drop-in alternatives.
 
 \subsection{Reduction Rules}
 
