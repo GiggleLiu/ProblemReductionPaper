@@ -124,21 +124,21 @@
   let h3 = 2.8
   layer-box((0, y3), W, h3, col-macro, "L3")
   content((m, y3 - 0.35), anchor: "west",
-    text(8pt, weight: "bold", fill: col-macro.darken(20%), [Procedural Macros]))
+    text(8pt, weight: "bold", fill: col-macro.darken(20%), [Compile-time Validation]))
 
   let my = y3 - 0.9
   ibox((x1, my), bw, bh, col-macro, "m-overhead",
-    [`\#[reduction(overhead)]`],
-    [Symbolic expression AST],
-    [Variable name validation])
+    [Overhead Validation],
+    [Symbolic expression parsing],
+    [Variable name checking])
 
   ibox((x2, my), bw, bh, col-macro, "m-variants",
-    [`declare_variants!`],
-    [Type registration],
-    [Complexity string parsing])
+    [Type Registration],
+    [Variant enumeration],
+    [Complexity metadata])
 
   ibox((x3, my), bw, bh, col-macro, "m-checks",
-    [Compile-time Checks],
+    [Correctness Guards],
     [Getter method matching],
     [Expression well-formedness])
 
