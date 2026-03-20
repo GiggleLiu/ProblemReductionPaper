@@ -328,36 +328,38 @@ The same canonical instance powers three outputs: round-trip tests that verify c
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
-Correctness assurance comes from a seven-layer verification stack (\Cref{app:verification}).
-The key insight is that different layers catch different classes of errors, and no single layer suffices (\Cref{fig:verification-funnel}).
+Correctness assurance comes from four progressive verification layers (\Cref{fig:verification-funnel}).
+Each layer catches a different class of error; no single layer suffices.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/verification-funnel.pdf}
   \caption{Verification funnel.
-    Agent-generated code is progressively filtered: the type system rejects structural errors, round-trip tests reject semantic errors, overhead validation rejects incorrect complexity claims, and agentic feature tests reject usability issues.
-    Only code matching contributor-specified ground truth survives.}
+    Candidate contributions are progressively filtered: issue checks reject invalid proposals, tests reject implementation errors, agentic reviews reject behavioral issues, and contributor verification catches quality gaps.
+    Only code matching contributor-specified ground truth survives to merge.}
   \label{fig:verification-funnel}
 \end{figure}
 
-\textbf{Layers~1--2} (type system and unit tests) catch structural errors cheaply.
-The type system prevents entire categories of mistakes: an agent cannot implement a reduction without providing solution extraction, reference nonexistent problem attributes in overhead expressions, or omit required variant declarations.
-These constraints are enforced at compile time: variable names in overhead expressions are validated against actual getter methods, so a typo causes a compile error rather than a silent bug.
+\textbf{Layer~1: Issue check.}
+Before any code is written, the proposal itself is validated: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+Invalid proposals are rejected before implementation effort is spent.
 
-\textbf{Layer~3} (round-trip tests, described in \Cref{sec:roundtrip}) is the workhorse, catching the most mathematically subtle errors---incorrect variable mappings, off-by-one indexing, forgotten negations---without per-reduction test logic.
+\textbf{Layer~2: Unit tests and round-trip tests.}
+The type system catches structural errors at compile time: an agent cannot implement a reduction without providing solution extraction, reference nonexistent problem attributes, or omit required variant declarations.
+Round-trip tests (\Cref{sec:roundtrip}) catch semantic errors---incorrect variable mappings, off-by-one indexing, forgotten negations---without per-reduction test logic.
+Overhead validation compares symbolic size expressions against actual target sizes, catching formula errors that are type-correct but mathematically wrong.
+Materialized fixtures address the ``lazy agent'' problem: ground-truth data is generated independently and committed separately, so tampering produces a visible diff in a file outside the agent's normal scope.
 
-\textbf{Layer~4} (overhead validation) compares symbolic size expressions against actual target sizes.
-An agent might implement a correct reduction but declare the wrong overhead formula.
-This layer catches formula errors that are type-correct but mathematically wrong.
+\textbf{Layer~3: Agentic feature tests.}
+Parallel sub-agents in fresh context windows review the implementation---one for structural completeness, one for code quality, one for issue compliance---then post a combined verdict.
+Fresh context prevents confirmation bias.
+A simulated downstream user exercises the feature through the CLI and judges whether results are consistent with domain knowledge, replacing the community feedback loop that niche libraries lack.
 
-\textbf{Layer~5} (materialized fixtures) addresses the ``lazy agent'' problem: agents that modify expected test outputs to make tests pass rather than fixing implementations.
-Ground-truth data is generated independently and committed separately; tampering produces a visible diff in a file outside the agent's normal scope.
+\textbf{Layer~4: Contributor verification.}
+The maintainer makes the final quality judgment.
+This layer catches errors invisible to automated tests: whether the reduction is genuinely useful, whether the proof sketch is convincing, whether the implementation matches the intent of the original proposal.
 
-\textbf{Layers~6--7} (fresh-context review and documentation) catch errors invisible to automated tests.
-Parallel sub-agents operating in fresh context windows prevent confirmation bias.
-Proof sketches force articulation of mathematical arguments; a completeness checker ensures every graph edge is documented.
-
-The skill system ensures all seven layers are invoked for every task.
+The skill system ensures all four layers are invoked for every contribution.
 Without skills, an agent might skip overhead validation or omit the paper entry---errors that would accumulate silently over many contributions.
 
 %======================================================================
