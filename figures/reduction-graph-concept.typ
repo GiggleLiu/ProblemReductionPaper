@@ -60,7 +60,7 @@
   node((4.0, 0.4), [S], "s-rydberg")
   content((rel: (0, -0.7), to: "s-rydberg"), text(6pt)[Hardware accelerated])
   node((6.5, 1.4), [C], "s-dwave")
-  node((10.3, 0.4), [I], "s-ilp")
+  node((10.3, 0.4), [I], "s-ilp", highlight: true)
   content((rel: (0, -0.7), to: "s-ilp"), text(6pt)[Integer linear programming])
 
   // ── Normal edges ──
