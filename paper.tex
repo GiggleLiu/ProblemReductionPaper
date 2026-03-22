@@ -66,7 +66,6 @@ A \emph{composite reduction rule} is a directed path through the graph: chaining
 When multiple composite rules connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
 The graph coloring practitioner no longer chooses a solver; the graph finds the best path automatically.
 
-Composite rules emerge without coordination.
 One contributor implemented Factoring $\to$ CircuitSAT; another implemented CircuitSAT $\to$ ILP.
 Neither intended the combination, yet the graph chains them to factor integers via linear programming.
 Each new primitive rule amplifies the graph: adding a rule from problem~$X$ to MIS connects $X$ to every solver reachable from MIS, and every problem upstream of~$X$ to MIS.
