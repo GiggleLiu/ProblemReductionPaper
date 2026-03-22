@@ -15,6 +15,7 @@
 
 #canvas(length: 0.45cm, {
   import draw: *
+  let charsize = 0.6cm
 
   // Helper: draw a brick wall in uniform gray
   let draw-wall(wx, wy, rows) = {
@@ -38,13 +39,8 @@
   let lx = 0
   let ly = 0
 
-  rect(
-    (lx - 6, ly - 4.5), (lx + 6, ly + 6.5),
-    radius: 4pt, stroke: 0.6pt + luma(180),
-  )
-
   content(
-    (lx, ly + 5.8),
+    (lx, ly + 1.8),
     text(7.5pt, weight: "bold", fill: fg, [Manual integration]),
   )
 
@@ -58,41 +54,34 @@
   group({
     translate((jam-cx, jam-cy))
     rotate(25deg)
+    let dx = 2.9
+    let dy = -3.6
     rect(
-      (-bw / 2, -bh / 2), (bw / 2, bh / 2),
-      fill: col-new.lighten(50%),
-      stroke: 0.8pt + col-new,
+      (dx - bw / 2, dy - bh / 2), (dx+bw / 2, dy+bh / 2),
+      fill: col-good,
+      stroke: none,
       radius: 1pt,
-    )
-    content(
-      (0, 0),
-      text(5pt, fill: col-new.darken(20%), [new]),
     )
   })
 
   // X mark
   content(
-    (jam-cx + bw * 0.9, jam-cy + bh * 0.8),
-    text(8pt, fill: col-new, [✗]),
+    (3 + jam-cx + bw * 0.9, jam-cy + bh * 0.8),
+    text(8pt, fill: col-new, [?]),
   )
 
   // Bob — small
   content(
-    (lx + 3.8, ly - 1.5),
-    bob(size: 1.0cm),
+    (lx + 4.8, ly - 0.3),
+    bob(size: charsize),
   )
 
   // ─── Right Panel: Agentic Integration ───
   let rx = 13
   let ry = 0
 
-  rect(
-    (rx - 6, ry - 4.5), (rx + 6, ry + 6.5),
-    radius: 4pt, stroke: 0.6pt + luma(180),
-  )
-
   content(
-    (rx, ry + 5.8),
+    (rx, ry + 1.8),
     text(7.5pt, weight: "bold", fill: fg, [Agentic integration]),
   )
 
@@ -101,29 +90,19 @@
   draw-wall(wall-x2, wall-y2, 4)
 
   // New brick correctly placed
-  let new-bx = wall-x2 + bw
-  let new-by = wall-y2 + 4 * bh
+  let new-bx = wall-x2 + 2.5 * bw
+  let new-by = wall-y2 + 1 * bh
   rect(
     (new-bx, new-by), (new-bx + bw, new-by + bh),
-    fill: col-good.lighten(60%),
-    stroke: 0.8pt + col-good,
+    fill: col-good,
+    stroke: none,
     radius: 1pt,
-  )
-  content(
-    (new-bx + bw / 2, new-by + bh / 2),
-    text(5pt, fill: col-good.darken(20%), [new]),
-  )
-
-  // Checkmark
-  content(
-    (new-bx + bw / 2, new-by + bh + 0.4),
-    text(8pt, fill: col-good, [✓]),
   )
 
   // Bob handing issue
   content(
-    (rx - 4.5, ry - 1.5),
-    bob(size: 1.0cm),
+    (rx + 4.8, ry - 0.3),
+    bob(size: charsize),
   )
 
   // Issue note
@@ -148,26 +127,7 @@
 
   // Crank carrying brick
   content(
-    (rx + 1.5, ry - 1.5),
-    crank(size: 1.0cm),
-  )
-
-  // Small brick above crank
-  let carry-x = rx + 1.5
-  let carry-y = ry + 1.5
-  rect(
-    (carry-x - bw * 0.3, carry-y - bh * 0.3),
-    (carry-x + bw * 0.3, carry-y + bh * 0.3),
-    fill: col-good.lighten(60%),
-    stroke: 0.6pt + col-good,
-    radius: 1pt,
-  )
-
-  // Dashed arrow from carried brick to its place
-  line(
-    (carry-x + bw * 0.35, carry-y),
-    (new-bx - 0.1, new-by + bh / 2),
-    stroke: (thickness: 0.6pt, paint: col-good, dash: "dashed"),
-    mark: (end: "straight", scale: 0.3),
+    (rx + 5.2, ry - 2.5),
+    crank(size: charsize),
   )
 })
