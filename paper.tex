@@ -69,8 +69,8 @@ When multiple paths connect a problem to different solvers, the system compares 
 Adding a primitive rule strengthens the graph only when it improves on existing routes: a direct $A \to C$ with provably lower overhead than the composite $A \to B \to C$ earns its place; one that does not is omitted to keep path-finding tractable.
 
 Two kinds of paths play a special role.
-A path from 3-SAT to a problem~$H$ constitutes an NP-hardness proof for~$H$---we say $H$ is \emph{NP-hard verified} by the graph.
-A path from a problem to ILP grants access to commercial solvers (Gurobi, CPLEX), providing a verification oracle for testing reductions end-to-end.
+A path from well established NP-complete problems like 3-SAT to a problem~$H$ constitutes an NP-hardness proof for~$H$---we say $H$ is \emph{NP-hard verified} by the graph.
+A path from a problem to integer linear programming (ILP) grants access to efficient solvers (HiGHS, Gurobi, CPLEX, etc.), providing a verification oracle for testing reductions end-to-end.
 
 \subsection{The Challenge}
 
@@ -143,10 +143,26 @@ The library implements the reduction graph as a Rust crate, organized in three l
 
 \subsection{User Interfaces}\label{sec:user-interfaces}
 
-\textcolor{red}{Add typical using cases, like a mini tutorial for using pred.}
-
 The \texttt{pred} CLI is the primary entry point.
-A user creates a problem instance, finds the cheapest reduction path to a solver, and extracts the solution---all from the command line.
+It exposes four capabilities: \emph{graph exploration}, \emph{instance creation}, \emph{reduction}, and \emph{solving}.
+
+\emph{Graph exploration.}
+\texttt{pred list} shows all registered problem types with their variants, reduction-rule counts, and best-known complexities.
+\texttt{pred show MIS} prints the definition of Maximum Independent Set, its size measures, and every incoming and outgoing reduction.
+\texttt{pred path MIS QUBO} finds the cheapest reduction path between two problem types; with \texttt{-{}-cost minimize:num\_vertices} it minimizes a specific overhead dimension instead of hop count.
+
+\emph{Instance creation and solving.}
+\texttt{pred create} builds a problem instance from command-line flags---for example, \texttt{pred create MIS -{}-graph 0-1,1-2,2-3} produces a JSON instance of Maximum Independent Set on a four-vertex path graph.
+Canonical instances from the example database are available via \texttt{-{}-example}.
+\texttt{pred solve} routes the instance to a solver automatically: it finds a reduction path to ILP, reduces the instance along that path, solves the target, and maps the solution back.
+A brute-force solver is available for problems without an ILP path.
+
+Commands compose through Unix pipes.
+The entire workflow---create an instance, reduce it, and solve it---fits in one line:
+\begin{center}
+\texttt{pred create MIS -{}-graph 0-1,1-2 | pred solve -}
+\end{center}
+
 The same functionality is available through the Rust library API for programmatic use.
 The build system also produces an auto-compiled PDF manual containing formal definitions, reduction theorems with proof sketches, and worked examples for every implemented model and rule.
 
