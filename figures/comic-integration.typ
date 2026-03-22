@@ -77,16 +77,20 @@
   // The new piece — wrong shape/size (wider)
   let np-x = lx + 1.5
   let np-y = ly + 2.5
-  rect(
-    (np-x, np-y), (np-x + bw * 1.4, np-y + bh * 1.3),
-    fill: col-new.lighten(30%),
-    stroke: 1pt + col-new,
-    radius: 1pt,
-  )
-  content(
-    (np-x + bw * 0.7, np-y + bh * 0.65),
-    text(5.5pt, fill: col-new.darken(20%), [new rule]),
-  )
+  group({
+    translate((np-x + bw * 0.7, np-y + bh * 0.65))
+    rotate(30deg)
+    rect(
+      (-bw * 0.7, -bh * 0.65), (bw * 0.7, bh * 0.65),
+      fill: col-new.lighten(30%),
+      stroke: 1pt + col-new,
+      radius: 1pt,
+    )
+    content(
+      (0, 0),
+      text(5.5pt, fill: col-new.darken(20%), [new rule]),
+    )
+  })
 
   // Bob looking frustrated — trying to push it in
   content(
