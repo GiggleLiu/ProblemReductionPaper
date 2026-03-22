@@ -74,13 +74,13 @@
   edge("mis", "s-rydberg")
   edge("ising", "s-dwave", name: "ising-dwave")
 
-  content((rel: (-0.6, 0.3), to: "mis-sat.mid"), [$r_(A arrow.r B)$])
+  content((rel: (-0.7, 0.3), to: "mis-sat.mid"), [$r_(A arrow.r B)$])
 
   // ── Bidirectional reductions (two curved bezier arrows) ──
   // Max-Cut ↔ Ising
-  bezier("mc.south", "ising.east", (rel: (-0.0, -1.5), to: "mc"),
+  bezier("mc.south", "ising.east", (rel: (0.0, -1.2), to: "mc"),
     stroke: (thickness: lw), mark: mk, shorten: (start: gap, end: gap))
-  bezier("ising.north", "mc.west", (rel: (0.0, 1.5), to: "ising"),
+  bezier("ising.north", "mc.west", (rel: (0.0, 1.2), to: "ising"),
     stroke: (thickness: lw), mark: mk, shorten: (start: gap, end: gap))
 
   // ── Proof path (purple): 3-SAT → SAT ──
