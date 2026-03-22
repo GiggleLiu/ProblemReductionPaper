@@ -4,19 +4,11 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-// Colors
-#let brick-colors = (
-  rgb("#4e79a7"),  // steel blue
-  rgb("#59a14f"),  // green
-  rgb("#e15759"),  // red
-  rgb("#f28e2b"),  // orange
-  rgb("#76b7b2"),  // teal
-  rgb("#edc949"),  // yellow
-  rgb("#af7aa1"),  // purple
-)
-
-#let col-new = rgb("#e15759")      // red — the new piece
-#let col-good = rgb("#59a14f")     // green — success
+// Muted palette
+#let col-brick = luma(200)           // light gray bricks
+#let col-brick-stroke = luma(255)    // white gaps
+#let col-new = rgb("#e15759")        // red — the new piece (wrong)
+#let col-good = rgb("#59a14f")       // green — success
 
 #let bw = 2.2  // brick width
 #let bh = 0.8  // brick height
@@ -24,7 +16,7 @@
 #canvas(length: 0.45cm, {
   import draw: *
 
-  // Helper: draw a brick wall (rows x cols, with offset pattern)
+  // Helper: draw a brick wall in uniform gray
   let draw-wall(wx, wy, rows) = {
     for row in range(rows) {
       let offset = if calc.rem(row, 2) == 1 { bw / 2 } else { 0 }
@@ -34,8 +26,8 @@
         let by = wy + row * bh
         rect(
           (bx, by), (bx + bw, by + bh),
-          fill: brick-colors.at(calc.rem(row * 3 + col, 7)),
-          stroke: 0.5pt + white,
+          fill: col-brick,
+          stroke: 0.5pt + col-brick-stroke,
           radius: 1pt,
         )
       }
@@ -46,24 +38,21 @@
   let lx = 0
   let ly = 0
 
-  // Panel border
   rect(
-    (lx - 6, ly - 5.5), (lx + 6, ly + 7),
+    (lx - 6, ly - 4.5), (lx + 6, ly + 6.5),
     radius: 4pt, stroke: 0.6pt + luma(180),
   )
 
-  // Title
   content(
-    (lx, ly + 6.3),
+    (lx, ly + 5.8),
     text(7.5pt, weight: "bold", fill: fg, [Manual integration]),
   )
 
-  // Lego wall — 4 neat rows
   let wall-x = lx - 3.3
   let wall-y = ly - 3.5
   draw-wall(wall-x, wall-y, 4)
 
-  // The new brick jammed into the wall at a wrong angle
+  // New brick jammed at wrong angle
   let jam-cx = wall-x + bw * 1.5
   let jam-cy = wall-y + 4 * bh + bh / 2
   group({
@@ -71,8 +60,8 @@
     rotate(25deg)
     rect(
       (-bw / 2, -bh / 2), (bw / 2, bh / 2),
-      fill: col-new.lighten(30%),
-      stroke: 1pt + col-new,
+      fill: col-new.lighten(50%),
+      stroke: 0.8pt + col-new,
       radius: 1pt,
     )
     content(
@@ -81,46 +70,43 @@
     )
   })
 
-  // X mark — wrong
+  // X mark
   content(
     (jam-cx + bw * 0.9, jam-cy + bh * 0.8),
-    text(9pt, fill: col-new, [✗]),
+    text(8pt, fill: col-new, [✗]),
   )
 
-  // Bob standing next to wall
+  // Bob — small
   content(
     (lx + 3.8, ly - 1.5),
-    bob(size: 1.5cm),
+    bob(size: 1.0cm),
   )
 
   // ─── Right Panel: Agentic Integration ───
   let rx = 13
   let ry = 0
 
-  // Panel border
   rect(
-    (rx - 6, ry - 5.5), (rx + 6, ry + 7),
+    (rx - 6, ry - 4.5), (rx + 6, ry + 6.5),
     radius: 4pt, stroke: 0.6pt + luma(180),
   )
 
-  // Title
   content(
-    (rx, ry + 6.3),
+    (rx, ry + 5.8),
     text(7.5pt, weight: "bold", fill: fg, [Agentic integration]),
   )
 
-  // Lego wall — 4 neat rows + the new brick correctly placed on top
   let wall-x2 = rx - 3.3
   let wall-y2 = ry - 3.5
   draw-wall(wall-x2, wall-y2, 4)
 
-  // New brick correctly placed (5th row, middle position)
+  // New brick correctly placed
   let new-bx = wall-x2 + bw
   let new-by = wall-y2 + 4 * bh
   rect(
     (new-bx, new-by), (new-bx + bw, new-by + bh),
-    fill: col-good.lighten(40%),
-    stroke: 1pt + col-good,
+    fill: col-good.lighten(60%),
+    stroke: 0.8pt + col-good,
     radius: 1pt,
   )
   content(
@@ -131,13 +117,13 @@
   // Checkmark
   content(
     (new-bx + bw / 2, new-by + bh + 0.4),
-    text(9pt, fill: col-good, [✓]),
+    text(8pt, fill: col-good, [✓]),
   )
 
-  // Bob on far left — handing a note
+  // Bob handing issue
   content(
     (rx - 4.5, ry - 1.5),
-    bob(size: 1.5cm),
+    bob(size: 1.0cm),
   )
 
   // Issue note
@@ -160,28 +146,28 @@
     mark: (end: "straight", scale: 0.35),
   )
 
-  // Crank carrying the brick toward the wall
+  // Crank carrying brick
   content(
     (rx + 1.5, ry - 1.5),
-    crank(size: 1.5cm),
+    crank(size: 1.0cm),
   )
 
-  // Small brick above crank (being carried)
+  // Small brick above crank
   let carry-x = rx + 1.5
-  let carry-y = ry + 1.8
+  let carry-y = ry + 1.5
   rect(
-    (carry-x - bw * 0.35, carry-y - bh * 0.35),
-    (carry-x + bw * 0.35, carry-y + bh * 0.35),
-    fill: col-good.lighten(40%),
-    stroke: 0.8pt + col-good,
+    (carry-x - bw * 0.3, carry-y - bh * 0.3),
+    (carry-x + bw * 0.3, carry-y + bh * 0.3),
+    fill: col-good.lighten(60%),
+    stroke: 0.6pt + col-good,
     radius: 1pt,
   )
 
-  // Dashed arrow from carried brick to its place in the wall
+  // Dashed arrow from carried brick to its place
   line(
-    (carry-x + bw * 0.4, carry-y),
+    (carry-x + bw * 0.35, carry-y),
     (new-bx - 0.1, new-by + bh / 2),
-    stroke: (thickness: 0.7pt, paint: col-good, dash: "dashed"),
+    stroke: (thickness: 0.6pt, paint: col-good, dash: "dashed"),
     mark: (end: "straight", scale: 0.3),
   )
 })
