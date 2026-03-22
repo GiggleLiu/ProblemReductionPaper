@@ -99,54 +99,79 @@
     radius: 1pt,
   )
 
-  // --- Mechanical arm / crane ---
+  // --- Robotic arm ---
   let arm-col = accent
-  let arm-stroke = (thickness: 1.2pt, paint: arm-col)
-  let arm-thin = (thickness: 0.8pt, paint: arm-col)
+  let arm-w = 0.5          // arm segment width
+  let joint-r = 0.25       // joint circle radius
 
-  // Horizontal rail at top
-  let rail-y = wall-y2 + 4 * bh + 2.5
-  let rail-left = wall-x2 - 0.5
-  let rail-right = wall-x2 + 3 * bw + 0.5
-  line(
-    (rail-left, rail-y), (rail-right, rail-y),
-    stroke: (thickness: 2pt, paint: arm-col),
-  )
-  // Rail feet (small vertical lines at ends)
-  line((rail-left, rail-y), (rail-left, rail-y - 0.3), stroke: arm-stroke)
-  line((rail-right, rail-y), (rail-right, rail-y - 0.3), stroke: arm-stroke)
-
-  // Trolley on rail (small rectangle)
-  let trolley-x = new-bx + bw / 2
-  let trolley-w = 0.8
-  let trolley-h = 0.4
+  // Base: mounted on right side of wall
+  let base-x = wall-x2 + 3 * bw + 1.5
+  let base-y = wall-y2
   rect(
-    (trolley-x - trolley-w / 2, rail-y - trolley-h),
-    (trolley-x + trolley-w / 2, rail-y),
-    fill: arm-col.lighten(60%),
-    stroke: 0.6pt + arm-col,
-    radius: 1pt,
+    (base-x - 0.8, base-y - 0.3), (base-x + 0.8, base-y + 0.3),
+    fill: arm-col.lighten(40%),
+    stroke: 0.8pt + arm-col,
+    radius: 2pt,
   )
 
-  // Vertical arm down from trolley
-  let arm-bottom = new-by + bh + 0.3
+  // Joint 1 (shoulder) at base top
+  let j1 = (base-x, base-y + 0.3)
+  circle(j1, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.8pt + arm-col)
+
+  // Upper arm: from shoulder up-left
+  let j2 = (base-x - 1.5, base-y + 3.5)
   line(
-    (trolley-x, rail-y - trolley-h),
-    (trolley-x, arm-bottom),
-    stroke: arm-stroke,
+    (j1.at(0) - arm-w / 4, j1.at(1)), (j2.at(0) - arm-w / 4, j2.at(1)),
+    stroke: (thickness: 2.5pt, paint: arm-col.lighten(30%)),
+  )
+  line(
+    (j1.at(0) + arm-w / 4, j1.at(1)), (j2.at(0) + arm-w / 4, j2.at(1)),
+    stroke: (thickness: 2.5pt, paint: arm-col.lighten(30%)),
   )
 
-  // Gripper (two angled lines holding the brick)
-  let grip-w = bw / 2 + 0.1
+  // Joint 2 (elbow)
+  circle(j2, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.8pt + arm-col)
+
+  // Forearm: from elbow down-left toward the brick
+  let j3-x = new-bx + bw / 2
+  let j3-y = new-by + bh + 0.6
+  let j3 = (j3-x, j3-y)
   line(
-    (trolley-x, arm-bottom),
-    (trolley-x - grip-w, arm-bottom - 0.5),
-    stroke: arm-thin,
+    (j2.at(0) - arm-w / 4, j2.at(1)), (j3.at(0) - arm-w / 4, j3.at(1)),
+    stroke: (thickness: 2.5pt, paint: arm-col.lighten(50%)),
   )
   line(
-    (trolley-x, arm-bottom),
-    (trolley-x + grip-w, arm-bottom - 0.5),
-    stroke: arm-thin,
+    (j2.at(0) + arm-w / 4, j2.at(1)), (j3.at(0) + arm-w / 4, j3.at(1)),
+    stroke: (thickness: 2.5pt, paint: arm-col.lighten(50%)),
+  )
+
+  // Joint 3 (wrist)
+  circle(j3, radius: joint-r * 0.8, fill: arm-col.lighten(60%), stroke: 0.8pt + arm-col)
+
+  // Gripper: two fingers angling down to grab the brick
+  let grip-open = 0.6
+  // Left finger
+  line(
+    j3,
+    (j3-x - grip-open, j3-y - 0.8),
+    stroke: (thickness: 1.5pt, paint: arm-col),
+  )
+  // Right finger
+  line(
+    j3,
+    (j3-x + grip-open, j3-y - 0.8),
+    stroke: (thickness: 1.5pt, paint: arm-col),
+  )
+  // Finger tips (short inward lines)
+  line(
+    (j3-x - grip-open, j3-y - 0.8),
+    (j3-x - grip-open + 0.25, j3-y - 1.0),
+    stroke: (thickness: 1.5pt, paint: arm-col),
+  )
+  line(
+    (j3-x + grip-open, j3-y - 0.8),
+    (j3-x + grip-open - 0.25, j3-y - 1.0),
+    stroke: (thickness: 1.5pt, paint: arm-col),
   )
 
   // Bob on the side with issue
