@@ -145,24 +145,43 @@ The library implements the reduction graph as a Rust crate, organized in three l
 \subsection{User Interfaces}\label{sec:user-interfaces}
 
 The \texttt{pred} CLI is the primary entry point.
-A typical session proceeds in three steps: explore the graph, create an instance, and solve it.
+\Cref{lst:cli-session} shows a complete session: finding a reduction path, creating a problem instance, and solving it.
 
-\textbf{Example: solving a Maximum Independent Set instance.}
-A user first inspects what the library knows about her problem:
-\begin{center}
-\texttt{pred show MIS}
-\end{center}
-This prints the formal definition, size measures, best-known complexity, and every reduction connecting MIS to other problems.
-To reach a commercial ILP solver, she queries for a reduction path:
-\begin{center}
-\texttt{pred path MIS ILP}
-\end{center}
-The output shows each intermediate problem type and the per-step overhead.
-She then creates an instance from a graph and solves it in one line:
-\begin{center}
-\texttt{pred create MIS -{}-graph 0-1,1-2,2-3 | pred solve -}
-\end{center}
-The CLI reduces the instance to ILP along the cheapest path, solves it, maps the solution back, and returns a maximum independent set.
+\begin{figure}[t]
+\begin{lstlisting}[
+  basicstyle=\ttfamily\footnotesize,
+  commentstyle=\color{gray}\itshape,
+  breaklines=true,
+  frame=single,
+  xleftmargin=4pt,
+  xrightmargin=4pt,
+  aboveskip=6pt,
+  belowskip=2pt,
+  captionpos=b,
+  caption={CLI session: solving a Maximum Independent Set instance via ILP.},
+  label={lst:cli-session}
+]
+# Find a reduction path from MIS to ILP
+$ pred path MIS ILP
+Path (3 steps): MIS -> MaxClique -> ILP
+  Overall: num_vars = O(n), num_constraints = O(n^2)
+
+# Create an instance on a 4-vertex path graph
+# and pipe it directly into the solver
+$ pred create MIS --graph 0-1,1-2,2-3 | pred solve -
+{
+  "problem": "MaximumIndependentSet",
+  "reduced_to": "ILP",
+  "solution": [1, 0, 0, 1],   // vertices 0 and 3
+  "evaluation": "Valid(2)"     // independent set of size 2
+}
+\end{lstlisting}
+\end{figure}
+
+Line~1 queries the reduction graph for the cheapest path from Maximum Independent Set to Integer Linear Programming.
+The output (line~3) shows MIS~$\to$~MaxClique~$\to$~ILP in three steps, with overall overhead $O(n)$ variables and $O(n^2)$ constraints.
+Line~6 creates an MIS instance on the path graph $0\text{-}1\text{-}2\text{-}3$ and pipes it into the solver.
+The solver automatically reduces the instance along the path, solves the ILP, maps the solution back, and returns vertices~0 and~3---a maximum independent set of size~2.
 Commands compose through Unix pipes; \texttt{pred list} shows all registered problem types when browsing.
 
 The same functionality is available through the Rust library API.
