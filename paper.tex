@@ -60,21 +60,21 @@ To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as
 Each node is a problem type annotated with its \emph{size measures} and \emph{best-known algorithm complexity}; each directed edge is a verified reduction annotated with its \emph{reduction overhead}---a multivariate polynomial mapping the source's size measures to the target's.
 A problem~$A$ is \emph{reducible} to a problem~$C$ whenever a directed path from~$A$ to~$C$ exists in the graph.
 Overheads compose symbolically along paths, so the system can find the cheapest route from any problem to a solver backend.
-
-The key insight is \emph{compositionality}: independently contributed edges combine into longer chains, so every new reduction opens many new paths through the graph.
-For example, one contributor implemented Factoring $\to$ CircuitSAT (encoding integer multiplication as a Boolean circuit) and another implemented CircuitSAT $\to$ ILP (linearizing logic gates into integer constraints)---neither intended the composition, yet the graph chains them automatically to factor integers via linear programming.
-Each new edge amplifies the graph: adding a single reduction from problem~$X$ to MIS connects $X$ to every solver reachable from MIS, and connects every problem with a path to~$X$ to MIS.
-Physics-inspired solvers reinforce the need for such infrastructure: graph neural networks solve QUBO at million-variable scale~\cite{Schuetz2022PhysicsGNN}, and hybrid quantum-GNN methods tackle the Traveling Salesman Problem~\cite{He2024QuantumTSP}---but both assume a QUBO or Ising formulation as input, precisely the transformation that a reduction graph provides.
+\Cref{fig:reduction-graph} illustrates the idea: nodes are problem types, directed edges are reduction rules with overhead polynomials $r_{A \rightarrow B}$, and following a path through the graph leads from any supported problem to a solver backend with complexity $t_S$.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.80\columnwidth]{figures/reduction-graph-concept.pdf}
   \caption{Conceptual reduction graph.
-  Nodes are problem types, directed edges are reduction rules, meaning source problem can be reduced to target problem for solving.
-  Following a path through the graph leads from any supported problem to a solver backend. $r_{A \rightarrow B}$ and $r_{B \rightarrow C}$ are reduction overheads (polynomials) annotated on the edges, $t_S$ and $t_I$ are the best-known algorithm complexities for the solvers.}
+  Nodes are problem types, directed edges are verified reductions annotated with overhead polynomials.
+  Following a path leads from any supported problem to a solver backend.}
   \label{fig:reduction-graph}
 \end{figure}
 
+The key insight is \emph{compositionality}: independently contributed edges combine into longer chains, so every new reduction opens many new paths through the graph.
+For example, one contributor implemented Factoring $\to$ CircuitSAT (encoding integer multiplication as a Boolean circuit) and another implemented CircuitSAT $\to$ ILP (linearizing logic gates into integer constraints)---neither intended the composition, yet the graph chains them automatically to factor integers via linear programming.
+Each new edge amplifies the graph: adding a single reduction from problem~$X$ to MIS connects $X$ to every solver reachable from MIS, and connects every problem with a path to~$X$ to MIS.
+Physics-inspired solvers reinforce the need for such infrastructure: graph neural networks solve QUBO at million-variable scale~\cite{Schuetz2022PhysicsGNN}, and hybrid quantum-GNN methods tackle the Traveling Salesman Problem~\cite{He2024QuantumTSP}---but both assume a QUBO or Ising formulation as input, precisely the transformation that a reduction graph provides.
 
 \subsection{The Challenge}
 
