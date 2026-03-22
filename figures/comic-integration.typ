@@ -106,7 +106,7 @@
   let wall-top = wall-y2 + 4 * bh
 
   // Base plate on wall surface (left side, clear of green brick)
-  let base-x = wall-x2 + 0.5 * bw
+  let base-x = wall-x2 + 1.5 * bw
   rect(
     (base-x - 0.45, wall-top), (base-x + 0.45, wall-top + 0.25),
     fill: arm-col.lighten(40%),
@@ -159,20 +159,23 @@
   line(rf, (wrist-x + gs - 0.18, wrist-y - gl - 0.12),
     stroke: (thickness: 1.2pt, paint: arm-col))
 
-  // Bob with issue note (to the right, clear of wall and arm)
+  // Issue in brick shape (to the left of the arm, on top of wall)
+  let issue-x = wall-x2 - 0.3
+  let issue-y = wall-top + 0.1
+  rect(
+    (issue-x, issue-y), (issue-x + bw, issue-y + bh),
+    fill: col-good.lighten(60%),
+    stroke: 0.6pt + col-good,
+    radius: 1pt,
+  )
   content(
-    (rx + 4.8, ry - 0.3),
-    bob(size: charsize),
+    (issue-x + bw / 2, issue-y + bh / 2),
+    text(4.5pt, fill: col-good.darken(20%), [issue]),
   )
 
-  let note-x = rx + 4.1
-  let note-y = ry - 2.0
-  rect(
-    (note-x, note-y), (note-x + 1.4, note-y + 1.0),
-    fill: white, stroke: 0.5pt + luma(150), radius: 2pt,
-  )
+  // Bob on the left of the wall
   content(
-    (note-x + 0.7, note-y + 0.5),
-    text(4.5pt, fill: fg, align(center, [issue])),
+    (wall-x2 - 1.8, ry - 0.3),
+    bob(size: charsize),
   )
 })
