@@ -58,18 +58,16 @@ Reductions are the central tool of computational complexity theory~\cite{karp197
 
 A single reduction bridges one problem to one solver.
 To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as a \emph{directed graph}: each node is a problem type, each directed edge is a verified reduction, and each edge carries a \emph{reduction overhead}---a polynomial mapping the source's size measures to the target's.
-
 \begin{center}
   \includegraphics[width=0.70\columnwidth]{figures/reduction-graph-concept.pdf}
 \end{center}
-
-Overheads compose along paths ($r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$).
+Overheads chain along paths ($r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$).
 When multiple paths connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
 The graph coloring practitioner no longer chooses a solver; the graph finds the best path automatically.
 
-The graph is also \emph{compositional}: independently contributed edges combine into chains without coordination.
+Independently contributed edges combine into chains without coordination.
 One contributor implemented Factoring $\to$ CircuitSAT; another implemented CircuitSAT $\to$ ILP.
-Neither intended the composition, yet the graph chains them to factor integers via linear programming.
+Neither intended the combination, yet the graph chains them to factor integers via linear programming.
 Each new edge amplifies the graph: adding a reduction from problem~$X$ to MIS connects $X$ to every solver reachable from MIS, and every problem upstream of~$X$ to MIS.
 
 \subsection{The Challenge}
