@@ -341,40 +341,6 @@ Only a human maintainer can resolve issues and merge pull requests, since agents
 
 Skills encode these boundaries explicitly: mentor skills pause and query the human for creative or reasoning-intensive decisions, then resume autonomous execution once the answer is supplied.
 
-\subsection{Verification by Round-Trip Testing}\label{sec:roundtrip}
-
-How do we know each reduction is correct?
-Every reduction admits a fully automatable correctness test that requires no problem-specific oracle.
-The test, which we call \emph{round-trip testing}, works as follows:
-
-\begin{enumerate}
-  \item Construct a small source instance (e.g., a graph with 5--8 vertices).
-  \item Apply the forward map to produce a target instance.
-  \item Solve the target by brute-force enumeration (feasible for small instances).
-  \item Apply the inverse map to extract a solution for the source.
-  \item Verify that the extracted solution is optimal for the source (also by brute force).
-\end{enumerate}
-
-This pattern is the same for all 45~reductions.
-It catches the most mathematically subtle errors---incorrect variable mappings, off-by-one indexing in literal-to-vertex transformations, forgotten negations---without requiring a human to write problem-specific test logic.
-
-The library's type system enforces this pattern structurally: the \texttt{ReduceTo<T>} trait requires both a forward map and an inverse map in a single implementation.
-An agent cannot compile a forward reduction without providing solution extraction.
-See \Cref{app:architecture} for the complete type architecture.
-
-The test instances are not ad-hoc: they originate from the contributor's GitHub issue and are stored in a central example database that serves as the single source of truth (\Cref{fig:roundtrip-pipeline}).
-The same canonical instance powers three outputs: round-trip tests that verify correctness, JSON fixtures rendered into the PDF manual as visual diagrams with proof sketches, and the \texttt{pred create --example} command for interactive exploration.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.75\columnwidth]{figures/roundtrip-pipeline.pdf}
-  \caption{Example data flow.
-    A contributor's issue provides the canonical instance, which is extracted into the example database.
-    Round-trip tests run as a closed loop on the database.
-    The same data feeds JSON fixtures rendered in the PDF manual and the CLI's example mode.
-    The contributor cross-checks the manual against the original issue (dashed arrow).}
-  \label{fig:roundtrip-pipeline}
-\end{figure}
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
