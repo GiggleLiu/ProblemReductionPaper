@@ -62,11 +62,9 @@ A problem~$A$ is \emph{reducible} to a problem~$C$ whenever a directed path from
 Overheads compose symbolically along paths, so the system can find the cheapest route from any problem to a solver backend.
 \Cref{fig:reduction-graph} illustrates the idea: nodes are problem types, directed edges are reduction rules with overhead polynomials $r_{A \rightarrow B}$, and following a path through the graph leads from any supported problem to a solver backend with complexity $t_S$.
 
-\begin{figure}[h]
-  \centering
+\begin{center}
   \includegraphics[width=0.80\columnwidth]{figures/reduction-graph-concept.pdf}
-  \label{fig:reduction-graph}
-\end{figure}
+\end{center}
 
 The key insight is \emph{compositionality}: independently contributed edges combine into longer chains, so every new reduction opens many new paths through the graph.
 For example, one contributor implemented Factoring $\to$ CircuitSAT (encoding integer multiplication as a Boolean circuit) and another implemented CircuitSAT $\to$ ILP (linearizing logic gates into integer constraints)---neither intended the composition, yet the graph chains them automatically to factor integers via linear programming.

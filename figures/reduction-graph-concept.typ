@@ -9,7 +9,7 @@
   // ── Palette ──
   let col-bidi = rgb("#4e79a7")     // steel blue: bidirectional
   let col-edge-normal = black
-  let r = 0.32
+  let r = 0.50
 
   // ── Node helper (uniform style) ──
   let node(pos, label, name-id, label-anchor: "center", label-pad: 0.12, highlight: false) = {
@@ -17,11 +17,11 @@
     let nstroke = if highlight { (thickness: 1.0pt, paint: accent) } else { (thickness: 0.7pt, paint: border) }
     circle(pos, radius: r, fill: nfill, stroke: nstroke, name: name-id)
     if label-anchor == "center" {
-      content(name-id, text(6pt, fill: fg, label))
+      content(name-id, text(7pt, fill: fg, label))
     } else {
       let lp = if label-anchor == "south" { (rel: (0, -r - label-pad), to: name-id) } else if label-anchor == "north" { (rel: (0, r + label-pad), to: name-id) } else if label-anchor == "east" { (rel: (r + label-pad + 0.05, 0), to: name-id) } else { (rel: (-r - label-pad - 0.05, 0), to: name-id) }
       let la = if label-anchor == "south" { "north" } else if label-anchor == "north" { "south" } else if label-anchor == "east" { "west" } else { "east" }
-      content(lp, anchor: la, text(6pt, fill: fg, label))
+      content(lp, anchor: la, text(7pt, fill: fg, label))
     }
   }
 
