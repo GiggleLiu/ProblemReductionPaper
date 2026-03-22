@@ -423,24 +423,6 @@ Without skills, an agent might skip the issue check or omit the feature test---e
 %======================================================================
 \section{Discussion and Conclusion}\label{sec:conclusion}
 
-\subsection{Limitations}
-
-\paragraph{Single case study.}
-Evidence comes from one project by one primary developer.
-Replication across independent projects and teams is needed.
-
-\paragraph{Skill engineering cost.}
-The 14~skills represent substantial upfront investment---iterative refinement across many agent sessions.
-Each new domain requires its own skill engineering effort, though the methodology itself transfers.
-
-\paragraph{Confounding factors.}
-Both skills and underlying models improved during the nine-week span.
-Temporal stratification across the three phases partially addresses this, but we cannot fully disentangle the two contributions.
-
-\paragraph{Maintainer requirement.}
-The pipeline is not fully autonomous: without human judgment at two transitions (selecting work and approving results), the system cannot determine what is worth building or whether results meet standards.
-This is by design, but it means the pipeline cannot operate without a human in the loop.
-
 \subsection{Why Human Experts Remain Essential}
 
 The pipeline's reliance on human judgment is not a temporary limitation awaiting better models---it reflects a structural mismatch between what LLMs compute and what reductions require.
