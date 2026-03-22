@@ -352,7 +352,18 @@ Before any code is written, the proposal itself is validated along four dimensio
 Invalid proposals are rejected before implementation effort is spent.
 When a contributor batch-submitted 322~issues, only 25\% passed all four checks; the rest were incomplete specifications~(39\%), factually incorrect~(20\%), trivial~(13\%), or without practical value~(6\%).
 The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test, the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode.
-The contributor's mathematical intent propagates unchanged through all downstream artifacts.
+The contributor's mathematical intent propagates unchanged through all downstream artifacts (\Cref{fig:roundtrip-pipeline}).
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.75\columnwidth]{figures/roundtrip-pipeline.pdf}
+  \caption{Example data flow.
+    A contributor's issue provides the canonical instance, which is extracted into the example database.
+    Round-trip tests run as a closed loop on the database.
+    The same data feeds JSON fixtures rendered in the PDF manual and the CLI's example mode.
+    The contributor cross-checks the manual against the original issue (dashed arrow).}
+  \label{fig:roundtrip-pipeline}
+\end{figure}
 
 \textbf{Agentic feature tests.}
 Open-source libraries normally stabilize through years of community use: real users file bug reports, request clarifications, and expose edge cases that developers never anticipated.
