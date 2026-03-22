@@ -103,10 +103,10 @@ Analysis of an LLM-generated C~compiler found excessive abstraction layering and
 On the formal verification front, VeriCoding~\cite{Bursuc2025VeriCoding} reports 27--44\% success on formal specifications, and VeriBench~\cite{Miranda2025VeriBench} finds self-optimizing agents approach 90\% compilation in Lean~4, but full formal guarantees remain impractical at the scale of dozens of reductions.
 
 We call this a \emph{bridge problem}: software whose subtasks are homogeneous and formally verifiable, but whose scale exceeds what human teams can sustain.
-AI coding agents, constrained by a multilayer verification stack, break through these barriers---provided each unit of work is structured to fall within the agent's reliable range.
-A domain expert who discovers a new reduction can contribute it by filing a structured issue---no code required---and agents handle the implementation, testing, and documentation.
-Skills enforce project conventions at every invocation, and a seven-layer verification stack rejects non-conforming code before it enters the repository.
-The agent produces volume; verification ensures correctness.
+Reduction-graph construction is a natural instance: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target by brute force, map the solution back, and check optimality---without a problem-specific oracle (\Cref{sec:roundtrip}).
+This cheap, automatic verification makes the task well suited for AI coding agents, which produce volume while round-trip tests catch the errors.
+A domain expert who discovers a new reduction contributes it by filing a structured issue---no code required---and agents handle the implementation, testing, and documentation.
+Skills enforce project conventions at every invocation, and a multilayer verification stack rejects non-conforming code before it enters the repository.
 
 \subsection{Contributions}
 
