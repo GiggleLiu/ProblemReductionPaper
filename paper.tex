@@ -56,19 +56,19 @@ Reductions are the central tool of computational complexity theory~\cite{karp197
 
 \subsection{Bridging Problems to Solvers}
 
-A single reduction bridges one problem to one solver.
-To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as a \emph{directed graph}: each node is a problem type, each directed edge is a verified reduction, and each edge carries a \emph{reduction overhead}---a polynomial mapping the source's size measures to the target's.
+We call a single such reduction a \emph{primitive reduction rule}.
+To bridge \emph{many} problems to \emph{many} solvers, we organize primitive rules as a \emph{directed graph}: each node is a problem type, each directed edge is a primitive rule, and each edge carries a \emph{reduction overhead}---a polynomial mapping the source's size measures to the target's.
 \begin{center}
   \includegraphics[width=0.70\columnwidth]{figures/reduction-graph-concept.pdf}
 \end{center}
-Overheads chain along paths ($r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$).
-When multiple paths connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
+A \emph{composite reduction rule} is a directed path through the graph: chaining $A \to B$ and $B \to C$ yields the composite rule $A \to C$, with overhead $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
+When multiple composite rules connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
 The graph coloring practitioner no longer chooses a solver; the graph finds the best path automatically.
 
-Independently contributed edges combine into chains without coordination.
+Composite rules emerge without coordination.
 One contributor implemented Factoring $\to$ CircuitSAT; another implemented CircuitSAT $\to$ ILP.
 Neither intended the combination, yet the graph chains them to factor integers via linear programming.
-Each new edge amplifies the graph: adding a reduction from problem~$X$ to MIS connects $X$ to every solver reachable from MIS, and every problem upstream of~$X$ to MIS.
+Each new primitive rule amplifies the graph: adding a rule from problem~$X$ to MIS connects $X$ to every solver reachable from MIS, and every problem upstream of~$X$ to MIS.
 
 \subsection{The Challenge}
 
