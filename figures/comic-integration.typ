@@ -89,7 +89,7 @@
   let wall-y2 = ry - 3.5
   draw-wall(wall-x2, wall-y2, 4)
 
-  // New brick correctly placed
+  // New brick correctly placed (target slot)
   let new-bx = wall-x2 + 2.5 * bw
   let new-by = wall-y2 + 1 * bh
   rect(
@@ -99,15 +99,65 @@
     radius: 1pt,
   )
 
-  // Bob handing issue
+  // --- Mechanical arm / crane ---
+  let arm-col = accent
+  let arm-stroke = (thickness: 1.2pt, paint: arm-col)
+  let arm-thin = (thickness: 0.8pt, paint: arm-col)
+
+  // Horizontal rail at top
+  let rail-y = wall-y2 + 4 * bh + 2.5
+  let rail-left = wall-x2 - 0.5
+  let rail-right = wall-x2 + 3 * bw + 0.5
+  line(
+    (rail-left, rail-y), (rail-right, rail-y),
+    stroke: (thickness: 2pt, paint: arm-col),
+  )
+  // Rail feet (small vertical lines at ends)
+  line((rail-left, rail-y), (rail-left, rail-y - 0.3), stroke: arm-stroke)
+  line((rail-right, rail-y), (rail-right, rail-y - 0.3), stroke: arm-stroke)
+
+  // Trolley on rail (small rectangle)
+  let trolley-x = new-bx + bw / 2
+  let trolley-w = 0.8
+  let trolley-h = 0.4
+  rect(
+    (trolley-x - trolley-w / 2, rail-y - trolley-h),
+    (trolley-x + trolley-w / 2, rail-y),
+    fill: arm-col.lighten(60%),
+    stroke: 0.6pt + arm-col,
+    radius: 1pt,
+  )
+
+  // Vertical arm down from trolley
+  let arm-bottom = new-by + bh + 0.3
+  line(
+    (trolley-x, rail-y - trolley-h),
+    (trolley-x, arm-bottom),
+    stroke: arm-stroke,
+  )
+
+  // Gripper (two angled lines holding the brick)
+  let grip-w = bw / 2 + 0.1
+  line(
+    (trolley-x, arm-bottom),
+    (trolley-x - grip-w, arm-bottom - 0.5),
+    stroke: arm-thin,
+  )
+  line(
+    (trolley-x, arm-bottom),
+    (trolley-x + grip-w, arm-bottom - 0.5),
+    stroke: arm-thin,
+  )
+
+  // Bob on the side with issue
   content(
     (rx + 4.8, ry - 0.3),
     bob(size: charsize),
   )
 
   // Issue note
-  let note-x = rx - 3.0
-  let note-y = ry + 0.0
+  let note-x = rx + 3.5
+  let note-y = ry + 0.5
   rect(
     (note-x, note-y), (note-x + 1.4, note-y + 1.0),
     fill: white, stroke: 0.5pt + luma(150), radius: 2pt,
@@ -115,19 +165,5 @@
   content(
     (note-x + 0.7, note-y + 0.5),
     text(4.5pt, fill: fg, align(center, [issue])),
-  )
-
-  // Arrow: issue → agent
-  line(
-    (note-x + 1.5, note-y + 0.5),
-    (rx + 0.3, note-y + 0.5),
-    stroke: (thickness: 0.8pt, paint: accent),
-    mark: (end: "straight", scale: 0.35),
-  )
-
-  // Crank carrying brick
-  content(
-    (rx + 5.2, ry - 2.5),
-    crank(size: charsize),
   )
 })
