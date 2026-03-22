@@ -385,13 +385,17 @@ Overhead validation compares symbolic size expressions against actual target siz
 Materialized fixtures address the ``lazy agent'' problem: ground-truth data is generated independently and committed separately, so tampering produces a visible diff in a file outside the agent's normal scope.
 
 \textbf{Layer~3: Agentic feature tests.}
-Parallel sub-agents in fresh context windows review the implementation---one for structural completeness, one for code quality, one for issue compliance---then post a combined verdict.
-Fresh context prevents confirmation bias.
-A simulated downstream user exercises the feature through the CLI and judges whether results are consistent with domain knowledge, replacing the community feedback loop that niche libraries lack.
-Each simulated user is defined by an \emph{agent profile}: a structured persona with a backstory, domain expertise, and testing habits.
-\Cref{fig:agent-profile} shows a representative example.
-The agent adopts this persona, reads only the project's documentation, then attempts the end-to-end workflow: pick a problem, create an instance with realistic data, find a reduction path, solve, and verify.
-Gaps between the persona's domain expectation and actual CLI output are reported as bugs---catching usability and correctness issues that unit tests miss.
+Open-source libraries normally stabilize through years of community use: real users with diverse backgrounds file bug reports, request clarifications, and expose edge cases that developers never anticipated.
+A niche library cannot wait for that community to form.
+Agentic feature tests compress this feedback loop from years to minutes by \emph{simulating} the community.
+
+The mechanism has three phases.
+First, the main agent launches a sub-agent in a \emph{fresh context window}---one that has never seen the implementation---and injects an \emph{agent profile}: a structured persona with domain expertise, testing habits, and a concrete use case (\Cref{fig:agent-profile}).
+The fresh context is essential; a sub-agent that has just written the code cannot objectively test it.
+Second, the sub-agent role-plays the persona end-to-end: it reads only the project's documentation, picks a problem it recognizes from its domain, builds an instance with realistic data, discovers a reduction path through the CLI, solves, and verifies the result against its own expectation.
+Third, the sub-agent steps out of character.
+The main agent interviews it---what worked, what was confusing, where did the output diverge from expectation---and the sub-agent writes a structured problem report.
+This report surfaces usability gaps, documentation omissions, and semantic errors that unit tests cannot reach.
 
 \begin{figure}[t]
   \centering
