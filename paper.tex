@@ -290,7 +290,8 @@ The feature test simulates a downstream user: an agent reads the documentation, 
 Fully automatable.
 
 \textbf{Stage~5: Merge.}
-The \texttt{final-review} skill walks the maintainer through the agentic verdict, assesses usefulness, safety, and completeness, applies mechanical fixes, then either merges or holds the PR with a reason.
+The \texttt{final-review} skill automatically fixes mechanical issues (formatting, naming conventions, missing registrations) and presents uncertain fixes to the maintainer for decision.
+It then walks the maintainer through the agentic verdict, assesses usefulness, safety, and completeness, and either merges or holds the PR with a reason.
 
 \textbf{Stage~6: Verify.}
 The maintainer invites the domain expert who filed the original issue to a community call.
