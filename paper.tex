@@ -56,7 +56,7 @@ Reductions are the central tool of computational complexity theory~\cite{karp197
 \subsection{Bridging Problems to Solvers}
 
 A single reduction bridges one problem to one solver.
-To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as a \emph{directed graph} (\Cref{fig:reduction-graph}).
+To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as a \emph{directed graph}.
 Each node is a problem type annotated with its \emph{size measures} and \emph{best-known algorithm complexity}; each directed edge is a verified reduction annotated with its \emph{reduction overhead}---a multivariate polynomial mapping the source's size measures to the target's.
 A problem~$A$ is \emph{reducible} to a problem~$C$ whenever a directed path from~$A$ to~$C$ exists in the graph.
 Overheads compose symbolically along paths, so the system can find the cheapest route from any problem to a solver backend.
