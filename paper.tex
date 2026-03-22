@@ -64,6 +64,8 @@ To bridge \emph{many} problems to \emph{many} solvers, we organize primitive rul
 Reductions are composable.
 A \emph{composite reduction rule} is a directed path through the graph: chaining $A \to B$ and $B \to C$ yields the composite rule $A \to C$, with overhead $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
 When multiple composite rules connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
+The graph can be strengthened by adding more primitive rules. For example, even if we already have a composite rule from $A$ to $C$, if a direct reduction from $A$ to $C$ has provable better overhead, it should be added as a primitive rule.
+In contrast, if the new primitive does not improve the overhead, it should not be avoided to reduce the path finding complexity.
 
 Two kinds of composite rules play a special role.
 If a composite rule exists from 3-SAT to a problem~$H$, that path constitutes an NP-hardness proof for~$H$---we say $H$ is \emph{NP-hard verified} by the graph.
