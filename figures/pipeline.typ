@@ -1,4 +1,5 @@
 #import "lib.typ": *
+#import "pixel-family/lib.typ": bob, grace, crank, sentinel
 
 #set page(..fig-page)
 #set text(..fig-text)
@@ -12,6 +13,7 @@
 #let card-w = 3
 #let card-h = 0.7
 #let gap-x = 1.0
+#let char-size = 0.7cm
 
 #canvas(length: 0.55cm, {
   import draw: *
@@ -54,9 +56,13 @@
   // --- Entry: Domain Expert → Backlog ---
   let entry-y = cy + card-h / 2 + 1.5
   content(
-    (x0, entry-y), anchor: "center",
+    (x0 + 0.8, entry-y), anchor: "west",
     text(6.5pt, fill: col-human.darken(10%),
-      align(center, [Domain Expert (`propose`)])),
+      align(center, [Domain Expert\ (`propose`)])),
+  )
+  content(
+    (x0 - 0.8, entry-y), anchor: "east",
+    bob(size: char-size),
   )
   line(
     (x0, entry-y - 0.5), (x0, cy + card-h / 2 + 0.05),
@@ -70,7 +76,14 @@
   // Backlog → Ready (Maintainer)
   let x1 = x0 + card-w + gap-x
   harrow(x0, x1, col-human, cy)
-  label-below(x0, x1, col-human, [Maintainer triages\ (`fix-issue`)], cy)
+  content(
+    ((x0 + x1) / 2 + 1.0, cy - card-h / 2 - 0.55), anchor: "west",
+    text(6.5pt, fill: col-human, [Maintainer triages\ (`fix-issue`)]),
+  )
+  content(
+    ((x0 + x1) / 2 - 1.0, cy - card-h / 2 - 0.55), anchor: "east",
+    grace(size: char-size),
+  )
 
   // 2. Ready
   board-card(x1, cy, "Ready", "ready")
@@ -109,37 +122,20 @@
   // Final Review → Done (Maintainer)
   let x6 = x5 + card-w + gap-x
   harrow(x5, x6, col-human, cy)
-  label-below(x5, x6, col-human, [Maintainer merges\ (`final-review`)], cy)
+  content(
+    ((x5 + x6) / 2 + 1.0, cy - card-h / 2 - 0.55), anchor: "west",
+    text(6.5pt, fill: col-human, [Maintainer merges\ (`final-review`)]),
+  )
+  content(
+    ((x5 + x6) / 2 - 1.0, cy - card-h / 2 - 0.55), anchor: "east",
+    grace(size: char-size),
+  )
 
   // 7. Done
   board-card(x6, cy, "Done", "done")
 
-  // // --- On Hold ---
-  // let oh-h = 1.8
-  // let oh-y = cy - card-h / 2 - 3.5
-  // let oh-x = (x2 + x5) / 2  // centered between In Progress and Final Review
-  // board-card(oh-x, oh-y, "On Hold", "onhold")
-
-  // L-shaped arrows: go down past labels, then angle to On Hold
+  // L-shaped arrows placeholder
   let bend-y = cy - card-h / 2 - 2.0
-
-  // // Arrow from In Progress → On Hold
-  // line(
-  //   (x2, cy - card-h / 2),
-  //   (x2, bend-y),
-  //   (oh-x - card-w / 2 - 0.05, oh-y),
-  //   stroke: (thickness: 0.8pt, paint: col-fail),
-  //   mark: (end: "straight", scale: 0.3),
-  // )
-
-  // // Arrow from Final Review → On Hold
-  // line(
-  //   (x5, cy - card-h / 2),
-  //   (x5, bend-y),
-  //   (oh-x + card-w / 2 + 0.05, oh-y),
-  //   stroke: (thickness: 0.8pt, paint: col-fail),
-  //   mark: (end: "straight", scale: 0.3),
-  // )
 
   // --- Implementation Agent bracket ---
   let by = cy - card-h / 2 - 0.5
@@ -151,8 +147,12 @@
     stroke: (thickness: 0.8pt, paint: col-impl),
   )
   content(
-    ((impl-left + impl-right) / 2, by - 0.6), anchor: "south",
-    text(6pt, fill: col-impl, [Impl. Agent (`run-pipeline`)]),
+    ((impl-left + impl-right) / 2 + 0.8, by - 0.6), anchor: "west",
+    text(6pt, fill: col-impl, [Impl. Agent\ (`run-pipeline`)]),
+  )
+  content(
+    ((impl-left + impl-right) / 2 - 0.8, by - 0.6), anchor: "east",
+    crank(size: char-size),
   )
 
   // --- Review Agent bracket ---
@@ -164,7 +164,11 @@
     stroke: (thickness: 0.8pt, paint: col-review),
   )
   content(
-    ((rev-left + rev-right) / 2, by - 0.6), anchor: "south",
-    text(6pt, fill: col-review, [Review Agent (`review-pipeline`)]),
+    ((rev-left + rev-right) / 2 + 0.8, by - 0.6), anchor: "west",
+    text(6pt, fill: col-review, [Review Agent\ (`review-pipeline`)]),
+  )
+  content(
+    ((rev-left + rev-right) / 2 - 0.8, by - 0.6), anchor: "east",
+    sentinel(size: char-size),
   )
 })
