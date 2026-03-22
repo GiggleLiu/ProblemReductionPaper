@@ -57,23 +57,20 @@ Reductions are the central tool of computational complexity theory~\cite{karp197
 \subsection{Bridging Problems to Solvers}
 
 A single reduction bridges one problem to one solver.
-The practitioner's real question is harder: given a problem and a set of available solvers, which reduction chain yields the best end-to-end performance?
-We answer this by organizing reductions as a \emph{directed graph}: each node is a problem type, and each directed edge is a verified reduction.
-A problem~$A$ is \emph{reducible} to a solver-backed problem~$C$ whenever a directed path connects them---for instance, $C \leftarrow B \leftarrow A$ in the diagram below.
+To bridge \emph{many} problems to \emph{many} solvers, we organize reductions as a \emph{directed graph}: each node is a problem type, each directed edge is a verified reduction, and each edge carries a \emph{reduction overhead}---a polynomial mapping the source's size measures to the target's.
 
 \begin{center}
   \includegraphics[width=0.70\columnwidth]{figures/reduction-graph-concept.pdf}
 \end{center}
 
-Every edge carries a \emph{reduction overhead}---a multivariate polynomial mapping the source's size measures to the target's.
-Overheads compose symbolically along paths ($r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$), so when multiple paths exist from a problem to different solvers, the system can compare their total cost---reduction overhead plus solver complexity---and select the cheapest route for a given input size.
-The graph coloring practitioner from Section~\ref{sec:intro}A no longer needs to know which solver to target; the graph finds the best path automatically.
+Overheads compose along paths ($r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$).
+When multiple paths connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
+The graph coloring practitioner no longer chooses a solver; the graph finds the best path automatically.
 
-This structure has a second key property: \emph{compositionality}.
-Independently contributed edges combine into longer chains without coordination.
-One contributor implemented Factoring $\to$ CircuitSAT (encoding integer multiplication as a Boolean circuit); another implemented CircuitSAT $\to$ ILP (linearizing logic gates into integer constraints).
-Neither intended the composition, yet the graph chains them automatically to factor integers via linear programming.
-Adding a single edge from a new problem~$X$ to MIS instantly connects $X$ to every solver reachable from MIS, and connects every problem upstream of~$X$ to MIS as well.
+The graph is also \emph{compositional}: independently contributed edges combine into chains without coordination.
+One contributor implemented Factoring $\to$ CircuitSAT; another implemented CircuitSAT $\to$ ILP.
+Neither intended the composition, yet the graph chains them to factor integers via linear programming.
+Each new edge amplifies the graph: adding a reduction from problem~$X$ to MIS connects $X$ to every solver reachable from MIS, and every problem upstream of~$X$ to MIS.
 
 \subsection{The Challenge}
 
