@@ -265,11 +265,11 @@ Not all stages are equal: some are routine work that an agent can execute autono
 \end{figure*}
 
 \textbf{Stage~1: Propose.}
-A domain expert provides the creative elements that no agent can supply: which problem is worth adding, what is its formal definition, what example reveals correctness, what is the polynomial overhead?
-The contributor need not know the codebase or even the programming language.
-The agent analyzes the graph's topology to rank proposals by value.
-Three structural properties guide this ranking: a problem's \emph{NP-hardness is verified} whenever a directed path from 3-SAT reaches it, so rules that complete such paths are prioritized; an \emph{orphan node} has no edges and cannot reach any solver, so connecting orphans is high-value; a rule is \emph{redundant} when a composite path with equal or lower overhead already connects the same endpoints---redundant rules are rejected.
-Before filing, the agent pre-validates the draft against Stage~2's quality checks.
+The \texttt{propose} skill guides a domain expert through a structured brainstorming session---one question at a time, using mathematical language only, no programming required.
+For a new reduction rule, the agent first runs a topology analysis to identify the most impactful gaps: problems unreachable from 3-SAT (lacking NP-hardness proofs), orphan nodes with no edges, and clusters disconnected from solvers.
+It then presents ranked suggestions and walks the expert through the reduction algorithm, correctness argument, size overhead, and a fully worked example.
+For a new problem type, it elicits the formal definition, variable representation, best-known complexity (with references), and candidate instances, then suggests companion rules to prevent the new problem from becoming an orphan.
+Before filing, the agent pre-validates the draft against Stage~2's quality checks; only issues passing all four checks are submitted.
 
 \textbf{Stage~2: Validate.}
 Four independent tests are applied: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
