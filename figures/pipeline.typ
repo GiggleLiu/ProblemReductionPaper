@@ -13,7 +13,7 @@
 #let card-w = 3
 #let card-h = 0.7
 #let gap-x = 1.0
-#let char-size = 0.7cm
+#let ic = 0.9em  // inline character size
 
 #canvas(length: 0.55cm, {
   import draw: *
@@ -56,13 +56,9 @@
   // --- Entry: Domain Expert → Backlog ---
   let entry-y = cy + card-h / 2 + 1.5
   content(
-    (x0 + 0.8, entry-y), anchor: "west",
+    (x0, entry-y), anchor: "center",
     text(6.5pt, fill: col-human.darken(10%),
-      align(center, [Domain Expert\ (`propose`)])),
-  )
-  content(
-    (x0 - 0.8, entry-y), anchor: "east",
-    bob(size: char-size),
+      align(center, [#bob(size: ic) Domain Expert\ (`propose`)])),
   )
   line(
     (x0, entry-y - 0.5), (x0, cy + card-h / 2 + 0.05),
@@ -76,14 +72,7 @@
   // Backlog → Ready (Maintainer)
   let x1 = x0 + card-w + gap-x
   harrow(x0, x1, col-human, cy)
-  content(
-    ((x0 + x1) / 2 + 1.0, cy - card-h / 2 - 0.55), anchor: "west",
-    text(6.5pt, fill: col-human, [Maintainer triages\ (`fix-issue`)]),
-  )
-  content(
-    ((x0 + x1) / 2 - 1.0, cy - card-h / 2 - 0.55), anchor: "east",
-    grace(size: char-size),
-  )
+  label-below(x0, x1, col-human, [#grace(size: ic) Maintainer triages\ (`fix-issue`)], cy)
 
   // 2. Ready
   board-card(x1, cy, "Ready", "ready")
@@ -122,14 +111,7 @@
   // Final Review → Done (Maintainer)
   let x6 = x5 + card-w + gap-x
   harrow(x5, x6, col-human, cy)
-  content(
-    ((x5 + x6) / 2 + 1.0, cy - card-h / 2 - 0.55), anchor: "west",
-    text(6.5pt, fill: col-human, [Maintainer merges\ (`final-review`)]),
-  )
-  content(
-    ((x5 + x6) / 2 - 1.0, cy - card-h / 2 - 0.55), anchor: "east",
-    grace(size: char-size),
-  )
+  label-below(x5, x6, col-human, [#grace(size: ic) Maintainer merges\ (`final-review`)], cy)
 
   // 7. Done
   board-card(x6, cy, "Done", "done")
@@ -147,12 +129,8 @@
     stroke: (thickness: 0.8pt, paint: col-impl),
   )
   content(
-    ((impl-left + impl-right) / 2 + 0.8, by - 0.6), anchor: "west",
-    text(6pt, fill: col-impl, [Impl. Agent\ (`run-pipeline`)]),
-  )
-  content(
-    ((impl-left + impl-right) / 2 - 0.8, by - 0.6), anchor: "east",
-    crank(size: char-size),
+    ((impl-left + impl-right) / 2, by - 0.6), anchor: "south",
+    text(6pt, fill: col-impl, [#crank(size: ic) Impl. Agent (`run-pipeline`)]),
   )
 
   // --- Review Agent bracket ---
@@ -164,11 +142,7 @@
     stroke: (thickness: 0.8pt, paint: col-review),
   )
   content(
-    ((rev-left + rev-right) / 2 + 0.8, by - 0.6), anchor: "west",
-    text(6pt, fill: col-review, [Review Agent\ (`review-pipeline`)]),
-  )
-  content(
-    ((rev-left + rev-right) / 2 - 0.8, by - 0.6), anchor: "east",
-    sentinel(size: char-size),
+    ((rev-left + rev-right) / 2, by - 0.6), anchor: "south",
+    text(6pt, fill: col-review, [#sentinel(size: ic) Review Agent (`review-pipeline`)]),
   )
 })
