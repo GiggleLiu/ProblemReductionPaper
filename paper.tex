@@ -387,6 +387,9 @@ Materialized fixtures address the ``lazy agent'' problem: ground-truth data is g
 Parallel sub-agents in fresh context windows review the implementation---one for structural completeness, one for code quality, one for issue compliance---then post a combined verdict.
 Fresh context prevents confirmation bias.
 A simulated downstream user exercises the feature through the CLI and judges whether results are consistent with domain knowledge, replacing the community feedback loop that niche libraries lack.
+Each simulated user is defined by an \emph{agent profile}: a persona with a backstory, expertise level, decision tendencies, and testing quirks.
+For example, the profile ``Dr.\ Sarah Chen'' describes a computational physicist who evaluates optimization tools by running them against problems with known optima; she tests edge cases proactively (empty graphs, disconnected components), inspects JSON output with \texttt{jq}, and gets impatient with vague error messages.
+The agent playing this role runs the full \texttt{create~$\to$~reduce~$\to$~solve~$\to$~evaluate} pipeline and flags any deviation from expected results---catching usability and correctness issues that unit tests miss.
 
 \textbf{Layer~4: Contributor verification.}
 After merge, the domain expert who filed the original issue verifies the result.
