@@ -160,6 +160,12 @@
   line(rf, (wrist-x + gs - 0.18, wrist-y - gl - 0.12),
     stroke: (thickness: 1.2pt, paint: arm-col))
 
+  // Agent (crank) sitting on top of the elbow joint, manipulating the arm
+  content(
+    (j2.at(0), j2.at(1) + 0.8),
+    crank(size: charsize),
+  )
+
   // Issue in brick shape (to the left of the arm, on top of wall)
   let issue-x = wall-x2 - 0.3
   let issue-y = wall-top + 0.1
