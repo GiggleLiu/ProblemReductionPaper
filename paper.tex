@@ -254,15 +254,14 @@ Skills are the functions of the agent OS, written in natural language.
 Adding a reduction to the graph involves five stages, from initial proposal to merged code (\Cref{fig:pipeline}).
 Not all stages are equal: some are routine work that an agent can execute autonomously; others require creativity and domain judgment that no instruction can encode.
 
-\begin{figure}[t]
+\begin{figure*}[t]
   \centering
-  \includegraphics[width=\columnwidth]{figures/pipeline.pdf}
-  \caption{Contribution pipeline mirroring the GitHub project board.
-    Four roles drive the flow: a \emph{domain expert} files issues (orange), a \emph{maintainer} triages and merges (orange), an \emph{implementation agent} picks issues and creates PRs (blue), and a \emph{review agent} runs parallel reviews and posts verdicts (teal).
-    Review Pool is the handoff boundary between the two agents.
-    Failures move items to On~Hold for human triage.}
+  \includegraphics[width=\textwidth]{figures/pipeline.pdf}
+  \caption{Contribution pipeline.
+    Orange stages require human judgment (domain expert or maintainer); blue stages are fully automated by agents.
+    Each stage is annotated with its primary action.}
   \label{fig:pipeline}
-\end{figure}
+\end{figure*}
 
 \textbf{Stage~1: Propose.}
 A domain expert provides the creative elements that no agent can supply: which problem is worth adding, what is its formal definition, what example reveals correctness, what is the polynomial overhead?
