@@ -114,34 +114,49 @@
     radius: (top-left: 2pt, top-right: 2pt),
   )
 
-  // Joint 1 (shoulder)
+  // Joint positions
   let j1 = (base-x, wall-top + 0.25)
-  circle(j1, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.5pt + arm-col)
-
-  // Upper arm: arches up and to the right, clear of wall
   let j2 = (wall-x2 + 3 * bw + 1.0, wall-top + 2.0)
-  line(j1, j2, stroke: (thickness: arm-thick, paint: arm-col.lighten(30%)))
-
-  // Joint 2 (elbow)
-  circle(j2, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.5pt + arm-col)
-
-  // Forearm: reaches down to hover above the green brick (outside the wall edge)
   let wrist-x = new-bx + bw / 2
   let wrist-y = new-by + bh + 0.5
   let j3 = (wrist-x, wrist-y)
-  line(j2, j3, stroke: (thickness: arm-thick, paint: arm-col.lighten(50%)))
+  let jr3 = joint-r * 0.7
 
-  // Joint 3 (wrist)
-  circle(j3, radius: joint-r * 0.7, fill: arm-col.lighten(60%), stroke: 0.5pt + arm-col)
+  // Helper: offset a point toward target by distance d
+  let nudge(from, to, d) = {
+    let dx = to.at(0) - from.at(0)
+    let dy = to.at(1) - from.at(1)
+    let len = calc.sqrt(dx * dx + dy * dy)
+    (from.at(0) + dx / len * d, from.at(1) + dy / len * d)
+  }
 
-  // Gripper fingers
+  // Upper arm: shoulder → elbow (shortened to avoid joint overlap)
+  line(
+    nudge(j1, j2, joint-r), nudge(j2, j1, joint-r),
+    stroke: (thickness: arm-thick, paint: arm-col.lighten(30%)),
+  )
+
+  // Forearm: elbow → wrist (shortened)
+  line(
+    nudge(j2, j3, joint-r), nudge(j3, j2, jr3),
+    stroke: (thickness: arm-thick, paint: arm-col.lighten(50%)),
+  )
+
+  // Draw joints on top of arms
+  circle(j1, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.5pt + arm-col)
+  circle(j2, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.5pt + arm-col)
+  circle(j3, radius: jr3, fill: arm-col.lighten(60%), stroke: 0.5pt + arm-col)
+
+  // Gripper fingers (start from wrist edge, not center)
   let gs = 0.4   // spread
   let gl = 0.45  // finger length
-  line(j3, (wrist-x - gs, wrist-y - gl), stroke: (thickness: 1.2pt, paint: arm-col))
-  line((wrist-x - gs, wrist-y - gl), (wrist-x - gs + 0.18, wrist-y - gl - 0.12),
+  let lf = (wrist-x - gs, wrist-y - gl)
+  let rf = (wrist-x + gs, wrist-y - gl)
+  line(nudge(j3, lf, jr3), lf, stroke: (thickness: 1.2pt, paint: arm-col))
+  line(lf, (wrist-x - gs + 0.18, wrist-y - gl - 0.12),
     stroke: (thickness: 1.2pt, paint: arm-col))
-  line(j3, (wrist-x + gs, wrist-y - gl), stroke: (thickness: 1.2pt, paint: arm-col))
-  line((wrist-x + gs, wrist-y - gl), (wrist-x + gs - 0.18, wrist-y - gl - 0.12),
+  line(nudge(j3, rf, jr3), rf, stroke: (thickness: 1.2pt, paint: arm-col))
+  line(rf, (wrist-x + gs - 0.18, wrist-y - gl - 0.12),
     stroke: (thickness: 1.2pt, paint: arm-col))
 
   // Bob with issue note (to the right, clear of wall and arm)
