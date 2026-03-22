@@ -40,8 +40,8 @@
   let ly = 0
 
   content(
-    (lx, ly + 1.8),
-    text(7.5pt, weight: "bold", fill: fg, [Manual integration]),
+    (lx, ly - 4.5),
+    text(7pt, fill: fg, [(a) Manual integration]),
   )
 
   let wall-x = lx - 3.3
@@ -66,23 +66,23 @@
 
   // X mark
   content(
-    (3 + jam-cx + bw * 0.9, jam-cy + bh * 0.8),
-    text(8pt, fill: col-new, [?]),
+    (3 + jam-cx + bw * 0.5, jam-cy + bh * 0.8),
+    text(8pt, [?]),
   )
 
   // Bob — small
   content(
-    (lx + 4.8, ly - 0.3),
+    (lx + 4.2, ly - 0.3),
     bob(size: charsize),
   )
 
   // ─── Right Panel: Agentic Integration ───
-  let rx = 13
+  let rx = 12
   let ry = 0
 
   content(
-    (rx, ry + 1.8),
-    text(7.5pt, weight: "bold", fill: fg, [Agentic integration]),
+    (rx, ry - 4.5),
+    text(7pt, fill: fg, [(b) Agentic integration]),
   )
 
   let wall-x2 = rx - 3.3
@@ -98,7 +98,7 @@
     stroke: none,
     radius: 1pt,
   )
-  content((new-bx + bw / 2, new-by + bh / 2), text(white, 6pt)[Code])
+  content((new-bx + bw / 2, new-by + bh / 2), text(white, 6.5pt)[Code])
 
   // --- Robotic arm growing from wall surface ---
   let arm-col = accent
@@ -162,7 +162,7 @@
 
   // Agent (crank) sitting on top of the elbow joint, manipulating the arm
   content(
-    (j2.at(0), j2.at(1) + 0.8),
+    (j1.at(0), j1.at(1) + 1),
     crank(size: charsize),
   )
 
@@ -176,12 +176,12 @@
   )
   content(
     (issue-x + bw / 2, issue-y + bh / 2),
-    text(6pt, fill: col-good.darken(20%), [issue]),
+    text(6.5pt, [issue]),
   )
 
-  // Bob on the left of the wall
-  content(
-    (wall-x2 - 1.3, ry + 0.3),
-    bob(size: charsize),
-  )
+  // // Bob on the left of the wall
+  // content(
+  //   (wall-x2 - 1.3, ry + 0.3),
+  //   bob(size: charsize),
+  // )
 })
