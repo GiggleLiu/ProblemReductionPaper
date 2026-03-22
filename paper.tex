@@ -278,9 +278,11 @@ The maintainer then uses the \texttt{fix-issue} skill to resolve flagged uncerta
 Only issues passing all four checks move to Ready.
 
 \textbf{Stage~3: Implement.}
-The \texttt{run-pipeline} skill picks the highest-ranked Ready issue, claims it, and invokes \texttt{issue-to-pr} to convert it into a pull request.
+The \texttt{run-pipeline} skill picks the highest-ranked Ready issue, claims it, and orchestrates three layers of skills.
+First, domain skills (\texttt{add-model}, \texttt{add-rule}) encode the conventions for adding a problem type or reduction rule correctly---Rust types, trait implementations, unit tests, CLI registration, and a paper entry with formal definitions and proof sketches.
+Second, software engineering skills (\texttt{issue-to-pr}) encode PR best practices: interpret the issue, create an isolated git worktree, write an implementation plan, execute it, and open a PR with a detailed summary.
+Third, a sub-agent orchestration layer dispatches independent tasks to parallel agents, powered by a general-purpose agent-development plugin.
 Each PR contains exactly one model or one rule.
-The \texttt{issue-to-pr} skill fetches the issue, researches references, writes an implementation plan, then executes it: Rust types, trait implementations, unit tests, CLI registration, and a paper entry with formal definitions and proof sketches.
 Fully automatable.
 
 \textbf{Stage~4: Review.}
