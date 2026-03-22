@@ -71,6 +71,10 @@ One contributor implemented Factoring $\to$ CircuitSAT; another implemented Circ
 Neither intended the combination, yet the graph chains them to factor integers via linear programming.
 Each new primitive rule amplifies the graph: adding a rule from problem~$X$ to MIS connects $X$ to every solver reachable from MIS, and every problem upstream of~$X$ to MIS.
 
+Two composite-rule patterns recur throughout this paper.
+First, if a composite rule exists from 3-SAT to a problem~$H$, that path constitutes an NP-hardness proof for~$H$---we say $H$ is \emph{NP-hard verified} by the graph.
+Second, if a composite rule exists from a problem to ILP, that problem gains access to mature commercial solvers (Gurobi, CPLEX), providing an efficient verification oracle for testing reductions end-to-end.
+
 \subsection{The Challenge}
 
 Building such a graph is itself a hard problem---not computationally, but organizationally.
