@@ -360,32 +360,25 @@ The same canonical instance powers three outputs: round-trip tests that verify c
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
-Correctness assurance comes from four progressive verification layers (\Cref{fig:verification-funnel}).
-Each layer catches a different class of error; no single layer suffices.
+Correctness in this project begins with the issue, not the code (\Cref{fig:verification-funnel}).
+The structured issue serves as both the specification and the acceptance criterion: it defines the reduction's mathematical content, provides the canonical example that seeds all tests, and sets the quality bar through explicit completeness checks.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/verification-funnel.pdf}
   \caption{Verification funnel.
-    Candidate contributions are progressively filtered: issue checks reject invalid proposals, tests reject implementation errors, agentic reviews reject behavioral issues, and contributor verification catches quality gaps.
-    After merge, the domain expert verifies that the result matches their original intent.
-    \color{red}{add example, focus on the lens of issue check, agentic tests.}
-    }
+    Candidate contributions are progressively filtered: issue checks reject invalid proposals before implementation, automated tests reject implementation errors, and agentic feature tests surface usability and semantic gaps that unit tests cannot reach.}
   \label{fig:verification-funnel}
 \end{figure}
 
-\textbf{Layer~1: Issue check.}
-Before any code is written, the proposal itself is validated: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+\textbf{Issue check.}
+Before any code is written, the proposal itself is validated along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation, not a trivial renaming?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
 Invalid proposals are rejected before implementation effort is spent.
+The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test (\Cref{sec:roundtrip}), the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode.
+The contributor's mathematical intent propagates unchanged through all downstream artifacts.
 
-\textbf{Layer~2: Unit tests and round-trip tests.}
-The type system catches structural errors at compile time: an agent cannot implement a reduction without providing solution extraction, reference nonexistent problem attributes, or omit required variant declarations.
-Round-trip tests (\Cref{sec:roundtrip}) catch semantic errors---incorrect variable mappings, off-by-one indexing, forgotten negations---without per-reduction test logic.
-Overhead validation compares symbolic size expressions against actual target sizes, catching formula errors that are type-correct but mathematically wrong.
-Materialized fixtures address the ``lazy agent'' problem: ground-truth data is generated independently and committed separately, so tampering produces a visible diff in a file outside the agent's normal scope.
-
-\textbf{Layer~3: Agentic feature tests.}
-Open-source libraries normally stabilize through years of community use: real users with diverse backgrounds file bug reports, request clarifications, and expose edge cases that developers never anticipated.
+\textbf{Agentic feature tests.}
+Open-source libraries normally stabilize through years of community use: real users file bug reports, request clarifications, and expose edge cases that developers never anticipated.
 A niche library cannot wait for that community to form.
 Agentic feature tests compress this feedback loop from years to minutes by \emph{simulating} the community.
 
@@ -421,17 +414,13 @@ This report surfaces usability gaps, documentation omissions, and semantic error
   After each step, compares the output against his expectation.
   If something does not match, investigates before moving on.
   \end{tcolorbox}
-  \caption{A representative agent profile used in Layer~3 testing.
+  \caption{A representative agent profile used in agentic feature testing.
     The persona's domain knowledge (logistics optimization) lets the agent judge whether reduction results are plausible without access to ground-truth labels.}
   \label{fig:agent-profile}
 \end{figure}
 
-\textbf{Layer~4: Contributor verification.}
-After merge, the domain expert who filed the original issue verifies the result.
-This layer catches errors invisible to automated tests: whether the reduction matches the intent of the original proposal, whether the proof sketch is convincing, and whether the formal definition faithfully captures the problem.
-
-The skill system ensures all four layers are invoked for every contribution.
-Without skills, an agent might skip overhead validation or omit the paper entry---errors that would accumulate silently over many contributions.
+The skill system ensures both gates are invoked for every contribution.
+Without skills, an agent might skip the issue check or omit the feature test---errors that would accumulate silently over many contributions.
 
 %======================================================================
 %  SECTION 5: EVIDENCE
