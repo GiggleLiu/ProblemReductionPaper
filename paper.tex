@@ -320,6 +320,27 @@ Four are mentor skills that treat the human as a callable resource for creativit
 \texttt{final-review} presents a structured merge-or-hold decision: it summarizes the PR, asks the maintainer to assess usefulness, safety, and completeness, then merges or labels accordingly.
 The remaining fourteen---including \texttt{run-pipeline}, \texttt{review-pipeline}, \texttt{check-issue}, \texttt{dev-setup}, and \texttt{release}---run autonomously, driving the routine stages of the pipeline without human intervention.
 
+\subsection{The Role of Human Experts}\label{sec:human-experts}
+
+The pipeline delegates routine execution to agents, but four responsibilities remain with humans---each requiring capabilities that current models lack.
+
+\emph{Selection and justification} (deep reasoning).
+Deciding which problem or rule to implement requires understanding the research landscape and the graph's strategic gaps: which reductions fill proof chains, which connect orphan nodes, which open access to new solvers.
+LLMs cannot perform this reliably: performance drops up to 65\% when irrelevant clauses are added to otherwise identical problems~\cite{Mirzadeh2025GSMSymbolic}, reasoning models exhibit accuracy collapse beyond complexity thresholds~\cite{Shojaee2025IllusionOfThinking}, and multi-step compositional reasoning exhibits multiplicative error accumulation~\cite{Dziri2023FaithFate}.
+
+\emph{Algorithm correctness} (deep reasoning).
+The contributor verifies that the proposed reduction is mathematically sound---checking the proof argument, confirming edge-case behavior in the construction, and ensuring the overhead analysis is tight.
+On research-level mathematics, the best models score below 2\% on FrontierMath~\cite{Glazer2024FrontierMath} and 8\% on Humanity's Last Exam~\cite{Paster2025HLE}; standard transformers are bounded by constant-depth threshold circuits, and even chain-of-thought extends expressiveness only to polynomial-time computation~\cite{Merrill2024ExpressivePower}.
+
+\emph{Example construction} (creative work).
+Providing a canonical instance with a known optimal solution seeds all downstream verification: round-trip tests, PDF manual diagrams, and CLI exploration.
+A poorly chosen example may fail to exercise the reduction's critical logic.
+
+\emph{Issue resolution and merge authority} (security-critical).
+Only a human maintainer can resolve issues and merge pull requests, since agents with unsupervised merge access could introduce unreviewed code.
+
+Skills encode these boundaries explicitly: mentor skills pause and query the human for creative or reasoning-intensive decisions, then resume autonomous execution once the answer is supplied.
+
 \subsection{Verification by Round-Trip Testing}\label{sec:roundtrip}
 
 How do we know each reduction is correct?
