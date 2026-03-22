@@ -441,17 +441,6 @@ Without skills, an agent might skip the issue check or omit the feature test---e
 %======================================================================
 \section{Discussion and Conclusion}\label{sec:conclusion}
 
-\subsection{Why Human Experts Remain Essential}
-
-The pipeline's reliance on human judgment is not a temporary limitation awaiting better models---it reflects a structural mismatch between what LLMs compute and what reductions require.
-LLMs do not perform genuine mathematical reasoning: performance drops up to 65\% when irrelevant clauses are added to otherwise identical problems~\cite{Mirzadeh2025GSMSymbolic}, reasoning models exhibit accuracy collapse beyond complexity thresholds~\cite{Shojaee2025IllusionOfThinking}, and multi-step compositional reasoning exhibits multiplicative error accumulation~\cite{Dziri2023FaithFate}.
-Standard transformers are bounded by constant-depth threshold circuits (TC$^0$); even chain-of-thought extends expressiveness only to polynomial-time computation~\cite{Merrill2024ExpressivePower}.
-
-The context window (200,000~tokens for Claude Opus~4.6) functions as working memory, not reasoning capacity: performance degrades 14--85\% as input length increases~\cite{Du2025ContextLengthHurts}, and LLMs cannot maintain internal state across turns~\cite{Huang2025LLMWorkingMemory}.
-On research-level mathematics, the best models score below 2\% on FrontierMath~\cite{Glazer2024FrontierMath} and 8\% on Humanity's Last Exam~\cite{Paster2025HLE}.
-
-Skills address this by encoding domain expertise in versionable documents that persist across sessions---cheaper than retraining, more durable than prompts.
-
 \subsection{Generalization to Other Domains}
 
 NP-hard reductions are not the only bridge problem.
