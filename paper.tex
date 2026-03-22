@@ -286,9 +286,8 @@ Each PR contains exactly one model or one rule.
 Fully automatable.
 
 \textbf{Stage~4: Review.}
-The \texttt{review-pipeline} skill dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing---then posts a combined verdict as a PR comment.
+The \texttt{review-pipeline} skill dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (\Cref{sec:verification})---then posts a combined verdict as a PR comment.
 Fresh context prevents confirmation bias.
-The feature test simulates a downstream user: an agent reads the documentation, exercises the feature through the CLI, and judges whether results are consistent with domain knowledge.
 Fully automatable.
 
 \textbf{Stage~5: Merge.}
