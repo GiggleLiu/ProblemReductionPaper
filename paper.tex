@@ -97,10 +97,18 @@ Conventions drift as contributors accumulate their own patterns.
 The domain experts who know the reductions rarely write systems code, bottlenecking progress on the few who know both.
 When a new reduction appears in the literature, the mathematician who understands it has no way to contribute it without learning the implementation language and the project's conventions.
 And the repetitive verification cycle that each edge demands---coding, testing, documenting---exhausts even dedicated maintainers.
+Meanwhile, systems like FunSearch~\cite{RomeraParedes2023FunSearch} and AlphaEvolve~\cite{Novikov2025AlphaEvolve} can \emph{discover} novel reductions through evolutionary search, and URSA~\cite{Janicic2025URSA} can verify them via SAT-based constraint solving---but discovered reductions still need to be implemented, tested, and integrated into a composable library.
+
+AI coding agents offer a way forward.
+The evolution from SWE-agent~\cite{Yang2024SWEagent} and Devin~\cite{Wu2024Devin} to OpenHands~\cite{Wang2024OpenHands} and Claude Code~\cite{Anthropic2025ClaudeCode} has expanded single-task capabilities to 70--80\% on SWE-Bench~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and Roychoudhury~\cite{Roychoudhury2025AgenticAI} identifies specification inference as the central difficulty.
+Unstructured AI-assisted coding can also create maintenance burden: studies report a 4$\times$ growth in code clones~\cite{GitClear2025CodeQuality}, persistent increases in code complexity despite transient velocity gains~\cite{CursorAI2025SpeedCost}, and experienced developers 19\% \emph{slower} with AI tools on real tasks~\cite{Becker2025METRProductivity}.
+Analysis of an LLM-generated C~compiler found excessive abstraction layering and absent comments where domain expertise matters most~\cite{Jones2026LLMCompiler}.
+On the formal verification front, VeriCoding~\cite{Bursuc2025VeriCoding} reports 27--44\% success on formal specifications, and VeriBench~\cite{Miranda2025VeriBench} finds self-optimizing agents approach 90\% compilation in Lean~4, but full formal guarantees remain impractical at the scale of dozens of reductions.
 
 We call this a \emph{bridge problem}: software whose subtasks are homogeneous and formally verifiable, but whose scale exceeds what human teams can sustain.
-AI coding agents, constrained by a multilayer verification stack, break through these barriers.
+AI coding agents, constrained by a multilayer verification stack, break through these barriers---provided each unit of work is structured to fall within the agent's reliable range.
 A domain expert who discovers a new reduction can contribute it by filing a structured issue---no code required---and agents handle the implementation, testing, and documentation.
+Skills enforce project conventions at every invocation, and a seven-layer verification stack rejects non-conforming code before it enters the repository.
 The agent produces volume; verification ensures correctness.
 
 \subsection{Contributions}
