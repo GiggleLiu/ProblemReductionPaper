@@ -56,20 +56,21 @@ Reductions are the central tool of computational complexity theory~\cite{karp197
 
 \subsection{Bridging Problems to Solvers}
 
-We call a single such reduction a \emph{primitive reduction rule}.
-To bridge \emph{many} problems to \emph{many} solvers, we organize primitive rules as a \emph{directed graph}: each node is a problem type, each directed edge is a primitive rule, and each edge carries a \emph{reduction overhead}---a polynomial mapping the source's size measures to the target's.
+A single reduction between two problems is a \emph{primitive reduction rule}.
+To bridge \emph{many} problems to \emph{many} solvers, we organize primitive rules as a \emph{directed graph}.
+Each node is a problem type; each directed edge is a primitive rule.
+Every edge carries a \emph{reduction overhead}---a polynomial mapping the source's size measures to the target's.
 \begin{center}
   \includegraphics[width=0.70\columnwidth]{figures/reduction-graph-concept.pdf}
 \end{center}
-Reductions are composable.
-A \emph{composite reduction rule} is a directed path through the graph: chaining $A \to B$ and $B \to C$ yields the composite rule $A \to C$, with overhead $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
-When multiple composite rules connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
-The graph can be strengthened by adding more primitive rules. For example, even if we already have a composite rule from $A$ to $C$, if a direct reduction from $A$ to $C$ has provable better overhead, it should be added as a primitive rule.
-In contrast, if the new primitive does not improve the overhead, it should not be avoided to reduce the path finding complexity.
+Reductions compose along directed paths.
+Chaining $A \to B$ and $B \to C$ yields $A \to C$, with overhead $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
+When multiple paths connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
+Adding a primitive rule strengthens the graph only when it improves on existing routes: a direct $A \to C$ with provably lower overhead than the composite $A \to B \to C$ earns its place; one that does not is omitted to keep path-finding tractable.
 
-Two kinds of composite rules play a special role.
-If a composite rule exists from 3-SAT to a problem~$H$, that path constitutes an NP-hardness proof for~$H$---we say $H$ is \emph{NP-hard verified} by the graph.
-If a composite rule exists from a problem to ILP, that problem gains access to mature commercial solvers (Gurobi, CPLEX), providing an efficient verification oracle for testing reductions end-to-end.
+Two kinds of paths play a special role.
+A path from 3-SAT to a problem~$H$ constitutes an NP-hardness proof for~$H$---we say $H$ is \emph{NP-hard verified} by the graph.
+A path from a problem to ILP grants access to commercial solvers (Gurobi, CPLEX), providing a verification oracle for testing reductions end-to-end.
 
 \subsection{The Challenge}
 
