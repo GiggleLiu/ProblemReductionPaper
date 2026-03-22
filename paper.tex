@@ -265,10 +265,10 @@ Not all stages are equal: some are routine work that an agent can execute autono
 \end{figure*}
 
 \textbf{Stage~1: Propose.}
-The \texttt{propose} skill guides a domain expert through a structured brainstorming session---one question at a time, using mathematical language only, no programming required.
-For a new reduction rule, the agent first runs a topology analysis to identify the most impactful gaps: problems unreachable from 3-SAT (lacking NP-hardness proofs), orphan nodes with no edges, and clusters disconnected from solvers.
-It then presents ranked suggestions and walks the expert through the reduction algorithm, correctness argument, size overhead, and a fully worked example.
-For a new problem type, it elicits the formal definition, variable representation, best-known complexity (with references), and candidate instances, then suggests companion rules to prevent the new problem from becoming an orphan.
+A domain expert contributes the mathematical content: which problem to add, what its formal definition is, what reduction algorithm connects it to existing problems.
+The \texttt{propose} skill supports this process through a structured brainstorming session---one question at a time, using mathematical language only, no programming required.
+The agent assists by running a topology analysis to identify the most impactful gaps---problems unreachable from 3-SAT (lacking NP-hardness proofs), orphan nodes with no edges, clusters disconnected from solvers---and recommends high-value rules the contributor may not have considered.
+It also checks for conflicts with existing issues and duplicate proposals.
 Before filing, the agent pre-validates the draft against Stage~2's quality checks; only issues passing all four checks are submitted.
 
 \textbf{Stage~2: Validate.}
