@@ -57,20 +57,20 @@
     let dx = 2.9
     let dy = -3.6
     rect(
-      (dx - bw / 2, dy - bh / 2), (dx + bw / 2, dy + bh / 2),
+      (dx - bw / 2, dy - bh / 2), (dx+bw / 2, dy+bh / 2),
       fill: col-good,
       stroke: none,
       radius: 1pt,
     )
   })
 
-  // ? mark
+  // X mark
   content(
     (3 + jam-cx + bw * 0.9, jam-cy + bh * 0.8),
     text(8pt, fill: col-new, [?]),
   )
 
-  // Bob
+  // Bob — small
   content(
     (lx + 4.8, ly - 0.3),
     bob(size: charsize),
@@ -89,9 +89,9 @@
   let wall-y2 = ry - 3.5
   draw-wall(wall-x2, wall-y2, 4)
 
-  // New brick correctly placed on top row (middle of offset row 4)
-  let new-bx = wall-x2 + bw / 2   // offset row position
-  let new-by = wall-y2 + 4 * bh   // top of wall
+  // New brick correctly placed
+  let new-bx = wall-x2 + 2.5 * bw
+  let new-by = wall-y2 + 1 * bh
   rect(
     (new-bx, new-by), (new-bx + bw, new-by + bh),
     fill: col-good,
@@ -101,62 +101,56 @@
 
   // --- Robotic arm growing from wall surface ---
   let arm-col = accent
-  let joint-r = 0.22
-  let arm-thick = 2.5pt
-
-  // Base: on top of wall, right side
+  let joint-r = 0.2
+  let arm-thick = 2.2pt
   let wall-top = wall-y2 + 4 * bh
-  let base-x = wall-x2 + 2.5 * bw   // right portion of wall top
+
+  // Base plate on wall surface (left side, clear of green brick)
+  let base-x = wall-x2 + 0.5 * bw
   rect(
-    (base-x - 0.5, wall-top), (base-x + 0.5, wall-top + 0.3),
+    (base-x - 0.45, wall-top), (base-x + 0.45, wall-top + 0.25),
     fill: arm-col.lighten(40%),
-    stroke: 0.6pt + arm-col,
+    stroke: 0.5pt + arm-col,
     radius: (top-left: 2pt, top-right: 2pt),
   )
 
   // Joint 1 (shoulder)
-  let j1 = (base-x, wall-top + 0.3)
-  circle(j1, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.6pt + arm-col)
+  let j1 = (base-x, wall-top + 0.25)
+  circle(j1, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.5pt + arm-col)
 
-  // Upper arm: arches up and to the right (away from wall)
-  let j2 = (base-x + 2.2, wall-top + 2.5)
+  // Upper arm: arches up and to the right, clear of wall
+  let j2 = (wall-x2 + 3 * bw + 1.0, wall-top + 2.0)
   line(j1, j2, stroke: (thickness: arm-thick, paint: arm-col.lighten(30%)))
 
   // Joint 2 (elbow)
-  circle(j2, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.6pt + arm-col)
+  circle(j2, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.5pt + arm-col)
 
-  // Forearm: reaches back left and down to hover above the new brick
+  // Forearm: reaches down to hover above the green brick (outside the wall edge)
   let wrist-x = new-bx + bw / 2
   let wrist-y = new-by + bh + 0.5
   let j3 = (wrist-x, wrist-y)
   line(j2, j3, stroke: (thickness: arm-thick, paint: arm-col.lighten(50%)))
 
   // Joint 3 (wrist)
-  circle(j3, radius: joint-r * 0.75, fill: arm-col.lighten(60%), stroke: 0.6pt + arm-col)
+  circle(j3, radius: joint-r * 0.7, fill: arm-col.lighten(60%), stroke: 0.5pt + arm-col)
 
-  // Gripper: two fingers pointing down, tips curling inward
-  let grip-spread = 0.45
-  let finger-len = 0.55
-  let tip-len = 0.2
-  // Left finger
-  let lf-end = (wrist-x - grip-spread, wrist-y - finger-len)
-  line(j3, lf-end, stroke: (thickness: 1.4pt, paint: arm-col))
-  line(lf-end, (wrist-x - grip-spread + tip-len, wrist-y - finger-len - 0.15),
-    stroke: (thickness: 1.4pt, paint: arm-col))
-  // Right finger
-  let rf-end = (wrist-x + grip-spread, wrist-y - finger-len)
-  line(j3, rf-end, stroke: (thickness: 1.4pt, paint: arm-col))
-  line(rf-end, (wrist-x + grip-spread - tip-len, wrist-y - finger-len - 0.15),
-    stroke: (thickness: 1.4pt, paint: arm-col))
+  // Gripper fingers
+  let gs = 0.4   // spread
+  let gl = 0.45  // finger length
+  line(j3, (wrist-x - gs, wrist-y - gl), stroke: (thickness: 1.2pt, paint: arm-col))
+  line((wrist-x - gs, wrist-y - gl), (wrist-x - gs + 0.18, wrist-y - gl - 0.12),
+    stroke: (thickness: 1.2pt, paint: arm-col))
+  line(j3, (wrist-x + gs, wrist-y - gl), stroke: (thickness: 1.2pt, paint: arm-col))
+  line((wrist-x + gs, wrist-y - gl), (wrist-x + gs - 0.18, wrist-y - gl - 0.12),
+    stroke: (thickness: 1.2pt, paint: arm-col))
 
-  // Bob on the right with issue note
+  // Bob with issue note (to the right, clear of wall and arm)
   content(
     (rx + 4.8, ry - 0.3),
     bob(size: charsize),
   )
 
-  // Issue note (positioned clearly to right of wall, below Bob)
-  let note-x = rx + 4.0
+  let note-x = rx + 4.1
   let note-y = ry - 2.0
   rect(
     (note-x, note-y), (note-x + 1.4, note-y + 1.0),
