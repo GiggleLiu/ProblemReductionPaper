@@ -95,14 +95,14 @@
 
   // Review Pool → Under Review (Review Agent)
   let x4 = x3 + card-w + gap-x
-  harrow(x3, x4, col-review, cy)
+  harrow(x3, x4, col-impl, cy)
 
   // 5. Under Review
   board-card(x4, cy, "Under Review", "underrev")
 
   // Under Review → Final Review (Review Agent)
   let x5 = x4 + card-w + gap-x
-  harrow(x4, x5, col-review, cy)
+  harrow(x4, x5, col-impl, cy)
   label-above(x4, x5, black, [posts verdict], cy)
 
   // 6. Final Review
@@ -139,10 +139,10 @@
   line(
     (rev-left, by + 0.12), (rev-left, by),
     (rev-right, by), (rev-right, by + 0.12),
-    stroke: (thickness: 0.8pt, paint: col-review),
+    stroke: (thickness: 0.8pt, paint: col-impl),
   )
   content(
     ((rev-left + rev-right) / 2, by - 0.6), anchor: "south",
-    text(6pt, fill: col-review, [#sentinel(size: ic) Review Agent (`review-pipeline`)]),
+    text(6pt, fill: col-impl, [#sentinel(size: ic) Review Agent (`review-pipeline`)]),
   )
 })
