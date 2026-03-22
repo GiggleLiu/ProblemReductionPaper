@@ -457,7 +457,7 @@ This appendix describes four mechanisms---the \texttt{Problem} trait, the \textt
 
 \paragraph{The Problem trait.}
 Every problem type implements \texttt{Problem}, which requires: a constant name, an associated metric type (\texttt{SolutionSize<W>} for optimization problems, \texttt{bool} for decision problems), a method returning the configuration space dimensions, an \texttt{evaluate()} method that scores any configuration, and variant metadata for type-parameter tracking.
-The key member is \texttt{evaluate()}: because every problem maps configurations to metrics through this uniform interface, a brute-force solver can enumerate the space and select the best solution, enabling the round-trip testing described in \Cref{sec:roundtrip} without problem-specific oracles.
+The key member is \texttt{evaluate()}: because every problem maps configurations to metrics through this uniform interface, a brute-force solver can enumerate the space and select the best solution, enabling round-trip testing without problem-specific oracles.
 
 \paragraph{The ReduceTo trait.}
 The generic \texttt{ReduceTo<T>} trait requires a \texttt{reduce\_to()} method returning a \texttt{ReductionResult} that bundles \texttt{target\_problem()} and \texttt{extract\_solution()}.
