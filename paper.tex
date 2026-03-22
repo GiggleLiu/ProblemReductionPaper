@@ -70,9 +70,6 @@ One contributor implemented Factoring $\to$ CircuitSAT (encoding integer multipl
 Neither intended the composition, yet the graph chains them automatically to factor integers via linear programming.
 Adding a single edge from a new problem~$X$ to MIS instantly connects $X$ to every solver reachable from MIS, and connects every problem upstream of~$X$ to MIS as well.
 
-This infrastructure is increasingly needed.
-Physics-inspired solvers---graph neural networks at million-variable scale~\cite{Schuetz2022PhysicsGNN}, hybrid quantum-GNN methods for TSP~\cite{He2024QuantumTSP}---assume a QUBO or Ising formulation as input, precisely the transformation that a reduction graph provides.
-
 \subsection{The Challenge}
 
 Building such a graph is itself a hard problem---not computationally, but organizationally.
