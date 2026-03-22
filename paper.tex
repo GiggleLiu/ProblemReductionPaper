@@ -571,6 +571,11 @@ The methodology does \emph{not} generalize to heterogeneous tasks---the staple o
 
 \subsection{Future Work}
 
+\paragraph{Augmenting agent problem-solving.}
+The library can serve as a \emph{tool} for AI agents themselves.
+An agent facing an optimization problem can invoke the \texttt{pred} CLI---or its Model Context Protocol (MCP) server---to route the problem through the reduction graph to a solver, without knowing which solver fits or how to formulate the reduction.
+As the graph grows, so does the set of problems any MCP-connected agent can solve.
+
 \paragraph{Industry impact.}
 The reduction graph serves as a \emph{solver-agnostic compilation layer}.
 Adding a single edge from a hardware platform's native formulation (e.g., MIS for Rydberg atoms) routes all supported problem types to that device.
