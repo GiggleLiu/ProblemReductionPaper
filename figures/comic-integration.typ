@@ -98,6 +98,7 @@
     stroke: none,
     radius: 1pt,
   )
+  content((new-bx + bw / 2, new-by + bh / 2), text(white, 6pt)[Code])
 
   // --- Robotic arm growing from wall surface ---
   let arm-col = accent
@@ -117,7 +118,7 @@
   // Joint positions
   let j1 = (base-x, wall-top + 0.25)
   let j2 = (wall-x2 + 3 * bw + 1.0, wall-top + 2.0)
-  let wrist-x = new-bx + bw / 2
+  let wrist-x = new-bx + bw * 0.7
   let wrist-y = new-by + bh + 0.5
   let j3 = (wrist-x, wrist-y)
   let jr3 = joint-r * 0.7
@@ -164,18 +165,17 @@
   let issue-y = wall-top + 0.1
   rect(
     (issue-x, issue-y), (issue-x + bw, issue-y + bh),
-    fill: col-good.lighten(60%),
-    stroke: 0.6pt + col-good,
+    stroke: (thickness: 0.6pt, paint: col-good, dash: "dashed"),
     radius: 1pt,
   )
   content(
     (issue-x + bw / 2, issue-y + bh / 2),
-    text(4.5pt, fill: col-good.darken(20%), [issue]),
+    text(6pt, fill: col-good.darken(20%), [issue]),
   )
 
   // Bob on the left of the wall
   content(
-    (wall-x2 - 1.8, ry - 0.3),
+    (wall-x2 - 1.3, ry + 0.3),
     bob(size: charsize),
   )
 })
