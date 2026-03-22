@@ -94,21 +94,8 @@
     bob(size: 1.5cm),
   )
 
-  // Zigzag frustration lines
-  let zx = lx + 1.0
-  let zy = ly + 4.5
-  line((zx, zy), (zx + 0.3, zy + 0.4), (zx + 0.6, zy), (zx + 0.9, zy + 0.4),
-    stroke: 0.6pt + col-new)
-
-  // Speech: "wrong interface!"
-  content(
-    (lx + 3.5, ly + 4.0),
-    text(5.5pt, fill: luma(100), style: "italic", [different conventions...]),
-  )
-
-
   // ─── Right Panel: Agentic Integration ───
-  let rx = 16
+  let rx = 13
   let ry = 0
 
   // Panel border
