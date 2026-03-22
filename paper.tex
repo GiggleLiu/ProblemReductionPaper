@@ -8,6 +8,8 @@
 \usepackage{listings}
 \usepackage{hyperref}
 \usepackage{cleveref}
+
+\newcommand{\jinguo}[1]{\textcolor{red}{JG: #1}}
 % TikZ removed — all diagrams are now Typst-compiled PDFs
 
 \begin{document}
@@ -383,9 +385,9 @@ Skills are plain markdown documents portable to any coding agent.
 
 \subsection{Development Metrics}\label{sec:metrics}
 
-\textcolor{red}{Show the real reduction graph.}
+\jinguo{Show the real reduction graph.}
 
-\textcolor{red}{Community contribution guideline, how to get involved, for automated integration.}
+\jinguo{Community contribution guideline, how to get involved, for automated integration.}
 
 The repository contains 59~merged pull requests and 253~commits on main spanning nine weeks (January~9 to March~13, 2026), authored by four contributors.
 Session metadata across 283~agent sessions (300~MB of conversation transcripts) reveals the scale of agent involvement: 9,429~assistant messages in response to 630~user messages---a \textbf{15:1 automation amplification ratio}.
@@ -412,7 +414,7 @@ Mar 13 (current) & 27 & 45 & 114 & 45 \\
   \includegraphics[width=\columnwidth]{figures/timeline.pdf}
   \caption{Cumulative growth of problem types and reduction rules over nine weeks.
     Background bands mark three development phases: manual (Phase~1), basic skills (Phase~2), and full pipeline (Phase~3).
-    Background bands mark three development phases.}
+    Background bands mark three development phases. \jinguo{We need to how the completeness of the models and rules, how many rules are covered in Gray's Book}}
   \label{fig:timeline}
 \end{figure}
 
