@@ -145,26 +145,27 @@ The library implements the reduction graph as a Rust crate, organized in three l
 \subsection{User Interfaces}\label{sec:user-interfaces}
 
 The \texttt{pred} CLI is the primary entry point.
-It exposes four capabilities: \emph{graph exploration}, \emph{instance creation}, \emph{reduction}, and \emph{solving}.
+A typical session proceeds in three steps: explore the graph, create an instance, and solve it.
 
-\emph{Graph exploration.}
-\texttt{pred list} shows all registered problem types with their variants, reduction-rule counts, and best-known complexities.
-\texttt{pred show MIS} prints the definition of Maximum Independent Set, its size measures, and every incoming and outgoing reduction.
-\texttt{pred path MIS QUBO} finds the cheapest reduction path between two problem types; with \texttt{-{}-cost minimize:num\_vertices} it minimizes a specific overhead dimension instead of hop count.
-
-\emph{Instance creation and solving.}
-\texttt{pred create} builds a problem instance from command-line flags---for example, \texttt{pred create MIS -{}-graph 0-1,1-2,2-3} produces a JSON instance of Maximum Independent Set on a four-vertex path graph.
-Canonical instances from the example database are available via \texttt{-{}-example}.
-\texttt{pred solve} routes the instance to a solver automatically: it finds a reduction path to ILP, reduces the instance along that path, solves the target, and maps the solution back.
-A brute-force solver is available for problems without an ILP path.
-
-Commands compose through Unix pipes.
-The entire workflow---create an instance, reduce it, and solve it---fits in one line:
+\textbf{Example: solving a Maximum Independent Set instance.}
+A user first inspects what the library knows about her problem:
 \begin{center}
-\texttt{pred create MIS -{}-graph 0-1,1-2 | pred solve -}
+\texttt{pred show MIS}
 \end{center}
+This prints the formal definition, size measures, best-known complexity, and every reduction connecting MIS to other problems.
+To reach a commercial ILP solver, she queries for a reduction path:
+\begin{center}
+\texttt{pred path MIS ILP}
+\end{center}
+The output shows each intermediate problem type and the per-step overhead.
+She then creates an instance from a graph and solves it in one line:
+\begin{center}
+\texttt{pred create MIS -{}-graph 0-1,1-2,2-3 | pred solve -}
+\end{center}
+The CLI reduces the instance to ILP along the cheapest path, solves it, maps the solution back, and returns a maximum independent set.
+Commands compose through Unix pipes; \texttt{pred list} shows all registered problem types when browsing.
 
-The same functionality is available through the Rust library API for programmatic use.
+The same functionality is available through the Rust library API.
 The build system also produces an auto-compiled PDF manual containing formal definitions, reduction theorems with proof sketches, and worked examples for every implemented model and rule.
 
 \subsection{Core Library}\label{sec:graph-structure}
