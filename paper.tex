@@ -495,41 +495,6 @@ This observability gap---the difficulty of distinguishing human-authored from ag
 % The pipeline's primary value here is enforcing conventions---file naming, type registration, documentation---rather than catching logical errors.
 
 %======================================================================
-%  SECTION 6: RELATED WORK
-%======================================================================
-\section{Related Work}\label{sec:related}
-\textcolor{red}{merge to intro}
-\paragraph{AI coding agents.}
-The evolution from SWE-agent~\cite{Yang2024SWEagent} and Devin~\cite{Wu2024Devin} to OpenHands~\cite{Wang2024OpenHands} and Claude Code~\cite{Anthropic2025ClaudeCode} has expanded single-task capabilities to 70--80\% on SWE-Bench~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}.
-Roychoudhury~\cite{Roychoudhury2025AgenticAI} identifies specification inference as the central difficulty.
-Our approach structures work so each unit falls within the agent's reliable range, complementing architectural advances in agent design.
-
-\paragraph{AI code maintainability concerns.}
-A growing body of evidence suggests that unstructured AI-assisted coding creates maintenance burden rather than reducing it.
-Analysis of an LLM-generated C~compiler found excessive abstraction layering, inclusion of rarely-useful features that increase bug surface area, and absent comments precisely where domain expertise matters most~\cite{Jones2026LLMCompiler}.
-A study of 211~million changed lines found a 4$\times$ growth in code clones and a decline in refactored code from 24\% to 10\%, indicating that AI encourages copy-paste over sustainable architecture~\cite{GitClear2025CodeQuality}.
-A difference-in-differences study of 807~AI-adopting repositories found persistent increases in code complexity despite transient velocity gains~\cite{CursorAI2025SpeedCost}, and a randomized controlled trial found experienced developers were 19\% \emph{slower} with AI tools on real tasks in their own repositories~\cite{Becker2025METRProductivity}.
-Our skill-based framework is designed to address these concerns directly: skills enforce project conventions (naming, testing, documentation) at every invocation, versioned skill definitions prevent prompt drift, and seven-layer verification rejects non-conforming code before it enters the repository.
-The agent never ``free-writes'' code---it follows a structured template that has been refined through pull requests, ensuring that generated code is as maintainable as hand-written code that follows the same conventions.
-
-\paragraph{AI-discovered reductions.}
-FunSearch~\cite{RomeraParedes2023FunSearch} and AlphaEvolve~\cite{Novikov2025AlphaEvolve} discover novel algorithms and reductions through evolutionary search, including improved bounds for combinatorial problems.
-Jani\v{c}i\'{c}'s URSA~\cite{Janicic2025URSA} uses SAT-based constraint solving to verify reductions.
-Our work is complementary: we implement and verify \emph{known} reductions; discovered reductions could feed into our pipeline as new issues.
-
-\paragraph{Formal verification of generated code.}
-VeriCoding~\cite{Bursuc2025VeriCoding} reports 27--44\% success on 12,504~formal specifications.
-CLEVER~\cite{Thakur2025CLEVER} establishes hard Lean benchmarks.
-VeriBench~\cite{Miranda2025VeriBench} finds self-optimizing agents approach 90\% compilation in Lean~4.
-Mukherjee et al.~\cite{Mukherjee2025CoqPL, Mukherjee2025SynVer} demonstrate a two-LLM generate-then-verify pattern.
-Our seven-layer stack trades full formal guarantees for practical effectiveness at the scale of 45~reductions.
-
-\paragraph{Physics-inspired optimization.}
-Schuetz et al.~\cite{Schuetz2022PhysicsGNN} solve QUBO at million-variable scale via graph neural networks.
-He~\cite{He2024QuantumTSP} combines quantum annealing with GNNs for the Traveling Salesman Problem.
-These approaches assume a QUBO or Ising formulation as input---precisely the transformation that our reduction graph provides as upstream infrastructure.
-
-%======================================================================
 %  SECTION 7: DISCUSSION AND CONCLUSION
 %======================================================================
 \section{Discussion and Conclusion}\label{sec:conclusion}
