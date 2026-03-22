@@ -99,78 +99,64 @@
     radius: 1pt,
   )
 
-  // --- Robotic arm ---
+  // --- Robotic arm growing from wall surface ---
   let arm-col = accent
-  let arm-w = 0.5          // arm segment width
-  let joint-r = 0.25       // joint circle radius
+  let joint-r = 0.22       // joint circle radius
+  let arm-thick = 2.5pt    // arm segment thickness
 
-  // Base: mounted on right side of wall
-  let base-x = wall-x2 + 3 * bw + 1.5
-  let base-y = wall-y2
+  // Base: on top of the wall surface (right side)
+  let wall-top = wall-y2 + 4 * bh
+  let base-x = wall-x2 + 2.5 * bw
+  let base-y = wall-top
   rect(
-    (base-x - 0.8, base-y - 0.3), (base-x + 0.8, base-y + 0.3),
+    (base-x - 0.6, base-y), (base-x + 0.6, base-y + 0.35),
     fill: arm-col.lighten(40%),
     stroke: 0.8pt + arm-col,
-    radius: 2pt,
+    radius: (top-left: 2pt, top-right: 2pt),
   )
 
-  // Joint 1 (shoulder) at base top
-  let j1 = (base-x, base-y + 0.3)
+  // Joint 1 (shoulder) on base
+  let j1 = (base-x, base-y + 0.35)
   circle(j1, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.8pt + arm-col)
 
-  // Upper arm: from shoulder up-left
-  let j2 = (base-x - 1.5, base-y + 3.5)
-  line(
-    (j1.at(0) - arm-w / 4, j1.at(1)), (j2.at(0) - arm-w / 4, j2.at(1)),
-    stroke: (thickness: 2.5pt, paint: arm-col.lighten(30%)),
-  )
-  line(
-    (j1.at(0) + arm-w / 4, j1.at(1)), (j2.at(0) + arm-w / 4, j2.at(1)),
-    stroke: (thickness: 2.5pt, paint: arm-col.lighten(30%)),
-  )
+  // Upper arm: goes up and to the right
+  let j2 = (base-x + 2.0, base-y + 2.8)
+  line(j1, j2, stroke: (thickness: arm-thick, paint: arm-col.lighten(30%)))
 
   // Joint 2 (elbow)
   circle(j2, radius: joint-r, fill: arm-col.lighten(60%), stroke: 0.8pt + arm-col)
 
-  // Forearm: from elbow down-left toward the brick
+  // Forearm: curves back down toward the target brick
   let j3-x = new-bx + bw / 2
   let j3-y = new-by + bh + 0.6
   let j3 = (j3-x, j3-y)
-  line(
-    (j2.at(0) - arm-w / 4, j2.at(1)), (j3.at(0) - arm-w / 4, j3.at(1)),
-    stroke: (thickness: 2.5pt, paint: arm-col.lighten(50%)),
-  )
-  line(
-    (j2.at(0) + arm-w / 4, j2.at(1)), (j3.at(0) + arm-w / 4, j3.at(1)),
-    stroke: (thickness: 2.5pt, paint: arm-col.lighten(50%)),
-  )
+  line(j2, j3, stroke: (thickness: arm-thick, paint: arm-col.lighten(50%)))
 
   // Joint 3 (wrist)
   circle(j3, radius: joint-r * 0.8, fill: arm-col.lighten(60%), stroke: 0.8pt + arm-col)
 
-  // Gripper: two fingers angling down to grab the brick
-  let grip-open = 0.6
+  // Gripper: two fingers grabbing the brick
+  let grip-open = 0.5
   // Left finger
   line(
     j3,
-    (j3-x - grip-open, j3-y - 0.8),
+    (j3-x - grip-open, j3-y - 0.7),
+    stroke: (thickness: 1.5pt, paint: arm-col),
+  )
+  line(
+    (j3-x - grip-open, j3-y - 0.7),
+    (j3-x - grip-open + 0.2, j3-y - 0.9),
     stroke: (thickness: 1.5pt, paint: arm-col),
   )
   // Right finger
   line(
     j3,
-    (j3-x + grip-open, j3-y - 0.8),
-    stroke: (thickness: 1.5pt, paint: arm-col),
-  )
-  // Finger tips (short inward lines)
-  line(
-    (j3-x - grip-open, j3-y - 0.8),
-    (j3-x - grip-open + 0.25, j3-y - 1.0),
+    (j3-x + grip-open, j3-y - 0.7),
     stroke: (thickness: 1.5pt, paint: arm-col),
   )
   line(
-    (j3-x + grip-open, j3-y - 0.8),
-    (j3-x + grip-open - 0.25, j3-y - 1.0),
+    (j3-x + grip-open, j3-y - 0.7),
+    (j3-x + grip-open - 0.2, j3-y - 0.9),
     stroke: (thickness: 1.5pt, paint: arm-col),
   )
 
