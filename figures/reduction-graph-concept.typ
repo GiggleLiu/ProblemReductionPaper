@@ -54,14 +54,13 @@
 
   // Solvers (spread wider, lower)
   node((1.5, -0.4), [$S$], "s-rydberg")
-  content((rel: (0, -0.9), to: "s-rydberg"), text(7pt)[Hardware\ accelerated])
   content((rel: (0.9, 0), to: "s-rydberg"), text(7pt)[$t_(S)$])
 
   node((5.0, 0.4), [$C$], "s-dwave")
 
   node((9.0, -0.4), [$I$], "s-ilp", highlight: true)
   content((rel: (0.9, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
-  content((rel: (0, -0.9), to: "s-ilp"), text(7pt)[Integer linear\ programming])
+  content((rel: (0, -1.2), to: "s-ilp"), text(7pt)[Integer linear\ programming])
 
   // ── Edges ──
   edge("sat", "mis", name: "sat-mis")
@@ -72,7 +71,7 @@
   edge("mis", "s-rydberg")
   edge("ising", "s-dwave", name: "ising-dwave")
 
-  content((rel: (-0.8, 0.3), to: "sat-mis.mid"), [$r_(A arrow.r B)$])
+  content((rel: (-1, 0.3), to: "sat-mis.mid"), [$r_(B arrow.l A)$])
 
   // ── Bidirectional: Max-Cut ↔ Ising ──
   bezier("mc.south", "ising.east", (rel: (0.0, -1.3), to: "mc"),
@@ -91,5 +90,5 @@
 
   // MIS → D-Wave
   edge("mis", "s-dwave", name: "mis-dwave")
-  content((rel: (0.3, 0.5), to: "mis-dwave.mid"), [$r_(B arrow.r C)$])
+  content((rel: (0.2, 0.5), to: "mis-dwave.mid"), [$r_(C arrow.l B)$])
 })
