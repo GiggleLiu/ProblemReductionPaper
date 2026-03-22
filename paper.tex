@@ -279,7 +279,7 @@ This closing-the-loop step catches errors invisible to automated tests: subtle m
 The pipeline reveals a clean separation.
 Four stages---validate, implement, review, merge---are routine: they follow deterministic checklists and run without human intervention.
 Two stages---propose and verify---require creativity and domain judgment.
-The design challenge is encoding this separation so that an agent runs the routine stages autonomously while invoking human judgment at precisely the right moments.
+This separation is reflected in tooling: the implementation and review agents (Stages~3--4) run in \emph{headless mode} via OpenAI Codex~\cite{OpenAI2025Codex}, which executes skills autonomously without human interaction; the human-facing stages---proposal, triage, and verification---use Claude Code~\cite{Anthropic2025ClaudeCode}, whose interactive terminal supports the back-and-forth dialogue these stages require.
 
 \subsection{Skill Design}\label{sec:skills}
 
