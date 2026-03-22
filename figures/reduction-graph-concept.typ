@@ -40,30 +40,30 @@
 
   // ── Layout ──
   // Top row
-  node((4.8, 6.9), [3-SAT], "3sat", label-anchor: "north", highlight: true)
-  node((8.1, 6.9), [], "gc", label-anchor: "north")
+  node((3.2, 5.4), [3-SAT], "3sat", label-anchor: "north", highlight: true)
+  node((5.8, 5.4), [], "gc", label-anchor: "north")
 
   // Middle row
-  node((2.7, 4.6), [], "csat", label-anchor: "west")
-  node((6.0, 4.6), [$A$], "sat")
-  node((9.9, 4.6), [$H$], "mc")
-  content((rel: (0, 0.7), to: "mc"), text(6pt)[NP-hard verified])
+  node((1.5, 3.6), [], "csat", label-anchor: "west")
+  node((4.2, 3.6), [$A$], "sat")
+  node((7.2, 3.6), [$H$], "mc")
+  content((rel: (0, 0.85), to: "mc"), text(7pt)[NP-hard verified])
 
   // Lower row
-  node((4.4, 2.3), [$B$], "mis")
-  node((8.5, 2.3), [], "ising", label-anchor: "south")
+  node((3.0, 1.8), [$B$], "mis")
+  node((6.2, 1.8), [], "ising", label-anchor: "south")
 
   // Orphan
-  node((11.5, 2.8), [$O$], "orphan")
+  node((8.5, 2.2), [$O$], "orphan")
 
   // Solvers
-  node((4.0, 0.4), [$S$], "s-rydberg")
-  content((rel: (0, -0.7), to: "s-rydberg"), text(6pt)[Hardware accelerated])
-  content((rel: (0.7, 0), to: "s-rydberg"), text(6pt)[$t_(S)$])
-  node((6.5, 1.4), [$C$], "s-dwave")
-  node((10.3, 0.4), [$I$], "s-ilp", highlight: true)
-  content((rel: (0.7, 0), to: "s-ilp"), text(6pt)[$t_(I)$])
-  content((rel: (0, -0.7), to: "s-ilp"), text(6pt)[Integer linear programming])
+  node((2.6, 0.2), [$S$], "s-rydberg")
+  content((rel: (0, -0.85), to: "s-rydberg"), text(7pt)[Hardware accelerated])
+  content((rel: (0.85, 0), to: "s-rydberg"), text(7pt)[$t_(S)$])
+  node((4.8, 1.0), [$C$], "s-dwave")
+  node((7.6, 0.2), [$I$], "s-ilp", highlight: true)
+  content((rel: (0.85, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
+  content((rel: (0, -0.85), to: "s-ilp"), text(7pt)[Integer linear programming])
 
   // ── Normal edges ──
   edge("sat", "mis", name:"mis-sat")
