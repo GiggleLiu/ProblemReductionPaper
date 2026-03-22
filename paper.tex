@@ -276,13 +276,7 @@ The maintainer reviews the agentic verdict, resolves any merge conflicts, and me
 After merge, the domain expert who filed the original issue verifies that the implementation matches their intent---the formal definition, the canonical example, and the proof sketch.
 This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments that are formally correct but mathematically unconvincing.
 
-The pipeline assigns four responsibilities to human experts, each requiring capabilities that agents lack.
-(1)~\emph{Selection and justification} (deep reasoning): deciding which problem or rule to implement requires understanding the research landscape and the graph's strategic gaps---which reductions fill proof chains, which connect orphan nodes, which open access to new solvers.
-(2)~\emph{Algorithm correctness} (deep reasoning): the contributor verifies that the proposed reduction is mathematically sound---checking the proof argument, confirming edge-case behavior in the construction, and ensuring the overhead analysis is tight.
-(3)~\emph{Example construction} (creative work): providing a canonical instance with a known optimal solution seeds all downstream verification; a poorly chosen example may fail to exercise the reduction's critical logic.
-(4)~\emph{Issue resolution and merge authority} (security-critical): only a human maintainer can resolve issues and merge pull requests, since agents with unsupervised merge access could introduce unreviewed code.
-
-Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode} via OpenAI Codex~\cite{OpenAI2025Codex}; the human-facing stages use Claude Code~\cite{Anthropic2025ClaudeCode}, whose interactive terminal supports the dialogue these responsibilities require.
+Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode} via OpenAI Codex~\cite{OpenAI2025Codex}; the human-facing stages use Claude Code~\cite{Anthropic2025ClaudeCode}, whose interactive terminal supports the dialogue that the remaining stages require.
 
 \subsection{Skill Design}\label{sec:skills}
 
