@@ -441,29 +441,18 @@ Without skills, an agent might skip the issue check or omit the feature test---e
 %======================================================================
 \section{Discussion and Conclusion}\label{sec:conclusion}
 
-\subsection{Generalization to Other Domains}
+\subsection{Discussion}
 
-NP-hard reductions are not the only bridge problem.
-Any \emph{gallery library}---a collection of homogeneous, independently verifiable implementations---shares the same structure: uniform interfaces, formal correctness criteria, and a scale that exceeds what small teams can sustain.
-An automatic differentiation (AD) engine is a natural example: each differentiation rule transforms one operation into its derivative, and finite-difference checks play the same role as round-trip tests---they verify each rule's correctness automatically, without a problem-specific oracle.
-The key requirement is a cheap, generic verification mechanism that applies uniformly across all entries in the gallery.
-The cost of entry is skill engineering: the 14~skills in this project represent substantial upfront investment, and each new domain requires its own set.
+The methodology generalizes to any \emph{gallery library}---a collection of homogeneous, independently verifiable implementations with uniform interfaces.
+An automatic differentiation (AD) engine is a natural example: each differentiation rule transforms one operation into its derivative, and finite-difference checks play the same role as round-trip tests---verifying correctness automatically, without a problem-specific oracle.
+The key requirement is a cheap, generic verification mechanism that applies uniformly across all entries.
+The cost of entry is skill engineering: the 18~skills in this project represent substantial upfront investment, and each new domain requires its own set.
 The methodology does \emph{not} generalize to heterogeneous tasks---the staple of SWE-Bench---where each issue is structurally unique and resists skill-based decomposition.
 
-\subsection{Future Work}
-
-\paragraph{Augmenting agent problem-solving.}
-The library can serve as a \emph{tool} for AI agents themselves.
-An agent facing an optimization problem can invoke the \texttt{pred} CLI---or its Model Context Protocol (MCP) server---to route the problem through the reduction graph to a solver, without knowing which solver fits or how to formulate the reduction.
+The library itself can serve as a \emph{tool} for AI agents: an agent facing an optimization problem can invoke the \texttt{pred} CLI---or its Model Context Protocol (MCP) server---to route the problem through the reduction graph to a solver, without knowing which solver fits or how to formulate the reduction.
 As the graph grows, so does the set of problems any MCP-connected agent can solve.
+The reduction graph also serves as a \emph{solver-agnostic compilation layer}: adding a single edge from a hardware platform's native formulation (e.g., MIS for Rydberg atoms) routes all supported problem types to that device.
 
-\paragraph{Industry impact.}
-The reduction graph serves as a \emph{solver-agnostic compilation layer}.
-Adding a single edge from a hardware platform's native formulation (e.g., MIS for Rydberg atoms) routes all supported problem types to that device.
-Each new problem added to the graph is instantly available on every connected solver.
-
-\paragraph{Scaling to 100+ problems.}
-The graph's value grows superlinearly: each new edge creates composite paths through the entire graph.
 Three directions extend this work: composing with \emph{automated discovery} via evolutionary search~\cite{Novikov2025AlphaEvolve}, supplementing round-trip tests with \emph{formal verification} (machine-checked Lean or Coq proofs), and \emph{cost-aware path selection} where the optimal solver route depends on instance scale.
 
 \subsection{Conclusion}
