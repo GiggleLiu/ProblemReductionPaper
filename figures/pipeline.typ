@@ -3,180 +3,69 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-// Three roles — color on lines only, not nodes
-#let col-human = rgb("#f28e2b")   // orange — human decisions
-#let col-impl = accent             // steel blue — implementation agent
-#let col-review = rgb("#76b7b2")   // teal — review agent
-#let col-fail = rgb("#e15759")     // red — failure path
-
-#let card-w = 3.2
-#let card-h = 0.7
-#let gap-y = 1.3
+// Role colors
+#let col-human = rgb("#f28e2b")   // orange — human
+#let col-agent = accent            // steel blue — agent
 
 #canvas(length: 0.55cm, {
   import draw: *
 
-  // --- Helpers ---
-  let board-card(x, y, label, id) = {
+  let box-w = 3.0
+  let box-h = 0.9
+  let gap-x = 1.2
+  let ann-dy = 0.9  // annotation offset below box
+
+  // Stage data: (label, color, annotation)
+  let stages = (
+    ("Propose", col-human, [Domain expert files\ structured issue]),
+    ("Validate", col-agent, [Four checks: useful,\ non-trivial, correct, complete]),
+    ("Implement", col-agent, [Issue → PR via\ skill checklist]),
+    ("Review", col-agent, [Parallel sub-agents\ + feature test]),
+    ("Merge", col-human, [Maintainer reviews\ verdict and merges]),
+    ("Verify", col-human, [Domain expert checks\ intent preserved]),
+  )
+
+  let n = stages.len()
+
+  for (i, (label, col, ann)) in stages.enumerate() {
+    let cx = i * (box-w + gap-x)
+    let id = "s" + str(i)
+
+    // Box
     rect(
-      (x - card-w / 2, y - card-h / 2),
-      (x + card-w / 2, y + card-h / 2),
-      radius: 3pt, fill: fill-light, stroke: 0.8pt + border, name: id,
+      (cx - box-w / 2, -box-h / 2),
+      (cx + box-w / 2, box-h / 2),
+      radius: 3pt,
+      fill: col.lighten(85%),
+      stroke: 0.9pt + col,
+      name: id,
     )
-    content(id, text(7pt, fill: fg, label))
-  }
 
-  let varrow(from-y, to-y, col, cx) = {
-    line(
-      (cx, from-y - card-h / 2), (cx, to-y + card-h / 2 + 0.05),
-      stroke: (thickness: 1.2pt, paint: col),
-      mark: (end: "straight", scale: 0.4),
-    )
-  }
+    // Stage label
+    content(id, text(7.5pt, weight: "bold", fill: col.darken(20%), label))
 
-  let label-right(from-y, to-y, col, txt, cx) = {
+    // Annotation below
     content(
-      (cx + card-w / 2 + 0.2, (from-y + to-y) / 2), anchor: "west",
-      text(6.5pt, fill: col, txt),
+      (cx, -box-h / 2 - ann-dy),
+      text(6pt, fill: fg-light, align(center, ann)),
     )
+
+    // Arrow to next
+    if i < n - 1 {
+      line(
+        (cx + box-w / 2 + 0.05, 0),
+        (cx + box-w / 2 + gap-x - 0.05, 0),
+        stroke: (thickness: 1pt, paint: luma(120)),
+        mark: (end: "straight", scale: 0.35),
+      )
+    }
   }
 
-  let label-left(from-y, to-y, col, txt, cx) = {
-    content(
-      (cx - card-w / 2 - 0.2, (from-y + to-y) / 2), anchor: "east",
-      text(6.5pt, fill: col, txt),
-    )
-  }
-
-  let cx = 0
-  let y0 = 0
-
-  // --- Entry: Domain Expert → Backlog ---
-  let entry-x = cx - card-w / 2 - 2.0
-  content(
-    (entry-x, y0), anchor: "center",
-    text(6.5pt, fill: col-human.darken(10%),
-      align(center, [Domain\ Expert])),
-  )
-  line(
-    (entry-x + 0.85, y0), (cx - card-w / 2 - 0.05, y0),
-    stroke: (thickness: 1pt, paint: col-human),
-    mark: (end: "straight", scale: 0.35),
-  )
-
-  // 1. Backlog
-  board-card(cx, y0, "Backlog", "backlog")
-
-  // Backlog → Ready (Maintainer)
-  let y1 = y0 - gap-y
-  varrow(y0, y1, col-human, cx)
-  label-right(y0, y1, col-human, [Maintainer triages (`fix-issue`)], cx)
-
-  // 2. Ready
-  board-card(cx, y1, "Ready", "ready")
-
-  // Ready → In Progress (Impl Agent)
-  let y2 = y1 - gap-y
-  varrow(y1, y2, col-impl, cx)
-  label-right(y1, y2, col-impl, [picks issue], cx)
-
-  // 3. In Progress
-  board-card(cx, y2, "In Progress", "inprog")
-
-  // In Progress → Review Pool (Impl Agent)
-  let y3 = y2 - gap-y
-  varrow(y2, y3, col-impl, cx)
-  label-right(y2, y3, col-impl, [creates PR], cx)
-
-  // 4. Review Pool
-  board-card(cx, y3, "Review Pool", "revpool")
-
-  // Review Pool → Under Review (Review Agent)
-  let y4 = y3 - gap-y
-  varrow(y3, y4, col-review, cx)
-
-  // 5. Under Review
-  board-card(cx, y4, "Under Review", "underrev")
-
-  // Under Review → Final Review (Review Agent)
-  let y5 = y4 - gap-y
-  varrow(y4, y5, col-review, cx)
-  label-right(y4, y5, col-review, [posts verdict], cx)
-
-  // 6. Final Review
-  board-card(cx, y5, "Final Review", "finalrev")
-
-  // Final Review → Done (Maintainer)
-  let y6 = y5 - gap-y
-  varrow(y5, y6, col-human, cx)
-  label-left(y5, y6, col-human, [Maintainer merges], cx)
-
-  // 7. Done
-  board-card(cx, y6, "Done", "done")
-
-  // --- On Hold ---
-  let oh-w = 1.8
-  let oh-x = cx + card-w / 2 + 6.0
-  let oh-y = y3
-  board-card(oh-x, oh-y, "On Hold", "onhold")
-
-  // L-shaped arrows: go right past labels, then angle to On Hold
-  let bend-x = cx + card-w / 2 + 3.5   // x past right-side labels
-
-  // Arrow from In Progress → On Hold
-  line(
-    (cx + card-w / 2, y2),
-    (bend-x, y2),
-    (oh-x - oh-w / 2 - 0.05, oh-y + card-h / 2 + 0.05),
-    stroke: (thickness: 0.8pt, paint: col-fail),
-    mark: (end: "straight", scale: 0.3),
-  )
-
-  // Arrow from Final Review → On Hold
-  line(
-    (cx + card-w / 2, y5),
-    (bend-x, y5),
-    (oh-x - oh-w / 2 - 0.05, oh-y - card-h / 2 - 0.05),
-    stroke: (thickness: 0.8pt, paint: col-fail),
-    mark: (end: "straight", scale: 0.3),
-  )
-
-  // --- Implementation Agent bracket ---
-  let bx = cx - card-w / 2 - 0.5
-  let impl-top = y1 - card-h / 2 - 0.05
-  let impl-bot = y3 + card-h / 2 + 0.05
-  line(
-    (bx + 0.12, impl-top), (bx, impl-top),
-    (bx, impl-bot), (bx + 0.12, impl-bot),
-    stroke: (thickness: 0.8pt, paint: col-impl),
-  )
-  content(
-    (bx - 0.1, (impl-top + impl-bot) / 2), anchor: "east",
-    text(6pt, fill: col-impl,
-      align(center, [Impl.\ Agent])),
-  )
-
-  // --- Review Agent bracket ---
-  let rev-top = y3 - card-h / 2 - 0.05
-  let rev-bot = y5 + card-h / 2 + 0.05
-  line(
-    (bx + 0.12, rev-top), (bx, rev-top),
-    (bx, rev-bot), (bx + 0.12, rev-bot),
-    stroke: (thickness: 0.8pt, paint: col-review),
-  )
-  content(
-    (bx - 0.1, (rev-top + rev-bot) / 2), anchor: "east",
-    text(6pt, fill: col-review,
-      align(center, [Review\ Agent])),
-  )
-
-  // --- Legend ---
-  let ly = y6 - card-h / 2 - 0.7
-  let lx = cx - 4.5
-  line((lx, ly), (lx + 0.5, ly), stroke: 1.2pt + col-human)
+  // Legend
+  let ly = -box-h / 2 - ann-dy - 1.0
+  let lx = 0 * (box-w + gap-x) - box-w / 2
+  rect((lx, ly - 0.18), (lx + 0.5, ly + 0.18), fill: col-human.lighten(85%), stroke: 0.8pt + col-human, radius: 2pt)
   content((lx + 0.65, ly), anchor: "west", text(6pt, [Human]))
-  line((lx + 2.0, ly), (lx + 2.5, ly), stroke: 1.2pt + col-impl)
-  content((lx + 2.65, ly), anchor: "west", text(6pt, [Impl. agent]))
-  line((lx + 5.0, ly), (lx + 5.5, ly), stroke: 1.2pt + col-review)
-  content((lx + 5.65, ly), anchor: "west", text(6pt, [Review agent]))
+  rect((lx + 2.5, ly - 0.18), (lx + 3.0, ly + 0.18), fill: col-agent.lighten(85%), stroke: 0.8pt + col-agent, radius: 2pt)
+  content((lx + 3.15, ly), anchor: "west", text(6pt, [Agent]))
 })
