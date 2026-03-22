@@ -387,9 +387,39 @@ Materialized fixtures address the ``lazy agent'' problem: ground-truth data is g
 Parallel sub-agents in fresh context windows review the implementation---one for structural completeness, one for code quality, one for issue compliance---then post a combined verdict.
 Fresh context prevents confirmation bias.
 A simulated downstream user exercises the feature through the CLI and judges whether results are consistent with domain knowledge, replacing the community feedback loop that niche libraries lack.
-Each simulated user is defined by an \emph{agent profile}: a persona with a backstory, expertise level, decision tendencies, and testing quirks.
-For example, the profile ``Dr.\ Sarah Chen'' describes a computational physicist who evaluates optimization tools by running them against problems with known optima; she tests edge cases proactively (empty graphs, disconnected components), inspects JSON output with \texttt{jq}, and gets impatient with vague error messages.
-The agent playing this role runs the full \texttt{create~$\to$~reduce~$\to$~solve~$\to$~evaluate} pipeline and flags any deviation from expected results---catching usability and correctness issues that unit tests miss.
+Each simulated user is defined by an \emph{agent profile}: a structured persona with a backstory, domain expertise, and testing habits.
+\Cref{fig:agent-profile} shows a representative example.
+The agent adopts this persona, reads only the project's documentation, then attempts the end-to-end workflow: pick a problem, create an instance with realistic data, find a reduction path, solve, and verify.
+Gaps between the persona's domain expectation and actual CLI output are reported as bugs---catching usability and correctness issues that unit tests miss.
+
+\begin{figure}[t]
+  \centering
+  \small
+  \begin{tcolorbox}[
+    colback=gray!5, colframe=gray!60,
+    title={\textbf{Agent Profile:} Dr.\ Sarah Chen --- CLI Tool (\texttt{pred})},
+    fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+  ]
+  \textbf{Use case.}
+  An algorithm engineer reads the project documentation to learn what problems and reductions exist, then uses the \texttt{pred} CLI to model and solve his own optimization problems.
+  Each session: pick a problem from the paper, create an instance with real-world-style data, find a reduction path to a solver, solve it, and verify the result.\\[4pt]
+  %
+  \textbf{Persona.}
+  Senior algorithm engineer at a logistics company with ten years of experience in vehicle routing, scheduling, and layout optimization.
+  Knows these problems map to graph coloring, independent set, set cover, and similar NP-hard formulations because he has hand-coded reductions before.
+  Found this project's paper and wants to try the CLI instead of writing reductions himself.
+  Has never used \texttt{pred} before.\\[4pt]
+  %
+  \textbf{Behavior.}
+  Reads the paper and docs first, then picks a problem he recognizes.
+  Figures out the CLI by reading its help output.
+  After each step, compares the output against his expectation.
+  If something does not match, investigates before moving on.
+  \end{tcolorbox}
+  \caption{A representative agent profile used in Layer~3 testing.
+    The persona's domain knowledge (logistics optimization) lets the agent judge whether reduction results are plausible without access to ground-truth labels.}
+  \label{fig:agent-profile}
+\end{figure}
 
 \textbf{Layer~4: Contributor verification.}
 After merge, the domain expert who filed the original issue verifies the result.
