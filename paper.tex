@@ -257,9 +257,10 @@ Not all stages are equal: some are routine work that an agent can execute autono
 \begin{figure*}[t]
   \centering
   \includegraphics[width=\textwidth]{figures/pipeline.pdf}
-  \caption{Contribution pipeline.
-    Orange stages require human judgment (domain expert or maintainer); blue stages are fully automated by agents.
-    Each stage is annotated with its primary action.}
+  \caption{Contribution pipeline mirroring the GitHub project board.
+    Four roles drive the flow: a \emph{domain expert} files issues (orange), a \emph{maintainer} triages and merges (orange), an \emph{implementation agent} picks issues and creates PRs (blue), and a \emph{review agent} runs parallel reviews and posts verdicts (teal).
+    Review Pool is the handoff boundary between the two agents.
+    Failures move items to On~Hold for human triage.}
   \label{fig:pipeline}
 \end{figure*}
 
