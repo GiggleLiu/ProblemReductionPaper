@@ -565,7 +565,7 @@ NP-hard reductions are not the only bridge problem.
 Any \emph{gallery library}---a collection of homogeneous, independently verifiable implementations---shares the same structure: uniform interfaces, formal correctness criteria, and a scale that exceeds what small teams can sustain.
 An automatic differentiation (AD) engine is a natural example: each differentiation rule transforms one operation into its derivative, and finite-difference checks play the same role as round-trip tests---they verify each rule's correctness automatically, without a problem-specific oracle.
 The key requirement is a cheap, generic verification mechanism that applies uniformly across all entries in the gallery.
-In each case, domain experts encode the ``how'' into reusable skills while the ``what'' remains a human judgment call.
+In each case, domain experts encode the ``how'' into reusable skills; only the ``what'' requires domain judgment.
 The methodology does \emph{not} generalize to heterogeneous tasks---the staple of SWE-Bench---where each issue is structurally unique and resists skill-based decomposition.
 
 \subsection{Future Work}
