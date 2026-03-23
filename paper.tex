@@ -65,7 +65,8 @@ Every edge carries a \emph{reduction overhead}---a polynomial mapping the source
   \includegraphics[width=0.70\columnwidth]{figures/reduction-graph-concept.pdf}
 \end{center}
 Reductions compose along directed paths.
-Chaining $A \to B$ and $B \to C$ yields $A \to C$, with overhead $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
+Chaining $A \to B$ and $B \to C$ yields $A \to C$.
+Writing $r_{X \leftarrow Y}$ for the overhead of rule $Y \to X$, the composite overhead is $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
 When multiple paths connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
 Adding a primitive rule strengthens the graph only when it improves on existing routes: a direct $A \to C$ with provably lower overhead than the composite $A \to B \to C$ earns its place; one that does not is omitted to keep path-finding tractable.
 
