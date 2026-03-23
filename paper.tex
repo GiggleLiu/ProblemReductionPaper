@@ -111,7 +111,7 @@ On the formal verification front, VeriCoding~\cite{Bursuc2025VeriCoding} reports
   \label{fig:comic}
 \end{figure}
 
-We call this a \emph{bridge problem}: software whose subtasks are homogeneous and formally verifiable, but whose scale exceeds what human teams can sustain.
+We call this an \emph{assembly problem}: software whose subtasks are homogeneous and formally verifiable, but whose scale exceeds what human teams can sustain.
 Reduction-graph construction is a natural instance: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality---without a problem-specific oracle.
 This cheap, automatic verification makes the task well suited for AI coding agents, which produce volume while round-trip tests catch the errors.
 A domain expert who discovers a new reduction contributes it by filing a structured issue---no code required---and agents handle the implementation, testing, and documentation.
