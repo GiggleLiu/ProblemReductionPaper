@@ -90,10 +90,10 @@ The bottleneck was never mathematical knowledge; it was building and maintaining
 The graph's value grows with every edge, but so does the cost of maintaining it.
 Every edge must conform to the same conventions---same interface, same file layout, same test pattern---because this uniformity is what makes edges composable.
 Maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
-Conventions drift as contributors accumulate their own patterns.
-The domain experts who know the reductions rarely write systems code, bottlenecking progress on the few who know both.
+Conventions drift as contributors accumulate their own patterns (\emph{convention drift}).
+The domain experts who know the reductions rarely write systems code, bottlenecking progress on the few who know both (\emph{knowledge discontinuity}).
 When a new reduction appears in the literature, the mathematician who understands it has no way to contribute it without learning the implementation language and the project's conventions.
-And the repetitive verification cycle that each edge demands---coding, testing, documenting---exhausts even dedicated maintainers.
+And the repetitive verification cycle that each edge demands---coding, testing, documenting---exhausts even dedicated maintainers (\emph{effort exhaustion}).
 Meanwhile, systems like FunSearch~\cite{RomeraParedes2023FunSearch} and AlphaEvolve~\cite{Novikov2025AlphaEvolve} can \emph{discover} novel reductions through evolutionary search, and URSA~\cite{Janicic2025URSA} can verify them via SAT-based constraint solving---but discovered reductions still need to be implemented, tested, and integrated into a composable library.
 
 AI coding agents offer a way forward.
