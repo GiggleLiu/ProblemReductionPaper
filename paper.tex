@@ -87,7 +87,6 @@ More broadly, the gap between \emph{known} and \emph{implemented} reductions has
 Hundreds of reductions exist in the literature---Garey and Johnson~\cite{garey1979} alone catalogue over 300~NP-hard problems with reduction sketches---yet the largest software implementation covers fewer than 20.
 The bottleneck was never mathematical knowledge; it was building and maintaining the software.
 
-The reason is organizational, not technical.
 The graph's value grows with every edge, but so does the cost of maintaining it.
 Every edge must conform to the same conventions---same interface, same file layout, same test pattern---because this uniformity is what makes edges composable.
 Maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
