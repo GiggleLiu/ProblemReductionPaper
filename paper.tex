@@ -355,13 +355,15 @@ For example, \texttt{run-pipeline} invokes \texttt{issue-to-pr}, which in turn c
 Similarly, \texttt{review-pipeline} dispatches \texttt{review-structural}, \texttt{review-quality}, and \texttt{topology-check} (which detects orphan problems and NP-hardness proof gaps) as parallel subagents.
 Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \texttt{pub fn run()} entry point, and that the paper entry requires a proof sketch.
 
-The library comprises eighteen skills organized by audience (\Cref{fig:skill-architecture}).
-Four are advisor skills---each designed to address one of the human-dependent responsibilities identified above.
+We classify the library's eighteen skills into two types, shown in \Cref{fig:skill-architecture}.
+\emph{Advisor skills} (blue boxes) pause mid-execution to consult a human for decisions that require creativity, domain judgment, or security authority; \emph{agent skills} (white boxes) run fully autonomously.
+
+Four skills are advisor type---each designed to address one of the human-dependent responsibilities identified above.
 \texttt{propose} guides a domain expert---who need not know Rust or the codebase---through a one-question-at-a-time brainstorming session, eliciting formal definitions and filing a GitHub issue ready for implementation; this addresses the selection and justification gap.
 \texttt{tutorial} teaches a newcomer to explore the reduction graph through an interactive walkthrough of the \texttt{pred} CLI.
 \texttt{fix-issue} auto-corrects mechanical quality failures and brainstorms substantive fixes with the maintainer for issues that require domain judgment---addressing algorithm correctness and example construction.
 \texttt{final-review} presents a structured merge-or-hold decision: it summarizes the PR, asks the maintainer to assess usefulness, safety, and completeness, then merges or labels accordingly---enforcing that merge authority remains with a human.
-The remaining fourteen---including \texttt{run-pipeline}, \texttt{review-pipeline}, \texttt{check-issue}, \texttt{dev-setup}, and \texttt{release}---run autonomously, driving the routine stages of the pipeline without human intervention.
+The remaining fourteen agent skills---including \texttt{run-pipeline}, \texttt{review-pipeline}, \texttt{check-issue}, \texttt{dev-setup}, and \texttt{release}---run autonomously, driving the routine stages of the pipeline without human intervention.
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
