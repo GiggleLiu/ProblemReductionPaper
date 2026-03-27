@@ -39,7 +39,7 @@
     stroke: stroke-edge, mark: arrow-both)
   elabel(("contrib", 50%, "mentor"), [interactive])
 
-  // Mentor → Issue
+  // Advisor → Issue
   line("mentor.south", "issue.east",
     stroke: stroke-edge, mark: arrow-end)
 })
