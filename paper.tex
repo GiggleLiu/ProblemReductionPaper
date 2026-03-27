@@ -101,8 +101,9 @@ The evolution from SWE-agent~\cite{Yang2024SWEagent} and Devin~\cite{Wu2024Devin
 Full formal verification is also not yet practical at this scale: VeriCoding~\cite{Bursuc2025VeriCoding} reports 27--44\% success on formal specifications, and VeriBench~\cite{Miranda2025VeriBench} finds agents approach 90\% compilation in Lean~4 but rarely complete proofs.
 The question is whether agents, given the right scaffolding, can produce \emph{verified} software at a scale that human teams have not achieved.
 The scaffolding we propose is \emph{skills}.
-A skill is a plain-markdown document, committed to the repository, that reads like a checklist: ``implement the forward and inverse maps, write round-trip tests, register the rule in the CLI, draft a paper entry with a proof sketch.''
+A skill is a plain-markdown document, committed to the repository, that reads like a checklist: ``implement the forward and inverse maps, write round-trip tests, register the rule in the CLI, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
+Skills can also constrain what agents are \emph{not} allowed to do: the \texttt{propose} skill prohibits the agent from writing any code, so that domain experts contribute in mathematical language only (\Cref{fig:skill-propose}).
 A \emph{project specification} (\texttt{CLAUDE.md} or \texttt{AGENTS.md}) anchors the system as a single source of truth for architecture and constraints that every skill inherits.
 Skills address all three barriers: they eliminate convention drift by enforcing the same interface, layout, and test pattern at every invocation; they bridge knowledge discontinuity by letting domain experts contribute through structured issues while agents handle the implementation; and they absorb effort exhaustion by making the routine work---coding, testing, documenting---repeatable without human attention.
 
@@ -282,7 +283,7 @@ Before filing, the agent pre-validates the draft against Stage~2's quality check
     title={\texttt{propose} --- advisor skill (excerpts)},
     fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
-  \scriptsize
+  \small
   \textbf{No programming knowledge required.}
   This skill works entirely in mathematical / domain language.\\[3pt]
   %
@@ -330,21 +331,20 @@ Fully automatable.
     title={\texttt{add-rule} --- agent skill (excerpts)},
     fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
-  \scriptsize
-  \textbf{Required Information Checklist} [\ldots]\\[2pt]
-  \begin{tabular}{@{}r@{~}l@{}}
-    3. & \textbf{Reduction algorithm} --- how to transform source instance to target \\
-    4. & \textbf{Solution extraction} --- how to map target solution back to source \\
-    5. & \textbf{Correctness argument} --- why the reduction preserves optimality \\
-    6. & \textbf{Size overhead} --- how target size relates to source size \\
-    7. & \textbf{Concrete example} --- a small worked-out instance (tutorial style) \\
-  \end{tabular}\\[3pt]
+  \small
+  \textbf{Required Information Checklist}
+  \begin{enumerate}
+    \item \textbf{Reduction algorithm} --- how to transform source instance to target, with bibtex reference.
+    \item \textbf{Size overhead} --- how target size relates to source size, used for estimating the overhead of the reduction.
+    \item \textbf{Concrete example} --- a small worked-out instance, used for testing and documentation.
+    \item $\ldots$
+  \end{enumerate}
   Do NOT proceed until the checklist is complete.\\[3pt]
   %
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Reference Implementations} --- Read these first:\\
-  {\ttfamily src/rules/minimumvertexcover\_maximumindependent\-set.rs}\\
-  {\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
+  {\ttfamily \scriptsize src/rules/minimumvertexcover\_maximumindependent\-set.rs}\\
+  {\ttfamily \scriptsize src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
   %
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Step 5: Document in paper.}
@@ -438,7 +438,7 @@ This report surfaces usability gaps, documentation omissions, and semantic error
     title={\textbf{Agent Profile:} Dr.\ Sarah Chen --- CLI Tool (\texttt{pred})},
     fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
-  \scriptsize
+  \small
   \textbf{Use case.}
   An algorithm engineer reads the project documentation to learn what problems and reductions exist, then uses the \texttt{pred} CLI to model and solve his own optimization problems.
   Each session: pick a problem from the paper, create an instance with real-world-style data, find a reduction path to a solver, solve it, and verify the result.\\[4pt]
