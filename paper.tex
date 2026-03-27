@@ -100,8 +100,11 @@ AI coding agents offer a way forward.
 The evolution from SWE-agent~\cite{Yang2024SWEagent} and Devin~\cite{Wu2024Devin} to OpenHands~\cite{Wang2024OpenHands} and Claude Code~\cite{Anthropic2025ClaudeCode} has expanded single-task capabilities to 70--80\% on SWE-Bench~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and Roychoudhury~\cite{Roychoudhury2025AgenticAI} identifies specification inference as the central difficulty.
 Full formal verification is also not yet practical at this scale: VeriCoding~\cite{Bursuc2025VeriCoding} reports 27--44\% success on formal specifications, and VeriBench~\cite{Miranda2025VeriBench} finds agents approach 90\% compilation in Lean~4 but rarely complete proofs.
 The question is whether agents, given the right scaffolding, can produce \emph{verified} software at a scale that human teams have not achieved.
-The scaffolding we propose is \emph{skills}: composable workflow documents---plain markdown committed to the repository---that decompose multi-step tasks into numbered steps.
-A \emph{project specification} (\texttt{CLAUDE.md} or \texttt{AGENTS.md}) provides a single source of truth for architecture, conventions, and constraints; skills build on this specification to encode executable workflows in natural language.
+The scaffolding we propose is \emph{skills}.
+A skill is a plain-markdown document, committed to the repository, that reads like a checklist: ``implement the forward and inverse maps, write round-trip tests, register the rule in the CLI, draft a paper entry with a proof sketch.''
+The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
+A \emph{project specification} (\texttt{CLAUDE.md} or \texttt{AGENTS.md}) anchors the system as a single source of truth for architecture and constraints that every skill inherits.
+Skills address all three barriers: they eliminate convention drift by enforcing the same interface, layout, and test pattern at every invocation; they bridge knowledge discontinuity by letting domain experts contribute through structured issues while agents handle the implementation; and they absorb effort exhaustion by making the routine work---coding, testing, documenting---repeatable without human attention.
 
 \begin{figure}[t]
   \centering
@@ -305,7 +308,7 @@ Stages~3--4 (implement and review) are fully automatable and run in \emph{headle
 \subsection{Skill Design}\label{sec:skills}
 
 Building a verified reduction library requires both mathematical judgment and routine engineering.
-We found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue (understanding the graph's strategic gaps), \emph{verifying} the algorithm's correctness (checking proofs and edge cases), \emph{constructing} canonical examples (creative work that seeds all downstream tests), and \emph{authorizing} merges (a security boundary).
+We found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue (understanding the need), \emph{verifying} the algorithm's correctness (requires deep reasoning), \emph{constructing} canonical examples (creative work), and \emph{authorizing} merges (security critical).
 Current models cannot substitute for any of these: reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}, research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2025HLE,Merrill2024ExpressivePower}, and unsupervised merge access is a security risk.
 
 \begin{figure}[t]
