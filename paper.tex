@@ -15,7 +15,7 @@
 
 \begin{document}
 
-\title{Auto-assembly of Computational Hard Problems: The Art of Agentic Coding}
+\title{Agentic Assembly of Computational Hard Problems}
 
 \author{...}  % placeholder
 
@@ -98,9 +98,8 @@ Meanwhile, systems like FunSearch~\cite{RomeraParedes2023FunSearch} and AlphaEvo
 
 AI coding agents offer a way forward.
 The evolution from SWE-agent~\cite{Yang2024SWEagent} and Devin~\cite{Wu2024Devin} to OpenHands~\cite{Wang2024OpenHands} and Claude Code~\cite{Anthropic2025ClaudeCode} has expanded single-task capabilities to 70--80\% on SWE-Bench~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and Roychoudhury~\cite{Roychoudhury2025AgenticAI} identifies specification inference as the central difficulty.
-Unstructured AI-assisted coding can also create maintenance burden: studies report a 4$\times$ growth in code clones~\cite{GitClear2025CodeQuality}, persistent increases in code complexity despite transient velocity gains~\cite{CursorAI2025SpeedCost}, and experienced developers 19\% \emph{slower} with AI tools on real tasks~\cite{Becker2025METRProductivity}.
-Analysis of an LLM-generated C~compiler found excessive abstraction layering and absent comments where domain expertise matters most~\cite{Jones2026LLMCompiler}.
-On the formal verification front, VeriCoding~\cite{Bursuc2025VeriCoding} reports 27--44\% success on formal specifications, and VeriBench~\cite{Miranda2025VeriBench} finds self-optimizing agents approach 90\% compilation in Lean~4, but full formal guarantees remain impractical at the scale of dozens of reductions.
+Full formal verification is also not yet practical at this scale: VeriCoding~\cite{Bursuc2025VeriCoding} reports 27--44\% success on formal specifications, and VeriBench~\cite{Miranda2025VeriBench} finds agents approach 90\% compilation in Lean~4 but rarely complete proofs.
+The question is whether agents, given the right scaffolding, can produce \emph{verified} software at a scale that human teams have not achieved.
 
 \begin{figure}[t]
   \centering
