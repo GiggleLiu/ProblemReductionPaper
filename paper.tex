@@ -258,18 +258,6 @@ It functions as the environment variables of the agent OS: read on every invocat
 A \emph{skill} is a versioned, composable workflow document---also plain markdown---that decomposes a multi-step task into numbered steps.
 Skills are the functions of the agent OS, written in natural language.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{figures/skill-map.pdf}
-\caption{Skill architecture organized by audience.
-  All skills inherit project conventions from the specification files at the root.
-  Blue boxes are \emph{advisor} skills that pause to consult a human; white boxes are \emph{agent} skills that run autonomously.
-  Each agent skill internally invokes additional subskills not shown
-  (e.g., \texttt{run-pipeline} calls \texttt{issue-to-pr}, which calls \texttt{add-model} or \texttt{add-rule}).}
-\label{fig:skill-architecture}
-\end{figure}
-
-
 \subsection{The Automation Pipeline}\label{sec:pipeline-overview}
 
 Adding a reduction to the graph involves five stages, from initial proposal to merged code (\Cref{fig:pipeline}).
