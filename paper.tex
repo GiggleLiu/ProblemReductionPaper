@@ -326,8 +326,48 @@ We encode these boundaries in skills---workflow documents that define \emph{what
 We classify the eighteen skills into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) pause mid-execution to consult a human for mathematical or security decisions; \emph{agent skills} (white) run fully autonomously.
 A single \texttt{run-pipeline} invocation triggers the full cascade from issue to pull request; the maintainer's effort scales with the number of \emph{skill types}, not the number of reductions.
 
-Skills encode the domain knowledge that makes reduction implementation correct: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \texttt{pub fn run()} entry point, and that the paper entry requires a proof sketch.
+Skills encode the domain knowledge that makes reduction implementation correct (\Cref{fig:skill-snippets}).
 This knowledge cannot be inferred from code alone---it reflects conventions that emerged from building the library and would otherwise exist only in the maintainer's head.
+
+\begin{figure}[t]
+  \centering
+  \small
+  \begin{tcolorbox}[
+    colback=gray!5, colframe=gray!60,
+    title={\textbf{(a)} \texttt{propose} --- advisor skill (no code allowed)},
+    fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+  ]
+  \textbf{No programming knowledge required.}
+  This skill works entirely in mathematical / domain language.\\[3pt]
+  %
+  \texttt{<HARD-GATE>}\\
+  Do NOT write any code, create any files, or invoke implementation skills.
+  The ONLY output of this skill is GitHub issues filed via \texttt{gh issue create}.\\
+  \texttt{</HARD-GATE>}
+  \end{tcolorbox}
+  \vspace{2pt}
+  \begin{tcolorbox}[
+    colback=gray!5, colframe=gray!60,
+    title={\textbf{(b)} \texttt{add-rule} --- agent skill (domain knowledge checklist)},
+    fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+  ]
+  \begin{tabular}{@{}r@{~~}l@{}}
+    1. & Source \& target problem types \\
+    2. & Reduction algorithm (forward map) \\
+    3. & Solution extraction (inverse map) \\
+    4. & Correctness argument \\
+    5. & Size overhead expression \\
+    6. & Concrete example (tutorial-style) \\
+    7. & Solving strategy \\
+    8. & Literature reference \\
+  \end{tabular}\\[3pt]
+  Do NOT proceed until every item is filled.
+  \end{tcolorbox}
+  \caption{Excerpts from two skills.
+    \textbf{(a)}~The \texttt{propose} skill constrains the agent to mathematical dialogue only---it cannot write code---enabling no-code contribution by domain experts.
+    \textbf{(b)}~The \texttt{add-rule} skill encodes the eight pieces of domain knowledge every reduction requires; the agent cannot proceed until all are present.}
+  \label{fig:skill-snippets}
+\end{figure}
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
