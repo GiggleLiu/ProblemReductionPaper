@@ -323,35 +323,40 @@ Each PR contains exactly one model or one rule.
 The domain skills encode knowledge that cannot be inferred from code: the \texttt{add-rule} skill requires a correctness argument, a size overhead expression, and a tutorial-style example \emph{before any code is written}, points the agent to a canonical reference implementation, and requires a paper entry with a proof sketch---ensuring the result is visually verifiable.
 Fully automatable.
 
-\smallskip
-\noindent
-\begin{tcolorbox}[
-  colback=gray!5, colframe=gray!60,
-  title={\texttt{add-rule} --- agent skill (excerpts)},
-  fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
-]
-\scriptsize
-\textbf{Required Information Checklist} [\ldots]\\[2pt]
-\begin{tabular}{@{}r@{~}l@{}}
-  3. & \textbf{Reduction algorithm} --- how to transform source instance to target \\
-  4. & \textbf{Solution extraction} --- how to map target solution back to source \\
-  5. & \textbf{Correctness argument} --- why the reduction preserves optimality \\
-  6. & \textbf{Size overhead} --- how target size relates to source size \\
-  7. & \textbf{Concrete example} --- a small worked-out instance (tutorial style) \\
-\end{tabular}\\[3pt]
-Do NOT proceed until the checklist is complete.\\[3pt]
-%
-\rule{\linewidth}{0.3pt}\\[3pt]
-\textbf{Reference Implementations} --- Read these first:\\
-{\ttfamily src/rules/minimumvertexcover\_maximumindependent\-set.rs}\\
-{\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
-%
-\rule{\linewidth}{0.3pt}\\[3pt]
-\textbf{Step 5: Document in paper.}
-Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
-Run \texttt{make paper} --- must compile without errors.
-\end{tcolorbox}
-\smallskip
+\begin{figure}[t]
+  \centering
+  \begin{tcolorbox}[
+    colback=gray!5, colframe=gray!60,
+    title={\texttt{add-rule} --- agent skill (excerpts)},
+    fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+  ]
+  \scriptsize
+  \textbf{Required Information Checklist} [\ldots]\\[2pt]
+  \begin{tabular}{@{}r@{~}l@{}}
+    3. & \textbf{Reduction algorithm} --- how to transform source instance to target \\
+    4. & \textbf{Solution extraction} --- how to map target solution back to source \\
+    5. & \textbf{Correctness argument} --- why the reduction preserves optimality \\
+    6. & \textbf{Size overhead} --- how target size relates to source size \\
+    7. & \textbf{Concrete example} --- a small worked-out instance (tutorial style) \\
+  \end{tabular}\\[3pt]
+  Do NOT proceed until the checklist is complete.\\[3pt]
+  %
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Reference Implementations} --- Read these first:\\
+  {\ttfamily src/rules/minimumvertexcover\_maximumindependent\-set.rs}\\
+  {\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
+  %
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Step 5: Document in paper.}
+  Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
+  Run \texttt{make paper} --- must compile without errors.
+  \end{tcolorbox}
+  \caption{Excerpts from the \texttt{add-rule} skill.
+    The checklist encodes the mathematical knowledge every reduction requires.
+    Reference implementations prevent convention drift.
+    The paper entry ensures visual verifiability by human reviewers.}
+  \label{fig:skill-addrule}
+\end{figure}
 
 \textbf{Stage~4: Review.}
 The \texttt{review-pipeline} skill dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (\Cref{sec:verification})---then posts a combined verdict as a PR comment.
