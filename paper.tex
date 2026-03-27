@@ -334,7 +334,7 @@ This knowledge cannot be inferred from code alone---it reflects conventions that
   \small
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!60,
-    title={\textbf{(a)} \texttt{propose} --- advisor skill},
+    title={\textbf{(a)} \texttt{propose} --- advisor skill (excerpts)},
     fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
   \textbf{No programming knowledge required.}
@@ -342,16 +342,18 @@ This knowledge cannot be inferred from code alone---it reflects conventions that
   %
   \texttt{<HARD-GATE>}\\
   Do NOT write any code, create any files, or invoke implementation skills.
-  The ONLY output of this skill is GitHub issues.\\
+  The ONLY output of this skill is GitHub issues filed via \texttt{gh issue create}.\\
   \texttt{</HARD-GATE>}\\[3pt]
   %
-  \textbf{Topology analysis.}
-  Run \texttt{detect\_isolated\_problems} and \texttt{detect\_unreachable\_from\_3sat} on the reduction graph.
-  Recommend high-value rules the contributor may not have considered.\\[3pt]
-  %
-  \textbf{Pre-validation.}
-  Run \texttt{check-issue} on the draft before filing.
-  Iterate until all four quality checks pass.
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Run topology analysis first} to identify the most impactful missing reductions [\ldots]\\
+  \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=2pt, belowskip=2pt, xleftmargin=4pt]
+cargo run --example detect_isolated_problems
+cargo run --example detect_unreachable_from_3sat
+  \end{lstlisting}
+  \vspace{-2pt}
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  Present draft $\to$ Run \texttt{check-issue} on draft $\to$ Checks pass? $\to$ User approves? $\to$ File issue
   \end{tcolorbox}
   \vspace{2pt}
   \begin{tcolorbox}[
