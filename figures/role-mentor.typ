@@ -34,7 +34,7 @@
   // GitHub Issue
   node((3, -2.2), [GitHub Issue], "issue")
 
-  // Contributor ↔ Mentor
+  // Contributor ↔ Advisor
   line("contrib.east", "mentor.west",
     stroke: stroke-edge, mark: arrow-both)
   elabel(("contrib", 50%, "mentor"), [interactive])
