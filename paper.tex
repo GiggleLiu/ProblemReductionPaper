@@ -320,7 +320,7 @@ First, domain skills (\texttt{add-model}, \texttt{add-rule}) encode the conventi
 Second, software engineering skills (\texttt{issue-to-pr}) encode PR best practices: interpret the issue, create an isolated git worktree, write an implementation plan, execute it, and open a PR with a detailed summary.
 Third, a sub-agent orchestration layer dispatches independent tasks to parallel agents, powered by the Superpowers plugin~\cite{Obra2025Superpowers}---a general-purpose toolkit for structured planning, worktree isolation, and sub-agent-driven development.
 Each PR contains exactly one model or one rule.
-The domain skills encode knowledge that cannot be inferred from code: the \texttt{add-rule} skill requires a correctness argument, a size overhead expression, and a tutorial-style example \emph{before any code is written}, points the agent to a canonical reference implementation, and requires a paper entry with a proof sketch---ensuring the result is visually verifiable.
+The domain skills encode knowledge that cannot be inferred from code (\Cref{fig:skill-addrule}): the \texttt{add-rule} skill requires a correctness argument, a size overhead expression, and a tutorial-style example \emph{before any code is written}, points the agent to a canonical reference implementation, and requires a paper entry with a proof sketch---ensuring the result is visually verifiable.
 Fully automatable.
 
 \begin{figure}[t]
