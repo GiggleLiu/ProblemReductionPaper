@@ -326,75 +326,67 @@ We encode these boundaries in skills---workflow documents that define \emph{what
 We classify the eighteen skills into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) pause mid-execution to consult a human for mathematical or security decisions; \emph{agent skills} (white) run fully autonomously.
 A single \texttt{run-pipeline} invocation triggers the full cascade from issue to pull request; the maintainer's effort scales with the number of \emph{skill types}, not the number of reductions.
 
-\Cref{fig:skill-propose} shows excerpts from the \texttt{propose} advisor skill.
-The hard gate constrains the agent to mathematical dialogue---it cannot write code---enabling no-code contribution by domain experts.
-The topology analysis leverages the reduction graph itself to recommend high-value rules the contributor may not have considered.
-Before filing, the skill runs \texttt{check-issue} on the draft and iterates until all four quality checks pass, so invalid proposals never enter the pipeline.
+The following excerpt from the \texttt{propose} advisor skill illustrates all three design elements.
+The hard gate constrains the agent to mathematical dialogue---it cannot write code---enabling no-code contribution.
+The topology analysis leverages the reduction graph to recommend high-value rules.
+Before filing, the skill runs \texttt{check-issue} on the draft and iterates until all four quality checks pass.
 
-\begin{figure}[t]
-  \centering
-  \small
-  \begin{tcolorbox}[
-    colback=gray!5, colframe=gray!60,
-    title={\texttt{propose} --- advisor skill (excerpts)},
-    fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
-  ]
-  \textbf{No programming knowledge required.}
-  This skill works entirely in mathematical / domain language.\\[3pt]
-  %
-  \texttt{<HARD-GATE>}\\
-  Do NOT write any code, create any files, or invoke implementation skills.
-  The ONLY output of this skill is GitHub issues filed via \texttt{gh issue create}.\\
-  \texttt{</HARD-GATE>}\\[3pt]
-  %
-  \rule{\linewidth}{0.3pt}\\[3pt]
-  \textbf{Run topology analysis first} to identify the most impactful missing reductions [\ldots]\\
-  \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=2pt, belowskip=2pt, xleftmargin=4pt]
+\smallskip
+\noindent
+\begin{tcolorbox}[
+  colback=gray!5, colframe=gray!60,
+  title={\texttt{propose} --- advisor skill (excerpts)},
+  fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+]
+\small
+\textbf{No programming knowledge required.}
+This skill works entirely in mathematical / domain language.\\[3pt]
+%
+\texttt{<HARD-GATE>}\\
+Do NOT write any code, create any files, or invoke implementation skills.
+The ONLY output of this skill is GitHub issues filed via \texttt{gh issue create}.\\
+\texttt{</HARD-GATE>}\\[3pt]
+%
+\rule{\linewidth}{0.3pt}\\[3pt]
+\textbf{Run topology analysis first} to identify the most impactful missing reductions [\ldots]\\
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=2pt, belowskip=2pt, xleftmargin=4pt]
 cargo run --example detect_isolated_problems
 cargo run --example detect_unreachable_from_3sat
-  \end{lstlisting}
-  \vspace{-2pt}
-  \rule{\linewidth}{0.3pt}\\[3pt]
-  Present draft $\to$ Run \texttt{check-issue} on draft $\to$ Checks pass? $\to$ User approves? $\to$ File issue
-  \end{tcolorbox}
-  \caption{Excerpts from the \texttt{propose} skill.
-    The hard gate enforces no-code contribution.
-    Topology analysis guides experts toward strategic graph gaps.
-    Pre-validation rejects invalid proposals before they enter the pipeline.}
-  \label{fig:skill-propose}
-\end{figure}
+\end{lstlisting}
+\vspace{-2pt}
+\rule{\linewidth}{0.3pt}\\[3pt]
+Present draft $\to$ Run \texttt{check-issue} on draft $\to$ Checks pass? $\to$ User approves? $\to$ File issue
+\end{tcolorbox}
+\smallskip
 
-Skills also encode the domain knowledge that makes reduction implementation correct (\Cref{fig:skill-addrule}).
-This knowledge cannot be inferred from code alone---it reflects conventions that emerged from building the library and would otherwise exist only in the maintainer's head.
+Skills also encode domain knowledge that cannot be inferred from code.
+The \texttt{add-rule} skill requires the agent to gather a correctness argument, a size overhead expression, and a tutorial-style example \emph{before writing any code}---mathematical requirements that would otherwise exist only in the maintainer's head.
+It then points the agent to a canonical reference implementation, so every new reduction follows the same conventions.
 
-\begin{figure}[t]
-  \centering
-  \small
-  \begin{tcolorbox}[
-    colback=gray!5, colframe=gray!60,
-    title={\texttt{add-rule} --- agent skill (excerpts)},
-    fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
-  ]
-  \textbf{Required Information Checklist}\\[2pt]
-  {\scriptsize
-  \begin{tabular}{@{}r@{~}l@{~~}l@{}}
-    1. & \textbf{Source problem} & \texttt{MinimumVertexCover<SimpleGraph, i32>} \\
-    2. & \textbf{Target problem} & \texttt{MaximumIndependentSet<SimpleGraph, i32>} \\
-    3. & \textbf{Reduction algorithm} & ``Copy graph; IS on same graph as VC'' \\
-    4. & \textbf{Solution extraction} & ``Complement: \texttt{1-x} for each variable'' \\
-    5. & \textbf{Correctness argument} & ``S is IS iff V\textbackslash S is VC'' \\
-    6. & \textbf{Size overhead} & \texttt{num\_vertices = "num\_vertices"} \\
-    7. & \textbf{Concrete example} & ``Triangle: VC=\{0,1\} $\to$ IS=\{2\}'' \\
-    8. & \textbf{Solving strategy} & ``BruteForce, or ILP reduction'' \\
-    9. & \textbf{Reference} & Paper, textbook, or URL \\
-  \end{tabular}}\\[3pt]
-  Do NOT proceed until the checklist is complete.
-  \end{tcolorbox}
-  \caption{Excerpts from the \texttt{add-rule} skill.
-    The nine-item checklist encodes the domain knowledge every reduction requires.
-    The agent cannot proceed until all items---including the correctness argument and a tutorial-style example---are present.}
-  \label{fig:skill-addrule}
-\end{figure}
+\smallskip
+\noindent
+\begin{tcolorbox}[
+  colback=gray!5, colframe=gray!60,
+  title={\texttt{add-rule} --- agent skill (excerpts)},
+  fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+]
+\small
+\textbf{Required Information Checklist} [\ldots]\\[2pt]
+{\small
+\begin{tabular}{@{}r@{~}l@{}}
+  3. & \textbf{Reduction algorithm} --- how to transform source instance to target \\
+  4. & \textbf{Solution extraction} --- how to map target solution back to source \\
+  5. & \textbf{Correctness argument} --- why the reduction preserves optimality \\
+  6. & \textbf{Size overhead} --- how target size relates to source size \\
+  7. & \textbf{Concrete example} --- a small worked-out instance (tutorial style) \\
+\end{tabular}}\\[3pt]
+Do NOT proceed until the checklist is complete.\\[3pt]
+\rule{\linewidth}{0.3pt}\\[3pt]
+\textbf{Reference Implementations} --- Read these first to understand the patterns:\\
+{\small\texttt{src/rules/minimumvertexcover\_maximumindependentset.rs}\\
+\texttt{src/unit\_tests/rules/minimumvertexcover\_maximumindependentset.rs}}
+\end{tcolorbox}
+\smallskip
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
