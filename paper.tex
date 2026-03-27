@@ -372,19 +372,20 @@ It points the agent to a canonical reference implementation so every new reducti
 ]
 \small
 \textbf{Required Information Checklist} [\ldots]\\[2pt]
-{\small
 \begin{tabular}{@{}r@{~}l@{}}
   3. & \textbf{Reduction algorithm} --- how to transform source instance to target \\
   4. & \textbf{Solution extraction} --- how to map target solution back to source \\
   5. & \textbf{Correctness argument} --- why the reduction preserves optimality \\
   6. & \textbf{Size overhead} --- how target size relates to source size \\
   7. & \textbf{Concrete example} --- a small worked-out instance (tutorial style) \\
-\end{tabular}}\\[3pt]
+\end{tabular}\\[3pt]
 Do NOT proceed until the checklist is complete.\\[3pt]
+%
 \rule{\linewidth}{0.3pt}\\[3pt]
 \textbf{Reference Implementations} --- Read these first to understand the patterns:\\
-{\small\texttt{src/rules/minimumvertexcover\_maximumindependentset.rs}\\
-\texttt{src/unit\_tests/rules/minimumvertexcover\_maximumindependentset.rs}}\\[3pt]
+\texttt{src/rules/minimumvertexcover\_maximumindependentset.rs}\\
+\texttt{src/unit\_tests/rules/minimumvertexcover\_maximumindependentset.rs}\\[3pt]
+%
 \rule{\linewidth}{0.3pt}\\[3pt]
 \textbf{Step 5: Document in paper.}
 Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
