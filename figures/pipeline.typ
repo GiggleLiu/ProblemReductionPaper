@@ -1,5 +1,5 @@
 #import "lib.typ": *
-#import "pixel-family/lib.typ": bob, grace, crank, sentinel
+#import "@preview/pixel-family:0.2.0": bob, grace, crank, sentinel
 
 #set page(..fig-page)
 #set text(..fig-text)
