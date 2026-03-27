@@ -324,46 +324,27 @@ Stages~3--4 (implement and review) are fully automatable and run in \emph{headle
 
 \subsection{Skill Design}\label{sec:skills}
 
-The central design question we faced was: which tasks can be fully automated, and which require a human in the loop?
-We identified four responsibilities that current models cannot handle reliably.
+Building a verified reduction library requires both mathematical judgment and routine engineering.
+We found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue (understanding the graph's strategic gaps), \emph{verifying} the algorithm's correctness (checking proofs and edge cases), \emph{constructing} canonical examples (creative work that seeds all downstream tests), and \emph{authorizing} merges (a security boundary).
+Current models cannot substitute for any of these: reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}, research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2025HLE,Merrill2024ExpressivePower}, and unsupervised merge access is a security risk.
 
-\emph{Selection and justification} requires understanding the research landscape and the graph's strategic gaps---which reductions fill proof chains, which connect orphan nodes, which open access to new solvers.
-LLMs cannot perform this reliably: performance drops up to 65\% when irrelevant clauses are added to otherwise identical problems~\cite{Mirzadeh2025GSMSymbolic}, reasoning models exhibit accuracy collapse beyond complexity thresholds~\cite{Shojaee2025IllusionOfThinking}, and multi-step compositional reasoning exhibits multiplicative error accumulation~\cite{Dziri2023FaithFate}.
-\emph{Algorithm correctness} demands that a contributor verify the proposed reduction is mathematically sound---checking the proof argument, confirming edge-case behavior, and ensuring the overhead analysis is tight.
-On research-level mathematics, the best models score below 2\% on FrontierMath~\cite{Glazer2024FrontierMath} and 8\% on Humanity's Last Exam~\cite{Paster2025HLE}; standard transformers are bounded by constant-depth threshold circuits, and even chain-of-thought extends expressiveness only to polynomial-time computation~\cite{Merrill2024ExpressivePower}.
-\emph{Example construction} is creative work: providing a canonical instance with a known optimal solution seeds all downstream verification---round-trip tests, PDF manual diagrams, and CLI exploration---and a poorly chosen example may fail to exercise the reduction's critical logic.
-Finally, \emph{issue resolution and merge authority} is security-critical: agents with unsupervised merge access could introduce unreviewed code.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/skill-map.pdf}
+\caption{Skill architecture organized by audience.
+  All skills inherit project conventions from the specification files at the root.
+  Blue boxes are \emph{advisor} skills that pause to consult a human; white boxes are \emph{agent} skills that run autonomously.
+  Each agent skill internally invokes additional subskills not shown
+  (e.g., \texttt{run-pipeline} calls \texttt{issue-to-pr}, which calls \texttt{add-model} or \texttt{add-rule}).}
+\label{fig:skill-architecture}
+\end{figure}
 
-We needed an automation mechanism that could encode these boundaries.
-Traditional automation---Makefiles, CI pipelines, shell scripts---is \emph{mechanical}: every step is predetermined, and human involvement is impossible mid-execution.
-We designed skills as a different kind of automation: \emph{abstract}.
-A skill defines \emph{what} must happen (validate references, construct an example, write a proof sketch) without fixing \emph{how}.
-This abstraction gives skills a capability that mechanical automation lacks: they can invoke human beings as a callable resource.
+We encode these boundaries in skills---workflow documents that define \emph{what} must happen without fixing \emph{how}.
+We classify the eighteen skills into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) pause mid-execution to consult a human for mathematical or security decisions; \emph{agent skills} (white) run fully autonomously.
+A single \texttt{run-pipeline} invocation triggers the full cascade from issue to pull request; the maintainer's effort scales with the number of \emph{skill types}, not the number of reductions.
 
-When a task is routine, the agent executes autonomously.
-When it requires creativity or deep reasoning---choosing which example best reveals correctness, deciding whether a proposed reduction is non-trivial---the skill pauses, asks the human, and resumes with the answer.
-We call these \emph{advisor} skills (tinted in \Cref{fig:skill-architecture}): the agent orchestrates the workflow while the human supplies the judgment that models cannot yet provide.
-The same skill thus operates headlessly in a pipeline and interactively with a contributor, adapting its execution mode to the context.
-
-Skills differ from per-invocation prompts in three ways that matter for sustainability (\Cref{fig:skill-architecture}).
-First, skills are \emph{versioned}: committed to the repository and evolved through pull requests, just like code.
-A bug in a skill is fixed once and benefits all future invocations; a per-invocation prompt must be re-crafted each time.
-Second, skills are \emph{compositional}: orchestration skills invoke implementation skills, which invoke quality gates.
-A single \texttt{run-pipeline} command triggers the full cascade---validate, implement, test, review, document, and produce a pull request.
-The maintainer's effort scales with the number of \emph{skill types}, not the number of tasks.
-For example, \texttt{run-pipeline} invokes \texttt{issue-to-pr}, which in turn calls \texttt{add-model} or \texttt{add-rule} to generate a complete implementation, then \texttt{fix-pr} to address CI failures, and \texttt{write-model}/\texttt{write-rule} to draft paper entries.
-Similarly, \texttt{review-pipeline} dispatches \texttt{review-structural}, \texttt{review-quality}, and \texttt{topology-check} (which detects orphan problems and NP-hardness proof gaps) as parallel subagents.
-Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \texttt{pub fn run()} entry point, and that the paper entry requires a proof sketch.
-
-We classify the library's eighteen skills into two types, shown in \Cref{fig:skill-architecture}.
-\emph{Advisor skills} (blue boxes) pause mid-execution to consult a human for decisions that require creativity, domain judgment, or security authority; \emph{agent skills} (white boxes) run fully autonomously.
-
-Four skills are advisor type---each designed to address one of the human-dependent responsibilities identified above.
-\texttt{propose} guides a domain expert---who need not know Rust or the codebase---through a one-question-at-a-time brainstorming session, eliciting formal definitions and filing a GitHub issue ready for implementation; this addresses the selection and justification gap.
-\texttt{tutorial} teaches a newcomer to explore the reduction graph through an interactive walkthrough of the \texttt{pred} CLI.
-\texttt{fix-issue} auto-corrects mechanical quality failures and brainstorms substantive fixes with the maintainer for issues that require domain judgment---addressing algorithm correctness and example construction.
-\texttt{final-review} presents a structured merge-or-hold decision: it summarizes the PR, asks the maintainer to assess usefulness, safety, and completeness, then merges or labels accordingly---enforcing that merge authority remains with a human.
-The remaining fourteen agent skills---including \texttt{run-pipeline}, \texttt{review-pipeline}, \texttt{check-issue}, \texttt{dev-setup}, and \texttt{release}---run autonomously, driving the routine stages of the pipeline without human intervention.
+Skills encode the domain knowledge that makes reduction implementation correct: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \texttt{pub fn run()} entry point, and that the paper entry requires a proof sketch.
+This knowledge cannot be inferred from code alone---it reflects conventions that emerged from building the library and would otherwise exist only in the maintainer's head.
 
 \subsection{Correctness by Construction}\label{sec:verification}
 

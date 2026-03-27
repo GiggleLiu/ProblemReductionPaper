@@ -27,12 +27,8 @@
   // ── Root ──
   let rx = 8.1
   let ry = 12.5
-  rect((rx - 2.0 + 0.08, ry - 0.55 + 0.08), (rx + 2.0 + 0.08, ry + 0.55 + 0.08),
-    radius: 5pt, fill: shadow-col, stroke: none)
-  rect((rx - 2.0, ry - 0.55), (rx + 2.0, ry + 0.55),
-    radius: 5pt, fill: fill-accent, stroke: stroke-accent, name: "root")
-  content((rx, ry + 0.15), text(8pt, weight: "bold", fill: accent.darken(20%), raw("CLAUDE.md")))
-  content((rx, ry - 0.25), text(8pt, weight: "bold", fill: accent.darken(20%), raw("AGENTS.md")))
+  rect((rx - 2.0, ry - 0.55), (rx + 2.0, ry + 0.55), radius: 5pt, fill: white, stroke: none, name: "root")
+  content((rx, ry - 0.15), text(8pt, weight: "bold", raw("CLAUDE.md/AGENTS.md")))
 
   // ── Fork: trunk + bar + ticks ──
   let bar-y = 11.0
