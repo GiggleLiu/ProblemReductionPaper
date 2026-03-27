@@ -334,7 +334,7 @@ This knowledge cannot be inferred from code alone---it reflects conventions that
   \small
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!60,
-    title={\textbf{(a)} \texttt{propose} --- advisor skill (no code allowed)},
+    title={\textbf{(a)} \texttt{propose} --- advisor skill},
     fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
   \textbf{No programming knowledge required.}
@@ -342,13 +342,21 @@ This knowledge cannot be inferred from code alone---it reflects conventions that
   %
   \texttt{<HARD-GATE>}\\
   Do NOT write any code, create any files, or invoke implementation skills.
-  The ONLY output of this skill is GitHub issues filed via \texttt{gh issue create}.\\
-  \texttt{</HARD-GATE>}
+  The ONLY output of this skill is GitHub issues.\\
+  \texttt{</HARD-GATE>}\\[3pt]
+  %
+  \textbf{Topology analysis.}
+  Run orphan detection and NP-hardness gap analysis on the reduction graph.
+  Recommend high-value rules the contributor may not have considered.\\[3pt]
+  %
+  \textbf{Pre-validation.}
+  Run \texttt{check-issue} on the draft before filing.
+  Iterate until all four quality checks pass.
   \end{tcolorbox}
   \vspace{2pt}
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!60,
-    title={\textbf{(b)} \texttt{add-rule} --- agent skill (domain knowledge checklist)},
+    title={\textbf{(b)} \texttt{add-rule} --- agent skill},
     fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
   \begin{tabular}{@{}r@{~~}l@{}}
@@ -363,8 +371,8 @@ This knowledge cannot be inferred from code alone---it reflects conventions that
   \end{tabular}\\[3pt]
   Do NOT proceed until every item is filled.
   \end{tcolorbox}
-  \caption{Excerpts from two skills.
-    \textbf{(a)}~The \texttt{propose} skill constrains the agent to mathematical dialogue only---it cannot write code---enabling no-code contribution by domain experts.
+  \caption{Excerpts from two skills illustrating all three contributions.
+    \textbf{(a)}~The \texttt{propose} skill enables no-code contribution (hard gate), leverages the reduction graph to guide experts toward strategic gaps (topology analysis), and validates proposals before they enter the pipeline (pre-validation).
     \textbf{(b)}~The \texttt{add-rule} skill encodes the eight pieces of domain knowledge every reduction requires; the agent cannot proceed until all are present.}
   \label{fig:skill-snippets}
 \end{figure}
