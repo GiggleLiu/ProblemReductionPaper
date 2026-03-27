@@ -312,15 +312,25 @@ Stages~3--4 (implement and review) are fully automatable and run in \emph{headle
 
 \subsection{Skill Design}\label{sec:skills}
 
-Skills are the mechanism that realizes this separation.
+The central design question we faced was: which tasks can be fully automated, and which require a human in the loop?
+We identified four responsibilities that current models cannot handle reliably.
+
+\emph{Selection and justification} requires understanding the research landscape and the graph's strategic gaps---which reductions fill proof chains, which connect orphan nodes, which open access to new solvers.
+LLMs cannot perform this reliably: performance drops up to 65\% when irrelevant clauses are added to otherwise identical problems~\cite{Mirzadeh2025GSMSymbolic}, reasoning models exhibit accuracy collapse beyond complexity thresholds~\cite{Shojaee2025IllusionOfThinking}, and multi-step compositional reasoning exhibits multiplicative error accumulation~\cite{Dziri2023FaithFate}.
+\emph{Algorithm correctness} demands that a contributor verify the proposed reduction is mathematically sound---checking the proof argument, confirming edge-case behavior, and ensuring the overhead analysis is tight.
+On research-level mathematics, the best models score below 2\% on FrontierMath~\cite{Glazer2024FrontierMath} and 8\% on Humanity's Last Exam~\cite{Paster2025HLE}; standard transformers are bounded by constant-depth threshold circuits, and even chain-of-thought extends expressiveness only to polynomial-time computation~\cite{Merrill2024ExpressivePower}.
+\emph{Example construction} is creative work: providing a canonical instance with a known optimal solution seeds all downstream verification---round-trip tests, PDF manual diagrams, and CLI exploration---and a poorly chosen example may fail to exercise the reduction's critical logic.
+Finally, \emph{issue resolution and merge authority} is security-critical: agents with unsupervised merge access could introduce unreviewed code.
+
+We needed an automation mechanism that could encode these boundaries.
 Traditional automation---Makefiles, CI pipelines, shell scripts---is \emph{mechanical}: every step is predetermined, and human involvement is impossible mid-execution.
-Skills are a different kind of automation: \emph{abstract}.
+We designed skills as a different kind of automation: \emph{abstract}.
 A skill defines \emph{what} must happen (validate references, construct an example, write a proof sketch) without fixing \emph{how}.
 This abstraction gives skills a capability that mechanical automation lacks: they can invoke human beings as a callable resource.
 
-When the task is routine, the agent executes autonomously.
-When the task requires creativity or deep reasoning---choosing which example best reveals correctness, deciding whether a proposed reduction is non-trivial---the skill pauses, asks the human, and resumes with the answer.
-We call these \emph{mentor} skills (tinted in \Cref{fig:skill-architecture}): the agent orchestrates the workflow while the human supplies the creative judgment.
+When a task is routine, the agent executes autonomously.
+When it requires creativity or deep reasoning---choosing which example best reveals correctness, deciding whether a proposed reduction is non-trivial---the skill pauses, asks the human, and resumes with the answer.
+We call these \emph{mentor} skills (tinted in \Cref{fig:skill-architecture}): the agent orchestrates the workflow while the human supplies the judgment that models cannot yet provide.
 The same skill thus operates headlessly in a pipeline and interactively with a contributor, adapting its execution mode to the context.
 
 \begin{figure}[t]
@@ -345,34 +355,12 @@ Similarly, \texttt{review-pipeline} dispatches \texttt{review-structural}, \text
 Third, skills \emph{encode domain knowledge that cannot be inferred from code}: the \texttt{add-rule} skill specifies that overhead expressions must use getter methods matching the source type, that examples must have a \texttt{pub fn run()} entry point, and that the paper entry requires a proof sketch.
 
 The library comprises eighteen skills organized by audience (\Cref{fig:skill-architecture}).
-Four are mentor skills that treat the human as a callable resource for creativity.
-\texttt{propose} guides a domain expert---who need not know Rust or the codebase---through a one-question-at-a-time brainstorming session, eliciting formal definitions and filing a GitHub issue ready for implementation.
+Four are mentor skills---each designed to address one of the human-dependent responsibilities identified above.
+\texttt{propose} guides a domain expert---who need not know Rust or the codebase---through a one-question-at-a-time brainstorming session, eliciting formal definitions and filing a GitHub issue ready for implementation; this addresses the selection and justification gap.
 \texttt{tutorial} teaches a newcomer to explore the reduction graph through an interactive walkthrough of the \texttt{pred} CLI.
-\texttt{fix-issue} auto-corrects mechanical quality failures and brainstorms substantive fixes with the maintainer for issues that require domain judgment.
-\texttt{final-review} presents a structured merge-or-hold decision: it summarizes the PR, asks the maintainer to assess usefulness, safety, and completeness, then merges or labels accordingly.
+\texttt{fix-issue} auto-corrects mechanical quality failures and brainstorms substantive fixes with the maintainer for issues that require domain judgment---addressing algorithm correctness and example construction.
+\texttt{final-review} presents a structured merge-or-hold decision: it summarizes the PR, asks the maintainer to assess usefulness, safety, and completeness, then merges or labels accordingly---enforcing that merge authority remains with a human.
 The remaining fourteen---including \texttt{run-pipeline}, \texttt{review-pipeline}, \texttt{check-issue}, \texttt{dev-setup}, and \texttt{release}---run autonomously, driving the routine stages of the pipeline without human intervention.
-
-\subsection{The Role of Human Experts}\label{sec:human-experts}
-
-The pipeline delegates routine execution to agents, but four responsibilities remain with humans---each requiring capabilities that current models lack.
-
-\emph{Selection and justification} (deep reasoning).
-Deciding which problem or rule to implement requires understanding the research landscape and the graph's strategic gaps: which reductions fill proof chains, which connect orphan nodes, which open access to new solvers.
-LLMs cannot perform this reliably: performance drops up to 65\% when irrelevant clauses are added to otherwise identical problems~\cite{Mirzadeh2025GSMSymbolic}, reasoning models exhibit accuracy collapse beyond complexity thresholds~\cite{Shojaee2025IllusionOfThinking}, and multi-step compositional reasoning exhibits multiplicative error accumulation~\cite{Dziri2023FaithFate}.
-
-\emph{Algorithm correctness} (deep reasoning).
-The contributor verifies that the proposed reduction is mathematically sound---checking the proof argument, confirming edge-case behavior in the construction, and ensuring the overhead analysis is tight.
-On research-level mathematics, the best models score below 2\% on FrontierMath~\cite{Glazer2024FrontierMath} and 8\% on Humanity's Last Exam~\cite{Paster2025HLE}; standard transformers are bounded by constant-depth threshold circuits, and even chain-of-thought extends expressiveness only to polynomial-time computation~\cite{Merrill2024ExpressivePower}.
-
-\emph{Example construction} (creative work).
-Providing a canonical instance with a known optimal solution seeds all downstream verification: round-trip tests, PDF manual diagrams, and CLI exploration.
-A poorly chosen example may fail to exercise the reduction's critical logic.
-
-\emph{Issue resolution and merge authority} (security-critical).
-Only a human maintainer can resolve issues and merge pull requests, since agents with unsupervised merge access could introduce unreviewed code.
-
-Skills encode these boundaries explicitly: mentor skills pause and query the human for creative or reasoning-intensive decisions, then resume autonomous execution once the answer is supplied.
-
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
