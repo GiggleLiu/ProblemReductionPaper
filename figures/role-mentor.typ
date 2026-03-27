@@ -27,9 +27,9 @@
   content((0, 1.4), alice(size: 1.8em, baseline: 0pt))
   node((0, 0), [Contributor], "contrib")
 
-  // Mentor (agent)
+  // Advisor (agent)
   content((6, 1.4), bolt(size: 1.8em, baseline: 0pt))
-  node((6, 0), [Mentor], "mentor", accented: true)
+  node((6, 0), [Advisor], "mentor", accented: true)
 
   // GitHub Issue
   node((3, -2.2), [GitHub Issue], "issue")
