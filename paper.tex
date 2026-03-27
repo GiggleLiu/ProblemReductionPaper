@@ -358,20 +358,23 @@ cargo run --example detect_unreachable_from_3sat
   \vspace{2pt}
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!60,
-    title={\textbf{(b)} \texttt{add-rule} --- agent skill},
+    title={\textbf{(b)} \texttt{add-rule} --- agent skill (excerpts)},
     fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
-  \begin{tabular}{@{}r@{~~}l@{}}
-    1. & Source \& target problem types \\
-    2. & Reduction algorithm (forward map) \\
-    3. & Solution extraction (inverse map) \\
-    4. & Correctness argument \\
-    5. & Size overhead expression \\
-    6. & Concrete example (tutorial-style) \\
-    7. & Solving strategy \\
-    8. & Literature reference \\
-  \end{tabular}\\[3pt]
-  Do NOT proceed until every item is filled.
+  \textbf{Required Information Checklist}\\[2pt]
+  {\scriptsize
+  \begin{tabular}{@{}r@{~}l@{~~}l@{}}
+    1. & \textbf{Source problem} & \texttt{MinimumVertexCover<SimpleGraph, i32>} \\
+    2. & \textbf{Target problem} & \texttt{MaximumIndependentSet<SimpleGraph, i32>} \\
+    3. & \textbf{Reduction algorithm} & ``Copy graph; IS on same graph as VC'' \\
+    4. & \textbf{Solution extraction} & ``Complement: \texttt{1-x} for each variable'' \\
+    5. & \textbf{Correctness argument} & ``S is IS iff V\textbackslash S is VC'' \\
+    6. & \textbf{Size overhead} & \texttt{num\_vertices = "num\_vertices"} \\
+    7. & \textbf{Concrete example} & ``Triangle: VC=\{0,1\} $\to$ IS=\{2\}'' \\
+    8. & \textbf{Solving strategy} & ``BruteForce, or ILP reduction'' \\
+    9. & \textbf{Reference} & Paper, textbook, or URL \\
+  \end{tabular}}\\[3pt]
+  Do NOT proceed until the checklist is complete.
   \end{tcolorbox}
   \caption{Excerpts from two skills illustrating all three contributions.
     \textbf{(a)}~The \texttt{propose} skill enables no-code contribution (hard gate), leverages the reduction graph to guide experts toward strategic gaps (topology analysis), and validates proposals before they enter the pipeline (pre-validation).
