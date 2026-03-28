@@ -256,10 +256,10 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 \begin{figure*}[t]
   \centering
   \includegraphics[width=\textwidth]{figures/pipeline.pdf}
-  \caption{Contribution pipeline mirroring the GitHub project board.
+  \caption{Contribution pipeline as a state machine on the GitHub project board.
+    Each box is a board column (state); arrows show the single allowed transition direction.
     Four roles drive the flow: a \emph{domain expert} files issues (orange), a \emph{maintainer} triages and merges (orange), an \emph{implementation agent} picks issues and creates PRs (blue), and a \emph{review agent} runs parallel reviews and posts verdicts (teal).
-    Review Pool is the handoff boundary between the two agents.
-    Failures move items to On~Hold for human triage.}
+    If any stage fails, the item moves to On~Hold (not shown) for human triage.}
   \label{fig:pipeline}
 \end{figure*}
 
