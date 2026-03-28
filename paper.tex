@@ -487,9 +487,8 @@ The key requirement is a cheap, generic verification mechanism that applies unif
 The cost of entry is skill engineering: the 18~skills in this project represent substantial upfront investment, and each new domain requires its own set.
 The methodology does \emph{not} generalize to heterogeneous tasks, where each issue is structurally unique and resists skill-based decomposition.
 
-The library itself can serve as a \emph{tool} for AI agents: an agent facing an optimization problem can invoke the \texttt{pred} CLI---or its Model Context Protocol (MCP) server---to route the problem through the reduction graph to a solver, without knowing which solver fits or how to formulate the reduction.
-As the graph grows, so does the set of problems any MCP-connected agent can solve.
-The reduction graph also serves as a \emph{solver-agnostic compilation layer}: adding a single edge from a hardware platform's native formulation (e.g., MIS for Rydberg atoms) routes all supported problem types to that device.
+The library itself can serve as a \emph{tool} for AI agents: an agent facing an optimization problem can invoke the \texttt{pred} CLI to route the problem through the reduction graph to a solver, without knowing which solver fits or how to formulate the reduction.
+The reduction graph also serves as a \emph{solver-agnostic compilation layer}: adding a single edge from a hardware platform's native formulation (e.g., Maximum Independent Set, which Rydberg-atom quantum hardware solves natively) routes all supported problem types to that device.
 
 Three directions extend this work: composing with \emph{automated discovery} via evolutionary search~\cite{Novikov2025AlphaEvolve}, supplementing round-trip tests with \emph{formal verification} (machine-checked Lean or Coq proofs), and \emph{cost-aware path selection} where the optimal solver route depends on instance scale.
 
