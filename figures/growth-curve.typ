@@ -15,7 +15,6 @@
   (6, 55), (7, 55), (8, 55), (9, 59), (10, 77), (11, 159),
 )
 
-// Phase boundaries (week indices)
 #let phase2-start = 7
 #let phase3-start = 8.5
 
@@ -40,6 +39,7 @@
       fill: white,
       padding: 0.3,
     ),
+    name: "plot",
     {
       // Phase boundary lines
       plot.add-vline(phase2-start, style: (stroke: (paint: luma(180), thickness: 0.8pt, dash: "dashed")))
@@ -63,5 +63,20 @@
         style: (stroke: (paint: col-rules, thickness: 1.5pt)),
       )
     },
+  )
+
+  // Phase labels above the plot
+  let label-y = 0.4  // offset above plot top
+  content(
+    (rel: (3.5 * 12/12, label-y), to: "plot.north-west"),
+    text(6pt, fill: fg-light, [Phase 1: Manual]),
+  )
+  content(
+    (rel: (7.75 * 12/12, label-y), to: "plot.north-west"),
+    text(6pt, fill: fg-light, [P2]),
+  )
+  content(
+    (rel: (10.25 * 12/12, label-y), to: "plot.north-west"),
+    text(6pt, fill: fg-light, [Phase 3: Full pipeline]),
   )
 })
