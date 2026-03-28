@@ -41,17 +41,9 @@
       padding: 0.3,
     ),
     {
-      // Phase background shading
-      plot.add-fill-between(
-        domain: (phase2-start, phase3-start),
-        x => 0, x => 180,
-        style: (stroke: none, fill: luma(240)),
-      )
-      plot.add-fill-between(
-        domain: (phase3-start, 12),
-        x => 0, x => 180,
-        style: (stroke: none, fill: luma(228)),
-      )
+      // Phase boundary lines
+      plot.add-vline(phase2-start, style: (stroke: (paint: luma(180), thickness: 0.8pt, dash: "dashed")))
+      plot.add-vline(phase3-start, style: (stroke: (paint: luma(180), thickness: 0.8pt, dash: "dashed")))
 
       // Data lines
       plot.add(
@@ -70,13 +62,6 @@
         label: [Reduction rules],
         style: (stroke: (paint: col-rules, thickness: 1.5pt)),
       )
-
-      // Phase labels via annotate
-      plot.annotate({
-        content((3.5, 170), text(6pt, fill: fg-light, [Phase 1: Manual]))
-        content((7.75, 170), text(6pt, fill: fg-light, [P2]))
-        content((10.25, 170), text(6pt, fill: fg-light, [Phase 3: Full pipeline]))
-      })
     },
   )
 })
