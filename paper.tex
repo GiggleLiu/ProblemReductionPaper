@@ -298,7 +298,7 @@ cargo run --example detect_unreachable_from_3sat
   \textbf{Pre-validation} --- Run \texttt{check-issue} on draft before filing:\\[2pt]
   \begin{tabular}{@{}r@{~}l@{}}
     1. & \textbf{Usefulness} --- does a cheaper reduction path already exist? \\
-    2. & \textbf{Non-triviality} --- genuine structural transformation? \\
+    2. & \textbf{Effort} --- effort to implement? \\
     3. & \textbf{Correctness} --- do cited references support the claims? \\
     4. & \textbf{Writing quality} --- all symbols defined, examples worked? \\
   \end{tabular}\\[2pt]
@@ -411,7 +411,7 @@ Correctness begins with the issue, not the code.
 The structured issue serves as both the specification and the acceptance criterion: it defines the reduction's mathematical content, provides the canonical example that seeds all tests, and sets the quality bar through explicit completeness checks.
 
 \textbf{Issue check.}
-Before any code is written, the proposal itself is validated along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation, not a trivial renaming?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+Before any code is written, the proposal itself is validated along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
 Invalid proposals are rejected before implementation effort is spent.
 When a contributor batch-submitted 322~issues, only 25\% passed all four checks; the rest were incomplete specifications~(39\%), factually incorrect~(20\%), trivial~(13\%), or without practical value~(6\%).
 The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test, the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode.
