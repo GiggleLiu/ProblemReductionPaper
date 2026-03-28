@@ -482,7 +482,7 @@ This report surfaces usability gaps, documentation omissions, and semantic error
 \subsection{Discussion}
 
 The methodology generalizes to what we call a \emph{gallery library}---a collection of homogeneous, independently verifiable implementations with uniform interfaces.
-An automatic differentiation (AD) engine is a natural example: each differentiation rule transforms one operation into its derivative, and finite-difference checks play the same role as round-trip tests---verifying correctness automatically, without a problem-specific oracle.
+An automatic differentiation (AD) engine is a natural example: each differentiation rule transforms one operation into its derivative, and finite-difference checks play an analogous role---approximate but generic---verifying correctness automatically, without a problem-specific oracle.
 The key requirement is a cheap, generic verification mechanism that applies uniformly across all entries.
 The cost of entry is skill engineering: the 18~skills in this project represent substantial upfront investment, and each new domain requires its own set.
 The methodology does \emph{not} generalize to heterogeneous tasks---the staple of SWE-Bench---where each issue is structurally unique and resists skill-based decomposition.
