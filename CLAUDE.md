@@ -29,6 +29,7 @@ typst compile figures/<name>.typ figures/<name>.pdf
 - **data/** — Supporting data: `git-mining-results.json` (PR history from GitHub), `graph-metrics.json`, `peer-review-round1.md`.
 - **problem-reductions/** — Git submodule of the Rust library this paper studies. Use `git submodule update --init` to populate after a fresh clone.
 - **scripts/mine-git-history.py** — Fetches merged PRs from `CodingThrust/problem-reductions` via `gh` CLI, classifies by type/phase/author.
+- **scripts/growth-curve-data.py** — Mines weekly growth of problem types and reduction rules from the submodule's git history. Output: `data/growth-curve.json`. Used to generate `figures/growth-curve.typ`.
 - **paper-redesign-spec.md** — Redesign specification with section structure, figure specs, and framing decisions.
 - **writing-guidelines.md** — Writing style rules derived from "Attention Is All You Need". Key principles: lead with the answer, one idea per sentence, define before use, cut ruthlessly.
 

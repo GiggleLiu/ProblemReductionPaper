@@ -1,0 +1,68 @@
+[
+  {
+    "week": 0,
+    "date": "2026-01-05",
+    "models": 17,
+    "rules": 0
+  },
+  {
+    "week": 2,
+    "date": "2026-01-19",
+    "models": 20,
+    "rules": 21
+  },
+  {
+    "week": 3,
+    "date": "2026-01-26",
+    "models": 20,
+    "rules": 24
+  },
+  {
+    "week": 4,
+    "date": "2026-02-02",
+    "models": 20,
+    "rules": 35
+  },
+  {
+    "week": 5,
+    "date": "2026-02-09",
+    "models": 21,
+    "rules": 45
+  },
+  {
+    "week": 6,
+    "date": "2026-02-16",
+    "models": 21,
+    "rules": 52
+  },
+  {
+    "week": 7,
+    "date": "2026-02-23",
+    "models": 23,
+    "rules": 52
+  },
+  {
+    "week": 8,
+    "date": "2026-03-02",
+    "models": 23,
+    "rules": 52
+  },
+  {
+    "week": 9,
+    "date": "2026-03-09",
+    "models": 39,
+    "rules": 56
+  },
+  {
+    "week": 10,
+    "date": "2026-03-16",
+    "models": 107,
+    "rules": 73
+  },
+  {
+    "week": 11,
+    "date": "2026-03-23",
+    "models": 114,
+    "rules": 152
+  }
+]
