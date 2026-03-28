@@ -49,7 +49,7 @@
     #v(2pt)
     #std.line(length: 100%, stroke: 0.5pt + col-trait.lighten(40%))
     #v(2pt)
-    #grid(
+    #std.grid(
       columns: (1fr,) * 5,
       gutter: 3pt,
       ..{
