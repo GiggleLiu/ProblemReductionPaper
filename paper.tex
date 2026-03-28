@@ -31,16 +31,15 @@
 \maketitle
 
 \begin{abstract}
-A unified library of polynomial-time reductions between NP-hard problems would let practitioners route any supported problem to a specialized solver through a single interface.
-Target solvers range from quantum hardware to commercial optimizers and domain heuristics.
-No such library exists: every reduction must conform to a shared interface, but conventions drift across contributors, the domain experts who know the reductions rarely write systems code, and the repetitive verification cycle exhausts maintainers.
-We address this gap with AI coding agents steered by \emph{skills}: plain-text checklists, committed to the repository, that encode the project's conventions and domain knowledge.
-Three design decisions make this scale possible.
-(1)~A \emph{no-code contribution route} lets domain experts add reductions by filing structured issues.
-(2)~A \emph{multilayer verification stack} checks each reduction from type signatures through property-based tests to end-to-end \emph{agentic feature tests}---automated agents that exercise the library as virtual users.
+A unified library of polynomial-time reductions between NP-hard problems would let practitioners route any supported problem---to quantum hardware, commercial optimizers, or domain heuristics---through a single interface.
+No such library exists, because three barriers block construction at scale: conventions drift across contributors, the domain experts who know the reductions rarely write systems code, and the repetitive verification cycle exhausts maintainers.
+We address this gap with AI coding agents steered by \emph{skills}---plain-text checklists, committed to the repository, that encode the project's conventions and domain knowledge.
+Three design decisions make the approach work.
+(1)~A \emph{no-code contribution route} lets domain experts add reductions by filing structured issues; no familiarity with the implementation language is needed.
+(2)~A \emph{multilayer verification stack} checks each reduction from type signatures through round-trip tests to \emph{agentic feature tests}, in which agents exercise the library end-to-end as virtual users.
 (3)~A \emph{fully automated pipeline} lets a small team run the entire project.
-The library reached 100+ problem types in under three months of development.
-The results suggest that agents, given the right scaffolding, can produce verified software artifacts at a scale that human teams have not achieved.
+In under three months, the library grew to 100+ problem types and 156 reduction rules---an order of magnitude beyond the largest prior implementation.
+These results suggest that agents, given the right scaffolding, can produce verified software artifacts at a scale that human teams have not achieved.
 \end{abstract}
 
 %======================================================================
