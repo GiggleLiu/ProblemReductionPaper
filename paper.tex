@@ -166,7 +166,7 @@ The library implements the reduction graph as a Rust crate, organized in three l
 \subsection{User Interfaces}\label{sec:user-interfaces}
 
 The \texttt{pred} CLI is the primary entry point.
-Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set problem on a conflict graph: vertices are candidate locations, edges connect locations that are too close.
+Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem---finding the largest set of vertices with no two adjacent---on a conflict graph: vertices are candidate locations, edges connect locations that are too close.
 \Cref{lst:cli-session} shows how she solves this instance without writing any reduction code.
 
 \begin{figure}[t]
