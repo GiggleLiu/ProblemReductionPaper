@@ -90,15 +90,8 @@ A path from a problem to integer linear programming (ILP) grants access to matur
 \subsection{The Challenge}
 
 Building such a graph is itself a hard problem---not computationally, but organizationally.
-Earlier attempts illustrate the difficulty.
-QUBO-specific tools---PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, ToQUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave's Ocean SDK~\cite{DWaveOcean2023}---convert problems into a single target formulation but provide no inter-problem reductions and no inverse maps for solution extraction.
-Lucas~\cite{lucas2014} catalogued Ising formulations for Karp's 21~problems, but the result is a paper, not composable code.
-The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} provide languages for writing and testing reductions, but are pedagogical tools with no solver integration.
-ProblemReductions.jl~\cite{Liu2024ProblemReductions}, our earlier Julia prototype, implements 18~problem types with a reduction graph structure.
-Its limited growth after two years motivated the skill-based automation approach described here.
-In each case, the project covers a handful of problems but does not reach the scale of the known literature.
-More broadly, the gap between \emph{known} and \emph{implemented} reductions has widened for decades.
-Hundreds of reductions exist in the literature---Garey and Johnson~\cite{garey1979} alone catalogue over 300~NP-hard problems with reduction sketches---yet the largest software implementation covers fewer than 20.
+Despite decades of work on reduction libraries and QUBO tools (\Cref{sec:related}), the gap between \emph{known} and \emph{implemented} reductions has only widened.
+Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software implementation covers fewer than 20.
 The bottleneck was never mathematical knowledge; it was building and maintaining the software.
 
 The graph's value grows with every edge, but so does the cost of maintaining it.
