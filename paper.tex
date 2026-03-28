@@ -17,8 +17,8 @@
 \newcommand{\col}[1]{%
   \tikz[baseline=(X.base)]{%
     \node[draw=gray!60, fill=gray!10, rounded corners=2pt,
-          inner xsep=3pt, inner ysep=1pt,
-          font=\small\sffamily] (X) {#1};%
+          inner sep=2pt,
+          font=\scriptsize\sffamily] (X) {#1};%
   }%
 }
 
@@ -276,10 +276,9 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 
 Adding a reduction to the graph involves six stages, mirrored as columns on a GitHub project board (\Cref{fig:pipeline}).
 Each column is a state; progress flows left to right.
-If any stage fails, the item moves to \col{On~Hold} for human triage.
+If any stage fails, the item moves to \col{OnHold} for human triage.
 Four roles drive the flow: a domain expert files issues, a maintainer triages and merges, and two agents---one for implementation, one for review---handle the routine work in between.
 
-\textbf{Stage~1: Propose} (\col{Backlog}).
 \begin{figure}[t]
   \centering
   \begin{tcolorbox}[
@@ -321,11 +320,11 @@ cargo run --example detect_unreachable_from_3sat
 \end{figure}
 
 
-A domain expert contributes the mathematical content: which problem to add, what its formal definition is, what reduction algorithm connects it to existing problems.
-The \texttt{propose} skill (\Cref{fig:skill-propose}) supports this process through a structured brainstorming session---one question at a time, using mathematical language only, no programming required.
-The agent assists by running a topology analysis to avoid proposing duplicates and to identify high-value models or rules.
-Before filing, the agent pre-validates the draft against Stage~2's quality checks.
-The output is a structured GitHub issue filed into the \col{Backlog} column.
+\textbf{Stage~1: Propose} ( $\to$ \col{Backlog}).
+A domain expert clones the repository and runs the \texttt{propose} skill (\Cref{fig:skill-propose}) in an agentic CLI.
+The skill conducts a structured brainstorming session---one question at a time, using mathematical language only, no programming required---to elicit the contribution's core content: which problem to add, its formal definition, and the reduction algorithm connecting it to existing problems.
+The agent runs a topology analysis to avoid duplicates and to identify high-value gaps in the graph, then pre-validates the draft against Stage~2's quality checks.
+The output is a structured GitHub issue filed into \col{Backlog}.
 
 \textbf{Stage~2: Validate} (\col{Backlog} $\to$ \col{Ready}).
 A maintainer uses the \texttt{fix-issue} skill to triage each issue in \col{Backlog}.
