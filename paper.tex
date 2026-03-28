@@ -79,8 +79,7 @@ Reductions compose along directed paths.
 Chaining $A \to B$ and $B \to C$ yields $A \to C$.
 Each overhead is a function from input size to output size; composing overheads means composing these functions.
 Writing $r_{X \leftarrow Y}$ for the overhead of rule $Y \to X$, the composite overhead is $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
-When multiple paths connect a problem to different solvers, the system compares total cost---reduction overhead plus solver complexity---and selects the cheapest route for a given input size.
-Redundant edges are pruned when existing paths already achieve comparable overhead, keeping path-finding tractable.
+When multiple paths connect a problem to different solvers, the system selects the cheapest route for a given input size.
 
 Two kinds of paths play a special role.
 A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$, backed by tested code rather than a pen-and-paper proof---we say $H$ is \emph{NP-hard verified} by the graph.
