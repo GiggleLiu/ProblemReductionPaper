@@ -245,6 +245,33 @@ Most problem types have a reduction path to ILP, directly or through intermediat
 Canonical instances serve as the single source of truth.
 The same instance feeds round-trip tests, JSON fixtures rendered in the PDF manual, and the \texttt{pred create --example} command for interactive exploration.
 
+%======================================================================
+%  SECTION 4: SKILLS AND AUTOMATION
+%======================================================================
+\section{Skills and Automation}\label{sec:method}
+
+\subsection{Skill Design Principles}\label{sec:skills}
+Instead of asking what can be automated, we ask what cannot.
+In this project, we found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
+Selecting which rules to pursue requires understanding the needs of the community; the human is the information source.
+Verifying the algorithm's correctness requires deep reasoning; current models cannot substitute for humans. Reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}. Research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2025HLE,Merrill2024ExpressivePower}.
+Constructing canonical examples requires creative work; the human is the end user and the best judge.
+Authorizing merges is security critical; a human with long-term memory must be responsible.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/skill-map.pdf}
+\caption{Skill architecture organized by audience.
+  All skills inherit project conventions from the specification files at the root.
+  Blue boxes are \emph{advisor} skills that pause to consult a human; white boxes are \emph{agent} skills that run autonomously.
+  Each agent skill internally invokes additional subskills not shown
+  (e.g., \texttt{run-pipeline} calls \texttt{issue-to-pr}, which calls \texttt{add-model} or \texttt{add-rule}).}
+\label{fig:skill-architecture}
+\end{figure}
+
+Through interactive prompts, a skill can pause the agent to solicit feedback from the human, providing context and a recommendation before letting the human decide.
+The skills in this project are divided into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) that focus on utilizing human expertise to make decisions; \emph{agent skills} (white) run fully autonomously.
+
 \subsection{Why Rust?}\label{sec:why-rust}
 
 The choice of implementation language has outsized impact in agentic workflows, because the agent's edit--compile--test loop runs hundreds of times per session.
@@ -260,10 +287,8 @@ Incremental compilation and the built-in test harness produce results in seconds
 A typical round-trip test compiles and runs in under 3~seconds, enabling agents to iterate rapidly.
 Rust's well-known strengths---memory safety eliminating entire bug categories at compile time, high performance, small binary size, and Cargo's integrated toolchain---further reduce the surface area of errors agents must debug.
 
-%======================================================================
-%  SECTION 4: SKILLS AND AUTOMATION
-%======================================================================
-\section{Skills and Automation}\label{sec:method}
+\subsection{The Automation Pipeline}\label{sec:pipeline-overview}
+
 \begin{figure*}[t]
   \centering
   \includegraphics[width=\textwidth]{figures/pipeline.pdf}
@@ -273,8 +298,6 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
     If any stage fails, the item moves to On~Hold (not shown) for human triage.}
   \label{fig:pipeline}
 \end{figure*}
-
-\subsection{The Automation Pipeline}\label{sec:pipeline-overview}
 
 Adding a reduction to the graph involves six stages, mirrored as columns on a GitHub project board (\Cref{fig:pipeline}).
 Each column is a state; progress flows left to right.
