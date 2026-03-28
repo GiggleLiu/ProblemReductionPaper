@@ -622,6 +622,6 @@ A single problem type like Maximum Independent Set admits multiple \emph{variant
 Each variant may have a tighter complexity bound---MIS on king's subgraphs runs in $O(2^{\sqrt{|V|}})$ versus $O(1.1996^{|V|})$ on general graphs.
 The \texttt{declare\_variants!} macro registers each concrete instantiation with its best-known complexity, a factory for JSON deserialization, and a solve function.
 All variable names in complexity expressions are validated at compile time against the problem's getter methods.
-This registry is what produces the 100+ variants from 27~base problem types.
+This registry is what produces the registered variants from 100+ base problem types.
 
 \end{document}
