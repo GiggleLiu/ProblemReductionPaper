@@ -331,7 +331,7 @@ The output is a structured GitHub issue filed into the \col{Backlog} column.
 A maintainer uses the \texttt{fix-issue} skill to triage each issue in \col{Backlog}.
 The skill first runs \texttt{check-issue}, which automatically evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
 It then auto-corrects mechanical failures (undefined symbols, missing metrics) and brainstorms substantive fixes with the maintainer interactively.
-Only issues passing all four checks move to Ready.
+Only issues passing all four checks move to \col{Ready}.
 
 \textbf{Stage~3: Implement} (Ready $\to$ Review Pool).
 An implementation agent executes the `run-pipeline' skill. It checks the "Ready" column, pick an issue with the highest priority, claims it by moving it to the "In Progress" column, produces one PR that resolves the issue, and move the issue to the "Review Pool" column.
