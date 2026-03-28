@@ -554,6 +554,7 @@ An agent cannot compile a forward reduction without providing the inverse map; i
 \texttt{ReduceToAggregate<T>} requires an \texttt{AggregateReductionResult} with \texttt{extract\_value()} instead---a map from a target \emph{value} back to a source value, with no witness recovered.
 For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both traits with an identity solution map.
 At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
+Each reduction also carries a compile-time-validated overhead: the \texttt{\#[reduction(overhead = \{...\})]} procedural macro attaches symbolic size expressions, and variable names are checked against getter methods on the source type---a typo causes a compile error, not a silent bug.
 
 \paragraph{Solver priority.}
 When the user invokes \texttt{pred solve}, the system selects a solver in priority order.
@@ -561,10 +562,6 @@ First, if a witness-capable reduction path to Integer Linear Programming (ILP) e
 Second, if the problem has a dedicated solver that exploits its structure (currently six problem types), the system uses it.
 Third, the brute-force enumerator is always available: it folds over all configurations using the aggregation interface.
 ILP is preferred because it handles instances too large for brute force, but brute force remains essential for round-trip testing, where correctness matters more than speed.
-
-\paragraph{Compile-time overhead validation.}
-The \texttt{\#[reduction(overhead = \{...\})]} procedural macro attaches symbolic size expressions to each reduction.
-These expressions are parsed at compile time; variable names are validated against getter methods on the source type, so a typo (e.g., referencing \texttt{num\_vertex} when the method is \texttt{num\_vertices}) causes a compile error rather than a silent bug.
 
 \paragraph{Variant registry.}
 A single problem type like Maximum Independent Set admits multiple \emph{variants}: parameterizations by graph type (\texttt{SimpleGraph}, \texttt{KingsSubgraph}, \texttt{UnitDiskGraph}, etc.) and weight type (unit, \texttt{i32}, \texttt{f64}).
