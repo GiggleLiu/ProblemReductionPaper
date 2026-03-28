@@ -1,65 +1,81 @@
-#import "@preview/cetz:0.4.2": canvas, draw
+#import "lib.typ": *
 
-#set page(width: auto, height: auto, margin: 5pt)
-#set text(size: 8pt, font: "New Computer Modern")
+#set page(..fig-page)
+#set text(..fig-text)
 
-#let col-trait = rgb("#4e79a7")       // blue
-#let col-reduction = rgb("#59a14f")   // green
-#let col-compile = rgb("#e8a838")     // gold
-
-#canvas(length: 0.55cm, {
+#canvas(length: 0.48cm, {
   import draw: *
 
-  let box-w = 12.0
-  let box1-h = 3.0   // Problem trait box (taller: has two sub-boxes)
-  let box2-h = 1.6   // ReductionResult box
-  let box3-h = 2.4   // Compile-time validation box
-  let arrow-gap = 1.4
-  let cx = 0
+  // ── Palette (matches library-architecture.typ) ──
+  let col-trait    = rgb("#4e79a7")   // blue — traits
+  let col-reduce   = rgb("#59a14f")   // green — reductions
+  let col-compile  = rgb("#e8a838")   // gold — compile-time
 
-  // --- Box 1: Problem trait (top) ---
-  let y1-top = 0
-  let y1-bot = -box1-h
+  // ── Helpers ──
+  let rbox(pos, w, h, col, name-id, title, ..details) = {
+    rect(
+      pos, (pos.at(0) + w, pos.at(1) - h),
+      radius: 4pt,
+      fill: col.lighten(85%),
+      stroke: (thickness: 1.2pt, paint: col.darken(10%)),
+      name: name-id,
+    )
+    let body = {
+      text(7.5pt, weight: "bold", fill: black, title)
+      for d in details.pos() {
+        linebreak()
+        text(6pt, fill: black, d)
+      }
+    }
+    content(name-id, anchor: "center", body)
+  }
 
+  let arr = arrow-end
+  let s = stroke-edge
+  let sh = (start: 0.08, end: 0.08)
+
+  // ── Layout ──
+  let bw = 12.0
+  let cx = 0.0
+
+  // ═══════════════════════════════════════
+  // Box 1: Problem trait + aggregate wrappers
+  // ═══════════════════════════════════════
+  let y1 = 0
+  let box1-h = 3.0
   rect(
-    (cx - box-w / 2, y1-top), (cx + box-w / 2, y1-bot),
+    (cx - bw/2, y1), (cx + bw/2, y1 - box1-h),
     radius: 4pt,
-    fill: col-trait.lighten(88%),
-    stroke: (thickness: 1pt, paint: col-trait),
+    fill: col-trait.lighten(85%),
+    stroke: (thickness: 1.2pt, paint: col-trait.darken(10%)),
     name: "box1",
   )
 
-  // Title
+  // Title + methods
   content(
-    (cx, y1-top - 0.4), anchor: "center",
-    text(9pt, weight: "bold", fill: col-trait.darken(20%),
-      [`Problem` trait],
-    ),
+    (cx, y1 - 0.4), anchor: "center",
+    text(8pt, weight: "bold", fill: black, [`Problem` trait]),
+  )
+  content(
+    (cx, y1 - 0.95), anchor: "center",
+    text(6.5pt, fill: fg-light,
+      [`NAME` #sym.dot.c `Value: Aggregate` #sym.dot.c `dims()` #sym.dot.c `evaluate()`]),
   )
 
-  // Method list
-  content(
-    (cx, y1-top - 1.0), anchor: "center",
-    text(7.5pt, fill: luma(60),
-      [`NAME`#h(4pt)#sym.dot.c#h(4pt)`Value: Aggregate`#h(4pt)#sym.dot.c#h(4pt)`dims()`#h(4pt)#sym.dot.c#h(4pt)`evaluate()`],
-    ),
-  )
-
-  // Divider line
+  // Divider
   line(
-    (cx - box-w / 2 + 0.4, y1-top - 1.4),
-    (cx + box-w / 2 - 0.4, y1-top - 1.4),
+    (cx - bw/2 + 0.4, y1 - 1.3),
+    (cx + bw/2 - 0.4, y1 - 1.3),
     stroke: (thickness: 0.5pt, paint: col-trait.lighten(40%)),
   )
 
-  // Sub-boxes for aggregate wrappers
-  let sub-margin = 0.35
+  // Aggregate wrapper sub-boxes
+  let sub-m = 0.35
   let sub-gap = 0.25
-  let n-boxes = 5
-  let sub-w = (box-w - 2 * sub-margin - (n-boxes - 1) * sub-gap) / n-boxes
+  let n = 5
+  let sub-w = (bw - 2*sub-m - (n - 1)*sub-gap) / n
   let sub-h = 0.9
-  let sub-y-top = y1-top - 1.6
-  let sub-y-bot = sub-y-top - sub-h
+  let sub-y = y1 - 1.55
 
   let wrappers = (
     (`Max<W>`, [NP opt.]),
@@ -70,121 +86,92 @@
   )
 
   for (i, (name, label)) in wrappers.enumerate() {
-    let x-left = cx - box-w / 2 + sub-margin + i * (sub-w + sub-gap)
-    let x-right = x-left + sub-w
+    let xl = cx - bw/2 + sub-m + i * (sub-w + sub-gap)
     let id = "agg" + str(i)
     rect(
-      (x-left, sub-y-top), (x-right, sub-y-bot),
+      (xl, sub-y), (xl + sub-w, sub-y - sub-h),
       radius: 3pt,
       fill: col-trait.lighten(78%),
-      stroke: (thickness: 0.6pt, paint: col-trait.lighten(20%)),
+      stroke: (thickness: 0.8pt, paint: col-trait.darken(10%)),
       name: id,
     )
-    content(
-      id, anchor: "center",
-      {
-        text(7pt, weight: "bold", fill: col-trait.darken(10%), name)
-        linebreak()
-        text(5.5pt, fill: luma(80), label)
-      },
-    )
+    content(id, anchor: "center", {
+      text(6.5pt, weight: "bold", fill: black, name)
+      linebreak()
+      text(5.5pt, fill: fg-light, label)
+    })
   }
 
-  // --- Arrow 1: Box 1 -> Box 2 ---
-  let a1-top = y1-bot
-  let a1-bot = y1-bot - arrow-gap
+  // ═══════════════════════════════════════
+  // Arrow 1 + label: ReduceTo<T>
+  // ═══════════════════════════════════════
+  let gap = 1.4
+  let a1-top = y1 - box1-h
+  let a1-bot = a1-top - gap
   line(
     (cx, a1-top), (cx, a1-bot + 0.05),
-    stroke: (thickness: 1.2pt, paint: col-reduction.darken(10%)),
-    mark: (end: "straight", scale: 0.45),
+    stroke: (thickness: 1pt, paint: col-reduce.darken(10%)),
+    mark: (end: "straight", scale: 0.4),
   )
   content(
     (cx + 0.3, (a1-top + a1-bot) / 2), anchor: "west",
-    text(7.5pt, weight: "bold", fill: col-reduction.darken(10%),
-      [`ReduceTo<T>`],
-    ),
+    text(7.5pt, weight: "bold", fill: col-reduce.darken(10%), [`ReduceTo<T>`]),
   )
 
-  // --- Box 2: ReductionResult ---
-  let y2-top = a1-bot
-  let y2-bot = y2-top - box2-h
-
-  rect(
-    (cx - box-w / 2, y2-top), (cx + box-w / 2, y2-bot),
-    radius: 4pt,
-    fill: col-reduction.lighten(88%),
-    stroke: (thickness: 1pt, paint: col-reduction),
-    name: "box2",
+  // ═══════════════════════════════════════
+  // Box 2: ReductionResult
+  // ═══════════════════════════════════════
+  let box2-h = 1.6
+  let y2 = a1-bot
+  rbox(
+    (cx - bw/2, y2), bw, box2-h, col-reduce, "box2",
+    [`ReductionResult<T>`],
+    [`target_problem()` #sym.dot.c `extract_solution()`],
   )
 
-  content(
-    (cx, y2-top - 0.45), anchor: "center",
-    text(9pt, weight: "bold", fill: col-reduction.darken(20%),
-      [`ReductionResult<T>`],
-    ),
-  )
-
-  content(
-    (cx, y2-top - 1.1), anchor: "center",
-    text(7.5pt, fill: luma(60),
-      [`target_problem()`#h(4pt)#sym.dot.c#h(4pt)`extract_solution()`],
-    ),
-  )
-
-  // --- Arrow 2: Box 2 -> Box 3 ---
-  let a2-top = y2-bot
-  let a2-bot = y2-bot - arrow-gap
+  // ═══════════════════════════════════════
+  // Arrow 2 + label: #[reduction(overhead)]
+  // ═══════════════════════════════════════
+  let a2-top = y2 - box2-h
+  let a2-bot = a2-top - gap
   line(
     (cx, a2-top), (cx, a2-bot + 0.05),
-    stroke: (thickness: 1.2pt, paint: col-compile.darken(10%)),
-    mark: (end: "straight", scale: 0.45),
+    stroke: (thickness: 1pt, paint: col-compile.darken(10%)),
+    mark: (end: "straight", scale: 0.4),
   )
   content(
     (cx + 0.3, (a2-top + a2-bot) / 2), anchor: "west",
-    text(7pt, fill: col-compile.darken(10%),
-      [`#[reduction(overhead = {...})]`],
-    ),
+    text(7pt, fill: col-compile.darken(10%), [`\#[reduction(overhead = {...})]`]),
   )
 
-  // --- Box 3: Compile-time validation ---
-  let y3-top = a2-bot
-  let y3-bot = y3-top - box3-h
-
+  // ═══════════════════════════════════════
+  // Box 3: Compile-time validation
+  // ═══════════════════════════════════════
+  let box3-h = 2.4
+  let y3 = a2-bot
   rect(
-    (cx - box-w / 2, y3-top), (cx + box-w / 2, y3-bot),
+    (cx - bw/2, y3), (cx + bw/2, y3 - box3-h),
     radius: 4pt,
-    fill: col-compile.lighten(88%),
-    stroke: (thickness: 1pt, paint: col-compile),
+    fill: col-compile.lighten(85%),
+    stroke: (thickness: 1.2pt, paint: col-compile.darken(10%)),
     name: "box3",
   )
 
   content(
-    (cx, y3-top - 0.45), anchor: "center",
-    text(9pt, weight: "bold", fill: col-compile.darken(20%),
-      [Compile-time validation],
-    ),
+    (cx, y3 - 0.45), anchor: "center",
+    text(8pt, weight: "bold", fill: black, [Compile-time validation]),
   )
 
-  // Bullet points
-  let bullet-x = cx - box-w / 2 + 1.2
-  let bullet-y = y3-top - 1.1
-
-  content(
-    (bullet-x, bullet-y), anchor: "west",
-    text(7.5pt, fill: luma(60),
-      [#sym.bullet#h(3pt)Variable names #sym.arrow getter methods],
-    ),
-  )
-  content(
-    (bullet-x, bullet-y - 0.55), anchor: "west",
-    text(7.5pt, fill: luma(60),
-      [#sym.bullet#h(3pt)`Expr` AST: symbolic overhead expressions],
-    ),
-  )
-  content(
-    (bullet-x, bullet-y - 1.1), anchor: "west",
-    text(7.5pt, fill: luma(60),
-      [#sym.bullet#h(3pt)`declare_variants!` #sym.arrow compile-time registry],
-    ),
-  )
+  let bx = cx - bw/2 + 1.2
+  let by = y3 - 1.1
+  for (i, item) in (
+    [Variable names #sym.arrow getter methods],
+    [`Expr` AST: symbolic overhead expressions],
+    [`declare_variants!` #sym.arrow compile-time registry],
+  ).enumerate() {
+    content(
+      (bx, by - i * 0.55), anchor: "west",
+      text(6.5pt, fill: fg-light, [#sym.bullet #h(2pt) #item]),
+    )
+  }
 })
