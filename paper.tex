@@ -375,7 +375,7 @@ A review agent executes the \texttt{review-pipeline} skill. It claims an issue f
 
 \textbf{Stage~5: Merge} (\col{Final Review} $\to$ \col{Done}).
 A maintainer uses the \texttt{final-review} skill to merge or hold the PR.
-The skill picks a PR from \col{Final Review}, check the report from the review agent, automatically fixes mechanical issues and presents uncertain fixes to the maintainer for decision.
+The skill picks a PR from \col{Final Review}, checks the report from the review agent, automatically fixes mechanical issues and presents uncertain fixes to the maintainer for decision.
 It then walks the maintainer through the agentic verdict, assesses usefulness, safety, and completeness, and either merges (moves the issue to \col{Done}) or holds the PR with a reason (moves the issue to \col{OnHold}).
 
 \textbf{Stage~6: Verify.}
