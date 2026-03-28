@@ -390,7 +390,7 @@ This closing-the-loop step catches errors invisible to automated tests: subtle m
 Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex}, \texttt{gpt-5.4} xhigh; the human-facing stages use Claude Code~\cite{Anthropic2025ClaudeCode}, \texttt{opus-4.6} high. In our tests, the \texttt{gpt-5.4} model shows better reasoning and reliability in code implementation, while the \texttt{opus-4.6} model is better at interactive dialogue.
 
 \subsection{Skill Design Principles}\label{sec:skills}
-When to use skills and how to design them?
+The primary goal of skill design is to automate the routine work, so that human can focus on the creative work.
 Instead of asking what can be automated, we ask what can not.
 In this project, we found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
 Selecting which rules to pursue requires understanding the needs of the community, human is the information source.
@@ -411,7 +411,7 @@ Authorizing merges is security critical, we need a human with long term memory t
 
 Through the ``AskUserQuestion'' tool, a skill can let agent pause and get feedback from human.
 Agent just provide enough context to the human, maybe with recommendation and let human make the decision.
-The skills in this project are divided into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) that focuses on guiding human to make the decision; \emph{worker skills} (white) run fully autonomously.
+The skills in this project are divided into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) that focuses on "utilizing human's expertise" to make the decision; \emph{worker skills} (white) run fully autonomously.
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
