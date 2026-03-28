@@ -253,12 +253,6 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 %  SECTION 4: SKILLS AND AUTOMATION
 %======================================================================
 \section{Skills and Automation}\label{sec:method}
-
-\subsection{The Automation Pipeline}\label{sec:pipeline-overview}
-
-Adding a reduction to the graph involves five stages, from initial proposal to merged code (\Cref{fig:pipeline}).
-Not all stages are equal: some are routine work that an agent can execute autonomously; others require creativity and domain judgment that no instruction can encode.
-
 \begin{figure*}[t]
   \centering
   \includegraphics[width=\textwidth]{figures/pipeline.pdf}
@@ -269,13 +263,12 @@ Not all stages are equal: some are routine work that an agent can execute autono
   \label{fig:pipeline}
 \end{figure*}
 
-\textbf{Stage~1: Propose.}
-A domain expert contributes the mathematical content: which problem to add, what its formal definition is, what reduction algorithm connects it to existing problems.
-The \texttt{propose} skill (\Cref{fig:skill-propose}) supports this process through a structured brainstorming session---one question at a time, using mathematical language only, no programming required.
-A hard gate constrains the agent: it cannot write code, create files, or invoke implementation skills; the only output is a GitHub issue.
-The agent assists by running a topology analysis to identify the most impactful gaps---orphan nodes, clusters disconnected from solvers, problems lacking NP-hardness proofs---and recommends high-value rules the contributor may not have considered.
-Before filing, the agent pre-validates the draft against Stage~2's quality checks; only issues passing all four checks are submitted.
+\subsection{The Automation Pipeline}\label{sec:pipeline-overview}
 
+Adding a reduction to the graph involves six stages, mirrored as columns on the GitHub project board (\Cref{fig:pipeline}).
+Four roles drive the flow: a domain expert files issues, a maintainer triages and merges, and two agents---one for implementation, one for review---handle the routine work in between.
+
+\textbf{Stage~1: Propose} (Backlog).
 \begin{figure}[t]
   \centering
   \begin{tcolorbox}[
@@ -308,6 +301,13 @@ cargo run --example detect_unreachable_from_3sat
     Pre-validation rejects invalid proposals before they enter the pipeline.}
   \label{fig:skill-propose}
 \end{figure}
+
+
+A domain expert contributes the mathematical content: which problem to add, what its formal definition is, what reduction algorithm connects it to existing problems.
+The \texttt{propose} skill (\Cref{fig:skill-propose}) supports this process through a structured brainstorming session---one question at a time, using mathematical language only, no programming required.
+A hard gate constrains the agent: it cannot write code, create files, or invoke implementation skills; the only output is a GitHub issue.
+The agent assists by running a topology analysis to identify the most impactful gaps---orphan nodes, clusters disconnected from solvers, problems lacking NP-hardness proofs---and recommends high-value rules the contributor may not have considered.
+Before filing, the agent pre-validates the draft against Stage~2's quality checks; only issues passing all four checks are submitted.
 
 \textbf{Stage~2: Validate.}
 The \texttt{check-issue} skill automatically flags potential problems along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
