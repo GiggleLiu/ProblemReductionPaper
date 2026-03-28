@@ -217,7 +217,7 @@ Each type defines its own \emph{size measures} and \emph{best-known algorithm co
 The uniform evaluation interface enables brute-force solving on small instances, which powers round-trip testing.
 
 \emph{Reduction rules.}
-Each rule requires both a forward map and an inverse map in a single implementation---an agent cannot compile a forward reduction without providing solution extraction (\Cref{app:architecture}).
+Each rule requires both a forward map and an inverse map in a single implementation---an agent cannot compile a forward reduction without providing the inverse map for solution extraction (\Cref{app:architecture}).
 Each rule carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's.
 For example, the Satisfiability $\to$ MIS reduction maps a formula with $n_l$ literals to a graph with $O(n_l)$ vertices and $O(n_l^2)$ edges.
 
