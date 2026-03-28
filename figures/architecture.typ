@@ -27,7 +27,7 @@
     )
     content(
       name-id, anchor: "center",
-      box(width: w * scale - 16pt, body),
+      box(width: w * 0.65cm - 16pt, body),
     )
   }
 
