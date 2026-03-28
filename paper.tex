@@ -612,10 +612,10 @@ Each reduction also carries a compile-time-validated overhead: the \texttt{\#[re
 
 \paragraph{Solver priority.}
 When the user invokes \texttt{pred solve}, the system selects a solver in priority order.
-First, if a witness-capable reduction path to Integer Linear Programming (ILP) exists, the system reduces along the cheapest path (by Dijkstra) and solves with HiGHS.
-Second, if the problem has a dedicated solver that exploits its structure (currently six problem types), the system uses it.
+First, if the problem has a dedicated solver that exploits its structure (currently six problem types), the system uses it.
+Second, if a witness-capable reduction path to Integer Linear Programming (ILP) exists, the system reduces along the cheapest path (by Dijkstra) and solves with HiGHS.
 Third, the brute-force enumerator is always available: it folds over all configurations using the aggregation interface.
-ILP is preferred because it handles instances too large for brute force, but brute force remains essential for round-trip testing, where correctness matters more than speed.
+Brute force remains essential for round-trip testing, where correctness matters more than speed.
 
 \paragraph{Variant registry.}
 A single problem type like Maximum Independent Set admits multiple \emph{variants}: parameterizations by graph type (\texttt{SimpleGraph}, \texttt{KingsSubgraph}, \texttt{UnitDiskGraph}, etc.) and weight type (unit, \texttt{i32}, \texttt{f64}).
