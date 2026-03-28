@@ -59,7 +59,7 @@ Rydberg atom arrays~\cite{lucas2014, pichler2018}---a type of quantum hardware--
 D-Wave quantum annealers~\cite{glover2019} solve Quadratic Unconstrained Binary Optimization (QUBO).
 Commercial engines like Gurobi and CPLEX solve Integer Linear Programs.
 Physics-inspired methods scale further---graph neural networks solve QUBO at million-variable scale~\cite{Schuetz2022PhysicsGNN}, and hybrid quantum-GNN methods tackle the Traveling Salesman Problem~\cite{He2024QuantumTSP}---but still require a QUBO or Ising formulation as input.
-A practitioner with a graph coloring problem cannot directly use any of these solvers without first \emph{translating} the problem into a form the solver understands.
+A practitioner with a crew-scheduling problem cannot directly use any of these solvers without first \emph{translating} the problem into a form the solver understands.
 
 This translation is called a \emph{reduction}: a polynomial-time algorithm that converts an instance of one problem into an instance of another, together with an inverse map that translates the solution back.
 Reductions are the central tool of computational complexity theory~\cite{karp1972}, but they also have immediate practical value: each verified reduction is a bridge connecting a new problem to an existing solver.
