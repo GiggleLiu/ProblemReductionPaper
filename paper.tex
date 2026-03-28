@@ -33,7 +33,7 @@
 \begin{abstract}
 A unified library of polynomial-time reductions between NP-hard problems would let practitioners route any supported problem to a specialized solver---quantum hardware, commercial optimizers, or domain heuristics---through a single interface.
 No such library exists, because building one by hand demands a shared formalism across many contributors and ongoing maintenance as the literature grows.
-We address this gap with AI coding agents steered by \emph{skills}: composable workflow documents that encode project conventions and domain knowledge.
+We address this gap with AI coding agents steered by \emph{skills}: plain-text checklists, committed to the repository, that encode the project's conventions and domain knowledge.
 Three design decisions make this scale possible.
 (1)~A \emph{no-code contribution route} lets domain experts add reductions by filing structured issues.
 (2)~A \emph{multilayer verification stack} checks each reduction from type signatures through property-based tests to end-to-end \emph{agentic feature tests}---automated agents that exercise the library as virtual users.
