@@ -413,28 +413,6 @@ This closing-the-loop step catches errors invisible to automated tests: subtle m
 
 Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex} (\texttt{gpt-5.4}) and Claude Code~\cite{Anthropic2025ClaudeCode} (\texttt{opus-4.6}), both with highest thinking effort. In our tests, the \texttt{gpt-5.4} model shows better reasoning and reliability in code implementation, while the \texttt{opus-4.6} model is better at interactive dialogue.
 
-\subsection{Skill Design Principles}\label{sec:skills}
-Instead of asking what can be automated, we ask what cannot.
-In this project, we found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
-Selecting which rules to pursue requires understanding the needs of the community; the human is the information source.
-Verifying the algorithm's correctness requires deep reasoning; current models cannot substitute for humans. Reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}. Research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2025HLE,Merrill2024ExpressivePower}.
-Constructing canonical examples requires creative work; the human is the end user and the best judge.
-Authorizing merges is security critical; a human with long-term memory must be responsible.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{figures/skill-map.pdf}
-\caption{Skill architecture organized by audience.
-  All skills inherit project conventions from the specification files at the root.
-  Blue boxes are \emph{advisor} skills that pause to consult a human; white boxes are \emph{agent} skills that run autonomously.
-  Each agent skill internally invokes additional subskills not shown
-  (e.g., \texttt{run-pipeline} calls \texttt{issue-to-pr}, which calls \texttt{add-model} or \texttt{add-rule}).}
-\label{fig:skill-architecture}
-\end{figure}
-
-Through interactive prompts, a skill can pause the agent to solicit feedback from the human, providing context and a recommendation before letting the human decide.
-The skills in this project are divided into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) that focuses on "utilizing human's expertise" to make the decision; \emph{worker skills} (white) run fully autonomously.
-
 \subsection{Correctness by Construction}\label{sec:verification}
 
 Beyond unit tests and manual verification, we adopt the following two mechanisms to ensure correctness.
