@@ -105,8 +105,8 @@ The domain experts who know the reductions rarely write systems code, bottleneck
 When a new reduction appears in the literature, the mathematician who understands it has no way to contribute it without learning the implementation language and the project's conventions.
 And the repetitive verification cycle that each edge demands---coding, testing, documenting---exhausts even dedicated maintainers (\emph{effort exhaustion}).
 AI coding agents offer a way forward.
-The evolution from SWE-agent~\cite{Yang2024SWEagent} and Devin~\cite{Wu2024Devin} to OpenHands~\cite{Wang2024OpenHands} and Claude Code~\cite{Anthropic2025ClaudeCode} has expanded single-task capabilities to 70--80\% on SWE-Bench~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and Roychoudhury~\cite{Roychoudhury2025AgenticAI} identifies specification inference as the central difficulty.
-Full formal verification is also not yet practical at this scale: VeriCoding~\cite{Bursuc2025VeriCoding} reports 27--44\% success on formal specifications, and VeriBench~\cite{Miranda2025VeriBench} finds agents approach 90\% compilation in Lean~4 but rarely complete proofs.
+AI coding agents have advanced rapidly: SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} now resolve 70--80\% of isolated GitHub issues~\cite{Xia2025LiveSWEagent}.
+However, longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and specification inference remains the central difficulty~\cite{Roychoudhury2025AgenticAI}.
 The question is whether agents, given the right scaffolding, can produce \emph{verified} software at a scale that human teams have not achieved.
 The scaffolding we propose is \emph{skills}.
 A skill is a plain-markdown document, committed to the repository, that reads like a checklist: ``implement the forward and inverse maps, write round-trip tests, register the rule in the CLI, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
