@@ -378,7 +378,7 @@ Fully automatable.
 \textbf{Stage~4: Review} (\col{Review Pool} $\to$ \col{Final Review}).
 A review agent executes the `review-pipeline' skill. It claims an issue from \col{Review Pool} by moving it to \col{Under Review}, dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (\Cref{sec:verification}), and posts a combined verdict as a PR comment and moves the issue to \col{Final Review}.
 
-\textbf{Stage~5: Merge} (Final Review $\to$ Done).
+\textbf{Stage~5: Merge} (\col{Final Review} $\to$ \col{Done}).
 The \texttt{final-review} skill automatically fixes mechanical issues (formatting, naming conventions, missing registrations) and presents uncertain fixes to the maintainer for decision.
 It then walks the maintainer through the agentic verdict, assesses usefulness, safety, and completeness, and either merges or holds the PR with a reason.
 
