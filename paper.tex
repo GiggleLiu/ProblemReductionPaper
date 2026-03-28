@@ -200,7 +200,6 @@ $ pred create MIS --graph 0-1,1-2,2-3 \
 \end{lstlisting}
 \end{figure}
 
-Lines~3--5: \texttt{pred create} builds a problem instance from a conflict graph, \texttt{pred reduce} converts it to ILP along the cheapest path, and \texttt{pred solve} solves the resulting ILP and maps the solution back to the original problem.
 The output (lines~6--11) shows that locations~0 and~3 form a maximum independent set of size~2.
 
 Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types, \texttt{pred show} prints a problem's definition and neighboring reductions, and \texttt{pred list} shows all registered problem types with their complexities.
