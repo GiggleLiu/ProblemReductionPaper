@@ -420,10 +420,10 @@ The contributor's mathematical intent propagates unchanged through all downstrea
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.75\columnwidth]{figures/roundtrip-pipeline.pdf}
-  \caption{Round-trip test.
-    A canonical instance from the example database is reduced to a target problem (forward map), solved, and the solution is mapped back (inverse map).
-    The red arrow closes the loop: the recovered source solution is evaluated against the original instance to check optimality.
-    No problem-specific oracle is needed---the uniform evaluation interface provides the ground truth.}
+  \caption{Example data flow.
+    A contributor's issue provides the canonical instance, which is extracted into the example database.
+    Round-trip tests run as a closed loop on the database.
+    The same data feeds JSON fixtures rendered in the PDF manual and the CLI's example mode.}
   \label{fig:roundtrip-pipeline}
 \end{figure}
 

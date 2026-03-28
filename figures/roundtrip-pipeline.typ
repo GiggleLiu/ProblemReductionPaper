@@ -10,7 +10,7 @@
   let col-input  = rgb("#4e79a7")   // blue — input
   let col-core   = rgb("#59a14f")   // green — core
   let col-output = rgb("#e8a838")   // gold — output artifacts
-  let col-verify = rgb("#e15759")   // red — verification
+  let col-human  = rgb("#f28e2b")   // orange — human feedback
 
   // ── Helpers ──
   let rbox(pos, w, h, col, name-id, title, ..details) = {
@@ -41,55 +41,113 @@
   let bh-s = 1.8
   let cx = 8.0
 
-  // ── Row 1: Source instance (from example DB) ──
+  // ── Row 1: GitHub Issue ──
   let y1 = 0
-  rbox((cx - bw / 2, y1), bw, bh, col-input, "source",
-    [Source Instance],
-    [from example database],
-    [known optimal value])
+  rbox((cx - bw / 2, y1), bw, bh, col-input, "issue",
+    [GitHub Issue],
+    [Formal definition · example],
+    [Ground-truth solution])
 
-  // ── Row 2: Forward map ──
+  // ── Row 2: Example Database ──
   let y2 = y1 - bh - 1.8
-  rbox((cx - bw / 2, y2), bw, bh, col-core, "target",
-    [Target Instance],
-    [via `reduce_to()`])
+  rbox((cx - bw / 2, y2), bw, bh, col-input, "exdb",
+    [Example Database],
+    [Canonical builder functions],
+    [Single source of truth])
 
-  // Arrow: Source → Target
-  line("source.south", "target.north",
+  // Arrow: Issue → Example DB
+  line("issue", "exdb.north",
     stroke: s, mark: arr, shorten: sh, name: "e1")
   content((rel: (0.6, 0), to: "e1.mid"), anchor: "west",
-    text(6pt, fill: black, [forward map]))
+    text(6pt, fill: black, [extract]))
 
-  // ── Row 3: Solve + extract ──
-  let y3 = y2 - bh - 1.8
-  rbox((cx - bw / 2, y3), bw, bh, col-output, "solution",
-    [Recovered Source Solution],
-    [solve target, then `extract_solution()`])
-
-  // Arrow: Target → Solution
-  line("target.south", "solution.north",
-    stroke: s, mark: arr, shorten: sh, name: "e2")
-  content((rel: (0.6, 0), to: "e2.mid"), anchor: "west",
-    text(6pt, fill: black, [solve + inverse map]))
-
-  // ── Verify: loop back to source ──
-  let fb-x = cx - bw / 2 - 2.5
-  let source-mid-y = y1 - bh / 2
-  let sol-mid-y = y3 - bh / 2
-
-  line(
-    (cx - bw / 2, sol-mid-y),
-    (fb-x, sol-mid-y),
-    (fb-x, source-mid-y),
-    (cx - bw / 2, source-mid-y),
-    stroke: (thickness: 1.2pt, paint: col-verify),
+  // ── Self-loop: Round-trip tests on Example Database (right side) ──
+  let exdb-right = cx + bw / 2
+  let exdb-mid-y = y2 - bh / 2
+  bezier(
+    (exdb-right, exdb-mid-y + 0.5),
+    (exdb-right, exdb-mid-y - 0.5),
+    (exdb-right + 2.5, exdb-mid-y + 1.2),
+    (exdb-right + 2.5, exdb-mid-y - 1.2),
+    stroke: (thickness: 1pt),
     mark: (end: "straight", scale: 0.35),
   )
   content(
-    (fb-x - 0.3, (source-mid-y + sol-mid-y) / 2),
-    anchor: "east",
-    text(6.5pt, fill: col-verify,
-      align(center, [evaluate &\
-        check optimality])),
+    (exdb-right + 0.5, exdb-mid-y + 0.9),
+    anchor: "west",
+    text(6pt,
+      align(center, [round-trip tests])),
   )
+
+  // ── Row 3: Two outputs (JSON Fixtures and CLI) ──
+  let y3 = y2 - bh - 2.0
+  let out-w = 7.0
+  let out-gap = 1.5
+  let total = 2 * out-w + out-gap
+  let x-start = cx - total / 2
+
+  // Left: JSON Fixtures
+  rbox((x-start, y3), out-w, bh-s, col-input, "json",
+    [JSON Fixtures],
+    [Source · target · solutions])
+
+  // Right: CLI
+  rbox((x-start + out-w + out-gap, y3), out-w, bh-s, col-output, "cli",
+    [`pred create --example`],
+    [Interactive exploration])
+
+  // Arrows: Example DB → outputs
+  line("exdb", "json.north",
+    stroke: s, mark: arr, shorten: sh)
+  line("exdb", "cli.north",
+    stroke: s, mark: arr, shorten: sh)
+
+  // ── Row 4: Typst PDF Manual (below JSON) ──
+  let y4 = y3 - bh-s - 1.8
+  let json-cx = x-start + out-w / 2
+  rbox((json-cx - out-w / 2, y4), out-w, bh-s, col-output, "manual",
+    [Typst PDF Manual],
+    [Visual diagrams · proof sketches])
+
+  // Arrow: JSON → Manual
+  line("json.south", "manual.north",
+    stroke: s, mark: arr, shorten: sh, name: "e5")
+  content((rel: (0.6, 0), to: "e5.mid"), anchor: "west",
+    text(6pt, fill: black, [render]))
+
+  // // ── Feedback: Manual → Issue (contributor cross-check) ──
+  // let fb-x = cx - bw / 2 - 5.5
+  // let issue-left = cx - bw / 2
+  // let manual-left = json-cx - out-w / 2
+  // let issue-mid-y = y1 - bh / 2
+  // let manual-mid-y = y4 - bh-s / 2
+
+  // line(
+  //   (manual-left, manual-mid-y),
+  //   (fb-x, manual-mid-y),
+  //   (fb-x, issue-mid-y),
+  //   (issue-left, issue-mid-y),
+  //   stroke: (thickness: 1pt),
+  //   mark: (end: "straight", scale: 0.35),
+  // )
+  // // content(
+  // //   (fb-x + 0.3, (issue-mid-y + manual-mid-y) / 2),
+  // //   anchor: "west",
+  // //   text(6pt, align(center, [contributor cross-check])),
+  // // )
+
+  // // ── Feedback: CLI → Issue (contributor cross-check, right side) ──
+  // let fb-right-x = cx + bw / 2 + 5.0
+  // let issue-right = cx + bw / 2
+  // let cli-right = x-start + 2 * out-w + out-gap
+  // let cli-mid-y = y3 - bh-s / 2
+
+  // line(
+  //   (cli-right, cli-mid-y),
+  //   (fb-right-x, cli-mid-y),
+  //   (fb-right-x, issue-mid-y),
+  //   (issue-right, issue-mid-y),
+  //   stroke: (thickness: 1pt),
+  //   mark: (end: "straight", scale: 0.35),
+  // )
 })
