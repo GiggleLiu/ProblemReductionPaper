@@ -61,5 +61,9 @@ All prose in `paper.tex` must follow these rules (from `writing-guidelines.md`):
 9. **The abstract is a standalone document.** No undefined abbreviations, no forward references, no citations. Problem → approach → result → significance.
 10. **Cut ruthlessly.** Delete "In this section, we describe...", "It is important to note that...", "As mentioned above...", and any sentence that restates what was just said.
 
+## Editing Rules
+
+- **Never remove a figure, comment, or chunk of text without confirming with the user first.** Deletions must be explicitly approved — do not assume removal is acceptable even if a structural review suggests it.
+
 ## Typst writing guidelines
 [.claude/rules/typst-drawing.md](.claude/rules/typst-drawing.md)
