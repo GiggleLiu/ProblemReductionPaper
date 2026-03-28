@@ -519,7 +519,7 @@ We thank Lei Wang and Hiroshi Shinaoka for helpful discussions, and the contribu
 \section{System Architecture}\label{app:architecture}
 
 The library's type system reduces the space of possible agent errors by making incorrect code fail to compile.
-This appendix describes four mechanisms---the \texttt{Problem} trait, the \texttt{ReduceTo} trait, the \texttt{\#[reduction(overhead)]} macro, and the \texttt{declare\_variants!} registry---that enforce correctness structurally (\Cref{fig:architecture}).
+This appendix describes the key design decisions: the aggregation-based problem representation, the solver priority system, and the variant registry (\Cref{fig:architecture}).
 
 \begin{figure}[t]
   \centering
@@ -529,21 +529,35 @@ This appendix describes four mechanisms---the \texttt{Problem} trait, the \textt
   \label{fig:architecture}
 \end{figure}
 
-\paragraph{The Problem trait.}
-Every problem type implements \texttt{Problem}, which requires: a constant name, an associated metric type (\texttt{SolutionSize<W>} for optimization problems, \texttt{bool} for decision problems), a method returning the configuration space dimensions, an \texttt{evaluate()} method that scores any configuration, and variant metadata for type-parameter tracking.
-The key member is \texttt{evaluate()}: because every problem maps configurations to metrics through this uniform interface, a brute-force solver can enumerate the space and select the best solution, enabling round-trip testing without problem-specific oracles.
+\paragraph{The Problem trait and aggregation.}
+Every problem type implements \texttt{Problem}, which requires: a constant name, an associated \texttt{Value} type, a method returning the configuration space dimensions, an \texttt{evaluate()} method that maps any configuration to a value, and variant metadata.
+The \texttt{Value} type is an \emph{aggregation wrapper} that determines how individual evaluations combine across the configuration space.
+Five wrappers cover the standard problem classes:
+\texttt{Max<W>} and \texttt{Min<W>} for NP optimization problems (e.g., Maximum Independent Set returns \texttt{Max<i32>});
+\texttt{Or} for NP decision problems (e.g., $k$-Satisfiability returns \texttt{Or});
+\texttt{Sum<W>} for \#P counting problems; and
+\texttt{And} for co-NP decision problems.
+Each wrapper implements an \texttt{Aggregate} trait with an \texttt{identity()} and a \texttt{combine()} method, so a brute-force solver reduces to a single fold over the configuration space: \texttt{configs.map(evaluate).fold(identity, combine)}.
+The same trait marks which wrappers support \emph{witness recovery}: \texttt{Max}, \texttt{Min}, and \texttt{Or} can track which configuration achieved the optimal value; \texttt{Sum} and \texttt{And} cannot.
+This distinction propagates to reductions: the \texttt{ReduceTo<T>} trait (with \texttt{extract\_solution()}) applies only to witness-capable problems, while \texttt{ReduceToAggregate<T>} (with \texttt{extract\_value()}) handles aggregate-only problems like counting.
 
-\paragraph{The ReduceTo trait.}
-The generic \texttt{ReduceTo<T>} trait requires a \texttt{reduce\_to()} method returning a \texttt{ReductionResult} that bundles \texttt{target\_problem()} and \texttt{extract\_solution()}.
-By requiring both forward and inverse in a single implementation, the type system ensures every reduction is round-trip capable---an agent cannot compile a forward reduction without providing the extraction logic.
+\paragraph{Solver priority.}
+When the user invokes \texttt{pred solve}, the system selects a solver in priority order.
+First, if a witness-capable reduction path to Integer Linear Programming (ILP) exists, the system reduces along the cheapest path (by Dijkstra) and solves with HiGHS.
+Second, if the problem has a dedicated solver that exploits its structure (currently six problem types), the system uses it.
+Third, the brute-force enumerator is always available: it folds over all configurations using the aggregation interface.
+ILP is preferred because it handles instances too large for brute force, but brute force remains essential for round-trip testing, where correctness matters more than speed.
 
 \paragraph{Compile-time overhead validation.}
 The \texttt{\#[reduction(overhead = \{...\})]} procedural macro attaches symbolic size expressions to each reduction.
 These expressions are parsed at compile time; variable names are validated against getter methods on the source type, so a typo (e.g., referencing \texttt{num\_vertex} when the method is \texttt{num\_vertices}) causes a compile error rather than a silent bug.
 
 \paragraph{Variant registry.}
-Problem types are parameterized by graph type (SimpleGraph, KingsSubgraph, etc.) and weight type (unit weight, \texttt{i32}, \texttt{f64}).
-The \texttt{declare\_variants!} macro registers concrete instantiations with their best-known complexity, enabling automated graph export, documentation completeness checking, and redundancy analysis.
+A single problem type like Maximum Independent Set admits multiple \emph{variants}: parameterizations by graph type (\texttt{SimpleGraph}, \texttt{KingsSubgraph}, \texttt{UnitDiskGraph}, etc.) and weight type (unit, \texttt{i32}, \texttt{f64}).
+Each variant may have a tighter complexity bound---MIS on king's subgraphs runs in $O(2^{\sqrt{|V|}})$ versus $O(1.1996^{|V|})$ on general graphs.
+The \texttt{declare\_variants!} macro registers each concrete instantiation with its best-known complexity, a factory for JSON deserialization, and a solve function.
+All variable names in complexity expressions are validated at compile time against the problem's getter methods.
+This registry is what produces the 100+ variants from 27~base problem types.
 
 \section{Development Statistics}\label{app:statistics}
 
