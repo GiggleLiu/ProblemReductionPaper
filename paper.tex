@@ -31,7 +31,8 @@
 \maketitle
 
 \begin{abstract}
-A unified library of polynomial-time reductions between NP-hard problems would let practitioners route any supported problem to a specialized solver---quantum hardware, commercial optimizers, or domain heuristics---through a single interface.
+A unified library of polynomial-time reductions between NP-hard problems would let practitioners route any supported problem to a specialized solver through a single interface.
+Target solvers range from quantum hardware to commercial optimizers and domain heuristics.
 No such library exists: every reduction must conform to a shared interface, but conventions drift across contributors, the domain experts who know the reductions rarely write systems code, and the repetitive verification cycle exhausts maintainers.
 We address this gap with AI coding agents steered by \emph{skills}: plain-text checklists, committed to the repository, that encode the project's conventions and domain knowledge.
 Three design decisions make this scale possible.
