@@ -307,9 +307,10 @@ cargo run --example detect_unreachable_from_3sat
 
 A domain expert contributes the mathematical content: which problem to add, what its formal definition is, what reduction algorithm connects it to existing problems.
 The \texttt{propose} skill (\Cref{fig:skill-propose}) supports this process through a structured brainstorming session---one question at a time, using mathematical language only, no programming required.
-A hard gate constrains the agent: it cannot write code, create files, or invoke implementation skills; the only output is a GitHub issue.
+A hard gate constrains the agent: it cannot write code, create files, or invoke implementation skills.
 The agent assists by running a topology analysis to identify the most impactful gaps---orphan nodes, clusters disconnected from solvers, problems lacking NP-hardness proofs---and recommends high-value rules the contributor may not have considered.
-Before filing, the agent pre-validates the draft against Stage~2's quality checks; only issues passing all four checks are submitted.
+Before filing, the agent pre-validates the draft against Stage~2's quality checks.
+The output is a structured GitHub issue filed into the Backlog column.
 
 \textbf{Stage~2: Validate} (Backlog $\to$ Ready).
 The maintainer uses the \texttt{fix-issue} skill to triage each issue in the Backlog.
