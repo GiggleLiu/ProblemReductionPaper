@@ -456,7 +456,9 @@ The main agent's framing could still introduce bias, but the sub-agent discovers
 Second, the sub-agent role-plays the persona end-to-end: it reads only the project's documentation, picks a problem it recognizes from its domain, builds an instance with realistic data, discovers a reduction path through the CLI, solves, and verifies the result against its own expectation.
 Third, the sub-agent steps out of character.
 The main agent interviews it---what worked, what was confusing, where did the output diverge from expectation---and the sub-agent writes a structured problem report.
+The reliability of such self-reports remains an open question; we treat them as heuristic signals, not definitive verdicts.
 This report surfaces usability gaps, documentation omissions, and semantic errors that unit tests cannot reach.
+% TODO: add concrete example in Evidence section
 
 \begin{figure}[t]
   \centering
