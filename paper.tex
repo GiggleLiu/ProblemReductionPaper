@@ -327,7 +327,7 @@ The agent assists by running a topology analysis to avoid proposing duplicates a
 Before filing, the agent pre-validates the draft against Stage~2's quality checks.
 The output is a structured GitHub issue filed into the \col{Backlog} column.
 
-\textbf{Stage~2: Validate} (Backlog $\to$ Ready).
+\textbf{Stage~2: Validate} (\col{Backlog} $\to$ \col{Ready}).
 A maintainer uses the \texttt{fix-issue} skill to triage each issue in the Backlog.
 The skill first runs \texttt{check-issue}, which automatically evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
 It then auto-corrects mechanical failures (undefined symbols, missing metrics) and brainstorms substantive fixes with the maintainer interactively.
