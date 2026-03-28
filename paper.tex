@@ -597,6 +597,7 @@ Five wrappers cover the standard problem classes:
 \texttt{Or} for NP decision problems (e.g., $k$-Satisfiability returns \texttt{Or});
 \texttt{Sum<W>} for \#P counting problems; and
 \texttt{And} for co-NP decision problems.
+These wrappers anticipate future extensions beyond NP (\Cref{sec:conclusion}) and cost little to include.
 Each wrapper implements an \texttt{Aggregate} trait with an \texttt{identity()} and a \texttt{combine()} method, so a brute-force solver reduces to a single fold over the configuration space: \texttt{configs.map(evaluate).fold(identity, combine)}.
 The same trait marks which wrappers support \emph{witness recovery}: \texttt{Max}, \texttt{Min}, and \texttt{Or} can track which configuration achieved the optimal value; \texttt{Sum} and \texttt{And} cannot.
 This distinction propagates to the reduction traits.
