@@ -6,12 +6,6 @@
 #canvas(length: 0.48cm, {
   import draw: *
 
-  // ── Palette ──
-  let col-input  = rgb("#4e79a7")   // blue — input
-  let col-core   = rgb("#59a14f")   // green — core
-  let col-output = rgb("#e8a838")   // gold — output artifacts
-  let col-human  = rgb("#f28e2b")   // orange — human feedback
-
   // ── Helpers ──
   let rbox(pos, w, h, col, name-id, title, ..details) = {
     rect(
@@ -36,118 +30,71 @@
   let sh = (start: 0.08, end: 0.08)
 
   // ── Layout ──
-  let bw = 7.0
-  let bh = 2.2
-  let bh-s = 1.8
-  let cx = 8.0
+  let bw = 7.5
+  let bh = 2.0
+  let gap = 2.0
 
-  // ── Row 1: GitHub Issue ──
+  // ── Row 1: Source problem instance ──
   let y1 = 0
-  rbox((cx - bw / 2, y1), bw, bh, col-input, "issue",
-    [GitHub Issue],
-    [Formal definition · example],
-    [Ground-truth solution])
+  let cx = 8.0
+  rbox((cx - bw / 2, y1), bw, bh, accent, "source",
+    [Source Instance],
+    [e.g.\ 3-SAT formula from example DB])
 
-  // ── Row 2: Example Database ──
-  let y2 = y1 - bh - 1.8
-  rbox((cx - bw / 2, y2), bw, bh, col-input, "exdb",
-    [Example Database],
-    [Canonical builder functions],
-    [Single source of truth])
+  // ── Row 2: Reduce ──
+  let y2 = y1 - bh - gap
+  rbox((cx - bw / 2, y2), bw, bh, rgb("#59a14f"), "target",
+    [Target Instance],
+    [e.g.\ MIS graph via `reduce_to()`])
 
-  // Arrow: Issue → Example DB
-  line("issue", "exdb.north",
-    stroke: s, mark: arr, shorten: sh, name: "e1")
-  content((rel: (0.6, 0), to: "e1.mid"), anchor: "west",
-    text(6pt, fill: black, [extract]))
+  // Arrow: Source → Target
+  line("source.south", "target.north",
+    stroke: s, mark: arr, shorten: sh, name: "e-reduce")
+  content((rel: (0.6, 0), to: "e-reduce.mid"), anchor: "west",
+    text(6pt, fill: black, [forward map]))
 
-  // ── Self-loop: Round-trip tests on Example Database (right side) ──
-  let exdb-right = cx + bw / 2
-  let exdb-mid-y = y2 - bh / 2
-  bezier(
-    (exdb-right, exdb-mid-y + 0.5),
-    (exdb-right, exdb-mid-y - 0.5),
-    (exdb-right + 2.5, exdb-mid-y + 1.2),
-    (exdb-right + 2.5, exdb-mid-y - 1.2),
-    stroke: (thickness: 1pt),
+  // ── Row 3: Solve target ──
+  let y3 = y2 - bh - gap
+  rbox((cx - bw / 2, y3), bw, bh, rgb("#e8a838"), "target-sol",
+    [Target Solution],
+    [brute-force or ILP solver])
+
+  // Arrow: Target → Target Solution
+  line("target.south", "target-sol.north",
+    stroke: s, mark: arr, shorten: sh, name: "e-solve")
+  content((rel: (0.6, 0), to: "e-solve.mid"), anchor: "west",
+    text(6pt, fill: black, [solve]))
+
+  // ── Row 4: Extract source solution ──
+  let y4 = y3 - bh - gap
+  rbox((cx - bw / 2, y4), bw, bh, rgb("#e8a838"), "source-sol",
+    [Source Solution],
+    [via `extract_solution()`])
+
+  // Arrow: Target Solution → Source Solution
+  line("target-sol.south", "source-sol.north",
+    stroke: s, mark: arr, shorten: sh, name: "e-extract")
+  content((rel: (0.6, 0), to: "e-extract.mid"), anchor: "west",
+    text(6pt, fill: black, [inverse map]))
+
+  // ── Verify: loop back to source ──
+  let fb-x = cx - bw / 2 - 2.5
+  let source-mid-y = y1 - bh / 2
+  let sol-mid-y = y4 - bh / 2
+
+  line(
+    (cx - bw / 2, sol-mid-y),
+    (fb-x, sol-mid-y),
+    (fb-x, source-mid-y),
+    (cx - bw / 2, source-mid-y),
+    stroke: (thickness: 1pt, paint: rgb("#e15759")),
     mark: (end: "straight", scale: 0.35),
   )
   content(
-    (exdb-right + 0.5, exdb-mid-y + 0.9),
-    anchor: "west",
-    text(6pt,
-      align(center, [round-trip tests])),
+    (fb-x - 0.3, (source-mid-y + sol-mid-y) / 2),
+    anchor: "east",
+    text(6.5pt, fill: rgb("#e15759"),
+      align(center, [evaluate &\
+        check optimality])),
   )
-
-  // ── Row 3: Two outputs (JSON Fixtures and CLI) ──
-  let y3 = y2 - bh - 2.0
-  let out-w = 7.0
-  let out-gap = 1.5
-  let total = 2 * out-w + out-gap
-  let x-start = cx - total / 2
-
-  // Left: JSON Fixtures
-  rbox((x-start, y3), out-w, bh-s, col-input, "json",
-    [JSON Fixtures],
-    [Source · target · solutions])
-
-  // Right: CLI
-  rbox((x-start + out-w + out-gap, y3), out-w, bh-s, col-output, "cli",
-    [`pred create --example`],
-    [Interactive exploration])
-
-  // Arrows: Example DB → outputs
-  line("exdb", "json.north",
-    stroke: s, mark: arr, shorten: sh)
-  line("exdb", "cli.north",
-    stroke: s, mark: arr, shorten: sh)
-
-  // ── Row 4: Typst PDF Manual (below JSON) ──
-  let y4 = y3 - bh-s - 1.8
-  let json-cx = x-start + out-w / 2
-  rbox((json-cx - out-w / 2, y4), out-w, bh-s, col-output, "manual",
-    [Typst PDF Manual],
-    [Visual diagrams · proof sketches])
-
-  // Arrow: JSON → Manual
-  line("json.south", "manual.north",
-    stroke: s, mark: arr, shorten: sh, name: "e5")
-  content((rel: (0.6, 0), to: "e5.mid"), anchor: "west",
-    text(6pt, fill: black, [render]))
-
-  // // ── Feedback: Manual → Issue (contributor cross-check) ──
-  // let fb-x = cx - bw / 2 - 5.5
-  // let issue-left = cx - bw / 2
-  // let manual-left = json-cx - out-w / 2
-  // let issue-mid-y = y1 - bh / 2
-  // let manual-mid-y = y4 - bh-s / 2
-
-  // line(
-  //   (manual-left, manual-mid-y),
-  //   (fb-x, manual-mid-y),
-  //   (fb-x, issue-mid-y),
-  //   (issue-left, issue-mid-y),
-  //   stroke: (thickness: 1pt),
-  //   mark: (end: "straight", scale: 0.35),
-  // )
-  // // content(
-  // //   (fb-x + 0.3, (issue-mid-y + manual-mid-y) / 2),
-  // //   anchor: "west",
-  // //   text(6pt, align(center, [contributor cross-check])),
-  // // )
-
-  // // ── Feedback: CLI → Issue (contributor cross-check, right side) ──
-  // let fb-right-x = cx + bw / 2 + 5.0
-  // let issue-right = cx + bw / 2
-  // let cli-right = x-start + 2 * out-w + out-gap
-  // let cli-mid-y = y3 - bh-s / 2
-
-  // line(
-  //   (cli-right, cli-mid-y),
-  //   (fb-right-x, cli-mid-y),
-  //   (fb-right-x, issue-mid-y),
-  //   (issue-right, issue-mid-y),
-  //   stroke: (thickness: 1pt),
-  //   mark: (end: "straight", scale: 0.35),
-  // )
 })
