@@ -3,9 +3,7 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-#let scale = 0.65cm
-
-#canvas(length: scale, {
+#canvas(length: 0.65cm, {
   import draw: *
 
   // ── Palette ──
