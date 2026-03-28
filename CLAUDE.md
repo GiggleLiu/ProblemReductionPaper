@@ -60,3 +60,6 @@ All prose in `paper.tex` must follow these rules (from `writing-guidelines.md`):
 8. **Tables and figures earn their space.** Every figure is referenced in text, has a story-telling caption, and conveys something that prose alone cannot. No orphaned figures.
 9. **The abstract is a standalone document.** No undefined abbreviations, no forward references, no citations. Problem → approach → result → significance.
 10. **Cut ruthlessly.** Delete "In this section, we describe...", "It is important to note that...", "As mentioned above...", and any sentence that restates what was just said.
+
+## Typst writing guidelines
+[.claude/rules/typst-drawing.md](.claude/rules/typst-drawing.md)

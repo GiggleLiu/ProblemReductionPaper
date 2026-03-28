@@ -3,116 +3,136 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-// ── Palette ──
-#let col-trait   = rgb("#4e79a7")
-#let col-reduce  = rgb("#59a14f")
-#let col-compile = rgb("#e8a838")
+#canvas(length: 0.48cm, {
+  import draw: *
 
-// ── Shared box width ──
-#let W = 220pt
+  // ── Palette ──
+  let col-trait   = rgb("#4e79a7")
+  let col-reduce  = rgb("#59a14f")
+  let col-compile = rgb("#e8a838")
 
-// ── Styled box helper ──
-#let sbox(col, body) = rect(
-  width: W,
-  radius: 4pt,
-  fill: col.lighten(85%),
-  stroke: (thickness: 1.2pt, paint: col.darken(10%)),
-  inset: (x: 8pt, y: 6pt),
-  body,
-)
+  let arr = arrow-end
+  let sh = (start: 0.08, end: 0.08)
 
-// ── Arrow helper ──
-#let arrow-label(col, label) = {
-  v(2pt)
-  align(center,
-    stack(dir: ltr, spacing: 6pt,
-      // vertical arrow
-      box(width: 0pt, height: 18pt,
-        place(center + horizon,
-          line(length: 18pt, angle: 90deg, stroke: 1pt + col.darken(10%)),
-        ),
-      ),
-      // arrowhead at bottom
-      text(7.5pt, weight: "bold", fill: col.darken(10%), label),
-    ),
-  )
-  v(2pt)
-}
+  // ── Layout ──
+  let bw = 12.0
+  let cx = 0.0
+  let gap = 1.4
 
-// ═══════════════════════════════════════
-// Box 1: Problem trait + aggregate wrappers
-// ═══════════════════════════════════════
-#sbox(col-trait)[
-  #align(center)[
-    #text(8pt, weight: "bold")[`Problem` trait] \
+  // ── Helper: typst block inside cetz content() ──
+  let tbox(pos, w, h, col, name-id, body) = {
+    rect(
+      pos, (pos.at(0) + w, pos.at(1) - h),
+      radius: 4pt,
+      fill: col.lighten(85%),
+      stroke: (thickness: 1.2pt, paint: col.darken(10%)),
+      name: name-id,
+    )
+    content(
+      name-id, anchor: "center",
+      box(width: w * 0.48cm - 16pt, body),
+    )
+  }
+
+  // ═══════════════════════════════════════
+  // Box 1: Problem trait + aggregate wrappers
+  // ═══════════════════════════════════════
+  let y1 = 0
+  let box1-h = 4.2
+  tbox((cx - bw/2, y1), bw, box1-h, col-trait, "box1")[
+    #set align(center)
+    #text(8pt, weight: "bold")[`Problem` trait]
     #v(2pt)
     #text(6.5pt, fill: fg-light)[
       `NAME` #sym.dot.c `Value: Aggregate` #sym.dot.c `dims()` #sym.dot.c `evaluate()`
     ]
-  ]
-  #v(3pt)
-  #line(length: 100%, stroke: 0.5pt + col-trait.lighten(40%))
-  #v(3pt)
-  #grid(
-    columns: (1fr,) * 5,
-    gutter: 4pt,
-    ..{
-      let wrappers = (
-        (`Max<W>`, [NP opt.]),
-        (`Min<W>`, [NP opt.]),
-        (`Or`, [NP dec.]),
-        (`And`, [co-NP]),
-        (`Sum<W>`, [\#P]),
-      )
-      wrappers.map(((name, label)) =>
-        rect(
-          width: 100%,
-          radius: 3pt,
-          fill: col-trait.lighten(78%),
-          stroke: 0.8pt + col-trait.darken(10%),
-          inset: (x: 2pt, y: 4pt),
-          align(center)[
-            #text(6.5pt, weight: "bold", name) \
-            #text(5.5pt, fill: fg-light, label)
-          ],
+    #v(2pt)
+    #line(length: 100%, stroke: 0.5pt + col-trait.lighten(40%))
+    #v(2pt)
+    #grid(
+      columns: (1fr,) * 5,
+      gutter: 3pt,
+      ..{
+        let wrappers = (
+          (`Max<W>`, [NP opt.]),
+          (`Min<W>`, [NP opt.]),
+          (`Or`, [NP dec.]),
+          (`And`, [co-NP]),
+          (`Sum<W>`, [\#P]),
         )
-      )
-    },
+        wrappers.map(((name, label)) =>
+          rect(
+            width: 100%,
+            radius: 3pt,
+            fill: col-trait.lighten(78%),
+            stroke: 0.8pt + col-trait.darken(10%),
+            inset: (x: 1pt, y: 3pt),
+            align(center)[
+              #text(6.5pt, weight: "bold", name) \
+              #text(5.5pt, fill: fg-light, label)
+            ],
+          )
+        )
+      },
+    )
+  ]
+
+  // ═══════════════════════════════════════
+  // Arrow 1: ReduceTo<T>
+  // ═══════════════════════════════════════
+  let a1-top = y1 - box1-h
+  let a1-bot = a1-top - gap
+  line(
+    (cx, a1-top), (cx, a1-bot + 0.05),
+    stroke: 1pt + col-reduce.darken(10%),
+    mark: (end: "straight", scale: 0.4),
   )
-]
+  content(
+    (cx + 0.3, (a1-top + a1-bot) / 2), anchor: "west",
+    text(7.5pt, weight: "bold", fill: col-reduce.darken(10%), [`ReduceTo<T>`]),
+  )
 
-// ═══════════════════════════════════════
-// Arrow 1: ReduceTo<T>
-// ═══════════════════════════════════════
-#arrow-label(col-reduce, [`ReduceTo<T>`])
-
-// ═══════════════════════════════════════
-// Box 2: ReductionResult
-// ═══════════════════════════════════════
-#sbox(col-reduce)[
-  #align(center)[
-    #text(8pt, weight: "bold")[`ReductionResult<T>`] \
+  // ═══════════════════════════════════════
+  // Box 2: ReductionResult
+  // ═══════════════════════════════════════
+  let box2-h = 1.8
+  let y2 = a1-bot
+  tbox((cx - bw/2, y2), bw, box2-h, col-reduce, "box2")[
+    #set align(center)
+    #text(8pt, weight: "bold")[`ReductionResult<T>`]
     #v(2pt)
     #text(6.5pt, fill: fg-light)[
       `target_problem()` #sym.dot.c `extract_solution()`
     ]
   ]
-]
 
-// ═══════════════════════════════════════
-// Arrow 2: #[reduction(overhead)]
-// ═══════════════════════════════════════
-#arrow-label(col-compile, [`\#[reduction(overhead = {...})]`])
+  // ═══════════════════════════════════════
+  // Arrow 2: #[reduction(overhead)]
+  // ═══════════════════════════════════════
+  let a2-top = y2 - box2-h
+  let a2-bot = a2-top - gap
+  line(
+    (cx, a2-top), (cx, a2-bot + 0.05),
+    stroke: 1pt + col-compile.darken(10%),
+    mark: (end: "straight", scale: 0.4),
+  )
+  content(
+    (cx + 0.3, (a2-top + a2-bot) / 2), anchor: "west",
+    text(7pt, fill: col-compile.darken(10%), [`\#[reduction(overhead = {...})]`]),
+  )
 
-// ═══════════════════════════════════════
-// Box 3: Compile-time validation
-// ═══════════════════════════════════════
-#sbox(col-compile)[
-  #text(8pt, weight: "bold")[Compile-time validation]
-  #v(3pt)
-  #text(6.5pt, fill: fg-light)[
-    #sym.bullet Variable names #sym.arrow getter methods \
-    #sym.bullet `Expr` AST: symbolic overhead expressions \
-    #sym.bullet `declare_variants!` #sym.arrow compile-time registry
+  // ═══════════════════════════════════════
+  // Box 3: Compile-time validation
+  // ═══════════════════════════════════════
+  let box3-h = 2.6
+  let y3 = a2-bot
+  tbox((cx - bw/2, y3), bw, box3-h, col-compile, "box3")[
+    #text(8pt, weight: "bold")[Compile-time validation]
+    #v(3pt)
+    #text(6.5pt, fill: fg-light)[
+      #sym.bullet Variable names #sym.arrow getter methods \
+      #sym.bullet `Expr` AST: symbolic overhead expressions \
+      #sym.bullet `declare_variants!` #sym.arrow compile-time registry
+    ]
   ]
-]
+})
