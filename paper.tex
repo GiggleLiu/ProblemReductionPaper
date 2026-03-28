@@ -474,6 +474,56 @@ This report surfaces usability gaps, documentation omissions, and semantic error
 %======================================================================
 %  SECTION 5: EVIDENCE
 %======================================================================
+\section{Evidence}\label{sec:evidence}
+
+The repository contains 59~merged pull requests and 253~commits spanning six contributors.
+The current codebase comprises 54,599~lines of Rust source, 28,343~lines of tests, and 6,362~lines of examples.
+
+\begin{table}[t]
+\caption{Library status summary.}\label{tab:status}
+\centering
+\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Metric & Count \\
+\midrule
+Problem types (unique names) & 116 \\
+Registered variants & 140 \\
+Reduction rules & 156 \\
+Reachable from 3-SAT (NP-hard verified) & 34 \\
+Reducible to ILP (exactly solvable) & 105 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\Cref{tab:status} summarizes the current library.
+Of the 140~registered variants, 105 have a reduction path to ILP (either the \texttt{bool} or \texttt{i32} variant) and can therefore be solved exactly via HiGHS.
+34~variants are reachable from 3-SAT, confirming their NP-hardness by construction.
+The initial problem set was seeded from Garey and Johnson's catalogue~\cite{garey1979}; subsequent additions came through the issue-based contribution route described in \Cref{sec:pipeline-overview}.
+
+\begin{table}[t]
+\caption{Codebase growth timeline.}\label{tab:growth}
+\centering
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Date & Models & Rules & Tests & Examples \\
+\midrule
+Jan 10 (initial) & 17 & 0 & 0 & 0 \\
+Jan 26 (feature parity) & 20 & 22 & 0 & 1 \\
+Feb 15 (arch.\ redesign) & 21 & 44 & 101 & 35 \\
+Mar 13 (current) & 27 & 45 & 114 & 45 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\Cref{tab:growth} traces the growth across three phases.
+\textbf{Phase~1 (Manual, 35~PRs)}: no skills; the maintainer issued step-by-step commands and established the architecture.
+\textbf{Phase~2 (Basic skills, 9~PRs)}: initial \texttt{add-model}/\texttt{add-rule} skills reduced per-task human involvement.
+\textbf{Phase~3 (Full pipeline, 15~PRs)}: complete skill library with orchestration, quality gates, and multi-agent review.
+
+The no-code contribution route is supported by issue templates, the \texttt{propose} skill for guided brainstorming, and weekly community calls where contributors verify implementations against their original specifications.
+
 %======================================================================
 %  SECTION 6: DISCUSSION AND CONCLUSION
 %======================================================================
