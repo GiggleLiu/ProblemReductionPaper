@@ -41,7 +41,7 @@
   content(
     (cx, y1-top - 1.0), anchor: "center",
     text(7.5pt, fill: luma(60),
-      [`NAME`#h(4pt)#sym.dot.c#h(4pt)`Metric`#h(4pt)#sym.dot.c#h(4pt)`dims()`#h(4pt)#sym.dot.c#h(4pt)`evaluate()`],
+      [`NAME`#h(4pt)#sym.dot.c#h(4pt)`Value: Aggregate`#h(4pt)#sym.dot.c#h(4pt)`dims()`#h(4pt)#sym.dot.c#h(4pt)`evaluate()`],
     ),
   )
 
@@ -52,51 +52,43 @@
     stroke: (thickness: 0.5pt, paint: col-trait.lighten(40%)),
   )
 
-  // Sub-boxes for Optimization and Satisfaction
-  let sub-margin = 0.35  // margin from parent box edge
-  let sub-gap = 0.3      // gap between sub-boxes
-  let sub-w = (box-w - 2 * sub-margin - sub-gap) / 2  // = 5.525 each
-  let sub-h = 1.0
+  // Sub-boxes for aggregate wrappers
+  let sub-margin = 0.35
+  let sub-gap = 0.25
+  let n-boxes = 5
+  let sub-w = (box-w - 2 * sub-margin - (n-boxes - 1) * sub-gap) / n-boxes
+  let sub-h = 0.9
   let sub-y-top = y1-top - 1.6
   let sub-y-bot = sub-y-top - sub-h
 
-  // Optimization sub-box (left)
-  let opt-left = cx - box-w / 2 + sub-margin
-  let opt-right = opt-left + sub-w
-  rect(
-    (opt-left, sub-y-top), (opt-right, sub-y-bot),
-    radius: 3pt,
-    fill: col-trait.lighten(78%),
-    stroke: (thickness: 0.6pt, paint: col-trait.lighten(20%)),
-    name: "opt",
-  )
-  content(
-    "opt", anchor: "center",
-    {
-      text(7.5pt, weight: "bold", fill: col-trait.darken(10%), [`OptimizationProblem`])
-      linebreak()
-      text(6pt, fill: luma(80), [`SolutionSize<W>` #sym.dot.c `direction()`])
-    },
+  let wrappers = (
+    (`Max<W>`, [NP opt.]),
+    (`Min<W>`, [NP opt.]),
+    (`Or`, [NP dec.]),
+    (`Sum<W>`, [\#P]),
+    (`And`, [co-NP]),
   )
 
-  // Satisfaction sub-box (right)
-  let sat-left = opt-right + sub-gap
-  let sat-right = sat-left + sub-w
-  rect(
-    (sat-left, sub-y-top), (sat-right, sub-y-bot),
-    radius: 3pt,
-    fill: col-trait.lighten(78%),
-    stroke: (thickness: 0.6pt, paint: col-trait.lighten(20%)),
-    name: "sat",
-  )
-  content(
-    "sat", anchor: "center",
-    {
-      text(7.5pt, weight: "bold", fill: col-trait.darken(10%), [`SatisfactionProblem`])
-      linebreak()
-      text(6pt, fill: luma(80), [`Metric = bool`])
-    },
-  )
+  for (i, (name, label)) in wrappers.enumerate() {
+    let x-left = cx - box-w / 2 + sub-margin + i * (sub-w + sub-gap)
+    let x-right = x-left + sub-w
+    let id = "agg" + str(i)
+    rect(
+      (x-left, sub-y-top), (x-right, sub-y-bot),
+      radius: 3pt,
+      fill: col-trait.lighten(78%),
+      stroke: (thickness: 0.6pt, paint: col-trait.lighten(20%)),
+      name: id,
+    )
+    content(
+      id, anchor: "center",
+      {
+        text(7pt, weight: "bold", fill: col-trait.darken(10%), name)
+        linebreak()
+        text(5.5pt, fill: luma(80), label)
+      },
+    )
+  }
 
   // --- Arrow 1: Box 1 -> Box 2 ---
   let a1-top = y1-bot

@@ -389,11 +389,14 @@ This closing-the-loop step catches errors invisible to automated tests: subtle m
 
 Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex}, \texttt{gpt-5.4} xhigh; the human-facing stages use Claude Code~\cite{Anthropic2025ClaudeCode}, \texttt{opus-4.6} high. In our tests, the \texttt{gpt-5.4} model shows better reasoning and reliability in code implementation, while the \texttt{opus-4.6} model is better at interactive dialogue.
 
-\subsection{Skill Design}\label{sec:skills}
-
-Building a verified reduction library requires both mathematical judgment and routine engineering.
-We found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue (understanding the need), \emph{verifying} the algorithm's correctness (requires deep reasoning), \emph{constructing} canonical examples (creative work), and \emph{authorizing} merges (security critical).
-Current models cannot substitute for any of these: reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}, research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2025HLE,Merrill2024ExpressivePower}, and unsupervised merge access is a security risk.
+\subsection{Skill Design Principles}\label{sec:skills}
+When to use skills and how to design them?
+Instead of asking what can be automated, we ask what can not.
+In this project, we found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
+Selecting which rules to pursue requires understanding the needs of the community, human is the information source.
+Verifying the algorithm's correctness requires deep reasoning, current models cannot substitute for human, reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}, research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2025HLE,Merrill2024ExpressivePower}.
+Constructing canonical examples requires creative work, human is end user and the best judge.
+Authorizing merges is security critical, we need a human with long term memory to be responsible for this.
 
 \begin{figure}[t]
 \centering
@@ -406,21 +409,21 @@ Current models cannot substitute for any of these: reasoning degrades sharply wi
 \label{fig:skill-architecture}
 \end{figure}
 
-We encode these boundaries in skills---workflow documents that define \emph{what} must happen without fixing \emph{how}.
-We classify the eighteen skills into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) pause mid-execution to consult a human for mathematical or security decisions; \emph{agent skills} (white) run fully autonomously.
-A single \texttt{run-pipeline} invocation triggers the full cascade from issue to pull request; the maintainer's effort scales with the number of \emph{skill types}, not the number of reductions.
+Through the ``AskUserQuestion'' tool, a skill can let agent pause and get feedback from human.
+Agent just provide enough context to the human, maybe with recommendation and let human make the decision.
+The skills in this project are divided into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) that focuses on guiding human to make the decision; \emph{worker skills} (white) run fully autonomously.
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
-Correctness begins with the issue, not the code.
-The structured issue serves as both the specification and the acceptance criterion: it defines the reduction's mathematical content, provides the canonical example that seeds all tests, and sets the quality bar through explicit completeness checks.
+Except unit tests and manual verification, we adopt the following two mechanisms to ensure correctness.
 
-\textbf{Issue check.}
-Before any code is written, the proposal itself is validated along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+\textbf{Issue check (Stage 2).}
+Correctness begins with the issue provided by the domain expert.
+As shown in \Cref{fig:roundtrip-pipeline}, the structured issue serves as both the specification and the acceptance criterion: it defines the reduction's mathematical content, provides the canonical example that seeds all tests.
+The issue is validated along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
 Invalid proposals are rejected before implementation effort is spent.
-When a contributor batch-submitted 322~issues, only 25\% passed all four checks; the rest were incomplete specifications~(39\%), factually incorrect~(20\%), high-effort~(13\%), or without practical value~(6\%).
 The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test, the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode.
-The contributor's mathematical intent propagates unchanged through all downstream artifacts (\Cref{fig:roundtrip-pipeline}).
+The mathematical intent propagates unchanged through all downstream artifacts and finally verified by the contributor.
 
 \begin{figure}[t]
   \centering
@@ -433,7 +436,8 @@ The contributor's mathematical intent propagates unchanged through all downstrea
   \label{fig:roundtrip-pipeline}
 \end{figure}
 
-\textbf{Agentic feature tests.}
+\textbf{Agentic feature tests (Stage 4).}
+Counterintuitively, agentic assembly can reach stability faster than traditional development.
 Open-source libraries normally stabilize through years of community use: real users file bug reports, request clarifications, and expose edge cases that developers never anticipated.
 A niche library cannot wait for that community to form.
 Agentic feature tests compress this feedback loop from years to minutes by \emph{simulating} the community.
@@ -474,9 +478,6 @@ This report surfaces usability gaps, documentation omissions, and semantic error
     The persona's domain knowledge (logistics optimization) lets the agent judge whether reduction results are plausible without access to ground-truth labels.}
   \label{fig:agent-profile}
 \end{figure}
-
-The skill system ensures both gates are invoked for every contribution.
-Without skills, an agent might skip the issue check or omit the feature test---errors that would accumulate silently over many contributions.
 
 %======================================================================
 %  SECTION 5: EVIDENCE
