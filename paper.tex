@@ -243,7 +243,7 @@ The symbolic engine supports three operations.
 
 \emph{Solvers.}
 A brute-force enumerator exhaustively searches small instances---used in round-trip testing where correctness, not speed, matters.
-An ILP solver handles larger instances; the backend is swappable, defaulting to the open-source HiGHS~\cite{Huangfu2018HiGHS} with Coin-CBC~\cite{Forrest2023CoinCBC}, SCIP~\cite{Achterberg2009SCIP}, and others as drop-in alternatives.
+An ILP solver handles larger instances; the backend defaults to the open-source HiGHS~\cite{Huangfu2018HiGHS}, with Coin-CBC~\cite{Forrest2023CoinCBC}, SCIP~\cite{Achterberg2009SCIP}, and others available as drop-in alternatives.
 Most problem types have a reduction path to ILP, directly or through intermediate types.
 
 \emph{Example database.}
