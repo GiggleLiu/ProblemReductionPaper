@@ -403,8 +403,7 @@ Authorizing merges is security critical; a human with long-term memory must be r
 \label{fig:skill-architecture}
 \end{figure}
 
-Through the ``AskUserQuestion'' tool, a skill can let agent pause and get feedback from human.
-Agent just provide enough context to the human, maybe with recommendation and let human make the decision.
+Through interactive prompts, a skill can pause the agent to solicit feedback from the human, providing context and a recommendation before letting the human decide.
 The skills in this project are divided into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) that focuses on "utilizing human's expertise" to make the decision; \emph{worker skills} (white) run fully autonomously.
 
 \subsection{Correctness by Construction}\label{sec:verification}
