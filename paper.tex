@@ -267,7 +267,7 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 
 Adding a reduction to the graph involves six stages, mirrored as columns on a GitHub project board (\Cref{fig:pipeline}).
 Each column is a state; progress flows left to right.
-If any stage fails, the item moves to On~Hold for human triage.
+If any stage fails, the item moves to "On~Hold" state for human triage.
 Four roles drive the flow: a domain expert files issues, a maintainer triages and merges, and two agents---one for implementation, one for review---handle the routine work in between.
 
 \textbf{Stage~1: Propose} (Backlog).
@@ -314,14 +314,13 @@ cargo run --example detect_unreachable_from_3sat
 
 A domain expert contributes the mathematical content: which problem to add, what its formal definition is, what reduction algorithm connects it to existing problems.
 The \texttt{propose} skill (\Cref{fig:skill-propose}) supports this process through a structured brainstorming session---one question at a time, using mathematical language only, no programming required.
-A hard gate constrains the agent: it cannot write code, create files, or invoke implementation skills.
-The agent assists by running a topology analysis to identify the most impactful gaps---orphan nodes, clusters disconnected from solvers, problems lacking NP-hardness proofs---and recommends high-value rules the contributor may not have considered.
+The agent assists by running a topology analysis to avoid proposing duplicates and to identify high-value models or rules.
 Before filing, the agent pre-validates the draft against Stage~2's quality checks.
 The output is a structured GitHub issue filed into the Backlog column.
 
 \textbf{Stage~2: Validate} (Backlog $\to$ Ready).
 The maintainer uses the \texttt{fix-issue} skill to triage each issue in the Backlog.
-The skill first runs \texttt{check-issue}, which automatically evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+The skill first runs \texttt{check-issue}, which automatically evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
 It then auto-corrects mechanical failures (undefined symbols, missing metrics) and brainstorms substantive fixes with the maintainer interactively.
 Only issues passing all four checks move to Ready.
 
@@ -420,7 +419,7 @@ The contributor's mathematical intent propagates unchanged through all downstrea
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.75\columnwidth]{figures/roundtrip-pipeline.pdf}
-  \caption{Example data flow.
+  \caption{Data flow for round-trip testing examples.
     A contributor's issue provides the canonical instance, which is extracted into the example database.
     Round-trip tests run as a closed loop on the database.
     The same data feeds JSON fixtures rendered in the PDF manual and the CLI's example mode.

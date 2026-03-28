@@ -61,24 +61,6 @@
   content((rel: (0.6, 0), to: "e1.mid"), anchor: "west",
     text(6pt, fill: black, [extract]))
 
-  // ── Self-loop: Round-trip tests on Example Database (right side) ──
-  let exdb-right = cx + bw / 2
-  let exdb-mid-y = y2 - bh / 2
-  bezier(
-    (exdb-right, exdb-mid-y + 0.5),
-    (exdb-right, exdb-mid-y - 0.5),
-    (exdb-right + 2.5, exdb-mid-y + 1.2),
-    (exdb-right + 2.5, exdb-mid-y - 1.2),
-    stroke: (thickness: 1pt),
-    mark: (end: "straight", scale: 0.35),
-  )
-  content(
-    (exdb-right + 0.5, exdb-mid-y + 0.9),
-    anchor: "west",
-    text(6pt,
-      align(center, [round-trip tests])),
-  )
-
   // ── Row 3: Two outputs (JSON Fixtures and CLI) ──
   let y3 = y2 - bh - 2.0
   let out-w = 7.0
@@ -115,24 +97,15 @@
   content((rel: (0.6, 0), to: "e5.mid"), anchor: "west",
     text(6pt, fill: black, [render]))
 
-  // ── Feedback: Manual → Issue (contributor cross-check) ──
-  let fb-x = cx - bw / 2 - 5.5
-  let issue-left = cx - bw / 2
-  let manual-left = json-cx - out-w / 2
-  let issue-mid-y = y1 - bh / 2
-  let manual-mid-y = y4 - bh-s / 2
+  // Left: Verification
+  let y5 = y3 - bh-s - 5.8
+  rbox((cx - bw / 2, y5), out-w, bh-s, col-input, "verification",
+    [Verification],
+    [Compare to the original issue])
 
-  line(
-    (manual-left, manual-mid-y),
-    (fb-x, manual-mid-y),
-    (fb-x, issue-mid-y),
-    (issue-left, issue-mid-y),
-    stroke: (thickness: 1pt, dash: "dashed"),
-    mark: (end: "straight", scale: 0.35),
-  )
-  content(
-    (fb-x - 0.3, (issue-mid-y + manual-mid-y) / 2),
-    anchor: "east",
-    text(6pt, align(center, [contributor\ cross-check])),
-  )
+  // Arrow: JSON → Verification
+  line("manual.south", "verification",
+    stroke: s, mark: arr, shorten: sh)
+  line("cli.south", "verification",
+    stroke: s, mark: arr, shorten: sh)
 })
