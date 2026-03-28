@@ -525,10 +525,25 @@ Subsequent additions came through the issue-based contribution route described i
 
 \subsection{Development Phases}
 
-The project evolved through two phases.
-In the first, the maintainer and AI agents collected reduction rules from existing packages---ProblemReductions.jl~\cite{Liu2024ProblemReductions}, UnitDiskMapping.jl, and qubogen~\cite{Tamura2020qubogen}---and from Garey and Johnson's catalogue~\cite{garey1979}.
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/growth-curve.pdf}
+  \caption{Growth of problem types and reduction rules over time, mined from git history.
+    Dashed lines mark phase transitions.
+    Phase~1 (weeks~0--7): manual development, porting rules from existing packages.
+    Phase~2 (weeks~7--8.5): basic skills introduced.
+    Phase~3 (weeks~8.5--11): full pipeline operational; both curves accelerate sharply.}
+  \label{fig:growth-curve}
+\end{figure}
+
+The project evolved through three phases (\Cref{fig:growth-curve}).
+In Phase~1 (weeks~0--7), the team and AI agents ported reduction rules from existing packages---ProblemReductions.jl~\cite{Liu2024ProblemReductions}, UnitDiskMapping.jl, and qubogen~\cite{Tamura2020qubogen}---and from Garey and Johnson's catalogue~\cite{garey1979}.
+Growth was steady but slow: roughly 20~problem types and 55~rules by week~7.
 Through this process, the skill-based automation pipeline was established and iteratively refined.
-In the second, external domain experts began contributing through the \texttt{propose} skill, filing structured issues in mathematical language while agents handle implementation.
+In Phase~2 (weeks~7--8.5), basic skills were introduced, but the pipeline was not yet end-to-end automated.
+In Phase~3 (weeks~8.5--11), the full pipeline became operational.
+Both curves accelerate sharply: problem types grew from 23 to 114, and reduction rules from 55 to 159, in under three weeks.
+External domain experts began contributing through the \texttt{propose} skill, filing structured issues in mathematical language while agents handle implementation.
 
 \jinguo{Add: per-phase human time, agent success/failure rate, OnHold frequency, test coverage numbers.}
 
