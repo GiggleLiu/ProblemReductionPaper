@@ -315,7 +315,7 @@ It posts a structured report as a GitHub comment and labels the issue accordingl
 The maintainer then uses the \texttt{fix-issue} skill to resolve flagged uncertainties: it auto-corrects mechanical problems (undefined symbols, missing metrics) and brainstorms substantive fixes interactively.
 Only issues passing all four checks move to Ready.
 
-\textbf{Stage~3: Implement.}
+\textbf{Stage~3: Implement} (Ready $\to$ Review Pool).
 The \texttt{run-pipeline} skill picks the highest-ranked Ready issue, claims it, and orchestrates three layers of skills.
 First, domain skills (\texttt{add-model}, \texttt{add-rule}) encode the conventions for adding a problem type or reduction rule correctly---Rust types, trait implementations, unit tests, CLI registration, and a paper entry with formal definitions and proof sketches.
 Second, software engineering skills (\texttt{issue-to-pr}) encode PR best practices: interpret the issue, create an isolated git worktree, write an implementation plan, execute it, and open a PR with a detailed summary.
