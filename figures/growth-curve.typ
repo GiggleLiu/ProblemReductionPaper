@@ -5,7 +5,7 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-// Weekly data mined from git history (week-start date, models, rules)
+// Weekly data mined from git history (week index, count)
 #let data-models = (
   (0, 17), (2, 20), (3, 20), (4, 20), (5, 21),
   (6, 21), (7, 23), (8, 23), (9, 39), (10, 107), (11, 114),
@@ -16,8 +16,8 @@
 )
 
 // Phase boundaries (week indices)
-#let phase2-start = 7   // Feb 23 — basic skills
-#let phase3-start = 8.5 // Mar 2 — full pipeline
+#let phase2-start = 7
+#let phase3-start = 8.5
 
 #let col-models = accent
 #let col-rules = rgb("#e15759")
@@ -41,16 +41,16 @@
       padding: 0.3,
     ),
     {
-      // Phase background regions
+      // Phase background shading
       plot.add-fill-between(
         domain: (phase2-start, phase3-start),
         x => 0, x => 180,
-        style: (stroke: none, fill: luma(235)),
+        style: (stroke: none, fill: luma(240)),
       )
       plot.add-fill-between(
         domain: (phase3-start, 12),
         x => 0, x => 180,
-        style: (stroke: none, fill: luma(225)),
+        style: (stroke: none, fill: luma(228)),
       )
 
       // Data lines
@@ -71,15 +71,12 @@
         style: (stroke: (paint: col-rules, thickness: 1.5pt)),
       )
 
-      // Phase labels
-      plot.add-anchor("p1", (3.5, 170))
-      plot.add-anchor("p2", (7.75, 170))
-      plot.add-anchor("p3", (10.25, 170))
+      // Phase labels via annotate
+      plot.annotate({
+        content((3.5, 170), text(6pt, fill: fg-light, [Phase 1: Manual]))
+        content((7.75, 170), text(6pt, fill: fg-light, [P2]))
+        content((10.25, 170), text(6pt, fill: fg-light, [Phase 3: Full pipeline]))
+      })
     },
   )
-
-  // Phase labels
-  content("p1", text(6pt, fill: fg-light, [Phase 1: Manual]))
-  content("p2", text(6pt, fill: fg-light, [P2]))
-  content("p3", text(6pt, fill: fg-light, [Phase 3: Full pipeline]))
 })
