@@ -104,10 +104,8 @@ And the repetitive verification cycle that each edge demands---coding, testing, 
 
 We call this an \emph{assembly problem}: a software project whose subtasks share the same interface and admit a cheap, generic correctness test (here, round-trip testing), but whose count exceeds what human teams can sustain.
 Reduction-graph construction is a natural instance: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality---without a problem-specific oracle.
-AI coding agents offer a way forward.
-SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} now achieve strong results on standard GitHub-issue benchmarks~\cite{Xia2025LiveSWEagent}.
-However, longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and specification inference remains the central difficulty~\cite{Roychoudhury2025AgenticAI}.
-Assembly problems sidestep this cliff: each subtask is short, self-contained, and follows the same pattern, so the agent never faces the long-horizon planning that degrades performance.
+AI coding agents offer a way forward (\Cref{sec:related}).
+Assembly problems sidestep the capability cliff reported on longer-horizon benchmarks: each subtask is short, self-contained, and follows the same pattern, so the agent never faces the long-horizon planning that degrades performance.
 The question is whether agents, given the right scaffolding, can produce \emph{verified} software at a scale that human teams have not achieved.
 The scaffolding we propose is \emph{skills}.
 A skill is a plain-markdown document, committed to the repository, that reads like a checklist: ``implement the forward and inverse maps, write round-trip tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
