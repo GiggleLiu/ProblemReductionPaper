@@ -92,7 +92,7 @@ QUBO-specific tools---PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qub
 Lucas~\cite{lucas2014} catalogued Ising formulations for Karp's 21~problems, but the result is a paper, not composable code.
 The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} provide languages for writing and testing reductions, but are pedagogical tools with no solver integration.
 ProblemReductions.jl~\cite{Liu2024ProblemReductions}, the most direct predecessor, implements 18~problem types in Julia with a reduction graph structure---but has remained small after two years.
-The pattern is consistent: each project covers a handful of problems, then stalls.
+In each case, the project covers a handful of problems but does not reach the scale of the known literature.
 More broadly, the gap between \emph{known} and \emph{implemented} reductions has widened for decades.
 Hundreds of reductions exist in the literature---Garey and Johnson~\cite{garey1979} alone catalogue over 300~NP-hard problems with reduction sketches---yet the largest software implementation covers fewer than 20.
 The bottleneck was never mathematical knowledge; it was building and maintaining the software.
