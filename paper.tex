@@ -295,12 +295,19 @@ cargo run --example detect_unreachable_from_3sat
   \end{lstlisting}
   \vspace{-2pt}
   \rule{\linewidth}{0.3pt}\\[3pt]
-  Present draft $\to$ Run \texttt{check-issue} on draft $\to$ Checks pass? $\to$ User approves? $\to$ File issue
+  \textbf{Pre-validation} --- Run \texttt{check-issue} on draft before filing:\\[2pt]
+  \begin{tabular}{@{}r@{~}l@{}}
+    1. & \textbf{Usefulness} --- does a cheaper reduction path already exist? \\
+    2. & \textbf{Non-triviality} --- genuine structural transformation? \\
+    3. & \textbf{Correctness} --- do cited references support the claims? \\
+    4. & \textbf{Writing quality} --- all symbols defined, examples worked? \\
+  \end{tabular}\\[2pt]
+  Only issues passing all four checks are filed.
   \end{tcolorbox}
   \caption{Excerpts from the \texttt{propose} skill.
     The hard gate enforces no-code contribution.
     Topology analysis guides experts toward strategic graph gaps.
-    Pre-validation rejects invalid proposals before they enter the pipeline.}
+    Pre-validation checks four quality dimensions before the issue enters the pipeline.}
   \label{fig:skill-propose}
 \end{figure}
 
