@@ -227,7 +227,7 @@ The uniform evaluation interface enables brute-force solving on small instances,
 \emph{Reduction rules.}
 Each rule requires both a forward map and an inverse map in a single implementation---an agent cannot compile a forward reduction without providing the inverse map for solution extraction (\Cref{app:architecture}).
 Each rule carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's.
-For example, the Satisfiability $\to$ Maximum Independent Set reduction maps a formula with $n_l$ literals (variables or their negations) to a graph with $O(n_l)$ vertices and $O(n_l^2)$ edges.
+For example, the Satisfiability $\to$ Maximum Independent Set reduction creates one vertex per literal occurrence in the formula, yielding $O(L)$ vertices and $O(L^2)$ edges where $L$ is the total number of literal occurrences.
 
 \emph{Graph engine.}
 Problem types and reduction rules compose into a directed graph.
