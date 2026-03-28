@@ -368,7 +368,7 @@ An implementation agent executes the \texttt{run-pipeline} skill. It checks the 
 The implementation agent separates two kinds of knowledge.
 \emph{Domain skills} (\texttt{add-model}, \texttt{add-rule}) encode what makes a reduction correct: a correctness argument, a size overhead expression, and a worked example must all exist \emph{before any code is written} (\Cref{fig:skill-addrule}).
 This is knowledge the agent cannot infer from existing code---it must come from the issue's mathematical content.
-\emph{Engineering skills} (\texttt{issue-to-pr}, Superpowers~\cite{Obra2025Superpowers}---an agentic skills framework for structured development workflows) encode how to produce a clean PR: isolated worktrees, implementation plans, parallel sub-agents for independent tasks, and a detailed summary---all fully automatable.
+\emph{Engineering skills} (\texttt{issue-to-pr}) encode how to produce a clean PR: isolated worktrees, implementation plans, parallel sub-agents for independent tasks, and a detailed summary---all fully automatable.\footnote{The engineering workflow builds on Superpowers~\cite{Obra2025Superpowers}, an agentic skills framework for structured development workflows.}
 
 \begin{figure}[t]
   \centering
