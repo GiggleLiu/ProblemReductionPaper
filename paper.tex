@@ -57,7 +57,7 @@ Each of these is an instance of an NP-hard problem---a class of problems for whi
 The difficulty is that each solver speaks its own narrow language.
 Rydberg atom arrays~\cite{lucas2014, pichler2018}---a type of quantum hardware---natively solve the Maximum Independent Set problem on geometric graphs.
 D-Wave quantum annealers~\cite{glover2019} solve Quadratic Unconstrained Binary Optimization (QUBO).
-Commercial engines like Gurobi and CPLEX solve Integer Linear Programs.
+Commercial engines like CPLEX~\cite{IBM2022CPLEX} solve Integer Linear Programs.
 Physics-inspired methods scale further---graph neural networks solve QUBO at million-variable scale~\cite{Schuetz2022PhysicsGNN}, and hybrid quantum-GNN methods tackle the Traveling Salesman Problem~\cite{He2024QuantumTSP}---but still require a QUBO or Ising formulation as input.
 A practitioner with a crew-scheduling problem cannot directly use any of these solvers without first \emph{translating} the problem into a form the solver understands.
 
