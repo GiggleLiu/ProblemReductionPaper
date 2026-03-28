@@ -452,6 +452,7 @@ Agentic feature tests approximate early-adopter feedback by simulating realistic
 The mechanism has three phases.
 First, the main agent launches a sub-agent in a \emph{fresh context window}---one that has never seen the implementation---and injects an \emph{agent profile}: a structured persona with domain expertise, testing habits, and a concrete use case (\Cref{fig:agent-profile}).
 The fresh context is essential; a sub-agent that has just written the code cannot objectively test it.
+The main agent's framing could still introduce bias, but the sub-agent discovers the library independently through its documentation.
 Second, the sub-agent role-plays the persona end-to-end: it reads only the project's documentation, picks a problem it recognizes from its domain, builds an instance with realistic data, discovers a reduction path through the CLI, solves, and verifies the result against its own expectation.
 Third, the sub-agent steps out of character.
 The main agent interviews it---what worked, what was confusing, where did the output diverge from expectation---and the sub-agent writes a structured problem report.
