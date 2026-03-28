@@ -64,7 +64,8 @@ Physics-inspired methods scale further---graph neural networks solve QUBO at mil
 A practitioner with a crew-scheduling problem cannot directly use any of these solvers without first \emph{translating} the problem into a form the solver understands.
 
 This translation is called a \emph{reduction}: an efficient algorithm that converts an instance of one problem into an instance of another, together with an inverse map that translates the solution back.
-Reductions are the central tool of computational complexity theory~\cite{karp1972}, but they also have immediate practical value: each verified reduction is a bridge connecting a new problem to an existing solver.
+Borrowing the idea of reductions from complexity theory~\cite{karp1972}, we require each reduction to carry an inverse map that translates the solution back.
+Each verified reduction is a bridge connecting a new problem to an existing solver.
 
 \subsection{Bridging Problems to Solvers}
 
