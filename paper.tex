@@ -117,7 +117,14 @@ The scaffolding we propose is \emph{skills}.
 A skill is a plain-markdown document, committed to the repository, that reads like a checklist: ``implement the forward and inverse maps, write round-trip tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
 A \emph{project specification} (\texttt{CLAUDE.md} or \texttt{AGENTS.md}) anchors the system as a single source of truth for architecture and constraints that every skill inherits.
-Skills address all three barriers: they eliminate convention drift by enforcing the same interface, layout, and test pattern at every invocation; they bridge knowledge discontinuity by letting domain experts contribute through structured issues while agents handle the implementation; and they absorb effort exhaustion by making the routine work---coding, testing, documenting---repeatable without human attention.
+Skills address all three barriers:
+\begin{itemize}
+  \item \emph{Convention drift} $\to$ skills enforce the same interface, layout, and test pattern at every invocation.
+  \item \emph{Knowledge discontinuity} $\to$ domain experts contribute through structured issues; agents handle the implementation.
+  \item \emph{Effort exhaustion} $\to$ the routine work---coding, testing, documenting---becomes repeatable without human attention.
+\end{itemize}
+A domain expert who discovers a new reduction contributes it by filing a structured issue---no code required---and agents handle the implementation, testing, and documentation.
+A multilayer verification stack rejects non-conforming code before it enters the repository.
 
 \begin{figure}[t]
   \centering
@@ -127,12 +134,6 @@ Skills address all three barriers: they eliminate convention drift by enforcing 
     \textbf{Right:} the contributor files a structured GitHub issue; an AI agent handles implementation, testing, and integration automatically.}
   \label{fig:comic}
 \end{figure}
-
-We introduce the term \emph{assembly problem} for software whose subtasks are homogeneous and formally verifiable, but whose scale exceeds what human teams can sustain.
-Reduction-graph construction is a natural instance: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality---without a problem-specific oracle.
-This cheap, automatic verification makes the task well suited for AI coding agents, which produce volume while round-trip tests catch the errors.
-A domain expert who discovers a new reduction contributes it by filing a structured issue---no code required---and agents handle the implementation, testing, and documentation.
-Skills enforce project conventions at every invocation, and a multilayer verification stack rejects non-conforming code before it enters the repository.
 
 \subsection{Contributions}
 
