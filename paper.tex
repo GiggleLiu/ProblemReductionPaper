@@ -236,7 +236,10 @@ The cost function is configurable: minimize the number of reduction steps, or mi
 
 \emph{Symbolic engine.}
 Reduction overhead and algorithm complexity are represented as symbolic mathematical expressions, because costs depend on input size, which is unknown until a concrete instance arrives.
-The symbolic engine supports three operations: \emph{composition} (substituting one edge's output into the next edge's input), \emph{comparison} (checking whether a composite path dominates a direct rule, for redundancy detection), and \emph{evaluation} (computing numeric cost for a concrete instance size, enabling instance-dependent path search).
+The symbolic engine supports three operations.
+\emph{Composition} substitutes one edge's output into the next edge's input.
+\emph{Comparison} checks whether a composite path dominates a direct rule, for redundancy detection.
+\emph{Evaluation} computes numeric cost for a concrete instance size, enabling instance-dependent path search.
 
 \emph{Solvers.}
 A brute-force enumerator exhaustively searches small instances---used in round-trip testing where correctness, not speed, matters.
