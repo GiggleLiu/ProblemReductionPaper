@@ -545,7 +545,15 @@ Five wrappers cover the standard problem classes:
 \texttt{And} for co-NP decision problems.
 Each wrapper implements an \texttt{Aggregate} trait with an \texttt{identity()} and a \texttt{combine()} method, so a brute-force solver reduces to a single fold over the configuration space: \texttt{configs.map(evaluate).fold(identity, combine)}.
 The same trait marks which wrappers support \emph{witness recovery}: \texttt{Max}, \texttt{Min}, and \texttt{Or} can track which configuration achieved the optimal value; \texttt{Sum} and \texttt{And} cannot.
-This distinction propagates to reductions: the \texttt{ReduceTo<T>} trait (with \texttt{extract\_solution()}) applies only to witness-capable problems, while \texttt{ReduceToAggregate<T>} (with \texttt{extract\_value()}) handles aggregate-only problems like counting.
+This distinction propagates to the reduction traits.
+
+\paragraph{Two-track reduction traits.}
+The type system enforces a split based on witness capability.
+\texttt{ReduceTo<T>} requires a \texttt{ReductionResult} that bundles \texttt{target\_problem()} and \texttt{extract\_solution()}---a map from a target \emph{configuration} back to a source configuration.
+An agent cannot compile a forward reduction without providing the inverse map; incomplete reductions are compile errors.
+\texttt{ReduceToAggregate<T>} requires an \texttt{AggregateReductionResult} with \texttt{extract\_value()} instead---a map from a target \emph{value} back to a source value, with no witness recovered.
+For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both traits with an identity solution map.
+At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 
 \paragraph{Solver priority.}
 When the user invokes \texttt{pred solve}, the system selects a solver in priority order.

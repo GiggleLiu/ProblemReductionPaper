@@ -38,14 +38,11 @@
   let box1-h = 3.6
   tbox((cx - bw/2, y1), bw, box1-h, col-trait, "box1")[
     #set align(center)
-    #text(9pt, weight: "bold")[`Problem` trait]
-    #v(3pt)
+    #text(9pt, weight: "bold")[`Problem` trait]\
     #text(7.5pt, fill: fg-light)[
       `NAME` #sym.dot.c `Value: Aggregate` #sym.dot.c `dims()` #sym.dot.c `evaluate()`
     ]
-    #v(3pt)
     #std.line(length: 100%, stroke: 0.5pt + col-trait.lighten(40%))
-    #v(4pt)
     #std.grid(
       columns: (1fr,) * 5,
       gutter: 4pt,
@@ -92,12 +89,12 @@
   // ═══════════════════════════════════════
   // Box 2: ReductionResult
   // ═══════════════════════════════════════
-  let box2-h = 1.5
+  let box2-h = 1.7
   let y2 = a1-bot
   tbox((cx - bw/2, y2), bw, box2-h, col-reduce, "box2")[
     #set align(center)
     #text(9pt, weight: "bold")[`ReductionResult<T>`]
-    #v(3pt)
+
     #text(7.5pt, fill: fg-light)[
       `target_problem()` #sym.dot.c `extract_solution()`
     ]
@@ -115,17 +112,17 @@
   )
   content(
     (cx + 0.3, (a2-top + a2-bot) / 2), anchor: "west",
-    text(7.5pt, fill: col-compile.darken(10%), [`\#[reduction(overhead = {...})]`]),
+    text(7.5pt, fill: col-compile.darken(10%), [`#[reduction(overhead = {...})]`]),
   )
 
   // ═══════════════════════════════════════
   // Box 3: Compile-time validation
   // ═══════════════════════════════════════
-  let box3-h = 2.2
+  let box3-h = 3.2
   let y3 = a2-bot
   tbox((cx - bw/2, y3), bw, box3-h, col-compile, "box3")[
     #text(9pt, weight: "bold")[Compile-time validation]
-    #v(4pt)
+
     #text(7.5pt, fill: fg-light)[
       #sym.bullet Variable names #sym.arrow getter methods \
       #sym.bullet `Expr` AST: symbolic overhead expressions \
