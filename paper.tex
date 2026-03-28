@@ -104,8 +104,6 @@ Conventions drift as contributors accumulate their own patterns (\emph{conventio
 The domain experts who know the reductions rarely write systems code, bottlenecking progress on the few who know both (\emph{knowledge discontinuity}).
 When a new reduction appears in the literature, the mathematician who understands it has no way to contribute it without learning the implementation language and the project's conventions.
 And the repetitive verification cycle that each edge demands---coding, testing, documenting---exhausts even dedicated maintainers (\emph{effort exhaustion}).
-Meanwhile, systems like FunSearch~\cite{RomeraParedes2023FunSearch} and AlphaEvolve~\cite{Novikov2025AlphaEvolve} can \emph{discover} novel reductions through evolutionary search, and URSA~\cite{Janicic2025URSA} can verify them via SAT-based constraint solving---but discovered reductions still need to be implemented, tested, and integrated into a composable library.
-
 AI coding agents offer a way forward.
 The evolution from SWE-agent~\cite{Yang2024SWEagent} and Devin~\cite{Wu2024Devin} to OpenHands~\cite{Wang2024OpenHands} and Claude Code~\cite{Anthropic2025ClaudeCode} has expanded single-task capabilities to 70--80\% on SWE-Bench~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and Roychoudhury~\cite{Roychoudhury2025AgenticAI} identifies specification inference as the central difficulty.
 Full formal verification is also not yet practical at this scale: VeriCoding~\cite{Bursuc2025VeriCoding} reports 27--44\% success on formal specifications, and VeriBench~\cite{Miranda2025VeriBench} finds agents approach 90\% compilation in Lean~4 but rarely complete proofs.
