@@ -61,7 +61,7 @@
           (`Sum<W>`, [\#P]),
         )
         wrappers.map(((name, label)) =>
-          rect(
+          std.rect(
             width: 100%,
             radius: 3pt,
             fill: col-trait.lighten(78%),
