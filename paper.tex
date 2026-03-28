@@ -109,7 +109,7 @@ AI coding agents have advanced rapidly: SWE-agent~\cite{Yang2024SWEagent}, Devin
 However, longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and specification inference remains the central difficulty~\cite{Roychoudhury2025AgenticAI}.
 The question is whether agents, given the right scaffolding, can produce \emph{verified} software at a scale that human teams have not achieved.
 The scaffolding we propose is \emph{skills}.
-A skill is a plain-markdown document, committed to the repository, that reads like a checklist: ``implement the forward and inverse maps, write round-trip tests, register the rule in the CLI, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
+A skill is a plain-markdown document, committed to the repository, that reads like a checklist: ``implement the forward and inverse maps, write round-trip tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
 Skills can also constrain what agents are \emph{not} allowed to do: the \texttt{propose} skill prohibits the agent from writing any code, so that domain experts contribute in mathematical language only (\Cref{fig:skill-propose}).
 A \emph{project specification} (\texttt{CLAUDE.md} or \texttt{AGENTS.md}) anchors the system as a single source of truth for architecture and constraints that every skill inherits.
