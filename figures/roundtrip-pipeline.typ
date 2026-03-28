@@ -115,39 +115,24 @@
   content((rel: (0.6, 0), to: "e5.mid"), anchor: "west",
     text(6pt, fill: black, [render]))
 
-  // // ── Feedback: Manual → Issue (contributor cross-check) ──
-  // let fb-x = cx - bw / 2 - 5.5
-  // let issue-left = cx - bw / 2
-  // let manual-left = json-cx - out-w / 2
-  // let issue-mid-y = y1 - bh / 2
-  // let manual-mid-y = y4 - bh-s / 2
+  // ── Feedback: Manual → Issue (contributor cross-check) ──
+  let fb-x = cx - bw / 2 - 5.5
+  let issue-left = cx - bw / 2
+  let manual-left = json-cx - out-w / 2
+  let issue-mid-y = y1 - bh / 2
+  let manual-mid-y = y4 - bh-s / 2
 
-  // line(
-  //   (manual-left, manual-mid-y),
-  //   (fb-x, manual-mid-y),
-  //   (fb-x, issue-mid-y),
-  //   (issue-left, issue-mid-y),
-  //   stroke: (thickness: 1pt),
-  //   mark: (end: "straight", scale: 0.35),
-  // )
-  // // content(
-  // //   (fb-x + 0.3, (issue-mid-y + manual-mid-y) / 2),
-  // //   anchor: "west",
-  // //   text(6pt, align(center, [contributor cross-check])),
-  // // )
-
-  // // ── Feedback: CLI → Issue (contributor cross-check, right side) ──
-  // let fb-right-x = cx + bw / 2 + 5.0
-  // let issue-right = cx + bw / 2
-  // let cli-right = x-start + 2 * out-w + out-gap
-  // let cli-mid-y = y3 - bh-s / 2
-
-  // line(
-  //   (cli-right, cli-mid-y),
-  //   (fb-right-x, cli-mid-y),
-  //   (fb-right-x, issue-mid-y),
-  //   (issue-right, issue-mid-y),
-  //   stroke: (thickness: 1pt),
-  //   mark: (end: "straight", scale: 0.35),
-  // )
+  line(
+    (manual-left, manual-mid-y),
+    (fb-x, manual-mid-y),
+    (fb-x, issue-mid-y),
+    (issue-left, issue-mid-y),
+    stroke: (thickness: 1pt, dash: "dashed"),
+    mark: (end: "straight", scale: 0.35),
+  )
+  content(
+    (fb-x - 0.3, (issue-mid-y + manual-mid-y) / 2),
+    anchor: "east",
+    text(6pt, align(center, [contributor\ cross-check])),
+  )
 })
