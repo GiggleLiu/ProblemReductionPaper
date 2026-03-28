@@ -385,8 +385,7 @@ This closing-the-loop step catches errors invisible to automated tests: subtle m
 Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex} (\texttt{gpt-5.4}) and Claude Code~\cite{Anthropic2025ClaudeCode} (\texttt{opus-4.6}), both with highest thinking effort. In our tests, the \texttt{gpt-5.4} model shows better reasoning and reliability in code implementation, while the \texttt{opus-4.6} model is better at interactive dialogue.
 
 \subsection{Skill Design Principles}\label{sec:skills}
-The primary goal of skill design is to automate the routine work, so that human can focus on the creative work.
-Instead of asking what can be automated, we ask what can not.
+Instead of asking what can be automated, we ask what cannot.
 In this project, we found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
 Selecting which rules to pursue requires understanding the needs of the community, human is the information source.
 Verifying the algorithm's correctness requires deep reasoning, current models cannot substitute for human, reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}, research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2025HLE,Merrill2024ExpressivePower}.
