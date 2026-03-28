@@ -13,6 +13,7 @@
 *.nav
 *.snm
 *.vrb
+paper.synctex(busy)
 
 # PDF output (keep source, not build output)
 paper.pdf
