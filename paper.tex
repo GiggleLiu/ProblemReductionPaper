@@ -224,7 +224,7 @@ For example, the Satisfiability $\to$ Maximum Independent Set reduction maps a f
 \emph{Graph engine.}
 Problem types and reduction rules compose into a directed graph.
 To route a problem instance to a solver, the engine finds the cheapest reduction path using Dijkstra's algorithm.
-The cost function is configurable: minimize the number of reduction steps, or minimize a specific output dimension such as \texttt{num\_vars}.
+The cost function is configurable: minimize the number of reduction steps, or minimize a specific output measure such as the number of variables.
 
 \emph{Symbolic engine.}
 Both reduction overhead and algorithm complexity are represented as symbolic mathematical expressions.
