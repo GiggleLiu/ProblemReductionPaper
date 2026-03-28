@@ -511,11 +511,10 @@ The library covers the majority of NP-complete problems and reduction rules cata
 
 \subsection{Development Phases}
 
-The project evolved through three phases.
-In the first, the maintainer issued step-by-step commands to AI agents and established the library's architecture---no skills existed yet.
-In the second, initial skills (\texttt{add-model}, \texttt{add-rule}) encoded domain knowledge as reusable checklists, reducing per-task human involvement.
-In the third, the complete skill library with orchestration, quality gates, and multi-agent review made Stages~3--4 fully automated.
-The project is now entering a community-driven phase: the no-code contribution route is open, and external domain experts contribute reductions through structured issues and weekly community calls.
+The project evolved through two phases.
+In the first, the maintainer and AI agents collected reduction rules from existing packages---ProblemReductions.jl~\cite{Liu2024ProblemReductions}, UnitDiskMapping.jl, and qubogen---and from Garey and Johnson's catalogue~\cite{garey1979}.
+Through this process, the skill-based automation pipeline was established and iteratively refined.
+In the second, external domain experts began contributing through the \texttt{propose} skill, filing structured issues in mathematical language while agents handle implementation.
 
 \jinguo{Add: per-phase human time, agent success/failure rate, OnHold frequency, test coverage numbers.}
 
