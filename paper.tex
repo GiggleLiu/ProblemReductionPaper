@@ -24,7 +24,7 @@
 
 \begin{document}
 
-\title{Agentic Assembly of Computational Hard Problems}
+\title{Agentic Integration of Computational Hard Problems}
 
 \author{...}  % placeholder
 
@@ -100,7 +100,8 @@ Maintaining such uniformity across many contributions is precisely what human te
 Conventions drift as contributors accumulate their own patterns (\emph{convention drift}).
 The domain experts who know the reductions rarely write systems code, bottlenecking progress on the few who know both (\emph{knowledge discontinuity}).
 When a new reduction appears in the literature, the mathematician who understands it has no way to contribute it without learning the implementation language and the project's conventions.
-And the repetitive verification cycle that each edge demands---coding, testing, documenting---exhausts even dedicated maintainers (\emph{effort exhaustion}).
+And every new edge demands the same lengthy checklist: verify that the rule is novel, confirm that both endpoint problems exist, analyze the reduction overhead, check that the new path actually improves on existing routes, implement the forward and inverse maps, design a round-trip test, and document the reduction with a worked example.
+This repetitive cycle exhausts even dedicated maintainers (\emph{effort exhaustion}).
 
 We call this an \emph{assembly problem}: a software project whose subtasks share the same interface and admit a cheap, generic correctness test (here, round-trip testing), but whose count exceeds what human teams can sustain.
 Reduction-graph construction is a natural instance: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality---without a problem-specific oracle.
