@@ -9,9 +9,18 @@
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage[most]{tcolorbox}
+\usepackage{tikz}
 
 \newcommand{\jinguo}[1]{\textcolor{red}{JG: #1}}
-% TikZ removed — all diagrams are now Typst-compiled PDFs
+
+% Inline project-board column label
+\newcommand{\col}[1]{%
+  \tikz[baseline=(X.base)]{%
+    \node[draw=gray!60, fill=gray!10, rounded corners=2pt,
+          inner xsep=3pt, inner ysep=1pt,
+          font=\small\sffamily] (X) {#1};%
+  }%
+}
 
 \begin{document}
 
@@ -267,7 +276,7 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 
 Adding a reduction to the graph involves six stages, mirrored as columns on a GitHub project board (\Cref{fig:pipeline}).
 Each column is a state; progress flows left to right.
-If any stage fails, the item moves to "On~Hold" state for human triage.
+If any stage fails, the item moves to ``On~Hold'' state for human triage.
 Four roles drive the flow: a domain expert files issues, a maintainer triages and merges, and two agents---one for implementation, one for review---handle the routine work in between.
 
 \textbf{Stage~1: Propose} (Backlog).
@@ -319,14 +328,14 @@ Before filing, the agent pre-validates the draft against Stage~2's quality check
 The output is a structured GitHub issue filed into the Backlog column.
 
 \textbf{Stage~2: Validate} (Backlog $\to$ Ready).
-The maintainer uses the \texttt{fix-issue} skill to triage each issue in the Backlog.
+A maintainer uses the \texttt{fix-issue} skill to triage each issue in the Backlog.
 The skill first runs \texttt{check-issue}, which automatically evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
 It then auto-corrects mechanical failures (undefined symbols, missing metrics) and brainstorms substantive fixes with the maintainer interactively.
 Only issues passing all four checks move to Ready.
 
 \textbf{Stage~3: Implement} (Ready $\to$ Review Pool).
-The \texttt{run-pipeline} skill picks the highest-ranked Ready issue, claims it, and produces one PR containing exactly one model or one rule.
-It separates two kinds of knowledge.
+An implementation agent executes the `run-pipeline' skill. It checks the "Ready" column, pick an issue with the highest priority, claims it by moving it to the "In Progress" column, produces one PR that resolves the issue, and move the issue to the "Review Pool" column.
+The implementation agent separates two kinds of knowledge.
 \emph{Domain skills} (\texttt{add-model}, \texttt{add-rule}) encode what makes a reduction correct: a correctness argument, a size overhead expression, and a worked example must all exist \emph{before any code is written} (\Cref{fig:skill-addrule}).
 This is knowledge the agent cannot infer from existing code---it must come from the issue's mathematical content.
 \emph{Engineering skills} (\texttt{issue-to-pr}, Superpowers~\cite{Obra2025Superpowers}) encode how to produce a clean PR: isolated worktrees, implementation plans, parallel sub-agents for independent tasks, and a detailed summary.
@@ -367,9 +376,7 @@ Fully automatable.
 \end{figure}
 
 \textbf{Stage~4: Review} (Review Pool $\to$ Final Review).
-The \texttt{review-pipeline} skill dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (\Cref{sec:verification})---then posts a combined verdict as a PR comment.
-Fresh context prevents confirmation bias.
-Fully automatable.
+A review agent executes the `review-pipeline' skill. It claims an issue from the "Review Pool" column by moving it to the "Under Review" column, dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (\Cref{sec:verification}), and posts a combined verdict as a PR comment and moves the issue to the "Final Review" column.
 
 \textbf{Stage~5: Merge} (Final Review $\to$ Done).
 The \texttt{final-review} skill automatically fixes mechanical issues (formatting, naming conventions, missing registrations) and presents uncertain fixes to the maintainer for decision.
