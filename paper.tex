@@ -312,9 +312,9 @@ The agent assists by running a topology analysis to identify the most impactful 
 Before filing, the agent pre-validates the draft against Stage~2's quality checks; only issues passing all four checks are submitted.
 
 \textbf{Stage~2: Validate} (Backlog $\to$ Ready).
-The \texttt{check-issue} skill automatically flags potential problems along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
-It posts a structured report as a GitHub comment and labels the issue accordingly.
-The maintainer then uses the \texttt{fix-issue} skill to resolve flagged uncertainties: it auto-corrects mechanical problems (undefined symbols, missing metrics) and brainstorms substantive fixes interactively.
+The maintainer uses the \texttt{fix-issue} skill to triage each issue in the Backlog.
+The skill first runs \texttt{check-issue}, which automatically evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+It then auto-corrects mechanical failures (undefined symbols, missing metrics) and brainstorms substantive fixes with the maintainer interactively.
 Only issues passing all four checks move to Ready.
 
 \textbf{Stage~3: Implement} (Ready $\to$ Review Pool).
