@@ -587,6 +587,27 @@ Mar 13 (current) & 27 & 45 & 114 & 45 \\
 \end{tabular}
 \end{table}
 
+\begin{table}[t]
+\caption{Library status summary.}\label{tab:status}
+\centering
+\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Metric & Count \\
+\midrule
+Problem types (unique names) & 75 \\
+Registered variants & 96 \\
+Reduction rules & 62 \\
+Reachable from 3-SAT & 26 \\
+Reducible to ILP & 32 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\Cref{tab:status} summarizes the current library.
+Of the 96~registered variants, 32 have a witness-capable reduction path to ILP and can therefore be solved exactly via HiGHS.
+26~variants are reachable from 3-SAT, confirming their NP-hardness by construction.
+
 \Cref{tab:growth} traces the growth across three phases.
 \textbf{Phase~1 (Manual, 35~PRs)}: no skills; the maintainer issued step-by-step commands and established the architecture.
 \textbf{Phase~2 (Basic skills, 9~PRs)}: initial \texttt{add-model}/\texttt{add-rule} skills reduced per-task human involvement.
