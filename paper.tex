@@ -417,7 +417,9 @@ The maintainer invites the domain expert who filed the original issue to a commu
 walks through the PDF manual and CLI interactively.
 This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments.
 
-Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex} (\texttt{gpt-5.4}) and Claude Code~\cite{Anthropic2025ClaudeCode} (\texttt{opus-4.6}), both with highest thinking effort. In our tests, the \texttt{gpt-5.4} model shows better reasoning and reliability in code implementation, while the \texttt{opus-4.6} model is better at interactive dialogue.
+Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex} (\texttt{gpt-5.4}) with highest thinking effort.
+The remaining stages use Claude Code~\cite{Anthropic2025ClaudeCode} (\texttt{opus-4.6}) for interactive sessions with the maintainer and domain expert.
+Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and \texttt{opus-4.6} stronger in interactive dialogue, though we did not evaluate this systematically.
 
 \subsection{Correctness by Construction}\label{sec:verification}
 
