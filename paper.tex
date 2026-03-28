@@ -643,7 +643,7 @@ For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a 
 At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 Each reduction also carries a compile-time-validated overhead: the \texttt{\#[reduction(overhead = \{...\})]} procedural macro attaches symbolic size expressions, and variable names are checked against getter methods on the source type---a typo causes a compile error, not a silent bug.
 
-\paragraph{Solver priority.}
+\paragraph{Solvers.}
 When the user invokes \texttt{pred solve}, the system selects a solver in priority order.
 First, if the problem has a dedicated solver that exploits its structure (currently six problem types), the system uses it.
 Second, if a witness-capable reduction path to Integer Linear Programming (ILP) exists, the system reduces along the cheapest path (by Dijkstra) and solves with HiGHS.
