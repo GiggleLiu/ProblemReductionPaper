@@ -644,8 +644,6 @@ The type system enforces a split based on witness capability.
 \texttt{ReduceTo<T>} requires a \texttt{ReductionResult} that bundles \texttt{target\_problem()} and \texttt{extract\_solution()}---a map from a target \emph{configuration} back to a source configuration.
 An agent cannot compile a forward reduction without providing the inverse map; incomplete reductions are compile errors.
 \texttt{ReduceToAggregate<T>} requires an \texttt{AggregateReductionResult} with \texttt{extract\_value()} instead---a map from a target \emph{value} back to a source value, with no witness recovered.
-For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both traits with an identity solution map.
-At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 Each reduction also carries a compile-time-validated overhead: the \texttt{\#[reduction(overhead = \{...\})]} procedural macro attaches symbolic size expressions, and variable names are checked against getter methods on the source type---a typo causes a compile error, not a silent bug.
 
 \paragraph{Solvers.}
