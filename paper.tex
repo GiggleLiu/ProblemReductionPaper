@@ -309,7 +309,7 @@ A hard gate constrains the agent: it cannot write code, create files, or invoke 
 The agent assists by running a topology analysis to identify the most impactful gaps---orphan nodes, clusters disconnected from solvers, problems lacking NP-hardness proofs---and recommends high-value rules the contributor may not have considered.
 Before filing, the agent pre-validates the draft against Stage~2's quality checks; only issues passing all four checks are submitted.
 
-\textbf{Stage~2: Validate.}
+\textbf{Stage~2: Validate} (Backlog $\to$ Ready).
 The \texttt{check-issue} skill automatically flags potential problems along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{non-triviality} (is this a genuine structural transformation?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
 It posts a structured report as a GitHub comment and labels the issue accordingly.
 The maintainer then uses the \texttt{fix-issue} skill to resolve flagged uncertainties: it auto-corrects mechanical problems (undefined symbols, missing metrics) and brainstorms substantive fixes interactively.
