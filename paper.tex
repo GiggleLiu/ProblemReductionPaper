@@ -490,7 +490,10 @@ The methodology does \emph{not} generalize to heterogeneous tasks, where each is
 The library itself can serve as a \emph{tool} for AI agents: an agent facing an optimization problem can invoke the \texttt{pred} CLI to route the problem through the reduction graph to a solver, without knowing which solver fits or how to formulate the reduction.
 The reduction graph also serves as a \emph{solver-agnostic compilation layer}: adding a single edge from a hardware platform's native formulation (e.g., Maximum Independent Set, which Rydberg-atom quantum hardware solves natively) routes all supported problem types to that device.
 
-Three directions extend this work: composing with \emph{automated discovery} via evolutionary search~\cite{Novikov2025AlphaEvolve}, supplementing round-trip tests with \emph{formal verification} (machine-checked Lean or Coq proofs), and \emph{cost-aware path selection} where the optimal solver route depends on instance scale.
+Three directions extend this work.
+First, composing the library with \emph{automated reduction discovery} via evolutionary search~\cite{Novikov2025AlphaEvolve}.
+Second, replacing asymptotic overhead with \emph{fine-grained cost prediction}---using extracted problem features to estimate concrete reduction cost per instance, enabling adaptive solver routing.
+Third, extending the graph beyond NP to \emph{other complexity classes} (approximation hierarchies such as APX and PTAS, counting problems in \#P), preserving hardness guarantees across reductions.
 
 \subsection{Conclusion}
 
