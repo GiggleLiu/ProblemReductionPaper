@@ -289,6 +289,7 @@ Authorizing merges is security critical; a human with long-term memory must be r
 \label{fig:skill-architecture}
 \end{figure}
 
+At runtime, the agent reads the skill document and executes each step in sequence.
 Through interactive prompts, a skill can pause the agent to solicit feedback from the human, providing context and a recommendation before letting the human decide.
 The skills in this project are divided into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) that focus on utilizing human expertise to make decisions; \emph{agent skills} (white) run fully autonomously.
 
