@@ -601,8 +601,8 @@ Reducible to ILP (exactly solvable) & 105 \\
 \end{table}
 
 \Cref{tab:status} summarizes the current library.
-Of the 96~registered variants, 32 have a witness-capable reduction path to ILP and can therefore be solved exactly via HiGHS.
-26~variants are reachable from 3-SAT, confirming their NP-hardness by construction.
+Of the 140~registered variants, 105 have a reduction path to ILP (either the \texttt{bool} or \texttt{i32} variant) and can therefore be solved exactly via HiGHS.
+34~variants are reachable from 3-SAT, confirming their NP-hardness by construction.
 
 \Cref{tab:growth} traces the growth across three phases.
 \textbf{Phase~1 (Manual, 35~PRs)}: no skills; the maintainer issued step-by-step commands and established the architecture.
