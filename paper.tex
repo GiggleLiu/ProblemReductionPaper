@@ -430,10 +430,9 @@ The mathematical intent propagates unchanged through all downstream artifacts an
 \end{figure}
 
 \textbf{Agentic feature tests (Stage 4).}
-Counterintuitively, agentic assembly can reach stability faster than traditional development.
-Open-source libraries normally stabilize through years of community use: real users file bug reports, request clarifications, and expose edge cases that developers never anticipated.
-A niche library cannot wait for that community to form.
-Agentic feature tests compress this feedback loop from years to minutes by \emph{simulating} the community.
+In this project, agentic feature tests compressed the usual feedback loop.
+Libraries normally stabilize through years of community use, but a niche library cannot wait for that community to form.
+Agentic feature tests simulate the community, compressing this loop from years to minutes.
 
 The mechanism has three phases.
 First, the main agent launches a sub-agent in a \emph{fresh context window}---one that has never seen the implementation---and injects an \emph{agent profile}: a structured persona with domain expertise, testing habits, and a concrete use case (\Cref{fig:agent-profile}).
