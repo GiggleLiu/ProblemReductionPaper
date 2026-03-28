@@ -165,10 +165,9 @@ The library implements the reduction graph as a Rust crate, organized in three l
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/library-architecture.pdf}
-  \caption{Three-layer library architecture.
+  \caption{Library architecture.
     User interfaces (blue) expose the reduction graph via CLI, library API, and an auto-compiled PDF manual.
-    The core library (green) implements problem types, reduction rules, a graph engine, solvers, a symbolic engine, and an example database.
-    Compile-time validation (gold, dashed arrows) checks overhead expressions and type registrations before compilation succeeds.}
+    The core library (green) implements problem types, reduction rules, a graph engine, solvers, a symbolic engine, and an example database.}
   \label{fig:library-architecture}
 \end{figure}
 
