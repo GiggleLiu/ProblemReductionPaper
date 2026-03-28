@@ -47,7 +47,7 @@
       `NAME` #sym.dot.c `Value: Aggregate` #sym.dot.c `dims()` #sym.dot.c `evaluate()`
     ]
     #v(2pt)
-    #line(length: 100%, stroke: 0.5pt + col-trait.lighten(40%))
+    #std.line(length: 100%, stroke: 0.5pt + col-trait.lighten(40%))
     #v(2pt)
     #grid(
       columns: (1fr,) * 5,
