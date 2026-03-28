@@ -333,7 +333,7 @@ The skill first runs \texttt{check-issue}, which automatically evaluates the pro
 It then auto-corrects mechanical failures (undefined symbols, missing metrics) and brainstorms substantive fixes with the maintainer interactively.
 Only issues passing all four checks move to \col{Ready}.
 
-\textbf{Stage~3: Implement} (Ready $\to$ Review Pool).
+\textbf{Stage~3: Implement} (\col{Ready} $\to$ \col{Review Pool}).
 An implementation agent executes the `run-pipeline' skill. It checks the "Ready" column, pick an issue with the highest priority, claims it by moving it to the "In Progress" column, produces one PR that resolves the issue, and move the issue to the "Review Pool" column.
 The implementation agent separates two kinds of knowledge.
 \emph{Domain skills} (\texttt{add-model}, \texttt{add-rule}) encode what makes a reduction correct: a correctness argument, a size overhead expression, and a worked example must all exist \emph{before any code is written} (\Cref{fig:skill-addrule}).
