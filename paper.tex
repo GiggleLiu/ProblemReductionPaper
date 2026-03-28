@@ -634,7 +634,7 @@ Each wrapper implements an \texttt{Aggregate} trait with an \texttt{identity()} 
 The same trait marks which wrappers support \emph{witness recovery}: \texttt{Max}, \texttt{Min}, and \texttt{Or} can track which configuration achieved the optimal value; \texttt{Sum} and \texttt{And} cannot.
 This distinction propagates to the reduction traits.
 
-\paragraph{Two-track reduction traits.}
+\paragraph{Reduction rules.}
 The type system enforces a split based on witness capability.
 \texttt{ReduceTo<T>} requires a \texttt{ReductionResult} that bundles \texttt{target\_problem()} and \texttt{extract\_solution()}---a map from a target \emph{configuration} back to a source configuration.
 An agent cannot compile a forward reduction without providing the inverse map; incomplete reductions are compile errors.
