@@ -551,7 +551,32 @@ External domain experts began contributing through the \texttt{propose} skill, f
 \jinguo{Add: no-code contribution evidence --- how many external contributors, their backgrounds, quality-gate pass rate.}
 
 %======================================================================
-%  SECTION 6: DISCUSSION AND CONCLUSION
+%  SECTION: RELATED WORK
+%======================================================================
+\section{Related Work}\label{sec:related}
+
+\textbf{Reduction libraries and QUBO tools.}
+Several tools convert optimization problems into a single target formulation.
+PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, ToQUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave's Ocean SDK~\cite{DWaveOcean2023} target QUBO/Ising models but provide no inter-problem reductions and no inverse maps for solution extraction.
+Lucas~\cite{lucas2014} catalogued Ising formulations for Karp's 21~problems; the result is a reference, not composable code.
+The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} provide languages for writing and testing reductions, but are pedagogical tools with no solver integration.
+ProblemReductions.jl~\cite{Liu2024ProblemReductions}, our earlier Julia prototype, implements 18~problem types with a reduction graph structure; its limited growth motivated the present work.
+Our library differs from all of these in three ways: it connects \emph{many} source types to \emph{many} target types through a graph with composable overhead, it requires inverse maps for solution recovery, and it is maintained by AI agents rather than by hand.
+
+\textbf{AI coding agents.}
+SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} resolve isolated GitHub issues with increasing reliability~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and specification inference remains the central difficulty~\cite{Roychoudhury2025AgenticAI}.
+These systems operate on arbitrary codebases with minimal structure.
+Our approach exploits the assembly-problem structure---homogeneous, verifiable subtasks---so that each agent invocation is short and self-contained, sidestepping the long-horizon planning that degrades general-purpose agents.
+
+\textbf{Structured agent workflows.}
+Chain-of-thought prompting~\cite{Wei2022CoT}, ReAct~\cite{Yao2023ReAct}, and tool-use frameworks decompose agent reasoning into steps, but the decomposition is generated per invocation and is not reusable across tasks.
+Our skills are closer to stored procedures: persistent, version-controlled documents that encode domain-specific workflows and are inherited by every agent session.
+Superpowers~\cite{Obra2025Superpowers} provides a general-purpose skills framework; we build on it for engineering workflows while adding domain-specific skills for reductions.
+
+\jinguo{Add citations for Wei2022CoT (chain-of-thought) and Yao2023ReAct. Add paragraph on formal verification of agent output (VeriCoding, CLEVER) if space permits.}
+
+%======================================================================
+%  SECTION: DISCUSSION AND CONCLUSION
 %======================================================================
 \section{Discussion and Conclusion}\label{sec:conclusion}
 
