@@ -548,7 +548,7 @@ External domain experts began contributing through the \texttt{propose} skill, f
 
 \textbf{Reduction libraries and QUBO tools.}
 Several tools convert optimization problems into a single target formulation.
-PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, ToQUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave's Ocean SDK~\cite{DWaveOcean2023} target QUBO/Ising models but provide no inter-problem reductions and no inverse maps for solution extraction.
+PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave's Ocean SDK~\cite{DWaveOcean2023} target QUBO/Ising models but provide no inter-problem reductions and no composable inverse maps that chain across problem types.
 Lucas~\cite{lucas2014} catalogued Ising formulations for Karp's 21~problems; the result is a reference, not composable code.
 The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} provide languages for writing and testing reductions, but are pedagogical tools with no solver integration.
 ProblemReductions.jl~\cite{Liu2024ProblemReductions}, our earlier Julia prototype, implements 18~problem types with a reduction graph structure; its limited growth motivated the present work.
