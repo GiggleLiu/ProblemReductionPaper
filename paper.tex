@@ -140,7 +140,7 @@ A multilayer verification stack rejects non-conforming code before it enters the
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.5\columnwidth]{problem-reductions/docs/logo.png}
-  \caption{The Problem-Reductions library logo, reflecting its goal of assembling 100+ NP-hard problem types into a connected reduction graph.}
+  \caption{The Problem-Reductions library logo, reflecting its goal of assembling 100+ NP-hard problem types into a connected reduction graph. \jinguo{replace with the reduction diagram.}}
   \label{fig:logo}
 \end{figure}
 
@@ -483,8 +483,9 @@ This report surfaces usability gaps, documentation omissions, and semantic error
 %======================================================================
 \section{Evidence}\label{sec:evidence}
 
-The repository contains 59~merged pull requests and 253~commits spanning six contributors.
-The current codebase comprises 54,599~lines of Rust source, 28,343~lines of tests, and 6,362~lines of examples.
+\jinguo{All numbers in this section need a fresh snapshot before submission. Run the mining script to regenerate.}
+
+\subsection{Library Status}
 
 \begin{table}[t]
 \caption{Library status summary.}\label{tab:status}
@@ -504,9 +505,11 @@ Reducible to ILP (exactly solvable) & 105 \\
 \end{table}
 
 \Cref{tab:status} summarizes the current library.
-Of the 140~registered variants, 105 have a reduction path to ILP (either the \texttt{bool} or \texttt{i32} variant) and can therefore be solved exactly via HiGHS.
+Of the 140~registered variants, 105 have a reduction path to ILP and can therefore be solved exactly via HiGHS.
 34~variants are reachable from 3-SAT, confirming their NP-hardness by construction.
 The initial problem set was seeded from Garey and Johnson's catalogue~\cite{garey1979}; subsequent additions came through the issue-based contribution route described in \Cref{sec:pipeline-overview}.
+
+\subsection{Development Phases}
 
 \begin{table}[t]
 \caption{Codebase growth timeline.}\label{tab:growth}
@@ -514,22 +517,24 @@ The initial problem set was seeded from Garey and Johnson's catalogue~\cite{gare
 \small
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-Date & Models & Rules & Tests & Examples \\
+Phase & Models & Rules & Tests & Examples \\
 \midrule
-Jan 10 (initial) & 17 & 0 & 0 & 0 \\
-Jan 26 (feature parity) & 20 & 22 & 0 & 1 \\
-Feb 15 (arch.\ redesign) & 21 & 44 & 101 & 35 \\
-Mar 13 (current) & 27 & 45 & 114 & 45 \\
+Initial & 17 & 0 & 0 & 0 \\
+Feature parity & 20 & 22 & 0 & 1 \\
+Arch.\ redesign & 21 & 44 & 101 & 35 \\
+Current & 27 & 45 & 114 & 45 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \Cref{tab:growth} traces the growth across three phases.
-\textbf{Phase~1 (Manual, 35~PRs)}: no skills; the maintainer issued step-by-step commands and established the architecture.
-\textbf{Phase~2 (Basic skills, 9~PRs)}: initial \texttt{add-model}/\texttt{add-rule} skills reduced per-task human involvement.
-\textbf{Phase~3 (Full pipeline, 15~PRs)}: complete skill library with orchestration, quality gates, and multi-agent review.
+\textbf{Phase~1 (Manual)}: no skills; the maintainer issued step-by-step commands and established the architecture.
+\textbf{Phase~2 (Basic skills)}: initial \texttt{add-model}/\texttt{add-rule} skills reduced per-task human involvement.
+\textbf{Phase~3 (Full pipeline)}: complete skill library with orchestration, quality gates, and multi-agent review.
 
-The no-code contribution route is supported by issue templates, the \texttt{propose} skill for guided brainstorming, and weekly community calls where contributors verify implementations against their original specifications.
+\jinguo{Add: per-phase human time, agent success/failure rate, OnHold frequency, test coverage numbers.}
+
+\jinguo{Add: no-code contribution evidence --- how many external contributors, their backgrounds, quality-gate pass rate.}
 
 %======================================================================
 %  SECTION 6: DISCUSSION AND CONCLUSION
