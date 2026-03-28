@@ -380,8 +380,8 @@ It then walks the maintainer through the agentic verdict, assesses usefulness, s
 
 \textbf{Stage~6: Verify.}
 The maintainer invites the domain expert who filed the original issue to a community call,
-walk through the PDF manual and CLI interactively.
-This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments that are formally correct but mathematically unconvincing.
+walks through the PDF manual and CLI interactively.
+This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments.
 
 Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex}, \texttt{gpt-5.4} xhigh; the human-facing stages use Claude Code~\cite{Anthropic2025ClaudeCode}, \texttt{opus-4.6} high. In our tests, the \texttt{gpt-5.4} model shows better reasoning and reliability in code implementation, while the \texttt{opus-4.6} model is better at interactive dialogue.
 
