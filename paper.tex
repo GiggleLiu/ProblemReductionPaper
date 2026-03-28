@@ -227,7 +227,7 @@ To route a problem instance to a solver, the engine finds the cheapest reduction
 The cost function is configurable: minimize the number of reduction steps, or minimize a specific output measure such as the number of variables.
 
 \emph{Symbolic engine.}
-Both reduction overhead and algorithm complexity are represented as symbolic mathematical expressions.
+Reduction overhead and algorithm complexity are represented as symbolic mathematical expressions, because costs depend on input size, which is unknown until a concrete instance arrives.
 The symbolic engine supports three operations: \emph{composition} (substituting one edge's output into the next edge's input), \emph{comparison} (checking whether a composite path dominates a direct rule, for redundancy detection), and \emph{evaluation} (computing numeric cost for a concrete instance size, enabling instance-dependent path search).
 
 \emph{Solvers.}
