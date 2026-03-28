@@ -118,7 +118,7 @@ The question is whether agents, given the right scaffolding, can produce \emph{v
 The scaffolding we propose is \emph{skills}.
 A skill is a plain-markdown document, committed to the repository, that reads like a checklist: ``implement the forward and inverse maps, write round-trip tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
-A \emph{project specification} (\texttt{CLAUDE.md} or \texttt{AGENTS.md}) anchors the system as a single source of truth for architecture and constraints that every skill inherits.
+A \emph{project specification} anchors the system as a single source of truth for architecture and constraints that every skill inherits.
 Skills address all three barriers:
 \begin{itemize}
   \item \emph{Convention drift} $\to$ skills enforce the same interface, layout, and test pattern at every invocation.
