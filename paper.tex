@@ -35,7 +35,7 @@ Practitioners who face NP-hard optimization problems must manually reformulate e
 A library of polynomial-time reductions between these problems would let them route any supported problem to any supported solver through a single interface.
 No such library exists, because three barriers block construction at scale: conventions drift across contributors, the domain experts who know the reductions rarely write systems code, and the repetitive verification cycle exhausts maintainers.
 We address this gap with AI coding agents steered by \emph{skills}---plain-text markdown checklists, committed to the repository, that encode the project's conventions and domain knowledge.
-Three design decisions make the approach work.
+Three design decisions underpin the approach.
 (1)~A \emph{no-code contribution route} lets domain experts add reductions by filing structured issues; no familiarity with the implementation language is needed.
 (2)~A \emph{multilayer verification stack} checks each reduction from type signatures through round-trip tests to \emph{agentic feature tests}, in which agents exercise the library end-to-end as virtual users.
 (3)~A \emph{fully automated pipeline} lets a small team run the entire project.
