@@ -375,7 +375,7 @@ Fully automatable.
   \label{fig:skill-addrule}
 \end{figure}
 
-\textbf{Stage~4: Review} (Review Pool $\to$ Final Review).
+\textbf{Stage~4: Review} (\col{Review Pool} $\to$ \col{Final Review}).
 A review agent executes the `review-pipeline' skill. It claims an issue from the "Review Pool" column by moving it to the "Under Review" column, dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (\Cref{sec:verification}), and posts a combined verdict as a PR comment and moves the issue to the "Final Review" column.
 
 \textbf{Stage~5: Merge} (Final Review $\to$ Done).
