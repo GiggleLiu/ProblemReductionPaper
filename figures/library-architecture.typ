@@ -59,20 +59,14 @@
   let h1 = 3.6
   layer-box((0, y1), W, h1, col-cli, "L1")
   content((m, y1 - 0.4), anchor: "west",
-    text(8pt, weight: "bold", fill: black, [User Interfaces]))
+    text(8pt, weight: "bold", fill: black, [User End]))
 
   let uy = y1 - 1.0
   ibox((x1, uy), bw, bh, col-cli, "cli",
-    [`pred` CLI],
-    [create · path · solve · reduce])
-
-  ibox((x2, uy), bw, bh, col-cli, "api",
-    [Library API],
-    [`use problemreductions::*`])
+    [`pred` CLI])
 
   ibox((x3, uy), bw, bh, col-cli, "manual",
-    [PDF Manual],
-    [Definitions · examples · proofs])
+    [PDF Manual])
 
   // ══════════════════════════════════════════
   // Layer 2: Core Library
@@ -86,36 +80,23 @@
   // Row 1
   let r1y = y2 - 1.0
   ibox((x1, r1y), bw, bh, col-core, "problems",
-    [Problem Types],
-    [`Problem` trait · `evaluate()`],
-    [Size measures · complexity])
+    [Problem Types])
 
   ibox((x2, r1y), bw, bh, col-core, "rules",
-    [Reduction Rules],
-    [`ReduceTo<T>` trait],
-    [Forward + inverse maps])
-
-  ibox((x3, r1y), bw, bh, col-core, "graph",
-    [Graph Engine],
-    [Dijkstra path search],
-    [Path composition])
+    [Reduction Rules])
 
   // Row 2
   let r2y = r1y - bh - g
   ibox((x1, r2y), bw, bh, col-core, "solvers",
-    [Solvers],
-    [Brute-force enumerator],
-    [ILP: HiGHS / CBC / SCIP])
+    [Solvers])
 
   ibox((x2, r2y), bw, bh, col-core, "symbolic",
-    [Symbolic Engine],
-    [Overhead & complexity],
-    [Composition · comparison])
+    [Symbolic Engine])
 
   ibox((x3, r2y), bw, bh, col-core, "exdb",
-    [Example Database],
-    [Canonical instances],
-    [Ground-truth fixtures])
+    [Example Database])
+
+  line("rules", "symbolic", mark: (end: "straight"))
 
  // ══════════════════════════════════════════
   // Arrows between layers
