@@ -89,6 +89,12 @@ Two kinds of paths play a special role.
 A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$, backed by tested code rather than a pen-and-paper proof---we say $H$ is \emph{NP-hard verified} by the graph.
 A path from a problem to integer linear programming (ILP) grants access to mature solvers (HiGHS, Gurobi, CPLEX, etc.).
 
+The graph also serves as infrastructure for \emph{automated algorithm research}.
+Recent work on AI-driven algorithm discovery---FunSearch~\cite{RomeraParedes2023FunSearch}, AlphaEvolve~\cite{Novikov2025AlphaEvolve}, ReEvo~\cite{Ye2024ReEvo}, and neural combinatorial optimization~\cite{Bello2017NCO, Kool2019Attention}---has shown that AI systems can discover novel heuristics and algorithms for hard problems.
+These systems need two things from their environment: a standardized problem formulation to operate on, and a reliable evaluation harness to score candidate solutions.
+The reduction graph provides both.
+A new heuristic discovered for any single problem type automatically propagates, through reduction paths, to every connected problem---amplifying each discovery across the entire graph.
+
 \subsection{The Challenge}
 
 Building such a graph is itself a hard problem---not computationally, but organizationally.
