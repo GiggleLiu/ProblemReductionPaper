@@ -59,9 +59,9 @@ A logistics company needs to route delivery trucks.
 Each of these is an instance of an NP-hard problem---a class of problems for which no efficient general-purpose algorithm is known, but which can be solved in practice for moderate sizes by specialized solvers.
 
 The difficulty is that each solver speaks its own narrow language.
-SAT solvers (MiniSat, Kissat, CaDiCaL) accept Boolean satisfiability instances.
-Integer linear programming (ILP) engines like CPLEX~\cite{IBM2022CPLEX}, Gurobi, and HiGHS~\cite{Huangfu2018HiGHS} require problems expressed as linear constraints over integer variables.
-Semidefinite programming (SDP) relaxations tackle Max-Cut and graph bisection but need a matrix formulation.
+SAT solvers~\cite{Een2003MiniSat, Biere2020Kissat} accept Boolean satisfiability instances.
+Integer linear programming (ILP) engines like CPLEX~\cite{IBM2022CPLEX}, Gurobi~\cite{Gurobi2026}, and HiGHS~\cite{Huangfu2018HiGHS} require problems expressed as linear constraints over integer variables.
+Semidefinite programming (SDP) relaxations tackle Max-Cut and graph bisection~\cite{GoemansWilliamson1995} but need a matrix formulation.
 Beyond classical solvers, quantum hardware introduces additional formulations: D-Wave quantum annealers~\cite{glover2019} solve Quadratic Unconstrained Binary Optimization (QUBO), and Rydberg atom arrays~\cite{lucas2014, pichler2018} natively solve Maximum Independent Set on geometric graphs.
 Physics-inspired methods scale further---graph neural networks solve QUBO at million-variable scale~\cite{Schuetz2022PhysicsGNN}, and hybrid quantum-GNN methods tackle the Traveling Salesman Problem~\cite{He2024QuantumTSP}---but still require a QUBO or Ising formulation as input.
 A practitioner with a crew-scheduling problem cannot reach most of these solvers without first \emph{translating} the problem into a form the solver understands.
