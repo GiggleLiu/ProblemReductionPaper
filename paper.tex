@@ -90,10 +90,10 @@ A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ p
 A path from a problem to integer linear programming (ILP) grants access to mature solvers (HiGHS, Gurobi, CPLEX, etc.).
 
 The graph also serves as infrastructure for \emph{automated algorithm research}.
-Recent work on AI-driven algorithm discovery---FunSearch~\cite{RomeraParedes2023FunSearch}, AlphaEvolve~\cite{Novikov2025AlphaEvolve}, ReEvo~\cite{Ye2024ReEvo}, and neural combinatorial optimization~\cite{Bello2017NCO, Kool2019Attention}---has shown that AI systems can discover novel heuristics and algorithms for hard problems.
+Recent work shows that AI systems can discover novel algorithms for hard problems---evolutionary program search finds new heuristics and mathematical constructions (FunSearch~\cite{RomeraParedes2023FunSearch}, AlphaEvolve~\cite{Novikov2025AlphaEvolve}), reinforcement learning trains construction policies that generalize across instances~\cite{Bello2017NCO, Kool2019Attention}, and LLMs evolve hyper-heuristics that match or surpass hand-designed solvers (ReEvo~\cite{Ye2024ReEvo}).
 These systems need two things from their environment: a standardized problem formulation to operate on, and a reliable evaluation harness to score candidate solutions.
 The reduction graph provides both.
-A new heuristic discovered for any single problem type automatically propagates, through reduction paths, to every connected problem---amplifying each discovery across the entire graph.
+A new solver or heuristic registered for any single problem type instantly becomes available---through reduction paths---to every connected problem, amplifying each algorithmic discovery across the entire graph.
 
 \subsection{The Challenge}
 
