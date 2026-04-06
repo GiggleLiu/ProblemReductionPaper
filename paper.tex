@@ -567,6 +567,13 @@ Chain-of-thought prompting~\cite{Wei2022CoT}, ReAct~\cite{Yao2023ReAct}, and too
 Our skills are closer to stored procedures: persistent, version-controlled documents that encode domain-specific workflows and are inherited by every agent session.
 Superpowers~\cite{Obra2025Superpowers} provides a general-purpose skills framework; we build on it for engineering workflows while adding domain-specific skills for reductions.
 
+\textbf{Harness engineering.}
+OpenAI coined \emph{harness engineering} for the discipline of designing constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
+Their internal experiment produced roughly one million lines of code with no manually written source, by shifting the engineer's role from code authorship to environment design.
+They identify three pillars: context engineering (repository as single source of truth), architectural constraint enforcement (linters and structural tests), and continuous maintenance (``garbage collection'' of technical debt).
+Our work instantiates this paradigm in a mathematical domain: skills encode context and constraints, the Rust type system and round-trip tests enforce architectural invariants, and the pipeline's review stage catches drift before it accumulates.
+The key addition is a domain-specific verification layer---round-trip testing and agentic feature tests---that addresses functional correctness, which Fowler~\cite{Fowler2026HarnessLimits} identified as the open problem in harness engineering.
+
 \jinguo{Add citations for Wei2022CoT (chain-of-thought) and Yao2023ReAct. Add paragraph on formal verification of agent output (VeriCoding, CLEVER) if space permits.}
 
 %======================================================================
