@@ -261,10 +261,11 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 %======================================================================
 %  SECTION 4: SKILLS AND AUTOMATION
 %======================================================================
-\section{Skills and Automation}\label{sec:method}
+\section{Harness Design}\label{sec:method}
 
 \subsection{Skill Design Principles}\label{sec:skills}
-Instead of asking what can be automated, we ask what cannot.
+Harness engineering asks: what constraints, feedback loops, and verification mechanisms must surround agents so that they produce reliable output?
+The first design question is what \emph{cannot} be delegated.
 In this project, we found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
 Selecting which rules to pursue requires understanding the needs of the community; the human is the information source.
 Verifying the algorithm's correctness requires deep reasoning; current models are not yet reliable enough to substitute for humans. Reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}. Research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2026HLE,Merrill2024ExpressivePower}.
