@@ -272,29 +272,50 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 %======================================================================
 \section{Harness Design}\label{sec:method}
 
-\subsection{Skill Design Principles}\label{sec:skills}
-Harness engineering asks: what constraints, feedback loops, and verification mechanisms must surround agents so that they produce reliable output?
-The first design question is what \emph{cannot} be delegated.
-In this project, we found that four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
-Selecting which rules to pursue requires understanding the needs of the community; the human is the information source.
-Verifying the algorithm's correctness requires deep reasoning; current models are not yet reliable enough to substitute for humans. Reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}. Research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2026HLE,Merrill2024ExpressivePower}.
-Constructing canonical examples requires creative work; the human is the end user and the best judge.
-Authorizing merges is security critical; a human with long-term memory must be responsible.
+\subsection{Anatomy of the Harness}\label{sec:skills}
+A harness channels agents toward reliable output through five components, each addressing a different failure mode (\Cref{fig:skill-architecture}).
+
+\emph{Knowledge base (progressive disclosure).}
+Domain knowledge---Garey and Johnson's catalogue~\cite{garey1979}, textbook reduction algorithms, reference implementations already in the codebase---is too large to fit in a single agent context window.
+The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents start with lightweight indexes (problem names, graph topology) and fetch full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
+This mirrors a well-known UX principle: reveal complexity gradually, matching the information to the current need.
+
+\emph{Project specification (auto-loaded conventions).}
+A \texttt{CLAUDE.md} file at the repository root encodes architecture constraints, naming conventions, file layout rules, and verification requirements.
+Every agent session loads this file automatically on startup, ensuring that a new agent joining the project inherits the same conventions as every prior session---without human briefing.
+
+\emph{Tools (CLI and programmatic interfaces).}
+The \texttt{pred} CLI and Cargo's test harness are the agent's hands.
+Tools let agents \emph{act}: create problem instances, run reductions, invoke solvers, execute tests, and inspect graph topology.
+Without tools, knowledge and conventions remain inert.
+
+\emph{Agent skills (bridging context to tools).}
+A skill is a plain-markdown document that orchestrates a multi-step pipeline---connecting knowledge, conventions, and tools into a repeatable workflow.
+The \texttt{add-rule} skill, for example, first requires a mathematical checklist (knowledge), then generates code following project layout (conventions), then compiles and runs round-trip tests (tools) (\Cref{fig:skill-addrule}).
+Skills encode \emph{established pipelines} that agents execute autonomously.
+
+\emph{Advisor skills (training humans).}
+Not all skills target agents.
+Advisor skills guide \emph{humans}---domain experts who know the mathematics but not the codebase, and maintainers who must make judgment calls.
+The \texttt{propose} skill walks a domain expert through filing a structured issue in mathematical language, enforcing quality checks before the issue enters the pipeline (\Cref{fig:skill-propose}).
+These skills lower the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/skill-map.pdf}
-\caption{Skill architecture organized by audience.
-  All skills inherit project conventions from the specification files at the root.
-  Blue boxes are \emph{advisor} skills that pause to consult a human; white boxes are \emph{agent} skills that run autonomously.
-  Each agent skill internally invokes additional subskills not shown
-  (e.g., \texttt{run-pipeline} calls \texttt{issue-to-pr}, which calls \texttt{add-model} or \texttt{add-rule}).}
+\caption{Harness architecture.
+  Five components surround agents: a knowledge base accessed via progressive disclosure, a project specification (\texttt{CLAUDE.md}) auto-loaded at startup, tools (CLI, compiler, test harness), agent skills that bridge context to tools, and advisor skills that guide humans.
+  Blue boxes are \emph{advisor} skills; white boxes are \emph{agent} skills.}
 \label{fig:skill-architecture}
 \end{figure}
 
-At runtime, the agent reads the skill document and executes each step in sequence.
-Through interactive prompts, a skill can pause the agent to solicit feedback from the human, providing context and a recommendation before letting the human decide.
-The skills in this project are divided into two types (\Cref{fig:skill-architecture}): \emph{advisor skills} (blue) that focus on utilizing human expertise to make decisions; \emph{agent skills} (white) run fully autonomously.
+\subsection{What Cannot Be Delegated}\label{sec:human-responsibilities}
+Four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
+Selecting which rules to pursue requires understanding the needs of the community; the human is the information source.
+Verifying the algorithm's correctness requires deep reasoning; current models are not yet reliable enough to substitute for humans.
+Reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}. Research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2026HLE,Merrill2024ExpressivePower}.
+Constructing canonical examples requires creative work; the human is the end user and the best judge.
+Authorizing merges is security critical; a human with long-term memory must be responsible.
 
 \subsection{The Automation Pipeline}\label{sec:pipeline-overview}
 
