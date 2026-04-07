@@ -315,31 +315,17 @@ Reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic
 Constructing canonical examples requires creative work; the human is the end user and the best judge.
 Authorizing merges is security critical; a human with long-term memory must be responsible.
 
-\Cref{tab:human-agent} summarizes the division of labor.
+\Cref{fig:delegation-spectrum} summarizes the division of labor, sorted by how replaceable each task is by agents.
 
-\begin{table}[h]
-\caption{Division of labor between humans and agents.}\label{tab:human-agent}
-\centering
-\small
-\renewcommand{\arraystretch}{1.1}
-\begin{tabular}{@{}lr@{}}
-\toprule
-Work type (examples) & Role \\
-\midrule
-Strategic decisions (which reduction to pursue) & Human \\
-Mathematical content (correctness argument) & Human \\
-Canonical examples (worked instances, ground truth) & Human \\
-Merge authorization (security, final approval) & Human \\
-Harness engineering (skills, specs, tool design) & Human \\
-\addlinespace
-Topology analysis (detect graph gaps, duplicates) & Agent \\
-Quality checks (undefined symbols, missing metrics) & Agent \\
-Implementation (forward/inverse maps, tests, docs) & Agent \\
-Code review (structure, style, feature tests) & Agent \\
-Mechanical fixes (formatting, naming, layout) & Agent \\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/delegation-spectrum.pdf}
+  \caption{Delegation spectrum.
+    Tasks are sorted from fully human (top) to fully automated (bottom).
+    The gradient arrow and horizontal bars show the human--agent split for each work type.
+    Harness engineering, strategic decisions, and mathematical content remain with humans; implementation, review, and mechanical fixes are delegated to agents.}
+  \label{fig:delegation-spectrum}
+\end{figure}
 
 \subsection{The Automation Pipeline}\label{sec:pipeline-overview}
 
