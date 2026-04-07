@@ -276,7 +276,7 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 A harness channels agents toward reliable output through five components, each addressing a different failure mode (\Cref{fig:skill-architecture}).
 
 \emph{Knowledge base (progressive disclosure).}
-Domain knowledge---textbook catalogues, reduction algorithms, reference implementations already in the codebase---is too large to fit in a single agent context window.
+Domain knowledge---Garey and Johnson's catalogue~\cite{garey1979}, textbook reduction algorithms, reference implementations already in the codebase---is too large to fit in a single agent context window.
 The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents start with lightweight indexes (problem names, graph topology) and fetch full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
 
 \emph{Project specification (auto-loaded conventions).}
