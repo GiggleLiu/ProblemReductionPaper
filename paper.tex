@@ -315,22 +315,25 @@ Reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic
 Constructing canonical examples requires creative work; the human is the end user and the best judge.
 Authorizing merges is security critical; a human with long-term memory must be responsible.
 
-\Cref{tab:human-agent} summarizes the division of labor across pipeline stages.
+\Cref{tab:human-agent} summarizes the division of labor.
 
 \begin{table}[h]
 \caption{Division of labor between humans and agents.}\label{tab:human-agent}
 \centering
 \small
-\begin{tabular}{@{}lp{0.28\columnwidth}p{0.35\columnwidth}@{}}
+\begin{tabular}{@{}p{0.30\columnwidth}cc@{}}
 \toprule
-Stage & Human & Agent \\
+Work type (examples) & Human & Agent \\
 \midrule
-Propose & Files issue (math) & Topology analysis, pre-validation \\
-Validate & Approves / rejects & Auto-checks, mechanical fixes \\
-Implement & --- & Code, tests, documentation \\
-Review & --- & 3 parallel sub-agents \\
-Merge & Final decision & Mechanical fixes \\
-Verify & Cross-checks with expert & --- \\
+Strategic decisions (which reduction to pursue, graph gaps) & \checkmark & \\
+Mathematical content (correctness argument, proof sketch) & \checkmark & \\
+Canonical examples (worked instances, ground truth) & \checkmark & \\
+Merge authorization (security, final approval) & \checkmark & \\
+Topology analysis (detect gaps, duplicates) & & \checkmark \\
+Quality checks (undefined symbols, missing metrics) & & \checkmark \\
+Implementation (forward/inverse maps, tests, docs) & & \checkmark \\
+Code review (structure, style, feature tests) & & \checkmark \\
+Mechanical fixes (formatting, naming, layout) & & \checkmark \\
 \bottomrule
 \end{tabular}
 \end{table}
