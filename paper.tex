@@ -281,8 +281,8 @@ The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nie
 This mirrors a well-known UX principle: reveal complexity gradually, matching the information to the current need.
 
 \emph{Project specification (auto-loaded conventions).}
-A \texttt{CLAUDE.md} file at the repository root encodes architecture constraints, naming conventions, file layout rules, and verification requirements.
-Every agent session loads this file automatically on startup, ensuring that a new agent joining the project inherits the same conventions as every prior session---without human briefing.
+Specification files at the repository root (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) encode architecture constraints, naming conventions, file layout rules, and verification requirements.
+Every agent session loads these files automatically on startup, ensuring that a new agent joining the project inherits the same conventions as every prior session---without human briefing.
 
 \emph{Tools (CLI and programmatic interfaces).}
 The \texttt{pred} CLI and Cargo's test harness are the agent's hands.
