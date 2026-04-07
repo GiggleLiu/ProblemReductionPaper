@@ -517,13 +517,10 @@ Reducible to ILP & 105 \\
 \bottomrule
 \end{tabular}
 \end{table}
-\jinguo{Table labels: ``NP-hard verified'' suggests formal verification; ``exactly solvable'' is ambiguous. Use neutral labels.}
-
 \Cref{tab:status} summarizes the current library.
-Of the 140~registered variants, 105 have a reduction path to ILP and can therefore be solved exactly via HiGHS.
-\jinguo{Qualify: ``can be solved exactly'' conflates graph-level path existence with end-to-end practical solvability. Clarify that paths are wired up and solving depends on instance size.}
-34~variants are reachable from 3-SAT, confirming their NP-hardness by construction.
-\jinguo{``confirming'' overstates tested-but-unproven reductions. Soften to ``providing tested NP-hardness arguments.'' Also discuss why only 34/140 (24\%) are covered.}
+Of the 140~registered variants, 105 have a reduction path to ILP.
+For these, the \texttt{pred solve} pipeline reduces a given instance along the cheapest path and invokes HiGHS; practical solve time depends on the instance size after reduction.
+34~variants are reachable from 3-SAT, providing tested reduction chains that serve as NP-hardness arguments.
 The library covers a substantial fraction of the NP-complete problems catalogued by Garey and Johnson~\cite{garey1979}; a precise comparison is future work.
 Subsequent additions came through the issue-based contribution route described in \Cref{sec:pipeline-overview}.
 
