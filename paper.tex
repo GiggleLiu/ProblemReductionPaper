@@ -315,6 +315,26 @@ Reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic
 Constructing canonical examples requires creative work; the human is the end user and the best judge.
 Authorizing merges is security critical; a human with long-term memory must be responsible.
 
+\Cref{tab:human-agent} summarizes the division of labor across pipeline stages.
+
+\begin{table}[h]
+\caption{Division of labor between humans and agents at each pipeline stage.}\label{tab:human-agent}
+\centering
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Stage & Human & Agent \\
+\midrule
+Propose & Files issue (math) & Topology analysis, pre-validation \\
+Validate & Approves / rejects & Auto-checks, mechanical fixes \\
+Implement & --- & Code, tests, documentation \\
+Review & --- & 3 parallel sub-agents \\
+Merge & Final decision & Mechanical fixes \\
+Verify & Cross-checks with expert & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{The Automation Pipeline}\label{sec:pipeline-overview}
 
 \begin{figure*}[t]
