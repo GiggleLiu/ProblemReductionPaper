@@ -9,13 +9,12 @@
 
   let human-color = rgb("#d45d5d")
   let agent-color = accent
-  let bar-w = 0.35
-  let row-h = 0.65
-  let label-x = 4.0
+  let bar-w = 0.30
+  let row-h = 0.58
   let bar-x = -0.15
+  let bw = 1.0
 
   let items = (
-    // (label, fraction-human 0..1)
     ("Harness engineering (skills, specs, tool design)", 1.0),
     ("Strategic decisions (which reduction to pursue)", 1.0),
     ("Mathematical content (correctness argument)", 0.9),
@@ -29,62 +28,98 @@
   )
 
   let n = items.len()
-  let total-h = n * row-h
+  let total-h = (n - 1) * row-h
 
-  // gradient arrow on the left
-  let arrow-x = -1.6
-  let arrow-top = 0.15
-  let arrow-bot = -total-h + 0.5
+  // ── Gradient arrow on the left ──
+  let arrow-x = -1.2
+  let arrow-top = 0.05
+  let arrow-bot = -total-h - 0.05
+  let arrow-len = arrow-top - arrow-bot
+  let shaft-w = 0.18        // half-width of the shaft
+  let head-w = 0.35         // half-width of the arrowhead
+  let head-h = 0.45         // height of the arrowhead
+  let shaft-bot = arrow-bot + head-h  // where shaft meets head
 
-  // Draw gradient bar
-  let steps = 30
+  // Gradient shaft (rounded top)
+  let steps = 40
   for i in range(steps) {
     let t0 = i / steps
     let t1 = (i + 1) / steps
-    let y0 = arrow-top - t0 * (arrow-top - arrow-bot)
-    let y1 = arrow-top - t1 * (arrow-top - arrow-bot)
+    let y0 = arrow-top - t0 * (arrow-top - shaft-bot)
+    let y1 = arrow-top - t1 * (arrow-top - shaft-bot)
     let col = human-color.mix((agent-color, t0 * 100%))
     rect(
-      (arrow-x - 0.12, y0), (arrow-x + 0.12, y1),
+      (arrow-x - shaft-w, y0), (arrow-x + shaft-w, y1),
       fill: col, stroke: none,
     )
   }
 
-  // Arrow head at bottom
-  line(
-    (arrow-x, arrow-bot - 0.15),
-    (arrow-x - 0.15, arrow-bot),
-    stroke: (paint: agent-color, thickness: 1.2pt),
-  )
-  line(
-    (arrow-x, arrow-bot - 0.15),
-    (arrow-x + 0.15, arrow-bot),
-    stroke: (paint: agent-color, thickness: 1.2pt),
+  // Rounded cap at top
+  circle(
+    (arrow-x, arrow-top),
+    radius: shaft-w,
+    fill: human-color,
+    stroke: none,
   )
 
-  // Arrow labels
+  // Filled arrowhead at bottom
+  let head-color = agent-color
+  line(
+    (arrow-x - head-w, shaft-bot),
+    (arrow-x, arrow-bot),
+    (arrow-x + head-w, shaft-bot),
+    close: true,
+    fill: head-color,
+    stroke: none,
+  )
+
+  // Gradient over the arrowhead (triangular region, approximate with rects)
+  let head-steps = 12
+  for i in range(head-steps) {
+    let t0 = i / head-steps
+    let t1 = (i + 1) / head-steps
+    let y0 = shaft-bot - t0 * head-h
+    let y1 = shaft-bot - t1 * head-h
+    // width narrows linearly
+    let w0 = head-w * (1.0 - t0)
+    let w1 = head-w * (1.0 - t1)
+    let frac = 0.7 + t0 * 0.3  // already mostly agent-color
+    let col = human-color.mix((agent-color, frac * 100%))
+    rect(
+      (arrow-x - w0, y0), (arrow-x + w0, y1),
+      fill: col, stroke: none,
+    )
+  }
+
+  // Labels on arrow
   content(
     (arrow-x, arrow-top + 0.35),
-    text(size: 6pt, fill: human-color, weight: "bold")[Human],
+    text(size: 6.5pt, fill: human-color, weight: "bold")[Human],
     anchor: "south",
   )
   content(
-    (arrow-x, arrow-bot - 0.35),
-    text(size: 6pt, fill: agent-color, weight: "bold")[Agent],
+    (arrow-x, arrow-bot - 0.25),
+    text(size: 6.5pt, fill: agent-color, weight: "bold")[Agent],
     anchor: "north",
   )
 
-  // Items
+  // ── Horizontal connector lines from arrow to bars ──
   for (i, (label, frac)) in items.enumerate() {
     let y = -i * row-h
 
-    // Horizontal bar showing human/agent split
-    let bw = 1.0
+    // Thin dashed connector
+    line(
+      (arrow-x + shaft-w + 0.05, y),
+      (bar-x - 0.05, y),
+      stroke: (paint: luma(200), thickness: 0.3pt, dash: "dotted"),
+    )
+
+    // Horizontal bar
     if frac > 0.01 {
       rect(
         (bar-x, y - bar-w / 2),
         (bar-x + bw * frac, y + bar-w / 2),
-        fill: human-color.lighten(40%),
+        fill: human-color.lighten(35%),
         stroke: none,
       )
     }
@@ -92,16 +127,17 @@
       rect(
         (bar-x + bw * frac, y - bar-w / 2),
         (bar-x + bw, y + bar-w / 2),
-        fill: agent-color.lighten(40%),
+        fill: agent-color.lighten(35%),
         stroke: none,
       )
     }
-    // Border
+    // Border with rounded corners
     rect(
       (bar-x, y - bar-w / 2),
       (bar-x + bw, y + bar-w / 2),
       fill: none,
-      stroke: (paint: luma(180), thickness: 0.4pt),
+      stroke: (paint: luma(170), thickness: 0.4pt),
+      radius: 1.5pt,
     )
 
     // Label
@@ -112,10 +148,10 @@
     )
   }
 
-  // Legend
-  let ly = -total-h - 0.3
-  rect((bar-x, ly - 0.12), (bar-x + 0.3, ly + 0.12), fill: human-color.lighten(40%), stroke: (paint: luma(180), thickness: 0.4pt))
-  content((bar-x + 0.4, ly), text(size: 5.5pt, fill: fg)[Human], anchor: "west")
-  rect((bar-x + 1.3, ly - 0.12), (bar-x + 1.6, ly + 0.12), fill: agent-color.lighten(40%), stroke: (paint: luma(180), thickness: 0.4pt))
-  content((bar-x + 1.7, ly), text(size: 5.5pt, fill: fg)[Agent], anchor: "west")
+  // ── Legend ──
+  let ly = -total-h - 0.7
+  rect((bar-x, ly - 0.1), (bar-x + 0.25, ly + 0.1), fill: human-color.lighten(35%), stroke: (paint: luma(170), thickness: 0.4pt), radius: 1.5pt)
+  content((bar-x + 0.35, ly), text(size: 5.5pt, fill: fg)[Human], anchor: "west")
+  rect((bar-x + 1.2, ly - 0.1), (bar-x + 1.45, ly + 0.1), fill: agent-color.lighten(35%), stroke: (paint: luma(170), thickness: 0.4pt), radius: 1.5pt)
+  content((bar-x + 1.55, ly), text(size: 5.5pt, fill: fg)[Agent], anchor: "west")
 })
