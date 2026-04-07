@@ -321,19 +321,21 @@ Authorizing merges is security critical; a human with long-term memory must be r
 \caption{Division of labor between humans and agents.}\label{tab:human-agent}
 \centering
 \small
-\begin{tabular}{@{}p{0.30\columnwidth}cc@{}}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}lr@{}}
 \toprule
-Work type (examples) & Human & Agent \\
+Work type (examples) & Role \\
 \midrule
-Strategic decisions (which reduction to pursue, graph gaps) & \checkmark & \\
-Mathematical content (correctness argument, proof sketch) & \checkmark & \\
-Canonical examples (worked instances, ground truth) & \checkmark & \\
-Merge authorization (security, final approval) & \checkmark & \\
-Topology analysis (detect gaps, duplicates) & & \checkmark \\
-Quality checks (undefined symbols, missing metrics) & & \checkmark \\
-Implementation (forward/inverse maps, tests, docs) & & \checkmark \\
-Code review (structure, style, feature tests) & & \checkmark \\
-Mechanical fixes (formatting, naming, layout) & & \checkmark \\
+Strategic decisions (which reduction to pursue) & Human \\
+Mathematical content (correctness argument, proof sketch) & Human \\
+Canonical examples (worked instances, ground truth) & Human \\
+Merge authorization (security, final approval) & Human \\
+\addlinespace
+Topology analysis (detect graph gaps, duplicates) & Agent \\
+Quality checks (undefined symbols, missing metrics) & Agent \\
+Implementation (forward/inverse maps, tests, docs) & Agent \\
+Code review (structure, style, feature tests) & Agent \\
+Mechanical fixes (formatting, naming, layout) & Agent \\
 \bottomrule
 \end{tabular}
 \end{table}
