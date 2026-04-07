@@ -121,7 +121,7 @@ Assembly problems sidestep the capability cliff reported on longer-horizon bench
 The question is whether agents, given the right scaffolding, can produce \emph{verified} software at a scale that human teams have not achieved.
 Recent experience at OpenAI suggests a broader shift: in an agent-first workflow, the engineer's primary job is no longer writing code but designing the \emph{harness}---the constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
 The metaphor is horse tack: reins, saddle, and bit that direct a powerful but unpredictable animal in a useful direction.
-We instantiate this idea through \emph{skills}---plain-markdown documents, committed to the repository, that read like checklists: ``implement the forward and inverse maps, write round-trip tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
+We adapt and extend this idea through \emph{skills}---plain-markdown documents, committed to the repository, that read like checklists: ``implement the forward and inverse maps, write round-trip tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
 A \emph{project specification} anchors the system as a single source of truth for architecture and constraints that every skill inherits---the context-engineering pillar of harness design.
 Together, skills and specification form a domain-specific harness that addresses all three barriers:
