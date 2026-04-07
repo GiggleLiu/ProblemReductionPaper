@@ -65,6 +65,7 @@ All prose in `paper.tex` must follow these rules (from `writing-guidelines.md`):
 ## Editing Rules
 
 - **Never remove a figure, comment, or chunk of text without confirming with the user first.** Deletions must be explicitly approved — do not assume removal is acceptable even if a structural review suggests it.
+- **When mentioning `CLAUDE.md` in `paper.tex`, always also mention `AGENTS.md`.** The paper discusses project specification files as a pair (e.g., `\texttt{CLAUDE.md}, \texttt{AGENTS.md}`), since different agent platforms use different convention files.
 
 ## Typst writing guidelines
 [.claude/rules/typst-drawing.md](.claude/rules/typst-drawing.md)
