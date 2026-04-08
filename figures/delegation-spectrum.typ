@@ -52,7 +52,7 @@
     (arrow-x, arrow-bot),
     (arrow-x + head-w, shaft-bot),
     close: true,
-    fill: gradient.linear(agent-color, agent-color.mix((human-color, 30%)), angle: 90deg),
+    fill: gradient.linear(human-color.mix((agent-color, 70%)), agent-color, angle: -90deg),
     stroke: none,
   )
 
