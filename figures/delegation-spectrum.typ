@@ -28,7 +28,7 @@
   let n = items.len()
   let total-h = (n - 1) * row-h
 
-  // ── Gradient arrow on the left ──
+  // ── Gradient arrow (single path) ──
   let arrow-x = -1.0
   let arrow-top = 0.0
   let arrow-bot = -total-h
@@ -37,22 +37,17 @@
   let head-h = 0.40
   let shaft-bot = arrow-bot + head-h
 
-  // Shaft with native gradient fill
-  rect(
-    (arrow-x - shaft-w, shaft-bot),
-    (arrow-x + shaft-w, arrow-top),
-    fill: gradient.linear(human-color, agent-color, angle: 90deg),
-    stroke: none,
-    radius: (top: 3pt),
-  )
-
-  // Arrowhead with gradient fill
+  // One closed path: right side down, tip, left side up
   line(
-    (arrow-x - head-w, shaft-bot),
-    (arrow-x, arrow-bot),
-    (arrow-x + head-w, shaft-bot),
+    (arrow-x - shaft-w, arrow-top),   // top-left
+    (arrow-x + shaft-w, arrow-top),   // top-right
+    (arrow-x + shaft-w, shaft-bot),   // shaft bottom-right
+    (arrow-x + head-w, shaft-bot),    // head right wing
+    (arrow-x, arrow-bot),             // tip
+    (arrow-x - head-w, shaft-bot),    // head left wing
+    (arrow-x - shaft-w, shaft-bot),   // shaft bottom-left
     close: true,
-    fill: gradient.linear(agent-color.mix((human-color, 30%)), agent-color, angle: 90deg),
+    fill: gradient.linear(human-color, agent-color, angle: 90deg),
     stroke: none,
   )
 
