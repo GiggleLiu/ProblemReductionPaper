@@ -41,7 +41,7 @@
   rect(
     (arrow-x - shaft-w, shaft-bot),
     (arrow-x + shaft-w, arrow-top),
-    fill: gradient.linear(human-color, agent-color, angle: -90deg),
+    fill: gradient.linear(human-color, agent-color, angle: 90deg),
     stroke: none,
     radius: (top: 3pt),
   )
@@ -52,7 +52,7 @@
     (arrow-x, arrow-bot),
     (arrow-x + head-w, shaft-bot),
     close: true,
-    fill: gradient.linear(human-color.mix((agent-color, 70%)), agent-color, angle: -90deg),
+    fill: gradient.linear(human-color.mix((agent-color, 70%)), agent-color, angle: 90deg),
     stroke: none,
   )
 
