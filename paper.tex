@@ -277,9 +277,9 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 
 \subsection{Anatomy of the Harness}\label{sec:skills}
 
-\begin{definition}[Harness]
-A \emph{harness} is a tuple $H = (K, S, T, \Sigma_a, \Sigma_h)$ where $K$ is a progressively-disclosed knowledge base, $S$ is a project specification auto-loaded into every agent session, $T$ is a set of tools the agent may invoke, $\Sigma_a$ is a set of agent skills (executable checklists that orchestrate multi-step pipelines), and $\Sigma_h$ is a set of advisor skills for human contributors.
-The harness constrains agent behavior so that every output satisfies the verification stack defined by~$S$.
+\begin{definition}[Harness System]
+A \emph{harness system} is a tuple $H = (K, S, T, \Sigma_a, \Sigma_h)$ where $K$ is a progressively-disclosed knowledge base, $S$ is a project specification auto-loaded into every agent session, $T$ is a set of tools the agent may invoke, $\Sigma_a$ is a set of agent skills (executable checklists that orchestrate multi-step pipelines), and $\Sigma_h$ is a set of advisor skills for human contributors.
+The harness system constrains agent behavior so that every output satisfies the verification stack defined by~$S$.
 \end{definition}
 
 The five components each address a different failure mode (\Cref{fig:skill-architecture}).
