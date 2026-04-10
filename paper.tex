@@ -15,6 +15,7 @@
 \newtheorem{definition}{Definition}
 
 \newcommand{\jinguo}[1]{\textcolor{red}{JG: #1}}
+\newcommand{\claude}[1]{\textcolor{blue}{[Claude: #1]}}
 
 % Inline project-board column label
 \newcommand{\col}[1]{%
@@ -29,23 +30,29 @@
 
 \title{Problem Reductions at Scale: Agentic Integration of Computationally Hard Problems}
 
-\author{...}  % placeholder
+\author{
+  \IEEEauthorblockN{Xi-Wei Pan\IEEEauthorrefmark{1},
+    Shi-Wen An\IEEEauthorrefmark{2}\IEEEauthorrefmark{3}, and
+    Jin-Guo Liu\IEEEauthorrefmark{1}}
+  \IEEEauthorblockA{\IEEEauthorrefmark{1}Thrust of Advanced Materials,
+    The Hong Kong University of Science and Technology (Guangzhou),
+    Guangdong, China}
+  \IEEEauthorblockA{\IEEEauthorrefmark{2}Department of Information and Communication Engineering,
+    Institute of Science Tokyo,
+    Tokyo, Japan}
+  \IEEEauthorblockA{\IEEEauthorrefmark{3}Center for Advanced Intelligence Project (AIP),
+    RIKEN, Tokyo 103-0027, Japan}
+}
 
 \maketitle
 
 \begin{abstract}
-Practitioners who face NP-hard optimization problems must manually reformulate each instance for the solver they want to use---quantum hardware, commercial optimizers, or domain heuristics.
-A library of polynomial-time reductions between these problems would let them route any supported problem to any supported solver through a single interface.
-No such library exists, because three barriers block construction at scale: conventions drift across contributors, the domain experts who know the reductions rarely write systems code, and the repetitive cycle of coding, testing, and documenting each reduction exhausts maintainers.
-We address this gap through \emph{harness engineering}---designing the constraints, feedback loops, and verification systems that channel AI coding agents toward reliable output.
-The harness consists of \emph{skills} (plain-text markdown checklists encoding project conventions and domain knowledge), a type-level architecture that makes incorrect reductions fail to compile, and a multilayer verification stack.
-Three design decisions underpin the approach.
-(1)~A \emph{no-code contribution route} lets domain experts add reductions by filing structured issues; no familiarity with the implementation language is needed.
-(2)~A \emph{multilayer verification stack} checks each reduction from type signatures through round-trip tests to \emph{agentic feature tests}, in which AI agents role-play domain-expert personas and exercise the library end-to-end without access to the implementation.
-(3)~A \emph{fully automated pipeline} handles implementation, review, and integration, letting a small team operate the project end-to-end.
-In under three months, the library grew to 100+ problem types and 200+ reduction rules.
-These results suggest that a well-engineered harness lets agents build verified reduction libraries at a scale and pace that prior efforts have not reached.
-Beyond solving known problems, the library provides infrastructure for \emph{automated algorithm research}: AI systems that discover new solving algorithms, heuristics, or reductions can use the reduction graph as a standardized evaluation harness---and a new solver registered for any single problem type instantly becomes available to every problem connected by a reduction path.
+Solving an NP-hard optimization problem often requires reformulating it for a specific solver---quantum hardware, a commercial optimizer, or a domain heuristic.
+A tool for polynomial-time reductions between hard problems would let practitioners route any supported problem to any supported solver through a single interface, but building such a library at scale has remained out of reach.
+We show that \emph{harness engineering}---designing the constraints, verification systems, and feedback loops that channel AI coding agents---can overcome this barrier.
+Our harness combines a no-code contribution route for domain experts, a multilayer verification stack ranging from type-level checks to agentic feature tests (AI agents role-playing as end users), and a fully automated implementation-review-integration pipeline.
+In under three months, we built a command-line tool backed by a library of 100+ problem types and 200+ reduction rules, suggesting that a well-engineered harness lets agents build verified software at a scale and pace that prior efforts have not reached.
+The resulting reduction graph also serves as infrastructure for \emph{automated algorithm research}: a new solver registered for any single problem type instantly becomes available to every problem connected by a reduction path.
 \end{abstract}
 
 %======================================================================
@@ -55,11 +62,11 @@ Beyond solving known problems, the library provides infrastructure for \emph{aut
 
 \subsection{The Problem: Many Hard Problems, Few Solvers}
 
-Combinatorial optimization problems arise throughout science and engineering.
-An airline needs to assign crews to flights.
-A chip designer needs to allocate registers.
-A logistics company needs to route delivery trucks.
-Each of these is an instance of an NP-hard problem---a class of problems for which no efficient general-purpose algorithm is known, but which can be solved in practice for moderate sizes by specialized solvers.
+Combinatorial optimization problems arise throughout science and engineering~\cite{KorteVygen2018,Schuetz2022PhysicsGNN}.
+An airline needs to assign crews to flights~\cite{Gopalakrishnan2005AirlineCrew}.
+A chip designer needs to allocate registers---commonly modeled as graph coloring in compilers~\cite{Chaitin1982Register}.
+A logistics company needs to route delivery trucks~\cite{Toth2014VRP}.
+Each of these is an instance of an NP-hard problem~\cite{karp1972,garey1979}---a class of problems for which no efficient general-purpose algorithm is known, but which can be solved in practice for moderate sizes by specialized solvers.
 
 The difficulty is that each solver speaks its own narrow language.
 SAT solvers~\cite{Een2003MiniSat, Biere2020Kissat} accept Boolean satisfiability instances.
@@ -79,25 +86,26 @@ A single reduction between two problems is a \emph{primitive reduction rule}.
 To bridge \emph{many} problems to \emph{many} solvers, we organize primitive rules as a \emph{directed graph}.
 Each node is a problem type; each directed edge is a primitive rule.
 Every edge carries a \emph{reduction overhead}---a polynomial mapping the source's size measures to the target's.
-The figure below illustrates the structure:
-\begin{center}
+\Cref{fig:reduction-graph-concept} illustrates the structure.
+\begin{figure}[t]
+  \centering
   \includegraphics[width=0.70\columnwidth]{figures/reduction-graph-concept.pdf}
-\end{center}
+  \caption{The reduction graph.  Each node is a problem type; each directed edge is a primitive reduction rule.  Highlighted nodes mark the two anchor roles: \emph{3-SAT} (source of NP-hardness proofs) and \emph{ILP} (gateway to mature solvers).  Edge labels $r_{B \leftarrow A}$ and $r_{C \leftarrow B}$ denote reduction overhead---a polynomial mapping input size to output size.  Nodes carry the time complexity of best known algorithms (e.g., $t_S$, $t_I$).  A directed path from 3-SAT to a problem~$H$ makes $H$ \emph{NP-hard certified}; a path from any problem to ILP grants solver access.}
+  \label{fig:reduction-graph-concept}
+\end{figure}
 Reductions compose along directed paths.
 Chaining $A \to B$ and $B \to C$ yields $A \to C$.
-Each overhead is a function from input size to output size; composing overheads means composing these functions.
-Writing $r_{X \leftarrow Y}$ for the overhead of rule $Y \to X$, the composite overhead is $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
+Writing $r_{X \leftarrow Y}$ for the overhead polynomial of rule $Y \to X$, the composite overhead is $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
 When multiple paths connect a problem to different solvers, the system selects the cheapest route for a given input size.
 
 Two kinds of paths play a special role.
-A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$, backed by tested code rather than a pen-and-paper proof---we say $H$ is \emph{NP-hard verified} by the graph.
-A path from a problem to integer linear programming (ILP) grants access to mature solvers (HiGHS, Gurobi, CPLEX, etc.).
+A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$, backed by tested code rather than a pen-and-paper proof---we say $H$ is \emph{NP-hard certified} by the graph.
+A path from a problem to integer linear programming (ILP) grants access to mature solvers (HiGHS, Gurobi, CPLEX, etc.), which is crucial for testing the reduction correctness.
 
-The graph also serves as infrastructure for \emph{automated algorithm research}.
-Recent work shows that AI systems can discover novel algorithms for hard problems---evolutionary program search finds new heuristics and mathematical constructions (FunSearch~\cite{RomeraParedes2023FunSearch}, AlphaEvolve~\cite{Novikov2025AlphaEvolve}), reinforcement learning trains construction policies that generalize across instances~\cite{Bello2017NCO, Kool2019Attention}, and LLMs evolve hyper-heuristics that match or surpass hand-designed solvers (ReEvo~\cite{Ye2024ReEvo}).
-These systems need two things from their environment: a standardized problem formulation to operate on, and a reliable evaluation harness to score candidate solutions.
-The reduction graph provides both.
-A new solver or heuristic registered for any single problem type instantly becomes available---through reduction paths---to every connected problem, amplifying each algorithmic discovery across the entire graph.
+The graph also supports algorithm research on hard problems.
+It provides standardized problem formulations and existing solvers that serve as ground truth for evaluating candidate algorithms.
+Its topology reveals where new results would have the most impact---bottleneck edges whose addition would connect isolated subgraphs, or hub problems whose improved solvers would propagate the furthest.
+A new solver registered for any single problem type becomes available to every connected problem, and a new reduction rule opens solver access for an entire subgraph---each discovery is amplified across the graph.
 
 \subsection{The Challenge}
 
@@ -107,26 +115,25 @@ Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with redu
 The bottleneck was never mathematical knowledge; it was building and maintaining the software.
 
 The graph's value grows with every edge, but so does the cost of maintaining it.
-Every edge must conform to the same conventions---same interface, same file layout, same test pattern---because this uniformity is what makes edges composable.
-Maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
+Every edge must conform to the same conventions---same interface, same file layout, same test pattern---but maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
 Conventions drift as contributors accumulate their own patterns (\emph{convention drift}).
 The domain experts who know the reductions rarely write systems code, bottlenecking progress on the few who know both (\emph{knowledge discontinuity}).
-When a new reduction appears in the literature, the mathematician who understands it has no way to contribute it without learning the implementation language and the project's conventions.
+When a new reduction appears in the literature, the mathematician who understands it has no way to contribute it without learning the implementation language and the project's conventions (\Cref{fig:comic}).
 And every new entry demands the same lengthy checklist.
 Adding a problem type requires resolving whether the problem is genuinely new or a known problem under a different name, writing a formal definition, identifying the best known algorithm and its complexity, and checking that at least one reduction rule connects it to the existing graph.
-Adding a reduction rule requires confirming that both endpoint problems exist, verifying the rule is novel and actually improves on existing routes, analyzing the reduction overhead, providing a correctness argument, implementing the forward and inverse maps, designing round-trip tests, and documenting the reduction with a worked example.
+Adding a reduction rule requires confirming that both endpoint problems exist, verifying the rule is novel and actually improves on existing routes, analyzing the reduction overhead, providing a correctness argument, implementing the forward and inverse maps, designing correctness tests, and documenting the reduction with a worked example.
 Repeating this cycle for every entry exhausts even dedicated maintainers (\emph{effort exhaustion}).
 
-We call this an \emph{assembly problem}: a software project whose subtasks share the same interface and admit a cheap, generic correctness test (here, round-trip testing), but whose count exceeds what human teams can sustain.
-Reduction-graph construction is a natural instance: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality---without a problem-specific oracle.
 AI coding agents offer a way forward (\Cref{sec:related}).
-Assembly problems sidestep the capability cliff reported on longer-horizon benchmarks: each subtask is short, self-contained, and follows the same pattern, so the agent never faces the long-horizon planning that degrades performance.
-The question is whether agents, given the right scaffolding, can produce \emph{verified} software at a scale that human teams have not achieved.
-Recent experience at OpenAI suggests a broader shift: in an agent-first workflow, the engineer's primary job is no longer writing code but designing the \emph{harness}---the constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
-The metaphor is horse tack: reins, saddle, and bit that direct a powerful but unpredictable animal in a useful direction.
-We adapt and extend this idea through \emph{skills}---plain-markdown documents, committed to the repository, that read like checklists: ``implement the forward and inverse maps, write round-trip tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
+OpenAI's recent ``harness engineering'' framing captures the shift: the engineer's primary job becomes designing the constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
+The central requirement of any harness is a \emph{verification gate}---a cheap, automatic check that rejects incorrect output before it enters the codebase.
+Reduction-graph construction supplies one for free: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality---without a problem-specific oracle.
+The reduction graph fits this pattern: each subtask is short, independently verifiable, and follows the same interface, sidestepping the sharp performance degradation that agents exhibit on longer-horizon tasks~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}.
+
+We build our harness from two components.
+\emph{Skills} are plain-markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
-A \emph{project specification} anchors the system as a single source of truth for architecture and constraints that every skill inherits---the context-engineering pillar of harness design.
+A \emph{project specification} anchors the system as a single source of truth for architecture and constraints that every skill inherits.
 Together, skills and specification form a domain-specific harness that addresses all three barriers:
 \begin{itemize}
   \item \emph{Convention drift} $\to$ skills enforce the same interface, layout, and test pattern at every invocation.
@@ -145,13 +152,6 @@ Together, skills and specification form a domain-specific harness that addresses
 
 \subsection{Contributions}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.5\columnwidth]{problem-reductions/docs/logo.png}
-  \caption{The Problem-Reductions library logo, reflecting its goal of assembling 100+ NP-hard problem types into a connected reduction graph. \jinguo{replace with the reduction diagram.}}
-  \label{fig:logo}
-\end{figure}
-
 We demonstrate that a well-engineered harness lets AI coding agents build mathematical software at a scale that human teams have not achieved.
 The evidence is a Rust library of 100+ problem types and 200+~reduction rules, built in about three months by a small team and AI agents.
 The harness rests on three pillars:
@@ -165,23 +165,22 @@ The harness rests on three pillars:
 %======================================================================
 \section{Library Architecture}\label{sec:architecture}
 
-The library implements the reduction graph as a Rust crate, organized in two layers (\Cref{fig:library-architecture}).
+The library implements the reduction graph as a Rust crate, organized in three layers (\Cref{fig:library-architecture}).
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/library-architecture.pdf}
   \caption{Library architecture.
-    User interfaces (blue) expose the reduction graph via CLI, library API, and an auto-compiled PDF manual.
-    The core library (green) implements problem types, reduction rules, a graph engine, solvers, a symbolic engine, and an example database.}
+    Three layers stack from interfaces (top) through core modules (middle) to infrastructure (bottom).
+    The CLI and PDF manual expose the reduction graph; core modules define problem types, reduction rules, and the example database; infrastructure provides solvers and a symbolic engine for overhead analysis.}
   \label{fig:library-architecture}
 \end{figure}
 
-\subsection{User Interfaces}\label{sec:user-interfaces}
+\subsection{Interfaces}\label{sec:user-interfaces}
 
-The \texttt{pred} CLI is the primary entry point.
+The \texttt{pred} command-line interface (CLI) is the primary entry point.
 Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem---finding the largest set of vertices with no two adjacent---on a conflict graph: vertices are candidate locations, edges connect locations that are too close.
 \Cref{lst:cli-session} shows how she solves this instance without writing any reduction code.
-
 \begin{figure}[t]
 \begin{lstlisting}[
   basicstyle=\ttfamily\scriptsize,
@@ -194,10 +193,7 @@ Consider a logistics engineer who models warehouse bin placement as a Maximum In
   xleftmargin=14pt,
   xrightmargin=4pt,
   aboveskip=6pt,
-  belowskip=2pt,
-  captionpos=b,
-  caption={CLI session: solving a Maximum Independent Set instance.},
-  label={lst:cli-session}
+  belowskip=2pt
 ]
 # Create a conflict graph (4 locations, 3 conflicts),
 # reduce to ILP, and solve
@@ -211,18 +207,26 @@ $ pred create MIS --graph 0-1,1-2,2-3 \
   "evaluation": "Valid(2)"     // 2 non-conflicting bins
 }
 \end{lstlisting}
+\caption{CLI session: solving a Maximum Independent Set instance.
+  Commands communicate via Unix pipes (\texttt{|}), reading JSON from stdin (\texttt{-}) and writing JSON to stdout, so they compose without intermediate files.}
+\label{lst:cli-session}
 \end{figure}
-
+The three commands compose through Unix pipes: \texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it to a target formulation, and \texttt{solve} invokes a solver.
 The output (lines~6--11) shows that locations~0 and~3 form a maximum independent set of size~2.
 
-Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types, \texttt{pred show} prints a problem's definition and neighboring reductions, and \texttt{pred list} shows all registered problem types with their complexities.
+Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types, \texttt{pred show} prints a problem's definition and neighboring reductions, \texttt{pred list} lists all registered problem types with their complexities, and \texttt{pred evaluate} scores a candidate configuration against any problem instance---useful for verifying solutions independently of the solver.
 The same functionality is available through the Rust library API.
 
-The build system also produces an auto-compiled PDF manual---formal definitions, reduction theorems with proof sketches, and worked examples---generated from the same source data that powers the CLI.
+The build system also produces a PDF manual from Typst source.
+The manual serves two audiences: domain experts reviewing the mathematical content, and agents reading it as reference material during implementation.
+Each entry contains a formal definition, a proof sketch, and a worked example with visualization---the example is the same canonical instance that the contributor provided in the original issue.
+The manual shares a single source of truth with the CLI and tests: variant metadata, reduction-graph topology, and canonical examples are exported from the Rust crate as JSON and read by the Typst compiler, so the manual stays in sync with the code automatically.
+A built-in completeness check rejects any build in which a graph node or edge lacks a corresponding manual entry.
 
-\subsection{Core Library}\label{sec:graph-structure}
+\subsection{Core and Infrastructure}\label{sec:graph-structure}
 
-The core crate is organized into six modules (\Cref{fig:library-architecture}, middle): three define the graph's content, and three make it operational.
+The library is organized into two layers (\Cref{fig:library-architecture}): a \emph{core} that defines the graph's nodes and edges, and an \emph{infrastructure} that makes the graph usable.
+Three modules populate the core.
 
 \emph{Problem types.}
 Every problem type implements a uniform evaluation interface: given any \emph{configuration}---an assignment of values to the problem's decision variables---return an objective value (\Cref{app:architecture}).
@@ -234,14 +238,11 @@ Each rule requires both a forward map and an inverse map in a single implementat
 Each rule also carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's.
 For example, the Satisfiability $\to$ Maximum Independent Set reduction creates one vertex per literal occurrence in the formula, yielding $O(L)$ vertices and $O(L^2)$ edges where $L$ is the total number of literal occurrences.
 
-\emph{Graph engine.}
-Problem types and reduction rules compose into a directed graph.
-To route a problem instance to a solver, the engine finds the cheapest reduction path using Dijkstra's algorithm.
-The cost function is configurable: minimize the number of reduction steps, or minimize a specific output measure such as the number of variables.
+\emph{Example database.}
+Canonical instances serve as the single source of truth.
+The same instance feeds round-trip tests, JSON fixtures rendered in the PDF manual, and the \texttt{pred create --example} command for interactive exploration.
 
-\emph{Symbolic engine.}
-Each edge carries a cost that depends on input size---unknown until a concrete instance arrives---so costs are represented as symbolic multivariate polynomials.
-The engine supports three operations: \emph{composition} substitutes one edge's output polynomial into the next edge's input; \emph{comparison} checks whether a composite path dominates a direct rule, for redundancy detection; and \emph{evaluation} computes numeric cost for a concrete instance, enabling instance-dependent path search.
+With nodes and edges defined, two infrastructure modules make the graph operational.
 
 \emph{Solvers.}
 Round-trip testing requires solving each problem to optimality, so every problem type needs a solver.
@@ -249,9 +250,9 @@ Most types (e.g., Maximum Independent Set, Traveling Salesman, flow-shop schedul
 For problems without an ILP path, the library provides customized exact solvers that exploit problem structure---for example, functional-dependency closure for Minimum Cardinality Key, and cycle enumeration with branch-and-bound for Partial Feedback Edge Set.
 The remaining problems fall back to brute-force enumeration on small instances.
 
-\emph{Example database.}
-Canonical instances serve as the single source of truth.
-The same instance feeds round-trip tests, JSON fixtures rendered in the PDF manual, and the \texttt{pred create --example} command for interactive exploration.
+\emph{Symbolic engine.}
+Each edge carries a cost that depends on input size---unknown until a concrete instance arrives---so costs are represented as symbolic multivariate polynomials.
+The engine supports three operations: \emph{composition} substitutes one edge's output polynomial into the next edge's input; \emph{comparison} checks whether a composite path dominates a direct rule, for redundancy detection; and \emph{evaluation} computes numeric cost for a concrete instance, enabling instance-dependent path search.
 
 \subsection{Why Rust?}\label{sec:why-rust}
 
@@ -260,12 +261,11 @@ None of the maintainers had written Rust before this project---the language was 
 
 \emph{Explicit, actionable error messages.}
 The Rust compiler produces diagnostics that include the error location, the conflicting types or lifetimes, and often a suggested fix.
-Agents parse these messages and resolve errors without human intervention---a property we rely on throughout the pipeline.
+Agents parse these messages and resolve errors without human intervention.
 Languages with less structured diagnostics (e.g., C++ template errors) would require more agent reasoning per cycle.
 
 \emph{Fast feedback.}
-Incremental compilation and the built-in test harness produce results in seconds.
-A typical round-trip test compiles and runs in a few seconds, enabling agents to iterate rapidly.
+Incremental compilation and the built-in test harness produce results in seconds, enabling agents to iterate rapidly.
 Rust's well-known strengths---memory safety eliminating entire bug categories at compile time, high performance, small binary size, and Cargo's integrated toolchain---further reduce the surface area of errors agents must debug.
 
 %======================================================================
@@ -276,8 +276,7 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 \subsection{Anatomy of the Harness}\label{sec:skills}
 
 \begin{definition}[Harness System]
-A \emph{harness system} is a tuple $H = (K, S, T, \Sigma_a, \Sigma_h)$ where $K$ is a progressively-disclosed knowledge base, $S$ is a project specification auto-loaded into every agent session, $T$ is a set of tools the agent may invoke, $\Sigma_a$ is a set of agent skills (executable checklists that orchestrate multi-step pipelines), and $\Sigma_h$ is a set of advisor skills for human contributors.
-The harness system constrains agent behavior so that every output satisfies the verification stack defined by~$S$.
+A \emph{harness system} constrains agent behavior through five components: a progressively-disclosed knowledge base, a project specification auto-loaded into every agent session, a set of tools the agent may invoke, a set of agent skills (executable checklists that orchestrate multi-step pipelines), and a set of advisor skills for human contributors.
 \end{definition}
 
 The five components each address a different failure mode (\Cref{fig:skill-architecture}).
@@ -405,7 +404,7 @@ It then auto-corrects mechanical failures (undefined symbols, missing metrics) a
 Only issues passing all four checks move to \col{Ready}.
 
 \textbf{Stage~3: Implement} (\col{Ready} $\to$ \col{Review Pool}).
-An implementation agent executes the \texttt{run-pipeline} skill. It checks the \col{Ready} column, picks the highest-priority issue (e.g.\ new problem types before new reduction rules, since rules depend on types), claims it by moving it to \col{In Progress}, produces one PR with code implementation and manual writing, and moves the issue to \col{Review Pool}.
+An implementation agent executes the \texttt{run-pipeline} skill. It checks the \col{Ready} column, picks the highest-priority issue (e.g.\ new problem types before new reduction rules, since rules depend on types), claims it by moving it to \col{In Progress}, produces one pull request (PR) with code implementation and manual writing, and moves the issue to \col{Review Pool}.
 The implementation agent separates two kinds of knowledge.
 \emph{Domain skills} (\texttt{add-model}, \texttt{add-rule}) encode what makes a reduction correct: a correctness argument, a size overhead expression, and a worked example must all exist \emph{before any code is written} (\Cref{fig:skill-addrule}).
 This is knowledge the agent cannot infer from existing code---it must come from the issue's mathematical content.
@@ -458,19 +457,18 @@ The maintainer invites the domain expert who filed the original issue to a commu
 walks through the PDF manual and CLI interactively.
 This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments.
 
-Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex} (\texttt{gpt-5.4}) with highest thinking effort.
+Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex} (\texttt{gpt-5.4}) with maximum compute budget.
 The remaining stages use Claude Code~\cite{Anthropic2025ClaudeCode} (\texttt{opus-4.6}) for interactive sessions with the maintainer and domain expert.
 Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and \texttt{opus-4.6} stronger in interactive dialogue, though we did not evaluate this systematically.
 
-\subsection{Correctness by Construction}\label{sec:verification}
+\subsection{Verification Pipeline}\label{sec:verification}
 
-Beyond unit tests and manual verification, we adopt the following two mechanisms to ensure correctness.
+Correctness is enforced by six layers: compile-time type checks, unit tests, round-trip tests (\Cref{sec:intro}), issue validation (Stage~2), agentic feature tests (Stage~4), and manual verification (Stage~6).
+The first three are standard; we describe the two novel mechanisms below.
 
 \textbf{Issue check (Stage 2).}
 Correctness begins with the issue provided by the domain expert.
-As shown in \Cref{fig:roundtrip-pipeline}, the structured issue serves as both the specification and the acceptance criterion: it defines the reduction's mathematical content and provides the canonical example that seeds all tests.
-The issue is validated along the four dimensions described in Stage~2 (\Cref{sec:pipeline-overview}).
-Invalid proposals are rejected before implementation effort is spent.
+The structured issue serves as both the specification and the acceptance criterion (\Cref{fig:roundtrip-pipeline}); validation along the four dimensions of Stage~2 (\Cref{sec:pipeline-overview}) rejects invalid proposals before implementation effort is spent.
 The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test, the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode.
 The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this.
 
@@ -486,7 +484,6 @@ The pipeline is designed so that the mathematical intent propagates through all 
 \end{figure}
 
 \textbf{Agentic feature tests (Stage 4).}
-In this project, agentic feature tests compressed the usual feedback loop.
 Libraries normally stabilize through community use, but a niche library cannot wait for that community to form.
 Agentic feature tests approximate early-adopter feedback by simulating realistic use scenarios before real users arrive.
 
@@ -500,7 +497,7 @@ The main agent interviews it---what worked, what was confusing, where did the ou
 The reliability of such self-reports remains an open question; we treat them as heuristic signals, not definitive verdicts.
 This report surfaces usability gaps, documentation omissions, and semantic errors that unit tests cannot reach.
 
-As a concrete example, an agentic feature test of the \texttt{pred} CLI (v0.3.0) found 4~bugs, 5~UX issues, and 4~cosmetic issues in a single session---none caught by the existing unit tests.
+As a concrete example, an agentic feature test of the \texttt{pred} CLI (v0.3.0) found 4~bugs, 5~user-experience (UX) issues, and 4~cosmetic issues in a single session---none caught by the existing unit tests.
 Among the bugs: nine problem types appeared in \texttt{pred create -{}-help} but crashed when a user tried to create them, because their parameters were not registered as CLI flags.
 Among the UX issues: the \texttt{to}/\texttt{from} subcommands confused every tester, because \texttt{pred to MIS} returns problems that reduce \emph{to} MIS (incoming edges), while users read it as ``where can MIS go \emph{to}'' (outgoing edges).
 These are precisely the kind of integration and usability errors that pass unit tests but break real workflows.
@@ -540,6 +537,7 @@ These are precisely the kind of integration and usability errors that pass unit 
 \section{Evidence}\label{sec:evidence}
 
 \jinguo{All numbers in this section need a fresh snapshot before submission. Run the mining script to regenerate.}
+\claude{Evidence section rests on the growth curve alone. Missing: (1) agent success/failure rate per stage, (2) per-phase human hours, (3) no-code contributor count and quality-gate pass rate. These would transform this from a descriptive account into convincing empirical evidence.}
 
 \subsection{Library Status}
 
@@ -560,11 +558,18 @@ Reducible to ILP & 126 \\
 \end{tabular}
 \end{table}
 \Cref{tab:status} summarizes the current library.
-Of the 190~problem types, 126 have a reduction path to ILP.
-For these, the \texttt{pred solve} pipeline reduces a given instance along the cheapest path and invokes HiGHS; practical solve time depends on the instance size after reduction.
-62~problem types are reachable from 3-SAT, providing tested reduction chains that serve as NP-hardness arguments.
-The library covers a substantial fraction of the NP-complete problems catalogued by Garey and Johnson~\cite{garey1979}; a precise comparison is future work.
+Two connectivity numbers stand out: 126~types have a reduction path to ILP, granting solver access via HiGHS; 62~are reachable from 3-SAT, providing tested NP-hardness arguments.
 Subsequent additions came through the issue-based contribution route described in \Cref{sec:pipeline-overview}.
+\Cref{fig:reduction-graph} visualizes the current graph; orphan nodes (registered but not yet connected by any reduction) are omitted.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth,trim={10cm 50cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
+  \caption{The reduction graph as of April 2026.
+    Each colored box is a problem type; directed edges are reduction rules.
+    Only the 148~connected nodes are shown; 42~isolated types awaiting their first reduction are omitted.}
+  \label{fig:reduction-graph}
+\end{figure}
 
 \subsection{Development Phases}
 
@@ -579,8 +584,7 @@ Subsequent additions came through the issue-based contribution route described i
   \label{fig:growth-curve}
 \end{figure}
 
-The project evolved through three phases (\Cref{fig:growth-curve}).
-In Phase~1 (weeks~0--7), the team and AI agents ported reduction rules from existing packages---ProblemReductions.jl~\cite{Liu2024ProblemReductions}, UnitDiskMapping.jl, and qubogen~\cite{Tamura2020qubogen}---and from Garey and Johnson's catalogue~\cite{garey1979}.
+In Phase~1 (weeks~0--7; \Cref{fig:growth-curve}), the team and AI agents ported reduction rules from existing packages---ProblemReductions.jl~\cite{Liu2024ProblemReductions}, UnitDiskMapping.jl, and qubogen~\cite{Tamura2020qubogen}---and from Garey and Johnson's catalogue~\cite{garey1979}.
 Growth was steady but slow: roughly 20~problem types and 55~rules by week~7.
 Through this process, the skill-based automation pipeline was established and iteratively refined.
 In Phase~2 (weeks~7--8.5), basic skills were introduced, but the pipeline was not yet end-to-end automated.
@@ -608,7 +612,7 @@ Our library differs from all of these in three ways: it connects \emph{many} sou
 \textbf{AI coding agents.}
 SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} resolve isolated GitHub issues with increasing reliability~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and specification inference remains the central difficulty~\cite{Roychoudhury2025AgenticAI}.
 These systems operate on arbitrary codebases with minimal structure.
-Our approach exploits the assembly-problem structure---homogeneous, verifiable subtasks---so that each agent invocation is short and self-contained, sidestepping the long-horizon planning that degrades general-purpose agents.
+Our approach exploits the project's homogeneous, verifiable structure so that each agent invocation is short and self-contained, sidestepping the long-horizon planning that degrades general-purpose agents.
 
 \textbf{Structured agent workflows.}
 Chain-of-thought prompting~\cite{Wei2022CoT}, ReAct~\cite{Yao2023ReAct}, and tool-use frameworks decompose agent reasoning into steps, but the decomposition is generated per invocation and is not reusable across tasks.
@@ -619,8 +623,7 @@ Superpowers~\cite{Obra2025Superpowers} provides a general-purpose skills framewo
 OpenAI coined \emph{harness engineering} for the discipline of designing constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
 Their internal experiment produced roughly one million lines of code with no manually written source, by shifting the engineer's role from code authorship to environment design.
 They identify three pillars: context engineering (repository as single source of truth), architectural constraint enforcement (linters and structural tests), and continuous maintenance (``garbage collection'' of technical debt).
-Our work adapts and extends this paradigm for a mathematical domain.
-We decompose the harness into five components (\Cref{sec:skills}): a knowledge base with progressive disclosure, auto-loaded project specifications, domain-specific tools, agent skills that bridge context to tools, and advisor skills that guide humans---the last being absent from OpenAI's agent-only framework.
+Our work adapts this paradigm for a mathematical domain, adding two components absent from OpenAI's agent-only framework: advisor skills that guide human contributors, and a domain-specific verification layer (\Cref{sec:skills}).
 OpenAI's ``garbage collection'' pillar (continuous maintenance against entropy) is handled implicitly by our review pipeline, which catches drift at every PR; we do not yet run recurring background cleanup tasks.
 The key addition is a domain-specific verification layer---round-trip testing and agentic feature tests---that addresses functional correctness, which Fowler~\cite{Fowler2026HarnessLimits} identified as the open problem in harness engineering.
 
@@ -631,7 +634,7 @@ The key addition is a domain-specific verification layer---round-trip testing an
 
 \subsection{Discussion}
 
-The methodology generalizes to what we call a \emph{gallery library}---a collection of homogeneous, independently verifiable implementations with uniform interfaces.
+The methodology generalizes to any collection of homogeneous, independently verifiable implementations with uniform interfaces.
 An automatic differentiation (AD) engine is a natural example: each differentiation rule transforms one operation into its derivative, and finite-difference checks play an analogous role---approximate but generic---verifying correctness automatically, without a problem-specific oracle.
 The key requirement is a cheap, generic verification mechanism that applies uniformly across all entries.
 The cost of entry is \emph{harness engineering}: the 18~skills in this project represent substantial upfront investment in designing the constraints and feedback loops that channel agents, and each new domain requires its own harness.
@@ -640,27 +643,23 @@ The methodology does \emph{not} generalize to heterogeneous tasks, where each is
 The library itself can serve as a \emph{tool} for AI agents: an agent facing an optimization problem can invoke the \texttt{pred} CLI to route the problem through the reduction graph to a solver, without knowing which solver fits or how to formulate the reduction.
 The reduction graph also serves as a \emph{solver-agnostic compilation layer}: adding a single edge from a hardware platform's native formulation (e.g., Maximum Independent Set, which Rydberg-atom quantum hardware solves natively) routes all supported problem types to that device.
 
-More broadly, the library is a building block for \emph{automated research on algorithms for hard problems}---a rapidly growing field.
-AI systems already discover novel heuristics through evolutionary search (FunSearch~\cite{RomeraParedes2023FunSearch}, AlphaEvolve~\cite{Novikov2025AlphaEvolve}), learn construction policies via reinforcement learning~\cite{Bello2017NCO, Kool2019Attention}, and evolve hyper-heuristics with reflective self-improvement (ReEvo~\cite{Ye2024ReEvo}).
-LLM-driven meta-optimization can now generate heuristic algorithms that match or surpass hand-designed ones~\cite{Liu2024LLMAlgorithmDesignSurvey}.
-All of these systems share a common need: a standardized interface to formulate problem instances and a reliable harness to evaluate candidate solutions.
-The reduction graph provides exactly this infrastructure for both sides of automated algorithm research.
-On the \emph{solver} side, a new solving algorithm---whether learned by RL, evolved by an LLM, or designed by a human---can be registered for any problem type in the graph; reduction paths then make it available to every connected type, instantly expanding its reach without additional engineering.
+More broadly, the library is a building block for \emph{automated research on algorithms for hard problems}.
+On the \emph{solver} side, a new solving algorithm---whether learned, evolved, or hand-designed---can be registered for any problem type; reduction paths then make it available to every connected type without additional engineering.
 On the \emph{reduction} side, candidate reductions generated by discovery agents can be validated by the library's round-trip tests, with the graph absorbing each verified reduction as a new edge.
-In both cases, each discovery is amplified across the graph rather than remaining isolated.
+The graph's composable structure amplifies each discovery to every connected problem type.
 
 Four directions extend this work.
 First, composing the library with \emph{automated algorithm and reduction discovery}: using evolutionary search~\cite{Novikov2025AlphaEvolve} or LLM-driven hyper-heuristics~\cite{Ye2024ReEvo} to generate candidate solvers and reductions, validated by the library's evaluation interface and round-trip tests.
 Second, replacing asymptotic overhead with \emph{fine-grained cost prediction}---using extracted problem features to estimate concrete reduction cost per instance, enabling adaptive solver routing.
-Third, extending the graph beyond NP to \emph{other complexity classes} (approximation hierarchies such as APX and PTAS, counting problems in \#P), preserving hardness guarantees across reductions.
+Third, extending the graph beyond NP to \emph{other complexity classes} (approximation hierarchies such as APX and polynomial-time approximation schemes (PTAS), counting problems in \#P), preserving hardness guarantees across reductions.
 Fourth, integrating the library as a \emph{standardized benchmark} for neural combinatorial optimization, where learned solvers can be compared against exact methods across 100+ problem types on a common footing.
 
 \subsection{Conclusion}
 
-We have introduced \emph{assembly problems}---software projects whose scale exceeds human capacity but whose homogeneous, verifiable structure make them amenable to agent execution constrained by systematic verification.
+We have shown that software projects whose scale exceeds human capacity---but whose homogeneous, verifiable structure makes them amenable to agent execution---can be built through systematic verification and skill-based harnesses.
 NP-hard problem reductions are a concrete instance: in about three months, a small team and AI agents produced a verified reduction graph connecting 100+ problem types to specialized solvers.
 
-Three structural barriers---convention drift, effort exhaustion, and knowledge discontinuity---make assembly problems impractical for human teams at this scale and pace.
+Three structural barriers---convention drift, effort exhaustion, and knowledge discontinuity---make such projects impractical for human teams at this scale and pace.
 Verification ensures that agents do not deviate unchecked from contributor-specified ground truth, and skills encode workflow knowledge as reusable documents, lowering the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
 With 100+ problem variants already connected, the graph routes supported problems to solvers along the cheapest paths.
 
