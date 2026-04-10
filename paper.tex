@@ -222,7 +222,7 @@ The build system also produces an auto-compiled PDF manual---formal definitions,
 
 \subsection{Core Library}\label{sec:graph-structure}
 
-The core crate contains six modules (\Cref{fig:library-architecture}, middle).
+The core crate is organized into six modules (\Cref{fig:library-architecture}, middle): three define the graph's content, and three make it operational.
 
 \emph{Problem types.}
 Every problem type implements a uniform evaluation interface: given any \emph{configuration}---an assignment of values to the problem's decision variables---return an objective value (\Cref{app:architecture}).
