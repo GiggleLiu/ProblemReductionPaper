@@ -69,7 +69,7 @@ Beyond classical solvers, specialized hardware introduces additional formulation
 Physics-inspired methods scale further---graph neural networks solve QUBO at million-variable scale~\cite{Schuetz2022PhysicsGNN}, and hybrid quantum-GNN methods tackle the Traveling Salesman Problem~\cite{He2024QuantumTSP}---but still require a QUBO or Ising formulation as input.
 A practitioner with a crew-scheduling problem cannot reach most of these solvers without first \emph{translating} the problem into a form the solver understands.
 
-This translation is called a \emph{reduction}: an efficient algorithm that converts an instance of one problem into an instance of another, together with an inverse map that translates the solution back.
+This translation is called a \emph{reduction}: an efficient algorithm that converts an instance of one problem into an instance of another.
 Borrowing the idea of reductions from complexity theory~\cite{karp1972}, we require each reduction to carry an inverse map that translates the solution back.
 Each verified reduction is a bridge connecting a new problem to an existing solver.
 
@@ -257,7 +257,7 @@ The same instance feeds round-trip tests, JSON fixtures rendered in the PDF manu
 
 \subsection{Why Rust?}\label{sec:why-rust}
 
-The choice of implementation language has outsized impact in agentic workflows, because the agent's edit--compile--test loop runs hundreds of times per session.
+The choice of implementation language has an outsized impact in agentic workflows, because the agent's edit--compile--test loop runs hundreds of times per session.
 None of the maintainers had written Rust before this project---the language was chosen in large part for properties that benefit agents.
 
 \emph{Explicit, actionable error messages.}
@@ -448,7 +448,7 @@ This is knowledge the agent cannot infer from existing code---it must come from 
 \end{figure}
 
 \textbf{Stage~4: Review} (\col{Review Pool} $\to$ \col{Final Review}).
-A review agent executes the \texttt{review-pipeline} skill. It claims an issue from \col{Review Pool} by moving it to \col{Under Review}, dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification})---and posts a review report to the PR comment and moves the issue to \col{Final Review}.
+A review agent executes the \texttt{review-pipeline} skill. It claims an issue from \col{Review Pool} by moving it to \col{Under Review}, dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification})---and posts a review report on the PR and moves the issue to \col{Final Review}.
 
 \textbf{Stage~5: Merge} (\col{Final Review} $\to$ \col{Done}).
 A maintainer uses the \texttt{final-review} skill to merge or hold the PR.
@@ -470,7 +470,7 @@ Beyond unit tests and manual verification, we adopt the following two mechanisms
 
 \textbf{Issue check (Stage 2).}
 Correctness begins with the issue provided by the domain expert.
-As shown in \Cref{fig:roundtrip-pipeline}, the structured issue serves as both the specification and the acceptance criterion: it defines the reduction's mathematical content, provides the canonical example that seeds all tests.
+As shown in \Cref{fig:roundtrip-pipeline}, the structured issue serves as both the specification and the acceptance criterion: it defines the reduction's mathematical content and provides the canonical example that seeds all tests.
 The issue is validated along the four dimensions described in Stage~2 (\Cref{sec:pipeline-overview}).
 Invalid proposals are rejected before implementation effort is spent.
 The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test, the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode.
@@ -664,7 +664,7 @@ NP-hard problem reductions are a concrete instance: in under three months, a sma
 
 Three structural barriers---convention drift, effort exhaustion, and knowledge discontinuity---make assembly problems impractical for human teams at this scale and pace.
 Verification ensures that agents do not deviate unchecked from contributor-specified ground truth, and skills encode workflow knowledge as reusable documents, lowering the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
-With 100+ problem variants already connected, the graph routes supported problems to solvers along cheapest paths.
+With 100+ problem variants already connected, the graph routes supported problems to solvers along the cheapest paths.
 
 \section*{Acknowledgments}
 
@@ -724,7 +724,7 @@ Third, the brute-force enumerator is always available: it folds over all configu
 Brute force remains essential for round-trip testing, where correctness matters more than speed.
 
 \paragraph{Reduction graph construction.}
-Problem variants and reduction rules compose into the directed graph described in \Cref{sec:architecture}.
+Problem variants and reduction rules compose into the directed graph described in \Cref{sec:graph-structure}.
 For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both reduction traits with an identity solution map.
 At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 
