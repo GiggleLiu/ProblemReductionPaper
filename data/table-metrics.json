@@ -1,7 +1,7 @@
 {
   "problem_types": 190,
-  "registered_variants": 217,
-  "reduction_rules": 248,
-  "reachable_from_3sat": 62,
-  "reducible_to_ilp": 126
+  "registered_variants": 220,
+  "reduction_rules": 265,
+  "reachable_from_3sat": 78,
+  "reducible_to_ilp": 129
 }
