@@ -694,15 +694,27 @@ This appendix describes the key design decisions: the aggregation-based problem 
 \paragraph{Problems and variants.}
 Every problem type implements \texttt{Problem}, which requires: a constant name, an associated \texttt{Value} type, a method returning the configuration space dimensions, an \texttt{evaluate()} method that maps any configuration to a value, and variant metadata.
 The \texttt{Value} type is an \emph{aggregation wrapper} that determines how individual evaluations combine across the configuration space.
-Five wrappers cover the standard problem classes:
-\texttt{Max<W>} and \texttt{Min<W>} for NP optimization problems (e.g., Maximum Independent Set returns \texttt{Max<i32>});
-\texttt{Or} for NP decision problems (e.g., $k$-Satisfiability returns \texttt{Or});
-\texttt{Sum<W>} for \#P counting problems; and
-\texttt{And} for co-NP decision problems.
-These wrappers anticipate future extensions beyond NP (\Cref{sec:conclusion}) and cost little to include.
+Five wrappers cover the standard problem classes (\Cref{tab:wrappers}).
 Each wrapper implements an \texttt{Aggregate} trait with an \texttt{identity()} and a \texttt{combine()} method, so a brute-force solver reduces to a single fold over the configuration space: \texttt{configs.map(evaluate).fold(identity, combine)}.
-The same trait marks which wrappers support \emph{witness recovery}: \texttt{Max}, \texttt{Min}, and \texttt{Or} can track which configuration achieved the optimal value; \texttt{Sum} and \texttt{And} cannot.
+Wrappers that support \emph{witness recovery} can track which configuration achieved the optimal value; those that cannot (counting and co-NP) only produce aggregate values.
 This distinction propagates to the reduction traits.
+
+\begin{table}[h]
+\caption{Aggregation wrappers and their complexity classes.}\label{tab:wrappers}
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Wrapper & Class & Witness & Example \\
+\midrule
+\texttt{Max<W>} & NP optimization & Yes & Max.\ Indep.\ Set \\
+\texttt{Min<W>} & NP optimization & Yes & Min.\ Vertex Cover \\
+\texttt{Or}     & NP decision     & Yes & $k$-Satisfiability \\
+\texttt{Sum<W>} & \#P counting    & No  & \#SAT \\
+\texttt{And}    & co-NP decision  & No  & Tautology \\
+\bottomrule
+\end{tabular}
+\end{table}
 A single problem type admits multiple \emph{variants}: parameterizations by graph type (\texttt{SimpleGraph}, \texttt{KingsSubgraph}, \texttt{UnitDiskGraph}, etc.) and weight type (unit, \texttt{i32}, \texttt{f64}).
 Each variant may have a better complexity bound---MIS on king's subgraphs runs in $O(2^{\sqrt{|V|}})$ versus $O(1.1996^{|V|})$ on general graphs~\cite{Xiao2017MIS}.
 The \texttt{declare\_variants!} macro registers each concrete instantiation with its best-known complexity, a factory for JSON deserialization, and a solve function.
