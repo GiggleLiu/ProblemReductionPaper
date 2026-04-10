@@ -43,7 +43,7 @@ Three design decisions underpin the approach.
 (1)~A \emph{no-code contribution route} lets domain experts add reductions by filing structured issues; no familiarity with the implementation language is needed.
 (2)~A \emph{multilayer verification stack} checks each reduction from type signatures through round-trip tests to \emph{agentic feature tests}, in which AI agents role-play domain-expert personas and exercise the library end-to-end without access to the implementation.
 (3)~A \emph{fully automated pipeline} handles implementation, review, and integration, letting a small team operate the project end-to-end.
-In under three months, the library grew to 100+ problem types and 156 reduction rules.
+In under three months, the library grew to 160+ problem types and 189 reduction rules.
 These results suggest that a well-engineered harness lets agents build verified reduction libraries at a scale and pace that prior efforts have not reached.
 Beyond solving known problems, the library provides infrastructure for \emph{automated algorithm research}: AI systems that discover new solving algorithms, heuristics, or reductions can use the reduction graph as a standardized evaluation harness---and a new solver registered for any single problem type instantly becomes available to every problem connected by a reduction path.
 \end{abstract}
@@ -153,7 +153,7 @@ Together, skills and specification form a domain-specific harness that addresses
 \end{figure}
 
 We demonstrate that a well-engineered harness lets AI coding agents build mathematical software at a scale that human teams have not achieved.
-The evidence is a Rust library of 100+ problem types and 156~reduction rules, built in under three months by a small team and AI agents.
+The evidence is a Rust library of 160+ problem types and 189~reduction rules, built in under three months by a small team and AI agents.
 The harness rests on three pillars:
 \begin{enumerate}
   \item A \emph{skill-based automation pipeline} built on two kinds of skills: \emph{agent skills} that let agents autonomously code, test, and document each reduction, and \emph{advisor skills} that guide users, contributors, and maintainers through the project's conventions (\Cref{sec:skills}).
@@ -553,18 +553,18 @@ These are precisely the kind of integration and usability errors that pass unit 
 \toprule
 Metric & Count \\
 \midrule
-Problem types (unique names) & 116 \\
-Registered variants & 140 \\
-Reduction rules & 156 \\
-Reachable from 3-SAT & 34 \\
+Problem types (unique names) & 163 \\
+Registered variants & 189 \\
+Reduction rules & 189 \\
+Reachable from 3-SAT & 28 \\
 Reducible to ILP & 105 \\
 \bottomrule
 \end{tabular}
 \end{table}
 \Cref{tab:status} summarizes the current library.
-Of the 140~registered variants, 105 have a reduction path to ILP.
+Of the 189~registered variants, 105 have a reduction path to ILP.
 For these, the \texttt{pred solve} pipeline reduces a given instance along the cheapest path and invokes HiGHS; practical solve time depends on the instance size after reduction.
-34~variants are reachable from 3-SAT, providing tested reduction chains that serve as NP-hardness arguments.
+28~problem types are reachable from 3-SAT, providing tested reduction chains that serve as NP-hardness arguments.
 The library covers a substantial fraction of the NP-complete problems catalogued by Garey and Johnson~\cite{garey1979}; a precise comparison is future work.
 Subsequent additions came through the issue-based contribution route described in \Cref{sec:pipeline-overview}.
 
@@ -660,7 +660,7 @@ Fourth, integrating the library as a \emph{standardized benchmark} for neural co
 \subsection{Conclusion}
 
 We have introduced \emph{assembly problems}---software projects whose scale exceeds human capacity but whose homogeneous, verifiable structure make them amenable to agent execution constrained by systematic verification.
-NP-hard problem reductions are a concrete instance: in under three months, a small team and AI agents produced a verified reduction graph connecting 100+ problem types to specialized solvers.
+NP-hard problem reductions are a concrete instance: in under three months, a small team and AI agents produced a verified reduction graph connecting 160+ problem types to specialized solvers.
 
 Three structural barriers---convention drift, effort exhaustion, and knowledge discontinuity---make assembly problems impractical for human teams at this scale and pace.
 Verification ensures that agents do not deviate unchecked from contributor-specified ground truth, and skills encode workflow knowledge as reusable documents, lowering the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
