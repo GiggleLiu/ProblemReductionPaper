@@ -244,9 +244,10 @@ Each edge carries a cost that depends on input size---unknown until a concrete i
 The engine supports three operations: \emph{composition} substitutes one edge's output polynomial into the next edge's input; \emph{comparison} checks whether a composite path dominates a direct rule, for redundancy detection; and \emph{evaluation} computes numeric cost for a concrete instance, enabling instance-dependent path search.
 
 \emph{Solvers.}
-A brute-force enumerator exhaustively searches small instances---used in round-trip testing where correctness, not speed, matters.
-An ILP solver handles larger instances; the backend defaults to the open-source HiGHS~\cite{Huangfu2018HiGHS}, with Coin-CBC~\cite{Forrest2023CoinCBC}, SCIP~\cite{Achterberg2009SCIP}, and others available as drop-in alternatives.
-Most problem types have a reduction path to ILP, directly or through intermediate types.
+Round-trip testing requires solving each problem to optimality, so every problem type needs a solver.
+Most types (e.g., Maximum Independent Set, Traveling Salesman, flow-shop scheduling) have a reduction path to ILP, so the default validation strategy reduces the problem to ILP and solves it with HiGHS~\cite{Huangfu2018HiGHS}---an open-source solver, with Coin-CBC~\cite{Forrest2023CoinCBC} and SCIP~\cite{Achterberg2009SCIP} as drop-in alternatives.
+For problems without an ILP path, the library provides customized exact solvers that exploit problem structure---for example, functional-dependency closure for Minimum Cardinality Key, and cycle enumeration with branch-and-bound for Partial Feedback Edge Set.
+The remaining problems fall back to brute-force enumeration on small instances.
 
 \emph{Example database.}
 Canonical instances serve as the single source of truth.
