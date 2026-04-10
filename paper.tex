@@ -27,7 +27,7 @@
 
 \begin{document}
 
-\title{Problem Reductions at Scale: Agentic Integration of Computational Hard Problems}
+\title{Problem Reductions at Scale: Agentic Integration of Computationally Hard Problems}
 
 \author{...}  % placeholder
 
@@ -69,7 +69,7 @@ Beyond classical solvers, specialized hardware introduces additional formulation
 Physics-inspired methods scale further---graph neural networks solve QUBO at million-variable scale~\cite{Schuetz2022PhysicsGNN}, and hybrid quantum-GNN methods tackle the Traveling Salesman Problem~\cite{He2024QuantumTSP}---but still require a QUBO or Ising formulation as input.
 A practitioner with a crew-scheduling problem cannot reach most of these solvers without first \emph{translating} the problem into a form the solver understands.
 
-This translation is called a \emph{reduction}: an efficient algorithm that converts an instance of one problem into an instance of another, together with an inverse map that translates the solution back.
+This translation is called a \emph{reduction}: an efficient algorithm that converts an instance of one problem into an instance of another.
 Borrowing the idea of reductions from complexity theory~\cite{karp1972}, we require each reduction to carry an inverse map that translates the solution back.
 Each verified reduction is a bridge connecting a new problem to an existing solver.
 
@@ -257,7 +257,7 @@ The same instance feeds round-trip tests, JSON fixtures rendered in the PDF manu
 
 \subsection{Why Rust?}\label{sec:why-rust}
 
-The choice of implementation language has outsized impact in agentic workflows, because the agent's edit--compile--test loop runs hundreds of times per session.
+The choice of implementation language has an outsized impact in agentic workflows, because the agent's edit--compile--test loop runs hundreds of times per session.
 None of the maintainers had written Rust before this project---the language was chosen in large part for properties that benefit agents.
 
 \emph{Explicit, actionable error messages.}
@@ -407,7 +407,7 @@ It then auto-corrects mechanical failures (undefined symbols, missing metrics) a
 Only issues passing all four checks move to \col{Ready}.
 
 \textbf{Stage~3: Implement} (\col{Ready} $\to$ \col{Review Pool}).
-An implementation agent executes the \texttt{run-pipeline} skill. It checks the \col{Ready} column, picks an issue with the highest priority (e.g.\ new problem types before new reduction rules, since rules depend on types), claims it by moving it to \col{In Progress}, produces one PR with code implementation and manual writing to resolve the issue, and moves the issue to \col{Review Pool}.
+An implementation agent executes the \texttt{run-pipeline} skill. It checks the \col{Ready} column, picks the highest-priority issue (e.g.\ new problem types before new reduction rules, since rules depend on types), claims it by moving it to \col{In Progress}, produces one PR with code implementation and manual writing, and moves the issue to \col{Review Pool}.
 The implementation agent separates two kinds of knowledge.
 \emph{Domain skills} (\texttt{add-model}, \texttt{add-rule}) encode what makes a reduction correct: a correctness argument, a size overhead expression, and a worked example must all exist \emph{before any code is written} (\Cref{fig:skill-addrule}).
 This is knowledge the agent cannot infer from existing code---it must come from the issue's mathematical content.
@@ -448,7 +448,7 @@ This is knowledge the agent cannot infer from existing code---it must come from 
 \end{figure}
 
 \textbf{Stage~4: Review} (\col{Review Pool} $\to$ \col{Final Review}).
-A review agent executes the \texttt{review-pipeline} skill. It claims an issue from \col{Review Pool} by moving it to \col{Under Review}, dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification})---and posts a review report to the PR comment and moves the issue to \col{Final Review}.
+A review agent executes the \texttt{review-pipeline} skill. It claims an issue from \col{Review Pool} by moving it to \col{Under Review}, dispatches three read-only sub-agents in fresh context windows---structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification})---and posts a review report on the PR and moves the issue to \col{Final Review}.
 
 \textbf{Stage~5: Merge} (\col{Final Review} $\to$ \col{Done}).
 A maintainer uses the \texttt{final-review} skill to merge or hold the PR.
@@ -470,7 +470,7 @@ Beyond unit tests and manual verification, we adopt the following two mechanisms
 
 \textbf{Issue check (Stage 2).}
 Correctness begins with the issue provided by the domain expert.
-As shown in \Cref{fig:roundtrip-pipeline}, the structured issue serves as both the specification and the acceptance criterion: it defines the reduction's mathematical content, provides the canonical example that seeds all tests.
+As shown in \Cref{fig:roundtrip-pipeline}, the structured issue serves as both the specification and the acceptance criterion: it defines the reduction's mathematical content and provides the canonical example that seeds all tests.
 The issue is validated along the four dimensions described in Stage~2 (\Cref{sec:pipeline-overview}).
 Invalid proposals are rejected before implementation effort is spent.
 The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test, the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode.
@@ -588,7 +588,7 @@ Through this process, the skill-based automation pipeline was established and it
 In Phase~2 (weeks~7--8.5), basic skills were introduced, but the pipeline was not yet end-to-end automated.
 In Phase~3 (weeks~8.5--11), the full pipeline became operational.
 Both curves accelerate sharply: problem types grew from 23 to 114, and reduction rules from 55 to 159, in under three weeks.
-External domain experts began contributing through the \texttt{propose} skill, filing structured issues in mathematical language while agents handle implementation.
+External domain experts began contributing through the \texttt{propose} skill, filing structured issues in mathematical language while agents handled implementation.
 
 \jinguo{Add: per-phase human time, agent success/failure rate, OnHold frequency, test coverage numbers.}
 
@@ -659,12 +659,12 @@ Fourth, integrating the library as a \emph{standardized benchmark} for neural co
 
 \subsection{Conclusion}
 
-We have introduced \emph{assembly problems}---software projects whose scale exceeds human capacity but whose homogeneous, verifiable structure makes them amenable to agent execution constrained by systematic verification.
+We have introduced \emph{assembly problems}---software projects whose scale exceeds human capacity but whose homogeneous, verifiable structure make them amenable to agent execution constrained by systematic verification.
 NP-hard problem reductions are a concrete instance: in under three months, a small team and AI agents produced a verified reduction graph connecting 100+ problem types to specialized solvers.
 
 Three structural barriers---convention drift, effort exhaustion, and knowledge discontinuity---make assembly problems impractical for human teams at this scale and pace.
 Verification ensures that agents do not deviate unchecked from contributor-specified ground truth, and skills encode workflow knowledge as reusable documents, lowering the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
-With 100+ problem variants already connected, the graph routes supported problems to solvers along cheapest paths.
+With 100+ problem variants already connected, the graph routes supported problems to solvers along the cheapest paths.
 
 \section*{Acknowledgments}
 
@@ -724,7 +724,7 @@ Third, the brute-force enumerator is always available: it folds over all configu
 Brute force remains essential for round-trip testing, where correctness matters more than speed.
 
 \paragraph{Reduction graph construction.}
-Problem variants and reduction rules compose into the directed graph described in \Cref{sec:architecture}.
+Problem variants and reduction rules compose into the directed graph described in \Cref{sec:graph-structure}.
 For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both reduction traits with an identity solution map.
 At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 
