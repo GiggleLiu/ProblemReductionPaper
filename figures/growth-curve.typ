@@ -8,11 +8,13 @@
 // Weekly data mined from git history (week index, count)
 #let data-models = (
   (0, 17), (2, 20), (3, 20), (4, 20), (5, 21),
-  (6, 21), (7, 23), (8, 23), (9, 39), (10, 107), (11, 114),
+  (6, 21), (7, 23), (8, 23), (9, 39), (10, 107), (11, 116),
+  (12, 187), (13, 187),
 )
 #let data-rules = (
-  (0, 0), (2, 21), (3, 24), (4, 38), (5, 48),
-  (6, 55), (7, 55), (8, 55), (9, 59), (10, 77), (11, 159),
+  (0, 0), (2, 21), (3, 24), (4, 35), (5, 45),
+  (6, 52), (7, 52), (8, 52), (9, 56), (10, 73), (11, 153),
+  (12, 214), (13, 239),
 )
 
 #let phase2-start = 7
@@ -31,8 +33,8 @@
     y-label: [Count],
     x-tick-step: 2,
     y-tick-step: 40,
-    x-min: 0, x-max: 12,
-    y-min: 0, y-max: 180,
+    x-min: 0, x-max: 14,
+    y-min: 0, y-max: 260,
     legend: "inner-north-west",
     legend-style: (
       stroke: none,
@@ -68,15 +70,15 @@
   // Phase labels above the plot
   let label-y = 0.4  // offset above plot top
   content(
-    (rel: (3.5 * 12/12, label-y), to: "plot.north-west"),
+    (rel: (3.5 * 12/14, label-y), to: "plot.north-west"),
     text(6pt, fill: fg-light, [Phase 1: Manual]),
   )
   content(
-    (rel: (7.75 * 12/12, label-y), to: "plot.north-west"),
+    (rel: (7.75 * 12/14, label-y), to: "plot.north-west"),
     text(6pt, fill: fg-light, [P2]),
   )
   content(
-    (rel: (10.25 * 12/12, label-y), to: "plot.north-west"),
+    (rel: (11.0 * 12/14, label-y), to: "plot.north-west"),
     text(6pt, fill: fg-light, [Phase 3: Full pipeline]),
   )
 })
