@@ -20,7 +20,7 @@
 % Inline project-board column label
 \newcommand{\col}[1]{%
   \tikz[baseline=(X.base)]{%
-    \node[draw=gray!60, fill=gray!10, rounded corners=2pt,
+    \node[draw=gray!80, fill=gray!10, rounded corners=2pt,
           inner sep=2pt,
           font=\scriptsize\sffamily] (X) {#1};%
   }%
@@ -182,22 +182,13 @@ The \texttt{pred} command-line interface (CLI) is the primary entry point.
 Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem---finding the largest set of vertices with no two adjacent---on a conflict graph: vertices are candidate locations, edges connect locations that are too close.
 \Cref{lst:cli-session} shows how one solves this instance with an ILP solver.
 \begin{figure}[t]
-\begin{lstlisting}[
-  basicstyle=\ttfamily\scriptsize,
-  commentstyle=\color{gray}\itshape,
-  numbers=left,
-  numberstyle=\tiny\color{gray},
-  numbersep=5pt,
-  breaklines=true,
-  frame=single,
-  xleftmargin=14pt,
-  xrightmargin=4pt,
-  aboveskip=6pt,
-  belowskip=2pt
-]
-$ pred create MIS --graph 0-1,1-2,2-3 \
+\lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},moredelim=[is][\color{black!80}\bfseries]{@}{@},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
+\begin{lstlisting}
+# Create a conflict graph (4 locations, 3 conflicts),
+# reduce to ILP, and solve
+@$ pred create MIS --graph 0-1,1-2,2-3 \
     | pred reduce - --to ILP \
-    | pred solve -
+    | pred solve -@
 Problem: "MaximumIndependentSet"
 Solver: ilp (via ILP)
 Solution: [1, 0, 0, 1]  // locations 0 and 3
@@ -344,7 +335,7 @@ Four roles drive the flow: a domain expert files issues, a maintainer triages an
 \begin{figure}[t]
   \centering
   \begin{tcolorbox}[
-    colback=gray!5, colframe=gray!60,
+    colback=gray!5, colframe=gray!80,
     title={\texttt{propose} --- advisor skill (excerpts)},
     fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
@@ -413,7 +404,7 @@ This is knowledge the agent cannot infer from existing code---it must come from 
 \begin{figure}[t]
   \centering
   \begin{tcolorbox}[
-    colback=gray!5, colframe=gray!60,
+    colback=gray!5, colframe=gray!80,
     title={\texttt{add-rule} --- agent skill (excerpts)},
     fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
@@ -514,7 +505,7 @@ These are precisely the kind of integration and usability errors that pass unit 
 \begin{figure}[t]
   \centering
   \begin{tcolorbox}[
-    colback=gray!5, colframe=gray!60,
+    colback=gray!5, colframe=gray!80,
     title={\textbf{Agent Profile:} Dr.\ Sarah Chen --- CLI Tool (\texttt{pred})},
     fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
