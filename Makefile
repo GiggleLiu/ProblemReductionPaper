@@ -20,6 +20,10 @@ figures:
 		typst compile $$src figures/$$base.pdf; \
 	done
 
+# Package an arXiv-ready tarball into submit/
+arxiv:
+	bash scripts/package-arxiv.sh
+
 # Clean LaTeX build artifacts
 clean:
 	latexmk -C
