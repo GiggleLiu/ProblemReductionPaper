@@ -278,6 +278,7 @@ The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nie
 
 \emph{Automation skills} are plain-Markdown documents that orchestrate multi-step pipelines---connecting specification, tools, and knowledge into repeatable workflows.
 Unlike traditional automation (Makefiles, shell scripts), which chains deterministic commands, skills can include \emph{abstract} steps---``implement the reduction algorithm,'' ``review the pull request for correctness,'' ``fix failing tests and summarize the changes''---that require judgment and are interpreted by the agent using its own capabilities.
+Unlike bare prompts, skills break a complex task into concrete, ordered steps small enough for an agent to execute faithfully, preventing the drift and omissions that occur when agents plan from scratch.
 Concrete examples appear in \Cref{sec:pipeline-overview}.
 
 \emph{Advisor skills} guide \emph{humans}---domain experts who know the mathematics but not the codebase, end users who want to solve a problem, and maintainers who must make judgment calls.
