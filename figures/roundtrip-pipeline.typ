@@ -45,7 +45,7 @@
   let y1 = 0
   rbox((cx - bw / 2, y1), bw, bh, col-input, "issue",
     [GitHub Issue],
-    [Formal definition · example],
+    [Formal definition · Example],
     [Ground-truth solution])
 
   // ── Row 2: Example Database ──
@@ -71,7 +71,7 @@
   // Left: JSON Fixtures
   rbox((x-start, y3), out-w, bh-s, col-input, "json",
     [JSON Fixtures],
-    [Source · target · solutions])
+    [Source · Target · Solutions])
 
   // Right: CLI
   rbox((x-start + out-w + out-gap, y3), out-w, bh-s, col-output, "cli",
@@ -89,7 +89,7 @@
   let json-cx = x-start + out-w / 2
   rbox((json-cx - out-w / 2, y4), out-w, bh-s, col-output, "manual",
     [Typst PDF Manual],
-    [Visual diagrams · proof sketches])
+    [Visual diagrams · Proof sketches])
 
   // Arrow: JSON → Manual
   line("json.south", "manual.north",

@@ -495,11 +495,10 @@ The pipeline is designed so that the mathematical intent propagates through all 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.75\columnwidth]{figures/roundtrip-pipeline.pdf}
-  \caption{From issue to verified example.
-    A GitHub issue supplies the formal definition, canonical instance, and ground-truth solution.
-    Extraction lands the instance in the example database, which serves as the single source of truth built from canonical builder functions.
-    The database feeds two downstream artifacts: JSON fixtures rendered into the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode for interactive exploration.
-    Both paths terminate in a verification step that compares the rendered artifact back to the original issue.}
+  \caption{The canonical example as a single source of truth.
+    The contributor's issue contributes one fully worked instance with a known solution, which is extracted once into the example database as a builder function.
+    Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from that same instance, so any drift from the issue surfaces as a visible mismatch.
+    The Stage 6 verification step closes the loop: the contributor walks through the manual and CLI output and checks them against the original issue.}
   \label{fig:example-pipeline}
 \end{figure}
 
