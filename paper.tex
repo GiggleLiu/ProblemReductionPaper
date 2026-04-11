@@ -725,6 +725,6 @@ Brute force remains essential for round-trip testing, where correctness matters 
 \paragraph{Reduction graph construction.}
 Problem variants and reduction rules compose into the directed graph described in \Cref{sec:graph-structure}.
 For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both reduction traits with an identity solution map.
-At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
+At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the reduction-graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 
 \end{document}
