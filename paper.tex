@@ -643,8 +643,8 @@ The same composability supports automated discovery: a new solver or reduction--
 
 Three directions extend this work.
 First, replacing asymptotic overhead with \emph{fine-grained cost prediction} requires a stronger symbolic engine---one that can simplify, compare, and compose overhead expressions to select the cheapest reduction path for a given instance.
-Second, extending the graph beyond NP to \emph{other complexity classes} (approximation hierarchies such as APX and PTAS, counting problems in \#P), preserving hardness guarantees across reductions.
-Third, closing the loop between the graph and \emph{automated research}: the graph's topology reveals which missing edges would connect the most isolated problem types, and an agentic discovery pipeline can target those high-value reductions---generating candidates, validating them through round-trip tests, and absorbing verified rules as new edges.
+Second, extending the reduction graph beyond NP to \emph{other complexity classes} (approximation hierarchies such as APX and PTAS, counting problems in \#P), preserving hardness guarantees across reductions.
+Third, closing the loop between the reduction graph and \emph{automated research}: the reduction graph's topology reveals which missing edges would connect the most isolated problem types, and an agentic discovery pipeline can target those high-value reductions---generating candidates, validating them through round-trip tests, and absorbing verified rules as new edges.
 
 \subsection{Conclusion}
 
