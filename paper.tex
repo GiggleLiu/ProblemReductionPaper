@@ -298,7 +298,8 @@ Concrete examples appear in \Cref{sec:pipeline-overview}.
 
 \emph{Advisor skills} actively involve humans by soliciting feedback at each step.
 They serve two purposes: \emph{training} humans to use the library or contribute to it, and \emph{utilizing} humans for tasks agents cannot reliably perform---critical decisions, hard mathematical reasoning, and creative work like designing canonical examples.
-For end users, \texttt{find-solver} guides a user from a real-world problem to a concrete solving strategy by exploring the reduction graph, and \texttt{find-problem} does the reverse---given a solver, it discovers what other problems it can handle via incoming reductions.
+For end users, \texttt{find-solver} guides a user from a real-world problem to a concrete solving strategy by exploring the reduction graph.
+\texttt{find-problem} does the reverse: given a solver, it discovers what other problems it can handle via incoming reductions.
 For contributors, \texttt{propose} conducts a structured brainstorming session to elicit a new problem or reduction in mathematical language, then files a well-formed GitHub issue---no programming required (\Cref{fig:skill-propose}).
 These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
 
