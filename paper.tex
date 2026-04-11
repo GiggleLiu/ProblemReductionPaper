@@ -726,6 +726,8 @@ Wrapper & Class & Witness & Example \\
 \shortstack[l]{\texttt{Extremum}\\\texttt{<V>}} & NP optimization$^\dagger$ & Yes & Integer Lin.\ Prog. \\
 \bottomrule
 \end{tabular}
+\\[2pt]
+{\footnotesize $^\dagger$\texttt{Extremum} differs from \texttt{Max}/\texttt{Min} only in that the optimization sense is chosen at runtime.}
 \end{table}
 A single problem type admits multiple \emph{variants}: parameterizations by graph type (\texttt{SimpleGraph}, \texttt{PlanarGraph}, \texttt{BipartiteGraph}, \texttt{KingsSubgraph}, \texttt{UnitDiskGraph}, etc.) and weight type (unit, \texttt{i32}, \texttt{f64}).
 Each variant may have a better complexity bound---MIS on king's subgraphs runs in $O(2^{\sqrt{|V|}})$ versus $O(1.1996^{|V|})$ on general graphs~\cite{Xiao2017MIS}.
