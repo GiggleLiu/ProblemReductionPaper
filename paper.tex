@@ -705,8 +705,8 @@ This appendix describes the key design decisions: the aggregation-based problem 
 \paragraph{Problems and variants.}
 Every problem type implements \texttt{Problem}, which requires: a constant name, an associated \texttt{Value} type, a method returning the configuration space dimensions, an \texttt{evaluate()} method that maps any configuration to a value, and variant metadata.
 The \texttt{Value} type is an \emph{aggregation wrapper} that determines how individual evaluations combine across the configuration space.
-Five wrappers cover the standard problem classes (\Cref{tab:wrappers}).
-Each wrapper implements an \texttt{Aggregate} trait with an \texttt{identity()} and a \texttt{combine()} method, so a brute-force solver reduces to a single fold over the configuration space: \texttt{configs.map(evaluate).fold(identity, combine)}.
+Six wrappers cover the standard problem classes (\Cref{tab:wrappers}).
+Each wrapper implements an \texttt{Aggregate} trait with \texttt{identity()}, \texttt{combine()}, and optional witness-tracking methods, so a brute-force solver reduces to a single fold over the configuration space: \texttt{configs.map(evaluate).fold(identity, combine)}.
 Wrappers that support \emph{witness recovery} can track which configuration achieved the optimal value; those that cannot (counting and co-NP) only produce aggregate values.
 This distinction propagates to the reduction traits.
 
