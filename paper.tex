@@ -231,7 +231,7 @@ Every problem type implements a uniform evaluation interface: given any \emph{co
 Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}. Problems may have \emph{variants} due to different type parameterization, e.g., MIS on unit disk graph is a variant represented as a different node in the reduction graph, which is solvable in sub-exponential time.
 
 \emph{Reduction rules.}
-Each rule requires two mappings, a forward map for mapping a source problem instance to a target problem instance, and an inverse map for solution extraction (\Cref{app:architecture}).
+Each rule requires two mappings, a forward map for mapping a source problem instance to a target problem instance, and an inverse map for solution extraction (Appendix~\ref{app:architecture}).
 Each rule also carries a \emph{reduction overhead}: a set of multivariate polynomials mapping the source's size measures to the target's.
 For example, the Satisfiability $\to$ Maximum Independent Set reduction creates one vertex per literal occurrence in the formula, yielding $O(L)$ vertices and $O(L^2)$ edges where $L$ is the total number of literal occurrences.
 
