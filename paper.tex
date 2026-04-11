@@ -642,9 +642,9 @@ Adding a single edge from a hardware platform's native formulation (e.g., Maximu
 The same composability supports automated discovery: a new solver or reduction---whether learned~\cite{Ye2024ReEvo}, evolved~\cite{Novikov2025AlphaEvolve}, or hand-designed---can be registered and validated by the library's round-trip tests, instantly extending to every connected type.
 
 Three directions extend this work.
-First, replacing asymptotic overhead with \emph{fine-grained cost prediction}---using extracted problem features to estimate concrete reduction cost per instance, enabling adaptive solver routing.
+First, replacing asymptotic overhead with \emph{fine-grained cost prediction} requires a stronger symbolic engine---one that can simplify, compare, and compose overhead expressions to select the cheapest reduction path for a given instance.
 Second, extending the graph beyond NP to \emph{other complexity classes} (approximation hierarchies such as APX and PTAS, counting problems in \#P), preserving hardness guarantees across reductions.
-Third, integrating the library as a \emph{standardized benchmark} for neural combinatorial optimization, where learned solvers can be compared against exact methods across 100+ problem types on a common footing.
+Third, closing the loop between the graph and \emph{automated research}: the graph's topology reveals which missing edges would connect the most isolated problem types, and an agentic discovery pipeline can target those high-value reductions---generating candidates, validating them through round-trip tests, and absorbing verified rules as new edges.
 
 \subsection{Conclusion}
 
