@@ -70,15 +70,15 @@
   // Phase labels above the plot
   let label-y = 0.4  // offset above plot top
   content(
-    (rel: (3.5 * 12/14, label-y), to: "plot.north-west"),
+    (rel: (5.5 * 12/14, label-y), to: "plot.north-west"),
     text(6pt, fill: fg-light, [Phase 1: Manual]),
   )
   content(
-    (rel: (7.75 * 12/14, label-y), to: "plot.north-west"),
-    text(6pt, fill: fg-light, [P2]),
+    (rel: (9.6 * 12/14, label-y + 0.12), to: "plot.north-west"),
+    text(6pt, fill: fg-light, [Phase 2:\ Basic skills]),
   )
   content(
-    (rel: (11.0 * 12/14, label-y), to: "plot.north-west"),
+    (rel: (13.2 * 12/14, label-y), to: "plot.north-west"),
     text(6pt, fill: fg-light, [Phase 3: Full pipeline]),
   )
 })
