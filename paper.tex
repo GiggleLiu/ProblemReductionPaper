@@ -217,7 +217,8 @@ The same functionality is available through the Rust library API.
 The build system also produces a PDF manual from Typst source.
 The manual serves two audiences: domain experts reviewing the mathematical content, and agents reading it as reference material during implementation.
 Each entry contains a formal definition, a proof sketch, and a worked example with visualization---the example is the same canonical instance that the contributor provided in the original issue.
-The manual shares a single source of truth with the CLI and tests: variant metadata, reduction-graph topology, and canonical examples are exported from the Rust crate as JSON and read by the Typst compiler, so the manual stays in sync with the code automatically.
+The manual shares a single source of truth with the CLI and tests: variant metadata, reduction-graph topology, and canonical examples are exported from the Rust crate as JSON and read by the Typst compiler.
+This keeps the manual in sync with the code automatically.
 A built-in completeness check rejects any build in which a graph node or edge lacks a corresponding manual entry.
 
 \subsection{Core and Infrastructure}\label{sec:graph-structure}
