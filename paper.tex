@@ -639,8 +639,10 @@ OpenAI coined \emph{harness engineering} for the discipline of designing constra
 Their internal experiment produced roughly one million lines of code with no manually written source, by shifting the engineer's role from code authorship to environment design.
 They identify three pillars: context engineering (repository as single source of truth), architectural constraint enforcement (linters and structural tests), and continuous maintenance (``garbage collection'' of technical debt).
 Our work adapts this paradigm for a mathematical domain, adding two components absent from OpenAI's agent-only framework: advisor skills that guide human contributors, and a domain-specific verification layer (\Cref{sec:skills}).
-OpenAI's ``garbage collection'' pillar (continuous maintenance against entropy) is handled implicitly by our review pipeline, which catches drift at every PR; we do not yet run recurring background cleanup tasks.
-The key addition is a domain-specific verification layer---round-trip testing and agentic feature tests---that addresses functional correctness, which Fowler~\cite{Fowler2026HarnessLimits} identified as the open problem in harness engineering.
+OpenAI's ``garbage collection'' pillar (continuous maintenance against entropy) is handled implicitly by our review pipeline, which catches drift at every PR.
+We do not yet run recurring background cleanup tasks.
+The key addition is a domain-specific verification layer---round-trip testing and agentic feature tests---that addresses functional correctness.
+Fowler~\cite{Fowler2026HarnessLimits} identified this as the open problem in harness engineering.
 
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION
