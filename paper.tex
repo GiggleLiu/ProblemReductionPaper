@@ -55,7 +55,7 @@ We show that \emph{harness engineering}---designing the constraints, verificatio
 Our harness combines a no-code contribution route for domain experts, a multilayer verification stack ranging from type-level checks to agentic feature tests (AI agents role-playing as end users), and a fully automated implementation-review-integration pipeline.
 In under three months, we built a command-line tool backed by a library of 100+ problem types and 200+~reduction rules in over 170k lines of Rust.
 The result suggests that a well-engineered harness lets agents build verified software at a scale and pace that prior efforts have not reached.
-The resulting reduction graph also serves as infrastructure for \emph{automated algorithm research}: a new solver registered for any single problem type instantly becomes available to every problem connected by a reduction path.
+Because the reduction graph composes transitively, a new solver registered for any single problem type instantly becomes available to every problem connected by a reduction path.
 The source code is available at \url{https://github.com/CodingThrust/problem-reductions}.
 \end{abstract}
 
