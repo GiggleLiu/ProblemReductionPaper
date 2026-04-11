@@ -51,7 +51,7 @@ Solving an NP-hard optimization problem often requires reformulating it for a sp
 A tool for polynomial-time reductions between hard problems would let practitioners route any supported problem to any supported solver through a single interface, but building such a library at scale has remained out of reach.
 We show that \emph{harness engineering}---designing the constraints, verification systems, and feedback loops that channel AI coding agents---can overcome this barrier.
 Our harness combines a no-code contribution route for domain experts, a multilayer verification stack ranging from type-level checks to agentic feature tests (AI agents role-playing as end users), and a fully automated implementation-review-integration pipeline.
-In under three months, we built a command-line tool backed by a library of 100+ problem types and 200+ reduction rules, suggesting that a well-engineered harness lets agents build verified software at a scale and pace that prior efforts have not reached.
+In under three months, we built a command-line tool backed by a library of 100+ problem types and 200+~reduction rules, suggesting that a well-engineered harness lets agents build verified software at a scale and pace that prior efforts have not reached.
 The resulting reduction graph also serves as infrastructure for \emph{automated algorithm research}: a new solver registered for any single problem type instantly becomes available to every problem connected by a reduction path.
 \end{abstract}
 
@@ -131,7 +131,7 @@ Reduction-graph construction supplies one for free: every reduction admits a \em
 The reduction graph fits this pattern: each subtask is short, independently verifiable, and follows the same interface, sidestepping the sharp performance degradation that agents exhibit on longer-horizon tasks~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}.
 
 We build our harness from two components.
-\emph{Skills} are plain-markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
+\emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch'' (\Cref{fig:skill-addrule}).
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
 A \emph{project specification} anchors the system as a single source of truth for architecture and constraints that every skill inherits.
 Together, skills and specification form a domain-specific harness that addresses all three barriers:
@@ -211,11 +211,11 @@ A built-in completeness check rejects any build in which a graph node or edge la
 
 \subsection{Core and Infrastructure}\label{sec:graph-structure}
 
-The library is organized into two layers (\Cref{fig:library-architecture}): a \emph{core} that defines the problems (nodes), their reduction rules (edges) and an example database, and an \emph{infrastructure} that supporting them.
+The library is organized into two layers (\Cref{fig:library-architecture}): a \emph{core} that defines the problems (nodes), their reduction rules (edges), and an example database, and an \emph{infrastructure} that supports them.
 
 \emph{Problem types.}
 Every problem type implements a uniform evaluation interface: given any \emph{configuration}---an assignment of values to the problem's decision variables---return an objective value (\Cref{app:architecture}).
-Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}. Problem may have \emph{variants} due to the different type parameterization, e.g. MIS on unit disk graph is a variant that represented as a different node in the reduction graph, which is sovable in sub-exponential time.
+Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}. Problems may have \emph{variants} due to different type parameterization, e.g., MIS on unit disk graph is a variant represented as a different node in the reduction graph, which is solvable in sub-exponential time.
 
 \emph{Reduction rules.}
 Each rule requires two mappings, a forward map for mapping a source problem instance to a target problem instance, and an inverse map for solution extraction (\Cref{app:architecture}).
@@ -277,7 +277,7 @@ Tools let agents \emph{act}: create problem instances, run reductions, invoke so
 Without tools, knowledge and conventions remain inert.
 
 \emph{Agent skills (bridging context to tools).}
-A skill is a plain-markdown document that orchestrates a multi-step pipeline---connecting knowledge, conventions, and tools into a repeatable workflow.
+A skill is a plain-Markdown document that orchestrates a multi-step pipeline---connecting knowledge, conventions, and tools into a repeatable workflow.
 Skills encode \emph{established pipelines} that agents execute autonomously.
 Concrete examples appear in \Cref{sec:pipeline-overview}.
 
@@ -420,7 +420,7 @@ description: Adding a new reduction rule to the
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Required Information Checklist}
   \begin{enumerate}
-    \item \textbf{Reduction algorithm} --- how to transform source instance to target, with bibtex reference.
+    \item \textbf{Reduction algorithm} --- how to transform source instance to target, with BibTeX reference.
     \item \textbf{Size overhead} --- how target size relates to source size, used for estimating the overhead of the reduction.
     \item \textbf{Concrete example} --- a small worked-out instance, used for testing and documentation.
     \item $\ldots$
@@ -453,7 +453,7 @@ The skill picks a PR from \col{Final Review}, checks the report from the review 
 It then walks the maintainer through the agentic verdict, assesses usefulness, safety, and completeness, and either merges (moves the issue to \col{Done}) or holds the PR with a reason (moves the issue to \col{OnHold}).
 
 \textbf{Stage~6: Verify.}
-The maintainer invites the domain expert who filed the original issue to a community call,
+The maintainer invites the domain expert who filed the original issue to a community call, and
 walks through the PDF manual and CLI interactively.
 This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments.
 
@@ -536,8 +536,6 @@ These are precisely the kind of integration and usability errors that pass unit 
 %======================================================================
 \section{Evidence}\label{sec:evidence}
 
-\jinguo{All numbers in this section need a fresh snapshot before submission. Run the mining script to regenerate.}
-\claude{Evidence section rests on the growth curve alone. Missing: (1) agent success/failure rate per stage, (2) per-phase human hours, (3) no-code contributor count and quality-gate pass rate. These would transform this from a descriptive account into convincing empirical evidence.}
 
 \subsection{Library Status}
 
@@ -586,7 +584,7 @@ Subsequent additions came through the issue-based contribution route described i
   \label{fig:growth-curve}
 \end{figure}
 
-In Phase~1 (weeks~0--7; \Cref{fig:growth-curve}), the team and AI agents ported reduction rules from existing packages---ProblemReductions.jl~\cite{Liu2024ProblemReductions}, UnitDiskMapping.jl, and qubogen~\cite{Tamura2020qubogen}---and from Garey and Johnson's catalogue~\cite{garey1979}.
+In Phase~1 (weeks~0--7; \Cref{fig:growth-curve}), the team and AI agents ported reduction rules from existing packages---ProblemReductions.jl~\cite{Liu2024ProblemReductions}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping}, and qubogen~\cite{Tamura2020qubogen}---and from Garey and Johnson's catalogue~\cite{garey1979}.
 Growth was steady but slow: roughly 20~problem types and 55~rules by week~7.
 Through this process, the skill-based automation pipeline was established and iteratively refined.
 In Phase~2 (weeks~7--8.5), basic skills were introduced, but the pipeline was not yet end-to-end automated.
