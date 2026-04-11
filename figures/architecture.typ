@@ -35,7 +35,7 @@
   // Box 1: Problem trait + aggregate wrappers
   // ═══════════════════════════════════════
   let y1 = 0
-  let box1-h = 3.6
+  let box1-h = 5
   tbox((cx - bw/2, y1), bw, box1-h, col-trait, "box1")[
     #set align(center)
     #text(9pt, weight: "bold")[`Problem` trait]\
@@ -48,12 +48,12 @@
       gutter: 4pt,
       ..{
         let wrappers = (
-          (`Max<W>`, [NP opt.]),
-          (`Min<W>`, [NP opt.]),
-          (`Or`, [NP dec.]),
-          (`And`, [co-NP]),
-          (`Sum<W>`, [\#P]),
-          (`Extremum<V>`, [LP opt.]),
+          (`Max<W>`, [NP optimization]),
+          (`Min<W>`, [NP optimization]),
+          (`Or`, [NP decision]),
+          (`And`, [co-NP decision]),
+          (`Sum<W>`, [\#P counting]),
+          (`Extremum<V>`, [LP optimization]),
         )
         wrappers.map(((name, label)) =>
           std.rect(
