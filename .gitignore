@@ -18,6 +18,10 @@ paper.synctex(busy)
 # PDF output (keep source, not build output)
 paper.pdf
 
+# arXiv packaging output
+submit/arxiv/
+submit/arxiv.tar.gz
+
 # Typst intermediate
 *.typst-cache
 
@@ -29,3 +33,4 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
