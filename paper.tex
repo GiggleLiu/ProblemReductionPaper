@@ -477,7 +477,7 @@ The maintainer invites the domain expert who filed the original issue to a commu
 walks through the PDF manual and CLI interactively.
 This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments.
 
-Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2026Codex} (\texttt{gpt-5.4}) with maximum compute budget.
+Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2026Codex} (\texttt{gpt-5.4}, xhigh reasoning effort).
 The remaining stages use Claude Code~\cite{Anthropic2025ClaudeCode} (\texttt{opus-4.6}) for interactive sessions with the maintainer and domain expert.
 Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and \texttt{opus-4.6} stronger in interactive dialogue, though we did not evaluate this systematically.
 
