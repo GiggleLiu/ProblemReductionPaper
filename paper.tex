@@ -733,6 +733,12 @@ The \texttt{declare\_variants!} macro registers each concrete instantiation with
 All variable names in complexity expressions are validated at compile time against the problem's getter methods.
 This registry produces the registered variants from 100+ base problem types.
 
+\paragraph{Decision problems.}
+A generic \texttt{Decision<P>} wrapper converts any optimization problem \texttt{P} (whose value type is \texttt{Max<W>} or \texttt{Min<W>}) into a decision problem with value type \texttt{Or}: given a bound~$k$, it asks whether a configuration meeting or exceeding~$k$ exists.
+The wrapper implements \texttt{Problem} automatically via the \texttt{DecisionProblemMeta} trait, which supplies the decision variant's name.
+Reductions between the decision wrapper and its inner optimization type are derived generically, so adding a decision variant requires only a one-line macro invocation (\texttt{register\_decision\_variant!}).
+Three problem types currently have decision variants: Maximum Independent Set, Minimum Vertex Cover, and Minimum Dominating Set.
+
 \paragraph{Reduction rules.}
 The type system enforces a split based on witness capability.
 \texttt{ReduceTo<T>} requires a \texttt{ReductionResult} that bundles \texttt{target\_problem()} and \texttt{extract\_solution()}---a map from a target \emph{configuration} back to a source configuration.
