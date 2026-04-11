@@ -156,7 +156,7 @@ We demonstrate that a well-engineered harness lets AI coding agents build mathem
 The evidence is a Rust library of 100+ problem types and 200+~reduction rules, built in about three months by a small team and AI agents.
 The harness rests on three pillars:
 \begin{enumerate}
-  \item A \emph{skill-based automation pipeline} built on two kinds of skills: \emph{agent skills} that let agents autonomously code, test, and document each reduction, and \emph{advisor skills} that guide users, contributors, and maintainers through the project's conventions (\Cref{sec:skills}).
+  \item A \emph{skill-based automation pipeline} built on two kinds of skills: \emph{automation skills} that let agents autonomously code, test, and document each reduction, and \emph{advisor skills} that guide users, contributors, and maintainers through the project's conventions (\Cref{sec:skills}).
   \item A \emph{no-code contribution route} that lets domain experts continuously integrate new reduction rules by filing structured issues---no familiarity with the implementation language is needed (\Cref{sec:method}).
   \item A \emph{multilayer verification stack} that ensures correctness at every stage: automated unit tests and round-trip tests validate each reduction programmatically, while domain experts perform end-to-end checks against contributor-specified ground truth (\Cref{sec:verification}).
 \end{enumerate}
