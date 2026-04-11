@@ -738,7 +738,7 @@ This registry produces the registered variants from 100+ base problem types.
 \paragraph{Decision problems.}
 A generic \texttt{Decision<P>} wrapper converts any optimization problem \texttt{P} (whose value type is \texttt{Max<W>} or \texttt{Min<W>}) into a decision problem with value type \texttt{Or}: given a bound~$k$, it asks whether a configuration meeting or exceeding~$k$ exists.
 The wrapper implements \texttt{Problem} automatically via the \texttt{DecisionProblemMeta} trait, which supplies the decision variant's name.
-The reduction from the decision wrapper to its inner optimization type is derived generically, so adding a decision variant requires only a one-line macro invocation (\texttt{register\_decision\_variant!}).
+The reduction from the decision wrapper to its inner optimization type is derived generically, so adding a decision variant requires only a one-line macro invocation (\texttt{register\_decision\_variant!}).\footnote{The reverse direction is not provided as a direct reduction: recovering the optimum from a decision oracle requires binary search over the bound, a Turing-style procedure rather than a single-shot many-one reduction, and would not fit the library's \texttt{ReduceTo} interface.}
 Three problem types currently have decision variants: Maximum Independent Set, Minimum Vertex Cover, and Minimum Dominating Set.
 
 \paragraph{Reduction rules.}
