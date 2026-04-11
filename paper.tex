@@ -276,7 +276,9 @@ Without tools, conventions remain inert.
 Domain knowledge---Garey and Johnson's catalogue~\cite{garey1979}, reference papers converted to Markdown for agent consumption, reference implementations already in the codebase---is too large to fit in a single agent context window.
 The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents discover relevant files through search and read full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
 
-\emph{Automation skills} are plain-Markdown documents that orchestrate multi-step pipelines---connecting specification, tools, and knowledge into repeatable workflows.
+We distinguish two kinds of skills: \emph{automation skills}, executed autonomously by agents, and \emph{advisor skills}, which actively involve humans.
+
+Automation skills are plain-Markdown documents that orchestrate multi-step pipelines---connecting specification, tools, and knowledge into repeatable workflows.
 Unlike traditional automation (Makefiles, shell scripts), which chains deterministic commands, skills can include \emph{abstract} steps---``implement the reduction algorithm,'' ``review the pull request for correctness,'' ``fix failing tests and summarize the changes''---that require judgment and are interpreted by the agent using its own capabilities.
 Unlike bare prompts, skills break a complex task into concrete, ordered steps small enough for an agent to execute faithfully, preventing the drift and omissions that occur when agents plan from scratch.
 Concrete examples appear in \Cref{sec:pipeline-overview}.
