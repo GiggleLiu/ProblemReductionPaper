@@ -387,7 +387,7 @@ cargo run --example detect_unreachable_from_3sat
 \textbf{Stage~1: Propose} ( $\to$ \col{Backlog}).
 A domain expert clones the repository and runs the \texttt{propose} skill (\Cref{fig:skill-propose}) in Claude Code or a similar agentic coding tool.
 The skill conducts a structured brainstorming session---one question at a time---to elicit the contribution's core content: which problem to add, its formal definition, and the reduction algorithm connecting it to existing problems; the expert answers in mathematical language, and no programming is required.
-The agent runs a topology analysis to avoid duplicates and to identify high-value gaps in the graph, then pre-validates the draft against Stage~2's quality checks.
+The agent runs a topology analysis to avoid duplicates and to identify high-value gaps in the reduction graph, then pre-validates the draft against Stage~2's quality checks.
 The output is a structured GitHub issue filed into \col{Backlog}.
 
 \textbf{Stage~2: Validate} (\col{Backlog} $\to$ \col{Ready}).
