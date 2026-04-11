@@ -495,9 +495,9 @@ The pipeline is designed so that the mathematical intent propagates through all 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.75\columnwidth]{figures/roundtrip-pipeline.pdf}
-  \caption{The canonical example as a single source of truth.
-    The contributor's issue contributes one fully worked instance with a known solution, which is extracted once into the example database as a builder function.
-    Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from that same instance, so any drift from the issue surfaces as a visible mismatch.
+  \caption{Canonical examples as a single source of truth.
+    The contributor's issue contributes worked instances---positive and negative cases with known solutions---which are extracted into the example database as builder functions.
+    Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from the same builders, so any drift from the issue surfaces as a visible mismatch.
     The Stage 6 verification step closes the loop: the contributor walks through the manual and CLI output and checks them against the original issue.}
   \label{fig:example-pipeline}
 \end{figure}
