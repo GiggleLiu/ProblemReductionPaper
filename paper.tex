@@ -499,7 +499,7 @@ The main agent interviews it---what worked, what was confusing, where did the ou
 The reliability of such self-reports remains an open question; we treat them as heuristic signals, not definitive verdicts.
 This report surfaces usability gaps, documentation omissions, and semantic errors that unit tests cannot reach.
 
-As a concrete example, an agentic feature test of the \texttt{pred} CLI (v0.3.0) found 4~bugs, 5~user-experience (UX) issues, and 4~cosmetic issues in a single session---none caught by the existing unit tests.
+As a concrete example, an agentic feature test of the \texttt{pred} CLI (v0.5.0) found 4~bugs, 5~user-experience (UX) issues, and 4~cosmetic issues in a single session---none caught by the existing unit tests.
 Among the bugs: nine problem types appeared in \texttt{pred create -{}-help} but crashed when a user tried to create them, because their parameters were not registered as CLI flags.
 Among the UX issues: the \texttt{to}/\texttt{from} subcommands confused every tester, because \texttt{pred to MIS} returns problems that reduce \emph{to} MIS (incoming edges), while users read it as ``where can MIS go \emph{to}'' (outgoing edges).
 These are precisely the kind of integration and usability errors that pass unit tests but break real workflows.
@@ -571,7 +571,6 @@ This means a practitioner facing any of these 129~problems can solve it to prova
 The reduction graph turns the ILP solver into a universal backend: the user supplies a problem instance, the library finds the cheapest reduction path to ILP, reduces the instance automatically, solves the resulting ILP, and maps the solution back.
 We believe this solver-access coverage alone is a practical contribution to the combinatorial optimization community.
 Second, 78~types are reachable from 3-SAT, providing tested NP-hardness arguments backed by executable code rather than pen-and-paper proofs.
-Subsequent additions came through the issue-based contribution route described in \Cref{sec:pipeline-overview}.
 
 \subsection{Development Phases}
 
