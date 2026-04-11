@@ -273,8 +273,8 @@ ArXiv MCP and web search retrieve references, and Typst compiles the PDF manual 
 Without tools, conventions remain inert.
 
 \emph{Knowledge base.}
-Domain knowledge---Garey and Johnson's catalogue~\cite{garey1979}, reference papers converted to Markdown for agent consumption, textbook reduction algorithms, reference implementations already in the codebase---is too large to fit in a single agent context window.
-The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents start with lightweight indexes (problem names, graph topology) and fetch full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
+Domain knowledge---Garey and Johnson's catalogue~\cite{garey1979}, reference papers converted to Markdown for agent consumption, reference implementations already in the codebase---is too large to fit in a single agent context window.
+The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents discover relevant files through search and read full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
 
 \emph{Automation skills} are plain-Markdown documents that orchestrate multi-step pipelines---connecting specification, tools, and knowledge into repeatable workflows.
 Skills encode \emph{established pipelines} that agents execute autonomously.
