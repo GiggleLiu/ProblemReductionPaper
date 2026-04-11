@@ -42,7 +42,7 @@
   node((1.2, 3.5), [], "csat", label-anchor: "west")
   node((4.5, 3.5), [$A$], "sat")
   node((8.0, 3.5), [$H$], "mc")
-  content((rel: (0, 0.9), to: "mc"), text(7pt)[NP-hard verified])
+  content((rel: (0, 0.9), to: "mc"), text(7pt)[NP-hard certified])
 
   // Lower row
   node((3.0, 1.6), [$B$], "mis")
