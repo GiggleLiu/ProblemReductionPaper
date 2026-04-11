@@ -220,27 +220,23 @@ A built-in completeness check rejects any build in which a graph node or edge la
 
 \subsection{Core and Infrastructure}\label{sec:graph-structure}
 
-The library is organized into two layers (\Cref{fig:library-architecture}): a \emph{core} that defines the graph's nodes and edges, and an \emph{infrastructure} that makes the graph usable.
-Three modules populate the core.
+The library is organized into two layers (\Cref{fig:library-architecture}): a \emph{core} that defines the problems (nodes), their reduction rules (edges) and an example database, and an \emph{infrastructure} that supporting them.
 
 \emph{Problem types.}
 Every problem type implements a uniform evaluation interface: given any \emph{configuration}---an assignment of values to the problem's decision variables---return an objective value (\Cref{app:architecture}).
-Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}.
-The uniform evaluation interface enables brute-force solving on small instances, which powers round-trip testing.
+Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}. Problem may have \emph{variants} due to the different type parameterization, e.g. MIS on unit disk graph is a variant that represented as a different node in the reduction graph, which is sovable in sub-exponential time.
 
 \emph{Reduction rules.}
-Each rule requires both a forward map and an inverse map in a single implementation---an agent cannot compile a forward reduction without providing the inverse map for solution extraction (\Cref{app:architecture}).
-Each rule also carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's.
+Each rule requires two mappings, a forward map for mapping a source problem instance to a target problem instance, and an inverse map for solution extraction (\Cref{app:architecture}).
+Each rule also carries a \emph{reduction overhead}: a set of multivariate polynomials mapping the source's size measures to the target's.
 For example, the Satisfiability $\to$ Maximum Independent Set reduction creates one vertex per literal occurrence in the formula, yielding $O(L)$ vertices and $O(L^2)$ edges where $L$ is the total number of literal occurrences.
 
 \emph{Example database.}
 Canonical instances serve as the single source of truth.
 The same instance feeds round-trip tests, JSON fixtures rendered in the PDF manual, and the \texttt{pred create --example} command for interactive exploration.
 
-With nodes and edges defined, two infrastructure modules make the graph operational.
-
 \emph{Solvers.}
-Round-trip testing requires solving each problem to optimality, so every problem type needs a solver.
+Every problem type needs a minimal but reasonably efficient solver, because round-trip testing requires solving each problem to optimality.
 Most types (e.g., Maximum Independent Set, Traveling Salesman, flow-shop scheduling) have a reduction path to ILP, so the default validation strategy reduces the problem to ILP and solves it with HiGHS~\cite{Huangfu2018HiGHS}---an open-source solver, with Coin-CBC~\cite{Forrest2023CoinCBC} and SCIP~\cite{Achterberg2009SCIP} as drop-in alternatives.
 For problems without an ILP path, the library provides customized exact solvers that exploit problem structure---for example, functional-dependency closure for Minimum Cardinality Key, and cycle enumeration with branch-and-bound for Partial Feedback Edge Set.
 The remaining problems fall back to brute-force enumeration on small instances.
