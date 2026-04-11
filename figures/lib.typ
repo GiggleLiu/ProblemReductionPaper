@@ -4,7 +4,7 @@
 #import "@preview/cetz:0.4.2": canvas, draw
 
 // ── Page setup (standalone figures) ──
-#let fig-page = (width: auto, height: auto, margin: 10pt)
+#let fig-page = (width: auto, height: auto, margin: 5pt)
 #let fig-text = (size: 7.5pt, font: "New Computer Modern")
 
 // ── Palette: black + one accent ──

@@ -48,10 +48,6 @@
   node((3.0, 1.6), [$B$], "mis")
   node((6.8, 1.6), [], "ising", label-anchor: "south")
 
-  // Orphan
-  node((10.0, 2.5), [$O$], "orphan")
-  content((rel: (0.0, -0.7), to: "orphan"), anchor: "north", text(7pt)[orphan])
-
   // Solvers (spread wider, lower)
   node((1.5, -0.4), [$S$], "s-rydberg")
   content((rel: (0.9, 0), to: "s-rydberg"), text(7pt)[$t_(S)$])
@@ -60,7 +56,7 @@
 
   node((9.0, -0.4), [$I$], "s-ilp", highlight: true)
   content((rel: (0.9, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
-  content((rel: (0, -1.2), to: "s-ilp"), text(7pt)[Integer linear\ programming])
+  content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
 
   // ── Edges ──
   edge("sat", "mis", name: "sat-mis")
