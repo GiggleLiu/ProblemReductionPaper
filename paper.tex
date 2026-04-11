@@ -489,7 +489,7 @@ The first three are standard; we describe the two novel mechanisms below.
 \textbf{Issue check (Stage 2).}
 Correctness begins with the issue provided by the domain expert.
 The structured issue serves as both the specification and the acceptance criterion; validation along the four dimensions of Stage~2 (\Cref{sec:pipeline-overview}) rejects invalid proposals before implementation effort is spent.
-The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test\footnote{In practice we find it helps to have contributors declare both positive and counter-examples in the issue---inputs the reduction should accept, and inputs it should reject or that sit at the boundary of its preconditions---to constrain edge cases the positive closed loop alone cannot see.}, the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode (\Cref{fig:example-pipeline}).
+The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test\footnote{In practice we find it helps to have contributors declare both positive and counter-examples in the issue. For a problem, counter-examples pin down edge cases of the formal definition; for a reduction rule, they witness the completeness of the rule by showing inputs on which it must not fire.}, the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode (\Cref{fig:example-pipeline}).
 The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this.
 
 \begin{figure}[t]
