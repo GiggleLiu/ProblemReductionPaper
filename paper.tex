@@ -495,11 +495,11 @@ The pipeline is designed so that the mathematical intent propagates through all 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.75\columnwidth]{figures/roundtrip-pipeline.pdf}
-  \caption{Data flow for round-trip testing examples.
-    A contributor's issue provides the canonical instance, which is extracted into the example database.
-    Round-trip tests run as a closed loop on the database.
-    The same data feeds JSON fixtures rendered in the PDF manual and the CLI's example mode.
-    The contributor cross-checks the manual against the original issue (dashed arrow).}
+  \caption{From issue to verified example.
+    A GitHub issue supplies the formal definition, canonical instance, and ground-truth solution.
+    Extraction lands the instance in the example database, which serves as the single source of truth built from canonical builder functions.
+    The database feeds two downstream artifacts: JSON fixtures rendered into the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode for interactive exploration.
+    Both paths terminate in a verification step that compares the rendered artifact back to the original issue.}
   \label{fig:roundtrip-pipeline}
 \end{figure}
 
