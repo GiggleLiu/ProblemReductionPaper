@@ -647,13 +647,20 @@ Fowler~\cite{Fowler2026HarnessLimits} identified this as the open problem in har
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION
 %======================================================================
-\section{Discussion and Conclusion}\label{sec:conclusion}
+\section{Conclusion and Discussion}\label{sec:conclusion}
+
+\subsection{Conclusion}
+
+In about three months, a small team and AI agents built a verified reduction graph connecting 100+ problem types and 200+ reduction rules to specialized solvers.
+The harness that made this possible rests on three pillars: a no-code contribution route that lets domain experts specify reductions in mathematical language, a multilayer verification stack from compile-time checks to agentic feature tests, and a skill-based automation pipeline that enforces conventions at every step.
+68\% of problem types now have a reduction path to ILP, granting solver access without problem-specific code.
+78 types are reachable from 3-SAT, providing tested NP-hardness arguments backed by executable code.
 
 \subsection{Discussion}
 
 The methodology generalizes to any collection of homogeneous, independently verifiable implementations with uniform interfaces.
-An automatic differentiation (AD) engine is a natural example: each differentiation rule transforms one operation into its derivative, and finite-difference checks play an analogous role---approximate but generic---verifying correctness automatically, without a problem-specific oracle.
-The cost of entry is \emph{harness engineering}: the 10+~skills in this project represent substantial upfront investment in designing the constraints and feedback loops that channel agents, and each new domain requires its own harness.
+An automatic differentiation (AD) engine is a natural example: each differentiation rule transforms one operation into its derivative, and finite-difference checks verify correctness automatically.
+The cost of entry is \emph{harness engineering}: the 10+~skills in this project represent substantial upfront investment, and each new domain requires its own harness.
 The methodology does \emph{not} generalize to heterogeneous tasks, where each issue is structurally unique and resists skill-based decomposition.
 
 The reduction graph is itself a programmable tool.
@@ -667,14 +674,6 @@ Second, extending the reduction graph beyond NP to \emph{other complexity classe
 Third, closing the loop between the reduction graph and \emph{automated research}.
 The reduction graph's topology reveals which missing edges would connect the most isolated problem types.
 An agentic discovery pipeline can target those high-value reductions---generating candidates, validating them through round-trip tests, and absorbing verified rules as new edges.
-
-\subsection{Conclusion}
-
-Some software projects exceed human capacity in scale, yet their homogeneous, verifiable structure makes them amenable to agent execution.
-NP-hard problem reductions are a concrete instance.
-In about three months, a small team and AI agents produced a verified reduction graph connecting 100+ problem types to specialized solvers.
-The deeper lesson is that verification changes the economics of delegation.
-When correctness can be checked cheaply and uniformly, the bottleneck shifts from writing code to designing the harness that channels agent output into trustworthy artifacts.
 
 \section*{Acknowledgments}
 
