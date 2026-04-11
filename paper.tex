@@ -180,7 +180,7 @@ The library implements the reduction graph as a Rust crate, organized in three l
 
 The \texttt{pred} command-line interface (CLI) is the primary entry point.
 Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem---finding the largest set of vertices with no two adjacent---on a conflict graph: vertices are candidate locations, edges connect locations that are too close.
-\Cref{lst:cli-session} shows how she solves this instance without writing any reduction code.
+\Cref{lst:cli-session} shows how one solves this instance with an ILP solver.
 \begin{figure}[t]
 \lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},moredelim=[is][\bfseries]{@}{@},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
 \begin{lstlisting}
@@ -189,19 +189,16 @@ Consider a logistics engineer who models warehouse bin placement as a Maximum In
 @$ pred create MIS --graph 0-1,1-2,2-3 \
     | pred reduce - --to ILP \
     | pred solve -@
-{
-  "problem": "MaximumIndependentSet",
-  "reduced_to": "ILP",
-  "solution": [1, 0, 0, 1],   // locations 0 and 3
-  "evaluation": "Valid(2)"     // 2 non-conflicting bins
-}
+Problem: "MaximumIndependentSet"
+Solver: ilp (via ILP)
+Solution: [1, 0, 0, 1]  // locations 0 and 3
+Evaluation: "Max(2)"    // 2 non-conflicting bins
 \end{lstlisting}
-\caption{CLI session: solving a Maximum Independent Set instance.
+\caption{CLI session: creating and solving a Maximum Independent Set instance via reduction to integer linear programming (ILP).
   Commands communicate via Unix pipes (\texttt{|}), reading JSON from stdin (\texttt{-}) and writing JSON to stdout, so they compose without intermediate files.}
 \label{lst:cli-session}
 \end{figure}
 The three commands compose through Unix pipes: \texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it to a target formulation, and \texttt{solve} invokes a solver.
-The output (lines~6--11) shows that locations~0 and~3 form a maximum independent set of size~2.
 
 Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types, \texttt{pred show} prints a problem's definition and neighboring reductions, \texttt{pred list} lists all registered problem types with their complexities, and \texttt{pred evaluate} scores a candidate configuration against any problem instance---useful for verifying solutions independently of the solver.
 The same functionality is available through the Rust library API.
@@ -548,35 +545,37 @@ These are precisely the kind of integration and usability errors that pass unit 
 
 \subsection{Library Status}
 
-\begin{table}[h]
-\caption{Library status summary (as of April 10, 2026).}\label{tab:status}
-\centering
-\small
-\begin{tabular}{@{}lr@{}}
-\toprule
-Metric & Count \\
-\midrule
-Problem types (unique names) & 190 \\
-Registered variants & 220 \\
-Reduction rules & 265 \\
-Reachable from 3-SAT & 78 \\
-Reducible to ILP & 129 \\
-\bottomrule
-\end{tabular}
-\end{table}
-\Cref{tab:status} summarizes the current library.
-Two connectivity numbers stand out: 129~types have a reduction path to ILP, granting solver access via HiGHS; 78~are reachable from 3-SAT, providing tested NP-hardness arguments.
-Subsequent additions came through the issue-based contribution route described in \Cref{sec:pipeline-overview}.
-\Cref{fig:reduction-graph} visualizes the current graph; orphan nodes (registered but not yet connected by any reduction) are omitted.
-
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth,trim={10cm 50cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
+  \includegraphics[width=\columnwidth,trim={10cm 45cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
+  \vspace{-4pt}
+  \small
+  \begin{tabular}{@{}lr@{}}
+  \toprule
+  Metric & Count \\
+  \midrule
+  Problem types (unique names) & 190 \\
+  Registered variants & 220 \\
+  Reduction rules & 265 \\
+  Reachable from 3-SAT & 78 \\
+  Reducible to ILP & 129 (68\%) \\
+  \bottomrule
+  \end{tabular}
   \caption{The reduction graph as of April 2026.
-    Each colored box is a problem type; directed edges are reduction rules.
+    ILP is the most connected node: 129 of 190~problem types (68\%) have a reduction path to it, granting solver access via HiGHS, Gurobi, or CPLEX.
+    3-SAT anchors the other direction: 78~types are reachable from it, providing tested NP-hardness arguments.
     Only the 148~connected nodes are shown; 42~isolated types awaiting their first reduction are omitted.}
   \label{fig:reduction-graph}
 \end{figure}
+
+\Cref{fig:reduction-graph} summarizes the current library.
+Two connectivity numbers stand out.
+First, 129 of 190~problem types---68\%---have a reduction path to ILP, either directly or through intermediate types.
+This means a practitioner facing any of these 129~problems can solve it to provable optimality on moderate-sized instances using an off-the-shelf ILP solver, without writing a single line of problem-specific solver code.
+The reduction graph turns the ILP solver into a universal backend: the user supplies a problem instance, the library finds the cheapest reduction path to ILP, reduces the instance automatically, solves the resulting ILP, and maps the solution back.
+We believe this solver-access coverage alone is a practical contribution to the combinatorial optimization community.
+Second, 78~types are reachable from 3-SAT, providing tested NP-hardness arguments backed by executable code rather than pen-and-paper proofs.
+Subsequent additions came through the issue-based contribution route described in \Cref{sec:pipeline-overview}.
 
 \subsection{Development Phases}
 
