@@ -281,7 +281,8 @@ Unlike traditional automation (Makefiles, shell scripts), which chains determini
 Unlike bare prompts, skills break a complex task into concrete, ordered steps small enough for an agent to execute faithfully, preventing the drift and omissions that occur when agents plan from scratch.
 Concrete examples appear in \Cref{sec:pipeline-overview}.
 
-\emph{Advisor skills} guide \emph{humans}---domain experts who know the mathematics but not the codebase, end users who want to solve a problem, and maintainers who must make judgment calls.
+\emph{Advisor skills} actively involve humans by soliciting feedback at each step.
+They serve three purposes: \emph{training} humans to use the library or contribute to it, \emph{utilizing} humans for critical decisions and hard mathematical reasoning that agents cannot reliably perform, and \emph{channeling} human creativity for tasks like designing canonical examples or selecting which reductions to pursue.
 For end users, \texttt{find-solver} guides a user from a real-world problem to a concrete solving strategy by exploring the reduction graph, and \texttt{find-problem} does the reverse---given a solver, it discovers what other problems it can handle via incoming reductions.
 For contributors, \texttt{propose} conducts a structured brainstorming session to elicit a new problem or reduction in mathematical language, then files a well-formed GitHub issue---no programming required (\Cref{fig:skill-propose}).
 These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
