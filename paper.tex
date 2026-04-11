@@ -554,18 +554,20 @@ These are precisely the kind of integration and usability errors that pass unit 
 
 \subsection{Library Status}
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
-  \includegraphics[width=\textwidth,trim={10cm 50cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
+  \includegraphics[width=\columnwidth,trim={10cm 50cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
   \vspace{-4pt}
   \small
-  \begin{tabular}{@{}lr@{\hspace{18pt}}lr@{}}
+  \begin{tabular}{@{}lr@{}}
   \toprule
-  Metric & Count & Metric & Count \\
+  Metric & Count \\
   \midrule
-  Problem types (unique names) & 190 & Reachable from 3-SAT & 78 \\
-  Registered variants & 220 & Reducible to ILP & 129 (68\%) \\
+  Problem types (unique names) & 190 \\
+  Registered variants & 220 \\
   Reduction rules & 265 \\
+  Reachable from 3-SAT & 78 \\
+  Reducible to ILP & 129 (68\%) \\
   \bottomrule
   \end{tabular}
   \caption{The reduction graph as of April 2026.
@@ -573,7 +575,7 @@ These are precisely the kind of integration and usability errors that pass unit 
     3-SAT anchors the other direction: 78~types are reachable from it, providing tested NP-hardness arguments.
     Only the 148~connected nodes are shown; 42~isolated types awaiting their first reduction are omitted.}
   \label{fig:reduction-graph}
-\end{figure*}
+\end{figure}
 
 \Cref{fig:reduction-graph} summarizes the current library.
 Two connectivity numbers stand out.
