@@ -263,8 +263,7 @@ A \emph{harness system} constrains agent behavior through five components: a pro
 
 The five components address successive needs in an agent session (\Cref{fig:skill-architecture}): what conventions to follow, what actions to take, what domain knowledge to consult, how to combine these into a workflow, and how to involve humans.
 
-\emph{Project specification (auto-loaded conventions).}
-Specification files at the repository root (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) encode architecture constraints, naming conventions, file layout rules, and verification requirements.
+\emph{Project specification} files at the repository root (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) encode architecture constraints, naming conventions, file layout rules, and verification requirements.
 Every agent session loads these files automatically on startup, ensuring that a new agent inherits the same conventions as every prior session---without human briefing.
 
 \emph{Tools} include command-line interfaces (CLI), model context providers (MCP), and external search services.
