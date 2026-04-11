@@ -354,7 +354,7 @@ Four roles drive the flow: a domain expert files issues, a maintainer triages an
   \centering
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
-    title={\texttt{propose} --- advisor skill (excerpts)},
+    title={\textbf{\texttt{propose}} --- advisor skill (excerpts)},
     fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
   \footnotesize
@@ -402,7 +402,7 @@ cargo run --example detect_unreachable_from_3sat
 
 \textbf{Stage~1: Propose} ( $\to$ \col{Backlog}).
 A domain expert clones the repository and runs the \texttt{propose} skill (\Cref{fig:skill-propose}) in Claude Code or a similar agentic coding tool.
-The skill conducts a structured brainstorming session---one question at a time---to elicit the contribution's core content: which problem to add, its formal definition, and the reduction algorithm connecting it to existing problems; The expert answers in mathematical language; no programming is required.
+The skill conducts a structured brainstorming session---one question at a time---to elicit the core content of the contribution: which problem to add, its formal definition, and the reduction algorithm connecting it to existing problems. The expert answers in mathematical language; no programming is required.
 The agent runs a topology analysis to avoid duplicates and to identify high-value gaps in the reduction graph, then pre-validates the draft against Stage~2's quality checks.
 The output is a structured GitHub issue filed into \col{Backlog}.
 
@@ -423,7 +423,7 @@ This is knowledge the agent cannot infer from existing code---it must come from 
   \centering
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
-    title={\texttt{add-rule} --- automation skill (excerpts)},
+    title={\textbf{\texttt{add-rule}} --- automation skill (excerpts)},
     fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
   ]
   \footnotesize
@@ -640,7 +640,7 @@ Superpowers~\cite{Obra2025Superpowers} provides a general-purpose skills framewo
 OpenAI coined \emph{harness engineering} for the discipline of designing constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
 Their internal experiment produced roughly one million lines of code with no manually written source, by shifting the engineer's role from code authorship to environment design.
 They identify three pillars: context engineering (repository as single source of truth), architectural constraint enforcement (linters and structural tests), and continuous maintenance (``garbage collection'' of technical debt).
-Our work adapts this paradigm for a mathematical domain, adding two components absent from OpenAI's agent-only framework: advisor skills that guide human contributors, and a domain-specific verification layer (\Cref{sec:skills}).
+Our work adapts this paradigm for a mathematical domain, adding two components absent from OpenAI's agent-only framework: advisor skills that guide human contributors, and a domain-specific verification layer (\Cref{sec:method}).
 OpenAI's ``garbage collection'' pillar (continuous maintenance against entropy) is handled implicitly by our review pipeline, which catches drift at every PR.
 We do not yet run recurring background cleanup tasks.
 The key addition is a domain-specific verification layer---round-trip testing and agentic feature tests---that addresses functional correctness.
