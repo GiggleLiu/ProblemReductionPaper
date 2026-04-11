@@ -258,7 +258,7 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 \subsection{Anatomy of the Harness}\label{sec:skills}
 
 \begin{definition}[Harness System]
-A \emph{harness system} constrains agent behavior through five components: a progressively-disclosed knowledge base, a project specification auto-loaded into every agent session, a set of tools the agent may invoke, a set of automation skills (executable checklists that orchestrate multi-step pipelines), and a set of advisor skills for human contributors.
+A \emph{harness system} constrains agent behavior through five components: a project specification auto-loaded into every agent session, a set of tools the agent may invoke, a progressively-disclosed knowledge base, a set of automation skills (executable checklists that compose the previous three into multi-step pipelines), and a set of advisor skills for human contributors.
 \end{definition}
 
 The five components each address a different failure mode (\Cref{fig:skill-architecture}).
