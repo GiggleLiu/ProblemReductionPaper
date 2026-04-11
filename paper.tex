@@ -208,7 +208,10 @@ Evaluation: "Max(2)"    // 2 non-conflicting bins
 \end{figure}
 The three commands compose through Unix pipes: \texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it to a target formulation, and \texttt{solve} invokes a solver.
 
-Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types, \texttt{pred show} prints a problem's definition and neighboring reductions, \texttt{pred list} lists all registered problem types with their complexities, and \texttt{pred evaluate} scores a candidate configuration against any problem instance---useful for verifying solutions independently of the solver.
+Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types.
+\texttt{pred show} prints a problem's definition and neighboring reductions.
+\texttt{pred list} lists all registered problem types with their complexities.
+\texttt{pred evaluate} scores a candidate configuration against any problem instance, useful for verifying solutions independently of the solver.
 The same functionality is available through the Rust library API.
 
 The build system also produces a PDF manual from Typst source.
