@@ -1,9 +1,10 @@
-.PHONY: help paper figures clean
+.PHONY: help paper figures arxiv clean
 
 help:
 	@echo "Available targets:"
 	@echo "  paper   - Build paper with latexmk (pdflatex + bibtex)"
 	@echo "  figures - Compile Typst figure sources to PDF"
+	@echo "  arxiv   - Package arXiv upload under submit/ (tex, bbl, used figures)"
 	@echo "  clean   - Remove LaTeX build artifacts"
 
 # Build the paper (latexmk handles bibtex/rerun automatically)
