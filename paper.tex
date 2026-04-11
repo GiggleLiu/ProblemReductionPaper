@@ -417,7 +417,7 @@ An implementation agent executes the \texttt{run-pipeline} skill. It checks the 
 The implementation agent separates two kinds of knowledge.
 \emph{Domain skills} (\texttt{add-model}, \texttt{add-rule}) encode what makes a reduction correct: a correctness argument, a size overhead expression, and a worked example must all exist \emph{before any code is written} (\Cref{fig:skill-addrule}).
 This is knowledge the agent cannot infer from existing code---it must come from the issue's mathematical content.
-\emph{Engineering skills} (\texttt{issue-to-pr}) encode how to produce a clean PR: isolated worktrees, implementation plans, parallel sub-agents for independent tasks, and a detailed summary---all fully automatable.\footnote{The engineering workflow builds on Superpowers~\cite{Obra2025Superpowers}, an agentic skills framework for structured development workflows.}
+\emph{Engineering skills} (\texttt{issue-to-pr}) encode how to produce a clean PR: isolated worktrees, implementation plans, parallel sub-agents for independent tasks, and a detailed summary---all fully automatable\footnote{The engineering workflow builds on Superpowers~\cite{Obra2025Superpowers}, an agentic skills framework for structured development workflows.}.
 
 \begin{figure}[t]
   \centering
@@ -738,7 +738,7 @@ This registry produces the registered variants from 100+ base problem types.
 \paragraph{Decision problems.}
 A generic \texttt{Decision<P>} wrapper converts any optimization problem \texttt{P} (whose value type is \texttt{Max<W>} or \texttt{Min<W>}) into a decision problem with value type \texttt{Or}: given a bound~$k$, it asks whether a configuration meeting or exceeding~$k$ exists.
 The wrapper implements \texttt{Problem} automatically via the \texttt{DecisionProblemMeta} trait, which supplies the decision variant's name.
-The reduction from the decision wrapper to its inner optimization type is derived generically, so adding a decision variant requires only a one-line macro invocation (\texttt{register\_decision\_variant!}).\footnote{The reverse direction (optimization to decision) is not yet provided: recovering the optimum from a decision oracle requires binary search over the bound, a Turing-style procedure rather than a single-shot many-one reduction that fits the \texttt{ReduceTo} interface.}
+The reduction from the decision wrapper to its inner optimization type is derived generically, so adding a decision variant requires only a one-line macro invocation (\texttt{register\_decision\_variant!})\footnote{The reverse direction (optimization to decision) is not yet provided: recovering the optimum from a decision oracle requires binary search over the bound, a Turing-style procedure rather than a single-shot many-one reduction that fits the \texttt{ReduceTo} interface.}.
 Three problem types currently have decision variants: Maximum Independent Set, Minimum Vertex Cover, and Minimum Dominating Set.
 
 \paragraph{Reduction rules.}
