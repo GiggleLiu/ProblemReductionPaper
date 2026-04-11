@@ -263,10 +263,6 @@ A \emph{harness system} constrains agent behavior through five components: a pro
 
 The five components each address a different failure mode (\Cref{fig:skill-architecture}).
 
-\emph{Knowledge base (progressive disclosure).}
-Domain knowledge---Garey and Johnson's catalogue~\cite{garey1979}, textbook reduction algorithms, reference implementations already in the codebase---is too large to fit in a single agent context window.
-The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents start with lightweight indexes (problem names, graph topology) and fetch full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
-
 \emph{Project specification (auto-loaded conventions).}
 Specification files at the repository root (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) encode architecture constraints, naming conventions, file layout rules, and verification requirements.
 Every agent session loads these files automatically on startup, ensuring that a new agent inherits the same conventions as every prior session---without human briefing.
@@ -274,10 +270,14 @@ Every agent session loads these files automatically on startup, ensuring that a 
 \emph{Tools (CLI and programmatic interfaces).}
 The CLI and the language's built-in test harness are the agent's hands.
 Tools let agents \emph{act}: create problem instances, run reductions, invoke solvers, execute tests, and inspect graph topology.
-Without tools, knowledge and conventions remain inert.
+Without tools, conventions remain inert.
 
-\emph{Automation skills (bridging context to tools).}
-A skill is a plain-Markdown document that orchestrates a multi-step pipeline---connecting knowledge, conventions, and tools into a repeatable workflow.
+\emph{Knowledge base (progressive disclosure).}
+Domain knowledge---Garey and Johnson's catalogue~\cite{garey1979}, textbook reduction algorithms, reference implementations already in the codebase---is too large to fit in a single agent context window.
+The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents start with lightweight indexes (problem names, graph topology) and fetch full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
+
+\emph{Automation skills (composing the above).}
+A skill is a plain-Markdown document that orchestrates a multi-step pipeline---connecting specification, tools, and knowledge into a repeatable workflow.
 Skills encode \emph{established pipelines} that agents execute autonomously.
 Concrete examples appear in \Cref{sec:pipeline-overview}.
 
