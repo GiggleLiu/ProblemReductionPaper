@@ -48,7 +48,8 @@
 
 \begin{abstract}
 Solving an NP-hard optimization problem often requires reformulating it for a specific solver---quantum hardware, a commercial optimizer, or a domain heuristic.
-A tool for polynomial-time reductions between hard problems would let practitioners route any supported problem to any supported solver through a single interface, but building such a library at scale has remained out of reach.
+A tool for polynomial-time reductions between hard problems would let practitioners route any supported problem to any supported solver through a single interface.
+Building such a library at scale, however, has remained out of reach.
 We show that \emph{harness engineering}---designing the constraints, verification systems, and feedback loops that channel AI coding agents---can overcome this barrier.
 Our harness combines a no-code contribution route for domain experts, a multilayer verification stack ranging from type-level checks to agentic feature tests (AI agents role-playing as end users), and a fully automated implementation-review-integration pipeline.
 In under three months, we built a command-line tool backed by a library of 100+ problem types and 200+~reduction rules, suggesting that a well-engineered harness lets agents build verified software at a scale and pace that prior efforts have not reached.
