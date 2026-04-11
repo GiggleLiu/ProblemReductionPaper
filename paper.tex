@@ -290,9 +290,9 @@ These skills lower the usage barrier from ``knows the library'' to ``knows the p
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/skill-map.pdf}
-\caption{Harness architecture.
-  Five components surround agents: a knowledge base accessed via progressive disclosure, project specifications (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) auto-loaded at startup, tools (CLI, compiler, test harness), automation skills that bridge context to tools, and advisor skills that guide humans.
-  Blue boxes are \emph{advisor} skills; white boxes are \emph{automation} skills.}
+\caption{Skills architecture.
+  Blue boxes are \emph{advisor} skills (human in the loop); white boxes are \emph{automation} skills (fully autonomous).
+  Both are executed by agents; advisor skills solicit human input at designated steps.}
 \label{fig:skill-architecture}
 \end{figure}
 
