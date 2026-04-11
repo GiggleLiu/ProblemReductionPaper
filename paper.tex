@@ -182,7 +182,7 @@ The \texttt{pred} command-line interface (CLI) is the primary entry point.
 Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem---finding the largest set of vertices with no two adjacent---on a conflict graph: vertices are candidate locations, edges connect locations that are too close.
 \Cref{lst:cli-session} shows how she solves this instance without writing any reduction code.
 \begin{figure}[t]
-\lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},escapeinside={(*}{*)},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
+\lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},moredelim=**[s][\color{blue!70!black}\bfseries]{@}{@},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
 \begin{lstlisting}
 # Create a conflict graph (4 locations, 3 conflicts),
 # reduce to ILP, and solve
