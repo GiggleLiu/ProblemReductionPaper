@@ -100,7 +100,7 @@ Writing $r_{X \leftarrow Y}$ for the overhead polynomial of rule $Y \to X$, the 
 When multiple paths connect a problem to different solvers, the system selects the cheapest route for a given input size.
 
 Two kinds of paths play a special role.
-A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$, backed by tested code rather than a pen-and-paper proof---we say $H$ is \emph{NP-hard certified} by the graph.
+A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$, backed by tested code rather than a pen-and-paper proof---we say $H$ is \emph{NP-hard certified} by the reduction graph.
 A path from a problem to integer linear programming (ILP) grants access to mature solvers (HiGHS, Gurobi, CPLEX, etc.), which is crucial for testing the reduction correctness.
 
 The graph also supports algorithm research on hard problems.
