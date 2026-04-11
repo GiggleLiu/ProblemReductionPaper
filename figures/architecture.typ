@@ -44,7 +44,7 @@
     ]
     #std.line(length: 100%, stroke: 0.5pt + col-trait.lighten(40%))
     #std.grid(
-      columns: (1fr,) * 5,
+      columns: (1fr,) * 3,
       gutter: 4pt,
       ..{
         let wrappers = (
@@ -53,6 +53,7 @@
           (`Or`, [NP dec.]),
           (`And`, [co-NP]),
           (`Sum<W>`, [\#P]),
+          (`Extremum<V>`, [LP opt.]),
         )
         wrappers.map(((name, label)) =>
           std.rect(
