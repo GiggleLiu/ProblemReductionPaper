@@ -554,40 +554,35 @@ These are precisely the kind of integration and usability errors that pass unit 
 
 \subsection{Library Status}
 
-\begin{table}[h]
-\caption{Library status summary (as of April 10, 2026).}\label{tab:status}
-\centering
-\small
-\begin{tabular}{@{}lr@{}}
-\toprule
-Metric & Count \\
-\midrule
-Problem types (unique names) & 190 \\
-Registered variants & 220 \\
-Reduction rules & 265 \\
-Reachable from 3-SAT & 78 \\
-Reducible to ILP & 129 \\
-\bottomrule
-\end{tabular}
-\end{table}
-\Cref{tab:status} summarizes the current library.
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth,trim={10cm 50cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
+  \vspace{-4pt}
+  \small
+  \begin{tabular}{@{}lr@{\hspace{18pt}}lr@{}}
+  \toprule
+  Metric & Count & Metric & Count \\
+  \midrule
+  Problem types (unique names) & 190 & Reachable from 3-SAT & 78 \\
+  Registered variants & 220 & Reducible to ILP & 129 (68\%) \\
+  Reduction rules & 265 \\
+  \bottomrule
+  \end{tabular}
+  \caption{The reduction graph as of April 2026.
+    ILP sits at the center: 129 of 190~problem types (68\%) have a reduction path to it, granting solver access via HiGHS, Gurobi, or CPLEX.
+    3-SAT anchors the other direction: 78~types are reachable from it, providing tested NP-hardness arguments.
+    Only the 148~connected nodes are shown; 42~isolated types awaiting their first reduction are omitted.}
+  \label{fig:reduction-graph}
+\end{figure*}
+
+\Cref{fig:reduction-graph} summarizes the current library.
 Two connectivity numbers stand out.
 First, 129 of 190~problem types---68\%---have a reduction path to ILP, either directly or through intermediate types.
-This means a practitioner facing any of these 129~problems can solve it to provable optimality on moderate-sized instances using an off-the-shelf ILP solver (HiGHS, Gurobi, CPLEX), without writing a single line of problem-specific solver code.
+This means a practitioner facing any of these 129~problems can solve it to provable optimality on moderate-sized instances using an off-the-shelf ILP solver, without writing a single line of problem-specific solver code.
 The reduction graph turns the ILP solver into a universal backend: the user supplies a problem instance, the library finds the cheapest reduction path to ILP, reduces the instance automatically, solves the resulting ILP, and maps the solution back.
 We believe this solver-access coverage alone is a practical contribution to the combinatorial optimization community.
 Second, 78~types are reachable from 3-SAT, providing tested NP-hardness arguments backed by executable code rather than pen-and-paper proofs.
 Subsequent additions came through the issue-based contribution route described in \Cref{sec:pipeline-overview}.
-\Cref{fig:reduction-graph} visualizes the current graph; orphan nodes (registered but not yet connected by any reduction) are omitted.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth,trim={10cm 50cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
-  \caption{The reduction graph as of April 2026.
-    Each colored box is a problem type; directed edges are reduction rules.
-    Only the 148~connected nodes are shown; 42~isolated types awaiting their first reduction are omitted.}
-  \label{fig:reduction-graph}
-\end{figure}
 
 \subsection{Development Phases}
 
