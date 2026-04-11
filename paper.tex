@@ -115,7 +115,7 @@ Despite decades of work on reduction libraries and QUBO tools (\Cref{sec:related
 Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software implementation covers fewer than 20.
 The bottleneck was never mathematical knowledge; it was building and maintaining the software.
 
-The graph's value grows with every edge, but so does the cost of maintaining it.
+The reduction graph's value grows with every edge, but so does the cost of maintaining it.
 Every edge must conform to the same conventions---same interface, same file layout, same test pattern---but maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
 Conventions drift as contributors accumulate their own patterns (\emph{convention drift}).
 The domain experts who know the reductions rarely write systems code, bottlenecking progress on the few who know both (\emph{knowledge discontinuity}).
