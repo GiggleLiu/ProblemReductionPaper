@@ -261,7 +261,7 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 A \emph{harness system} constrains agent behavior through five components: a project specification auto-loaded into every agent session, a set of tools the agent may invoke, a progressively-disclosed knowledge base, a set of automation skills (executable checklists that compose the previous three into multi-step pipelines), and a set of advisor skills for human contributors.
 \end{definition}
 
-The five components each address a different failure mode (\Cref{fig:skill-architecture}).
+The five components address successive needs in an agent session (\Cref{fig:skill-architecture}): what conventions to follow, what actions to take, what domain knowledge to consult, how to combine these into a workflow, and how to involve humans.
 
 \emph{Project specification (auto-loaded conventions).}
 Specification files at the repository root (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) encode architecture constraints, naming conventions, file layout rules, and verification requirements.
