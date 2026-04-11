@@ -227,7 +227,7 @@ A built-in completeness check rejects any build in which a graph node or edge la
 The library is organized into two layers (\Cref{fig:library-architecture}): a \emph{core} that defines the problems (nodes), their reduction rules (edges), and an example database, and an \emph{infrastructure} that supports them.
 
 \emph{Problem types.}
-Every problem type implements a uniform evaluation interface: given any \emph{configuration}---an assignment of values to the problem's decision variables---return an objective value (\Cref{app:architecture}).
+Every problem type implements a uniform evaluation interface: given any \emph{configuration}---an assignment of values to the problem's decision variables---return an objective value (Appendix~\ref{app:architecture}).
 Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}. Problems may have \emph{variants} due to different type parameterization, e.g., MIS on unit disk graph is a variant represented as a different node in the reduction graph, which is solvable in sub-exponential time.
 
 \emph{Reduction rules.}
