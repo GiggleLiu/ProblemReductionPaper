@@ -49,8 +49,9 @@
   // ── Skills ──
   let s0 = hdr-y - 0.65
 
-  // User (1): learn the library
-  skill((c1x, s0), "tutorial", "u1", mentor: true)
+  // User (2): find a solver or discover reachable problems
+  skill((c1x, s0), "find-solver", "u1", mentor: true)
+  skill((c1x, s0 - sp), "find-problem", "u2", mentor: true)
 
   // Contributor (1): propose ideas, no coding
   skill((c2x, s0), "propose", "c1", mentor: true)

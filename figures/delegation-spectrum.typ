@@ -10,7 +10,7 @@
   let human-color = rgb("#d45d5d")
   let agent-color = accent
   let bar-w = 0.28
-  let row-h = 0.56
+  let row-h = 0.4
   let bar-x = 0.0
   let bw = 1.0
 
@@ -22,7 +22,7 @@
     ("Mathematical verification (correctness, proofs)", 0.8),
     ("Code review (structure, correctness, feature tests)", 0.15),
     ("Implementation (code, tests, documentation)", 0.05),
-    ("Convention enforcement (formatting, layout, checks)", 0.0),
+    ("Convention enforcement (naming, layout, checks)", 0.0),
   )
 
   let n = items.len()
@@ -81,7 +81,6 @@
         (bar-x + bw * frac, y + bar-w / 2),
         fill: human-color.lighten(35%),
         stroke: none,
-        radius: if frac > 0.99 { 2pt } else { (left: 2pt) },
       )
     }
     // Agent portion
@@ -91,7 +90,6 @@
         (bar-x + bw, y + bar-w / 2),
         fill: agent-color.lighten(35%),
         stroke: none,
-        radius: if frac < 0.01 { 2pt } else { (right: 2pt) },
       )
     }
 
@@ -105,8 +103,8 @@
 
   // ── Legend ──
   let ly = -total-h - 0.55
-  rect((bar-x, ly - 0.09), (bar-x + 0.22, ly + 0.09), fill: human-color.lighten(35%), stroke: none, radius: 1.5pt)
+  rect((bar-x, ly - 0.09), (bar-x + 0.22, ly + 0.09), fill: human-color.lighten(35%), stroke: none)
   content((bar-x + 0.30, ly), text(size: 5.5pt, fill: fg)[Human], anchor: "west")
-  rect((bar-x + 1.1, ly - 0.09), (bar-x + 1.32, ly + 0.09), fill: agent-color.lighten(35%), stroke: none, radius: 1.5pt)
+  rect((bar-x + 1.1, ly - 0.09), (bar-x + 1.32, ly + 0.09), fill: agent-color.lighten(35%), stroke: none)
   content((bar-x + 1.40, ly), text(size: 5.5pt, fill: fg)[Agent], anchor: "west")
 })
