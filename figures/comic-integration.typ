@@ -1,5 +1,5 @@
 #import "lib.typ": *
-#import "pixel-family/lib.typ": bob, crank
+#import "@preview/pixel-family:0.2.1": bob, sentinel
 
 #set page(..fig-page)
 #set text(..fig-text)
@@ -160,10 +160,10 @@
   line(rf, (wrist-x + gs - 0.18, wrist-y - gl - 0.12),
     stroke: (thickness: 1.2pt, paint: arm-col))
 
-  // Agent (crank) sitting on top of the elbow joint, manipulating the arm
+  // Agent (sentinel) sitting on top of the elbow joint, manipulating the arm
   content(
     (j1.at(0), j1.at(1) + 1),
-    crank(size: charsize),
+    sentinel(size: charsize),
   )
 
   // Issue in brick shape (to the left of the arm, on top of wall)
