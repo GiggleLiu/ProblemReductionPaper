@@ -76,7 +76,7 @@ The difficulty is that each solver speaks its own narrow language.
 SAT solvers~\cite{Een2003MiniSat, Biere2020Kissat} accept Boolean satisfiability instances.
 Integer linear programming (ILP) engines like CPLEX~\cite{IBM2022CPLEX}, Gurobi~\cite{Gurobi2026}, and HiGHS~\cite{Huangfu2018HiGHS} require problems expressed as linear constraints over integer variables.
 Semidefinite programming (SDP) relaxations tackle Max-Cut and graph bisection~\cite{GoemansWilliamson1995} but need a matrix formulation.
-Beyond classical solvers, specialized hardware introduces additional formulations: D-Wave quantum annealers~\cite{glover2019} solve Quadratic Unconstrained Binary Optimization (QUBO), and Rydberg atom arrays~\cite{lucas2014, pichler2018} natively solve Maximum Independent Set on geometric graphs.
+Beyond classical solvers, specialized hardware introduces additional formulations: D-Wave quantum annealers~\cite{glover2019} solve Quadratic Unconstrained Binary Optimization (QUBO), and Rydberg atom arrays~\cite{lucas2014, pichler2018, ebadi2022quantum} natively solve Maximum Independent Set on geometric graphs.
 Physics-inspired methods scale further---graph neural networks solve QUBO at million-variable scale~\cite{Schuetz2022PhysicsGNN}, and hybrid quantum-GNN methods tackle the Traveling Salesman Problem~\cite{He2024QuantumTSP}---but still require a QUBO or Ising formulation as input.
 A practitioner with a crew-scheduling problem cannot reach most of these solvers without first \emph{translating} the problem into a form the solver understands.
 
@@ -477,7 +477,7 @@ The maintainer invites the domain expert who filed the original issue to a commu
 walks through the PDF manual and CLI interactively.
 This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments.
 
-Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2025Codex} (\texttt{gpt-5.4}) with maximum compute budget.
+Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2026Codex} (\texttt{gpt-5.4}) with maximum compute budget.
 The remaining stages use Claude Code~\cite{Anthropic2025ClaudeCode} (\texttt{opus-4.6}) for interactive sessions with the maintainer and domain expert.
 Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and \texttt{opus-4.6} stronger in interactive dialogue, though we did not evaluate this systematically.
 
@@ -604,7 +604,7 @@ Second, 78~types are reachable from 3-SAT, providing tested NP-hardness argument
   \label{fig:growth-curve}
 \end{figure}
 
-In Phase~1 (weeks~0--7; \Cref{fig:growth-curve}), the team and AI agents ported reduction rules from existing packages---ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping}, and qubogen~\cite{Tamura2020qubogen}---and from Garey and Johnson's catalogue~\cite{garey1979}.
+In Phase~1 (weeks~0--7; \Cref{fig:growth-curve}), the team and AI agents ported reduction rules from existing packages---ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping,pan2025encodingcomputationallyhardproblems}, and qubogen~\cite{Tamura2020qubogen}---and from Garey and Johnson's catalogue~\cite{garey1979}.
 Growth was steady but slow: roughly 20~problem types and 55~rules by week~7.
 Through this process, the skill-based automation pipeline was established and iteratively refined.
 In Phase~2 (weeks~7--8.5), basic skills were introduced, but the pipeline was not yet end-to-end automated.
