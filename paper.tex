@@ -232,7 +232,7 @@ For problems without an ILP path, the library provides customized exact solvers 
 The remaining problems fall back to brute-force enumeration on small instances.
 
 \emph{Symbolic engine.}
-The reduction overhead defined above is represented as symbolic multivariate polynomials, because it depends on input size that is unknown until a concrete instance arrives.
+When a reduction path spans multiple edges, their overhead polynomials must be composed symbolically, because input sizes are unknown until a concrete instance arrives.
 The engine supports three operations: \emph{composition} substitutes one edge's output polynomial into the next edge's input; \emph{comparison} checks whether a composite path dominates a direct rule, for redundancy detection; and \emph{evaluation} computes numeric cost for a concrete instance, enabling instance-dependent path search.
 
 \subsection{Why Rust?}\label{sec:why-rust}
