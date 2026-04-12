@@ -142,7 +142,7 @@ Analyze the paragraph as if hearing it for the first time. Only consider text se
 - **Awkward phrasing** — things that sound wrong when read aloud
 - **Redundancy** — saying the same thing twice in different words
 
-If **no issues** found: print `"No issues. Moving to next paragraph."` and advance automatically.
+If **no issues** found: print `"No issues."` and **wait for the user** before advancing. The user may type `next` or `n` to continue, or offer their own observations. Never auto-advance — always pause after every paragraph.
 
 ### Step 3 — Fix Menu
 
