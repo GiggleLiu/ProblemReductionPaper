@@ -132,10 +132,9 @@ We build our harness from two components, a \emph{scaffold} and \emph{skills}.
 The \emph{scaffold}---repository structure, CI configuration, formatting rules, and a project specification file (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) auto-loaded into every agent session---anchors the system as a single source of truth for architecture and constraints.
 \emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch''.
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
-Together, scaffold and skills form a domain-specific harness that addresses all three barriers:
+Together, scaffold and skills form a domain-specific harness that addresses both barriers:
 \begin{itemize}
   \item \emph{Convention drift} $\to$ skills enforce the same interface, layout, and test pattern at every invocation.
-  \item \emph{Knowledge discontinuity} $\to$ domain experts contribute through structured issues; agents handle the implementation.
   \item \emph{Effort exhaustion} $\to$ the routine work---coding, testing, documenting---becomes repeatable without human attention.
 \end{itemize}
 
@@ -151,10 +150,10 @@ Together, scaffold and skills form a domain-specific harness that addresses all 
 \subsection{Contributions}
 
 We demonstrate that a well-engineered harness lets AI coding agents build mathematical software at a scale that human teams have not achieved.
-The evidence is a Rust library of 100+ problem types and 200+~reduction rules totaling over 170k lines of code, built in about three months by a small team and AI agents.
+The evidence is a command-line tool of 100+ problem types and 200+~reduction rules totaling over 170k lines of code, built in about three months by a small team and AI agents.
 The harness rests on three pillars:
 \begin{enumerate}
-  \item A \emph{skill-based automation pipeline} built on two kinds of skills: \emph{automation skills} that let agents autonomously code, test, and document each reduction, and \emph{advisor skills} that guide users, contributors, and maintainers through the project's conventions (\Cref{sec:skills}).
+  \item A \emph{skill-based automation pipeline} built on a set of skills that let agents autonomously code, test, and document each reduction (\Cref{sec:skills}).
   \item A \emph{no-code contribution route} that lets domain experts continuously integrate new reduction rules by filing structured issues---no familiarity with the implementation language is needed (\Cref{sec:method}).
   \item A \emph{multilayer verification stack} that ensures correctness at every stage: automated unit tests and round-trip tests validate each reduction programmatically, while domain experts perform end-to-end checks against contributor-specified ground truth (\Cref{sec:verification}).
 \end{enumerate}
@@ -170,13 +169,13 @@ The library implements the reduction graph as a Rust crate, organized in three l
   \includegraphics[width=\columnwidth]{figures/library-architecture.pdf}
   \caption{Library architecture.
     Three layers stack from interfaces (top) through core modules (middle) to infrastructure (bottom).
-    The CLI and PDF manual expose the reduction graph; core modules define problem types, reduction rules, and the example database; infrastructure provides solvers and a symbolic engine for overhead analysis.}
+    The command-line interface (CLI) and PDF manual expose the reduction graph; core modules define problem types, reduction rules, and the example database; infrastructure provides solvers and a symbolic engine for overhead analysis.}
   \label{fig:library-architecture}
 \end{figure}
 
 \subsection{Interfaces}\label{sec:user-interfaces}
 
-The \texttt{pred} command-line interface (CLI) is the primary entry point.
+The library ships with a command-line interface (CLI), \texttt{pred}, as the primary entry point.
 Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem---finding the largest set of vertices with no two adjacent.
 The conflict graph encodes spatial constraints: vertices are candidate locations, edges connect locations that are too close.
 \Cref{lst:cli-session} shows how one solves this instance with an ILP solver.
@@ -203,18 +202,14 @@ Beyond this workflow, \texttt{pred path} shows the reduction route and per-step 
 \texttt{pred show} prints a problem's definition and neighboring reductions.
 \texttt{pred list} lists all registered problem types with their complexities.
 \texttt{pred evaluate} scores a candidate configuration against any problem instance, useful for verifying solutions independently of the solver.
-The same functionality is available through the Rust library API.
 
 The build system also produces a PDF manual from Typst source.
 The manual serves two audiences: domain experts reviewing the mathematical content, and agents reading it as reference material during implementation.
 Each entry contains a formal definition, a proof sketch, and a worked example with visualization---the example is the same canonical instance that the contributor provided in the original issue.
-The manual shares a single source of truth with the CLI and tests: variant metadata, reduction-graph topology, and canonical examples are exported from the Rust crate as JSON and read by the Typst compiler.
-This keeps the manual in sync with the code automatically.
-A built-in completeness check rejects any build in which a graph node or edge lacks a corresponding manual entry.
 
 \subsection{Core and Infrastructure}\label{sec:graph-structure}
 
-The library is organized into two layers (\Cref{fig:library-architecture}): a \emph{core} that defines the problems (nodes), their reduction rules (edges), and an example database, and an \emph{infrastructure} that supports them.
+The library is organized into two layers (\Cref{fig:library-architecture}), \emph{core} and \emph{infrastructure}: the core defines the problems (nodes), their reduction rules (edges), and an example database, while the infrastructure supports them.
 
 \emph{Problem types.}
 Every problem type implements a uniform evaluation interface: given any \emph{configuration}---an assignment of values to the problem's decision variables---return an objective value (Appendix~\ref{app:architecture}).
