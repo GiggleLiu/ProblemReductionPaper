@@ -7,9 +7,27 @@ description: Use when reviewing a paper by listening — reads LaTeX paragraphs 
 
 ## Overview
 
-Interactive paragraph-by-paragraph paper review using macOS text-to-speech. Reads each paragraph aloud via the `say` command, then analyzes it as a naive first-time reader. Issues are reported with 2-3 fix options; the user picks one (or skips), the edit is applied, and the skill advances to the next paragraph.
+Interactive paragraph-by-paragraph paper review using text-to-speech. Reads each paragraph aloud, then analyzes it as a naive first-time reader. Issues are reported with 2-3 fix options; the user picks one (or skips), the edit is applied, and the skill advances to the next paragraph.
 
 The core insight: *hearing* prose aloud exposes awkward phrasing, overloaded sentences, and logical gaps that silent reading misses. The forced stop after each paragraph prevents skimming.
+
+### TTS Engine
+
+**Preferred: `edge-tts`** — Microsoft neural voices, natural-sounding, free.
+
+At session start, check if `edge-tts` is available by running `which edge-tts`. If not found, tell the user:
+
+> `edge-tts` is not installed. Install it with `pip install edge-tts`, then re-run this skill.
+
+Do NOT install it automatically. Wait for the user to confirm installation.
+
+If `edge-tts` is available, use it as the TTS engine with the `en-US-AndrewNeural` voice (warm, confident male). The command pattern is:
+
+```bash
+edge-tts --voice en-US-AndrewNeural --file /tmp/paragraph.txt --write-media /tmp/para.mp3 2>/dev/null && afplay /tmp/para.mp3
+```
+
+**Fallback: macOS `say`** — only if the user explicitly requests it or declines to install `edge-tts`.
 
 ## When to Use
 
