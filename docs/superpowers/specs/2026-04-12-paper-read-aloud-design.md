@@ -54,7 +54,7 @@ For each paragraph:
 ### Step 1 — Display & Speak
 
 - Show the raw LaTeX paragraph in a quoted block with line number range (e.g., `lines 142-155`).
-- Run `say` via Bash with the stripped plain-text version. Default system voice, normal rate.
+- Run `say` via Bash with the stripped plain-text version. Write text to a temp file and use `say -f /tmp/paragraph.txt` to avoid shell quoting issues. Default system voice, normal rate.
 - Wait for `say` to finish before proceeding.
 
 ### Step 2 — Naive Reader Analysis
