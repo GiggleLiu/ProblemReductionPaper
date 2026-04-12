@@ -128,11 +128,11 @@ The central requirement of any harness is a \emph{verification gate}---a cheap, 
 Reduction-graph construction supplies one for free: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality.
 This sidesteps the sharp performance degradation that agents exhibit on longer-horizon tasks~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}.
 
-We build our harness from two components, \emph{skills} and a \emph{scaffold}.
+We build our harness from two components, a \emph{scaffold} and \emph{skills}.
+The \emph{scaffold}---repository structure, CI configuration, formatting rules, and a project specification file (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) auto-loaded into every agent session---anchors the system as a single source of truth for architecture and constraints.
 \emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch''.
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
-The \emph{scaffold}---repository structure, CI configuration, formatting rules, and a project specification file (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) auto-loaded into every agent session---anchors the system as a single source of truth for architecture and constraints that every skill inherits.
-Together, skills and specification form a domain-specific harness that addresses all three barriers:
+Together, scaffold and skills form a domain-specific harness that addresses all three barriers:
 \begin{itemize}
   \item \emph{Convention drift} $\to$ skills enforce the same interface, layout, and test pattern at every invocation.
   \item \emph{Knowledge discontinuity} $\to$ domain experts contribute through structured issues; agents handle the implementation.
