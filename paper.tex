@@ -227,7 +227,7 @@ The same instance feeds round-trip tests, worked examples in the PDF manual, and
 \emph{Solvers.}
 Every problem type needs a minimal but reasonably efficient solver, because round-trip testing requires solving each problem exactly.
 Most types (e.g., Maximum Independent Set, Traveling Salesman, flow-shop scheduling) have a reduction path to ILP.
-The default validation strategy reduces the problem to ILP and solves it with HiGHS~\cite{Huangfu2018HiGHS}, an open-source solver with Coin-CBC~\cite{Forrest2023CoinCBC} and SCIP~\cite{Achterberg2009SCIP} as drop-in alternatives.
+The default validation strategy reduces the problem to ILP and solves it with HiGHS~\cite{Huangfu2018HiGHS}, an open-source solver; Coin-CBC~\cite{Forrest2023CoinCBC} and SCIP~\cite{Achterberg2009SCIP} are also supported.
 For problems without an ILP path, the library provides customized exact solvers that exploit problem structure---for example, functional-dependency closure for Minimum Cardinality Key, and cycle enumeration with branch-and-bound for Partial Feedback Edge Set.
 The remaining problems fall back to brute-force enumeration on small instances.
 
