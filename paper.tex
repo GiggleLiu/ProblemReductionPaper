@@ -232,7 +232,7 @@ For problems without an ILP path, the library provides customized exact solvers 
 The remaining problems fall back to brute-force enumeration on small instances.
 
 \emph{Symbolic engine.}
-Each edge carries a cost that depends on input size---unknown until a concrete instance arrives---so costs are represented as symbolic multivariate polynomials.
+The reduction overhead defined above depends on input size, which is unknown until a concrete instance arrives, so it is represented as symbolic multivariate polynomials.
 The engine supports three operations: \emph{composition} substitutes one edge's output polynomial into the next edge's input; \emph{comparison} checks whether a composite path dominates a direct rule, for redundancy detection; and \emph{evaluation} computes numeric cost for a concrete instance, enabling instance-dependent path search.
 
 \subsection{Why Rust?}\label{sec:why-rust}
