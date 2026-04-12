@@ -209,7 +209,7 @@ Each entry contains a formal definition, a proof sketch, and a worked example wi
 
 \subsection{Core and Infrastructure}\label{sec:graph-structure}
 
-The library is organized into two layers (\Cref{fig:library-architecture}), \emph{core} and \emph{infrastructure}: the core defines the problems (nodes), their reduction rules (edges), and an example database, while the infrastructure supports them.
+The CLI commands described above are thin wrappers around two internal layers (\Cref{fig:library-architecture}): a \emph{core} that defines the problems (nodes), their reduction rules (edges), and an example database, and an \emph{infrastructure} layer that supports them.
 
 \emph{Problem types.}
 Every problem type implements a uniform evaluation interface: given any \emph{configuration}---an assignment of values to the problem's decision variables---return an objective value (Appendix~\ref{app:architecture}).
