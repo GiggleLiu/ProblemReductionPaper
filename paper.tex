@@ -54,7 +54,7 @@ Building such a library at scale, however, has remained out of reach.
 We show that \emph{harness engineering}---designing the constraints, verification systems, and feedback loops that channel AI coding agents---can overcome this barrier.
 Our harness combines a no-code contribution route for domain experts, a multilayer verification stack ranging from type-level checks to agentic feature tests (AI agents role-playing as end users), and a fully automated implementation-review-integration pipeline.
 In about three months, we built a command-line tool backed by a library of 100+ problem types and 200+~reduction rules in over 170k lines of Rust.
-The result suggests that a well-engineered harness lets agents build verified software at a scale and pace that prior efforts have not reached.
+The result suggests that a well-engineered harness lets agents build well-tested software at a scale and pace beyond prior reduction-library efforts.
 Because the reduction graph composes transitively, a new solver registered for any single problem type instantly becomes available to every problem connected by a reduction path.
 The source code is available at \url{https://github.com/CodingThrust/problem-reductions}.
 \end{abstract}
@@ -94,7 +94,7 @@ Every edge carries a \emph{reduction overhead}---a polynomial mapping the source
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.65\columnwidth]{figures/reduction-graph-concept.pdf}
-  \caption{The reduction graph.  Each node is a problem type; each directed edge is a primitive reduction rule.  Highlighted nodes mark the two anchor roles: \emph{3-SAT} (source of NP-hardness proofs) and \emph{ILP} (gateway to mature solvers).  Edge labels $r_{B \leftarrow A}$ and $r_{C \leftarrow B}$ denote reduction overhead---a polynomial mapping input size to output size.  Nodes carry the time complexity of best known algorithms (e.g., $t_S$, $t_I$).  A directed path from 3-SAT to a problem~$H$ makes $H$ \emph{NP-hard certified}; a path from any problem to ILP grants solver access.}
+  \caption{The reduction graph.  Each node is a problem type; each directed edge is a primitive reduction rule.  Highlighted nodes mark the two anchor roles: \emph{3-SAT} (source of NP-hardness proofs) and \emph{ILP} (gateway to mature solvers).  Edge labels $r_{B \leftarrow A}$ and $r_{C \leftarrow B}$ denote reduction overhead---multivariate polynomials mapping input sizes to output sizes.  Nodes carry the time complexity of best known algorithms (e.g., $t_S$, $t_I$).  A directed path from 3-SAT to a problem~$H$ makes $H$ \emph{NP-hard certified}; a path from any problem to ILP grants solver access.}
   \label{fig:reduction-graph-concept}
 \end{figure}
 
@@ -141,9 +141,9 @@ Together, scaffold and skills form a domain-specific harness that addresses both
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/comic-integration.pdf}
-  \caption{The integration bottleneck.
+  \caption{The integration problem.
     (a) a contributor's new reduction does not fit the library's conventions---different interface, different layout---and cannot be integrated without learning the codebase.
-    (b) the contributor files a structured GitHub issue; an AI agent handles implementation, testing, and integration automatically.}
+    (b) the contributor files a structured GitHub issue; an AI agent handles implementation, review and documentation automatically.}
   \label{fig:comic}
 \end{figure}
 
@@ -168,7 +168,7 @@ The library implements the reduction graph as a Rust crate, organized in two lay
   \centering
   \includegraphics[width=\columnwidth]{figures/library-architecture.pdf}
   \caption{Library architecture.
-    Two layers stack from interfaces (top) to infrastructure (bottom).
+    Two layers stack: interfaces (top) and infrastructure (bottom).
     The command-line interface (CLI) and PDF manual expose the reduction graph; infrastructure modules define problem types, reduction rules, and the example database, and provide solvers and a symbolic engine for overhead analysis.}
   \label{fig:library-architecture}
 \end{figure}
@@ -192,7 +192,7 @@ Solver: ilp (via ILP)
 Solution: [1, 0, 0, 1]  // locations 0 and 3
 Evaluation: "Max(2)"    // 2 non-conflicting bins
 \end{lstlisting}
-\caption{CLI session: creating and solving a Maximum Independent Set instance via reduction to integer linear programming (ILP).
+\caption{CLI using example: creating and solving a Maximum Independent Set instance via reduction to integer linear programming (ILP).
   Commands communicate via Unix pipes (\texttt{|}), reading JSON from stdin (\texttt{-}) and writing JSON to stdout, so they compose without intermediate files.}
 \label{lst:cli-session}
 \end{figure}
@@ -298,7 +298,7 @@ These skills lower the usage barrier from ``knows the library'' to ``knows the p
 \includegraphics[width=\columnwidth]{figures/skill-map.pdf}
 \caption{Skills architecture.
   Blue boxes are \emph{advisor} skills (human in the loop); white boxes are \emph{automation} skills (fully autonomous).
-  Both are executed by agents; advisor skills solicit human input at designated steps.}
+  Both are executed by agents, while human beings are more involed when advisor skills are loaded.}
 \label{fig:skill-architecture}
 \end{figure}
 
