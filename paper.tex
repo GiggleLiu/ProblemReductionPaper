@@ -168,8 +168,8 @@ The library implements the reduction graph as a Rust crate, organized in three l
   \centering
   \includegraphics[width=\columnwidth]{figures/library-architecture.pdf}
   \caption{Library architecture.
-    Three layers stack from interfaces (top) through core modules (middle) to infrastructure (bottom).
-    The command-line interface (CLI) and PDF manual expose the reduction graph; core modules define problem types, reduction rules, and the example database; infrastructure provides solvers and a symbolic engine for overhead analysis.}
+    Two layers stack from interfaces (top) to infrastructure (bottom).
+    The command-line interface (CLI) and PDF manual expose the reduction graph; infrastructure modules define problem types, reduction rules, and the example database, and provide solvers and a symbolic engine for overhead analysis.}
   \label{fig:library-architecture}
 \end{figure}
 
