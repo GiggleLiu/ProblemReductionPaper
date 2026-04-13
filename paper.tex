@@ -715,7 +715,7 @@ The type system enforces a split based on witness capability.
 \texttt{ReduceTo<T>} requires a \texttt{ReductionResult} that bundles \texttt{target\_problem()} and \texttt{extract\_solution()}, a map from a target \emph{configuration} back to a source configuration.
 An agent cannot compile a forward reduction without providing the inverse map; incomplete reductions are compile errors.
 \texttt{ReduceToAggregate<T>} requires an \texttt{AggregateReductionResult} with \texttt{extract\_value()} instead, a map from a target \emph{value} back to a source value, with no witness recovered.
-Each reduction also carries a compile-time-validated overhead: the \texttt{\#[reduction(overhead = \{...\})]} procedural macro attaches symbolic size expressions, and variable names are checked against getter methods on the source type---a typo causes a compile error, not a silent bug.
+Each reduction also carries a compile-time-validated overhead: the \texttt{\#[reduction(overhead = \{...\})]} procedural macro attaches symbolic size expressions, and variable names are checked against getter methods on the source type, so a typo causes a compile error, not a silent bug.
 
 \paragraph{Solvers.}
 When the user invokes \texttt{pred solve}, the system selects a solver in priority order.
