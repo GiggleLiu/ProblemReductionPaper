@@ -216,7 +216,7 @@ Every problem type implements a uniform interface for problems, such as input do
 Each type defines its own size measures and \emph{best-known algorithm complexity}, for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}.
 A problem type may have \emph{variants}: restricting the input domain to a narrower class preserves the combinatorial objective but can change the complexity.
 Each variant occupies a distinct node in the reduction graph.
-For instance, general MIS requires $O(1.1996^{|V|})$ time, whereas MIS on unit disk graphs admits an $O(2^{O(\sqrt{|V|})})$ algorithm, which is subexponential, unlike the general case~\cite{Nguyen2023UnitDiskMapping}\jinguo{check citation}.
+For instance, general MIS requires $O(1.1996^{|V|})$ time, whereas MIS on unit disk graphs admits a $2^{O(\sqrt{|V|})}$ algorithm, which is subexponential, unlike the general case~\cite{deBerg2020ETHTight}.
 
 \emph{Reduction rules.}
 Each rule requires two mappings, a forward map and a inverse map. The forward map maps a source problem instance to a target problem instance. 
@@ -232,8 +232,8 @@ The same instance feeds round-trip tests, worked examples in the PDF manual, and
 Every problem type needs a minimal but reasonably efficient solver, because round-trip testing requires solving each problem exactly.
 Most types (e.g., Maximum Independent Set, Traveling Salesman, flow-shop scheduling) have a reduction path to ILP.
 The default validation strategy reduces the problem to ILP and solves it with HiGHS~\cite{Huangfu2018HiGHS}, an open-source solver.
-For problems without an ILP path, the library provides customized exact solvers that exploit problem structure---for example, functional-dependency closure for Minimum Cardinality Key, and cycle enumeration with branch-and-bound for Partial Feedback Edge Set.
-The remaining problems fall back to brute-force enumeration on small instances. \jinguo{add citations}
+For problems without an ILP path, the library provides customized exact solvers that exploit problem structure---for example, functional-dependency closure for Minimum Cardinality Key~\cite{Lucchesi1978CandidateKeys}, and cycle enumeration with branch-and-bound for Partial Feedback Edge Set~\cite{Baharev2021FeedbackArcSet}.
+The remaining problems fall back to brute-force enumeration on small instances. 
 
 \emph{Symbolic engine.}
 Both reduction overheads and algorithm complexities are represented as symbolic expressions.
@@ -469,7 +469,7 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 Correctness is enforced by six layers: issue check (Stage~2), compile-time type checks, unit tests, round-trip tests, agentic feature tests (Stage~4), and manual verification (Stage~6).
 The first three are standard; we describe the two novel mechanisms below.
 
-\textbf{Round-trip test.}
+\textbf{Round-trip tests.}
 As illustrated in~\Cref{fig:example-pipeline}, correctness begins with the issue provided by the domain expert.
 The issue's canonical example---a small, fully worked instance with known optimal solution goes to the example database.
 This example is used to generate the JSON fixtures, the PDF manual's visual diagram, and the CLI's \texttt{pred create -{}-example} command.
@@ -609,7 +609,7 @@ Quality concerns are equally sharp: AI co-authored code carries $1.7{\times}$ mo
 
 \textbf{Harness engineering.}
 To tame this variance, \emph{harness engineering}~\cite{OpenAI2026HarnessEngineering,Fowler2026HarnessEngineering} shifts the engineer's role from code authorship to environment design.
-Persistent project instructions~\cite{CursorRules2026,WindsurfRules2026,ClaudeCodeSkills2026} and composable skills~\cite{Obra2025Superpowers} keep agents aligned with repository conventions across sessions; verification pipelines reject incorrect output before it enters the codebase.
+Persistent project instructions and composable skills~\cite{Claude2026AgentSkills, Obra2025Superpowers} keep agents aligned with repository conventions across sessions; verification pipelines reject incorrect output before it enters the codebase.
 Our approach instantiates this pattern for a mathematical domain, exploiting the project's uniform, verifiable structure so that each agent invocation is short, self-contained, and human-reviewable.
 
 %======================================================================
@@ -695,7 +695,7 @@ Wrapper & Class & Witness & Example \\
 {\footnotesize $^\dagger$\texttt{Extremum} differs from \texttt{Max}/\texttt{Min} only in that the optimization sense is chosen at runtime.}
 \end{table}
 A single problem type admits multiple \emph{variants}: parameterizations by graph type (\texttt{SimpleGraph}, \texttt{PlanarGraph}, \texttt{BipartiteGraph}, \texttt{KingsSubgraph}, \texttt{UnitDiskGraph}, etc.) and weight type (unit, \texttt{i32}, \texttt{f64}).
-Each variant may have a better complexity bound---MIS on king's subgraphs runs in $O(2^{\sqrt{|V|}})$ versus $O(1.1996^{|V|})$ on general graphs~\cite{Xiao2017MIS}.
+Each variant may have a better complexity bound---MIS on king's subgraphs runs in $2^{O(\sqrt{|V|})}$~\cite{deBerg2020ETHTight} versus $O(1.1996^{|V|})$ on general graphs~\cite{Xiao2017MIS}.
 The \texttt{declare\_variants!} macro registers each concrete instantiation with its best-known complexity, a factory for JSON deserialization, and a solve function.
 All variable names in complexity expressions are validated at compile time against the problem's getter methods.
 This registry produces the registered variants from 100+ base problem types.
@@ -703,7 +703,7 @@ This registry produces the registered variants from 100+ base problem types.
 \paragraph{Decision problems.}
 A generic \texttt{Decision<P>} wrapper converts any optimization problem \texttt{P} (whose value type is \texttt{Max<W>} or \texttt{Min<W>}) into a decision problem with value type \texttt{Or}: given a bound~$k$, it asks whether a configuration meeting or exceeding~$k$ exists.
 The wrapper implements \texttt{Problem} automatically via the \texttt{DecisionProblemMeta} trait, which supplies the decision variant's name.
-The reduction from the decision wrapper to its inner optimization type is derived generically, so adding a decision variant requires only a one-line macro invocation (\texttt{register\_decision\_variant!})\footnote{The reverse direction (optimization to decision) is not yet provided: recovering the optimum from a decision oracle requires binary search over the bound, a Turing-style procedure rather than a single-shot many-one reduction that fits the \texttt{ReduceTo} interface.}.
+The reduction from the decision wrapper to its inner optimization type is derived generically, so adding a decision variant requires only a one-line macro invocation (\texttt{register\_decision\_variant!}). The reverse direction (optimization to decision) is not yet provided.
 Three problem types currently have decision variants: Maximum Independent Set, Minimum Vertex Cover, and Minimum Dominating Set.
 
 \paragraph{Reduction rules.}
