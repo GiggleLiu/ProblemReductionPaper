@@ -322,7 +322,7 @@ Authorizing merges is security critical; a human with long-term memory must be r
   \label{fig:delegation-spectrum}
 \end{figure}
 
-\subsection{The Automation Pipeline}\label{sec:pipeline-overview}
+\subsection{Automation Pipeline}\label{sec:pipeline-overview}
 
 \begin{figure*}[t]
   \centering
@@ -402,12 +402,7 @@ It then auto-corrects mechanical failures (undefined symbols, missing metrics) a
 Only issues passing all four checks move to \col{Ready}.
 
 \textbf{Stage~3: Implement} (\col{Ready} $\to$ \col{Review Pool}).
-An implementation agent reads the \texttt{run-pipeline} skill, picks issue automatically from \col{Ready} column, implements it, and submits a pull request (PR)---in headless mode, no human in the loop.
-It produces one pull request (PR) with code implementation and manual writing, and moves the issue to \col{Review Pool}.
-The implementation agent separates two kinds of knowledge.
-\emph{Domain skills} (\texttt{add-model}, \texttt{add-rule}) encode what makes a reduction correct: a correctness argument, a size overhead expression, and a worked example must all exist \emph{before any code is written} (\Cref{fig:skill-addrule}).
-This is knowledge the agent cannot infer from existing code---it must come from the issue's mathematical content.
-\emph{Engineering skills} (\texttt{issue-to-pr}) encode how to produce a clean PR: isolated worktrees, implementation plans, parallel sub-agents for independent tasks, and a detailed summary---all fully automatable\footnote{The engineering workflow builds on Superpowers~\cite{Obra2025Superpowers}, an agentic skills framework for structured development workflows.}.
+An implementation agent reads the \texttt{run-pipeline} skill, picks an issue automatically from \col{Ready} column, implements it\footnote{The engineering workflow builds on Superpowers~\cite{Obra2025Superpowers}}, submits a pull request (PR) and moves the issue to \col{Review Pool}---all in headless mode, no human in the loop.
 
 \begin{figure}[t]
   \centering
@@ -453,33 +448,31 @@ description: Adding a new reduction rule to the
 \end{figure}
 
 \textbf{Stage~4: Review} (\col{Review Pool} $\to$ \col{Final Review}).
-A review agent executes the \texttt{review-pipeline} skill. It claims an issue from \col{Review Pool} by moving it to \col{Under Review}, then dispatches three read-only sub-agents in fresh context windows: structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification}).
-It posts a review report on the PR and moves the issue to \col{Final Review}.
+Similarly, a review agent reads the \texttt{review-pipeline} skill, claims an issue from \col{Review Pool}, moves it to \col{Under Review}, dispatches three read-only sub-agents: structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification}), and posts a review report on the PR and moves the issue to \col{Final Review}---all in headless mode.
 
 \textbf{Stage~5: Merge} (\col{Final Review} $\to$ \col{Done}).
-A maintainer uses the \texttt{final-review} skill to merge or hold the PR.
-The skill picks a PR from \col{Final Review}, checks the report from the review agent, automatically fixes mechanical issues and presents uncertain fixes to the maintainer for decision.
-It then walks the maintainer through the agentic verdict, assessing usefulness, safety, and completeness.
-The maintainer either merges (moving the issue to \col{Done}) or holds the PR with a reason (moving the issue to \col{OnHold}).
+A maintainer invokes the \texttt{final-review} skill to review the PR.
+Agent claims a PR from \col{Final Review}, checks the review report, do mechanical fixes, walks the maintainer through the agentic verdict, and let the maintainer make the final decision.
+The maintainer either merges the PR to main branch (issue moved to \col{Done}) or holds the PR with a reason (issue moved to \col{OnHold}).
 
 \textbf{Stage~6: Verify.}
 The maintainer invites the domain expert who filed the original issue to a community call, and
-walks through the PDF manual and CLI interactively.
+walks through the PDF manual and CLI.
 This closing-the-loop step catches errors invisible to automated tests: subtle misinterpretations of the problem statement or proof arguments.
 
-Stages~3--4 (implement and review) are fully automatable and run in \emph{headless mode}---no human interaction---via OpenAI Codex~\cite{OpenAI2026Codex} (\texttt{gpt-5.4}, xhigh reasoning effort).
+Stages~3--4 (implement and review) runs in \emph{headless mode} via OpenAI Codex~\cite{OpenAI2026Codex} (\texttt{gpt-5.4}, xhigh reasoning effort).
 The remaining stages use Claude Code~\cite{Anthropic2025ClaudeCode} (\texttt{opus-4.6}) for interactive sessions with the maintainer and domain expert.
 Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and \texttt{opus-4.6} stronger in interactive dialogue, though we did not evaluate this systematically.
 
-\subsection{Verification Pipeline}\label{sec:verification}
+\subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by six layers: compile-time type checks, unit tests, round-trip tests (\Cref{sec:intro}), issue validation (Stage~2), agentic feature tests (Stage~4), and manual verification (Stage~6).
+Correctness is enforced by six layers: issue check (Stage~2), compile-time type checks, unit tests, round-trip tests, agentic feature tests (Stage~4), and manual verification (Stage~6).
 The first three are standard; we describe the two novel mechanisms below.
 
-\textbf{Issue check (Stage 2).}
-Correctness begins with the issue provided by the domain expert.
-The structured issue serves as both the specification and the acceptance criterion; validation along the four dimensions of Stage~2 (\Cref{sec:pipeline-overview}) rejects invalid proposals before implementation effort is spent.
-The issue's canonical example---a small, fully worked instance with known optimal solution---later seeds the round-trip test\footnote{In practice we find it helps to have contributors declare both positive and counter-examples in the issue. For a problem, counter-examples pin down edge cases of the formal definition; for a reduction rule, they witness the completeness of the rule by showing inputs on which it must not fire.}, the PDF manual's visual diagram, and the CLI's \texttt{-{}-example} mode (\Cref{fig:example-pipeline}).
+\textbf{Round-trip test.}
+As illustrated in~\Cref{fig:example-pipeline}, correctness begins with the issue provided by the domain expert.
+The issue's canonical example---a small, fully worked instance with known optimal solution goes to the example database.
+This example is used to generate the JSON fixtures, the PDF manual's visual diagram, and the CLI's \texttt{pred create -{}-example} command.
 The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this.
 
 \begin{figure}[t]
@@ -492,24 +485,18 @@ The pipeline is designed so that the mathematical intent propagates through all 
   \label{fig:example-pipeline}
 \end{figure}
 
-\textbf{Agentic feature tests (Stage 4).}
+\textbf{Agentic feature tests.}
 Libraries normally stabilize through community use, but a niche library cannot wait for that community to form.
-Agentic feature tests approximate early-adopter feedback by simulating realistic use scenarios before real users arrive.
-
+Agentic feature tests approximate user feedback by simulating realistic use scenarios before real users arrive.
 The mechanism has three phases.
-First, the main agent launches a sub-agent in a \emph{fresh context window}---one that has never seen the implementation---and injects an \emph{agent profile}: a structured persona with domain expertise, testing habits, and a concrete use case (\Cref{fig:agent-profile}).
-The fresh context is essential; a sub-agent that has just written the code cannot objectively test it.
-The main agent's framing could still introduce bias, but the sub-agent discovers the library independently through its documentation.
+First, the main agent launches a sub-agent in a \emph{fresh context window}---one that has never seen the implementation---and injects an \emph{user profile}: a structured persona with domain expertise and a concrete use case (\Cref{fig:agent-profile}).
+The fresh context is essential; an agent that has just written the code cannot objectively test it.
 Second, the sub-agent role-plays the persona end-to-end: it reads only the project's documentation, picks a problem it recognizes from its domain, builds an instance with realistic data, discovers a reduction path through the CLI, solves, and verifies the result against its own expectation.
 Third, the sub-agent steps out of character.
-The main agent interviews it---what worked, what was confusing, where did the output diverge from expectation---and the sub-agent writes a structured problem report.
-The reliability of such self-reports remains an open question; we treat them as heuristic signals, not definitive verdicts.
+The main agent interviews it---what worked, what was confusing, where did the output diverge from expectation---and writes a structured report.
 This report surfaces usability gaps, documentation omissions, and semantic errors that unit tests cannot reach.
 
-As a concrete example, an agentic feature test of the \texttt{pred} CLI (v0.5.0) found 4~bugs, 5~user-experience (UX) issues, and 4~cosmetic issues in a single session---none caught by the existing unit tests.
-Among the bugs: nine problem types appeared in \texttt{pred create -{}-help} but crashed when a user tried to create them, because their parameters were not registered as CLI flags.
-Among the UX issues: the \texttt{to}/\texttt{from} subcommands confused every tester, because \texttt{pred to MIS} returns problems that reduce \emph{to} MIS (incoming edges), while users read it as ``where can MIS go \emph{to}'' (outgoing edges).
-These are precisely the kind of integration and usability errors that pass unit tests but break real workflows.
+In our pratise, agentic feature tests caught most CLI command bugs, and some user-experience issues, e.g. the mismatch between the help text and the actual command output, which are never caught by the existing unit tests.
 
 \begin{figure}[t]
   \centering
@@ -572,13 +559,13 @@ These are precisely the kind of integration and usability errors that pass unit 
   \label{fig:reduction-graph}
 \end{figure}
 
-\Cref{fig:reduction-graph} summarizes the current library (v0.5.0).
-Two connectivity numbers stand out.
-First, 129 of 190~problem types---68\%---have a reduction path to ILP, either directly or through intermediate types.
-This means a practitioner facing any of these 129~problems can solve it to provable optimality on moderate-sized instances using an off-the-shelf ILP solver, without writing a single line of problem-specific solver code.
-The reduction graph turns the ILP solver into a universal backend: the user supplies a problem instance, the library finds the cheapest reduction path to ILP, reduces the instance automatically, solves the resulting ILP, and maps the solution back.
+In~\Cref{fig:reduction-graph}, we summarize the current library status.
+The current library version is v0.5.0, which contains 190~problem types (220 variants) and 265~reduction rules.
+129~problem types (68\%) have a reduction path to ILP, either directly or through intermediate types.
+%This means a practitioner facing any of these 129~problems can solve it to provable optimality on moderate-sized instances using an off-the-shelf ILP solver, without writing a single line of problem-specific solver code.
+The \texttt{pred} CLI ships with an ILP solver backend: the user supplies a problem instance, the library finds the cheapest reduction path to ILP, reduces the instance automatically, solves the resulting ILP, and maps the solution back.
 We believe this solver-access coverage alone is a practical contribution to the combinatorial optimization community.
-Second, 78~types are reachable from 3-SAT, providing tested NP-hardness arguments backed by executable code rather than pen-and-paper proofs.
+78~problem types are reachable from 3-SAT, providing tested NP-hardness arguments backed by executable code rather than pen-and-paper proofs.
 
 \subsection{Development Phases}
 
