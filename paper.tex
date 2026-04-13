@@ -626,9 +626,10 @@ They identify three pillars: context engineering (repository as single source of
 
 \subsection{Conclusion}
 
-We built the harness system, contribution templates, verification checks, and agent skills, that lets AI coding agents build verified software at a scale that manual effort has not reached.
-The human effort goes into the harness, not the source code.
-In about three months, a small team used this approach to build a reduction graph connecting 100+ problem types and 200+ reduction rules to specialized solvers, totaling over 170k lines of Rust.
+We built a harness that lets AI coding agents produce verified software at a scale that manual effort has not reached.
+The harness rests on three pillars: \emph{scaffolds} that define the structure of every contribution, \emph{skills} that encode domain workflows as reusable agent instructions, and a \emph{correctness assurance} pipeline that validates every change from compilation through round-trip testing.
+The human effort goes into these three pillars, not the source code.
+In about three months, a small team used this harness to build a reduction graph connecting 100+ problem types and 200+ reduction rules to specialized solvers, totaling over 170k lines of Rust.
 
 
 \subsection{Discussion}
