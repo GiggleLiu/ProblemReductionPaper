@@ -80,8 +80,8 @@ Beyond classical solvers, specialized hardware introduces additional formulation
 Physics-inspired methods scale further---graph neural networks solve QUBO at million-variable scale~\cite{Schuetz2022PhysicsGNN}, and hybrid quantum-GNN methods tackle the Traveling Salesman Problem~\cite{He2024QuantumTSP}---but still require a QUBO or Ising formulation as input.
 A practitioner with a crew-scheduling problem cannot reach most of these solvers without first \emph{translating} the problem into a form the solver understands.
 
-This translation is called a \emph{reduction}: an efficient algorithm that converts an instance of one problem into an instance of another, and
-it requires each reduction to carry an inverse map that translates the solution back. 
+This translation is called a \emph{reduction}: an efficient algorithm that converts an instance of one problem into an instance of another and maps the
+target's solution back to the source.
 Each verified reduction is a bridge connecting a new problem to an existing solver.
 
 \subsection{Bridging Problems to Solvers}
@@ -219,7 +219,7 @@ Each variant occupies a distinct node in the reduction graph.
 For instance, general MIS requires $O(1.1996^{|V|})$ time, whereas MIS on unit disk graphs admits a $2^{O(\sqrt{|V|})}$ algorithm, which is subexponential, unlike the general case~\cite{deBerg2020ETHTight}.
 
 \emph{Reduction rules.}
-Each rule requires two mappings, a forward map and a inverse map. The forward map maps a source problem instance to a target problem instance. 
+Each rule requires two mappings, a forward map and an inverse map. The forward map converts a source problem instance to a target problem instance. 
 After solving the target problem, the inverse map extracts source solutions from target solutions.
 Each rule also carries a \emph{reduction overhead}: a set of multivariate polynomials mapping the source's size measures to the target's.
 For example, the 3-SAT $\to$ MIS reduction creates one vertex per literal occurrence in the formula, yielding $O(L)$ vertices and $O(L^2)$ edges where $L$ is the total number of literal occurrences.
@@ -249,7 +249,7 @@ None of the maintainers had written Rust before this project---the language was 
 The Rust compiler produces diagnostics that include the error location, the conflicting types or lifetimes, and often a suggested fix.
 Agents parse these messages and resolve errors without human intervention.
 Languages with less structured diagnostics would require more agent reasoning per cycle.
-Rust's well-known strengths---memory safety eliminating memory leaks, etc. at compile time, and Cargo's integrated toolchain---further reduce the surface area of errors agents must debug.
+Rust's other well-known strengths also help: memory safety and Cargo's integrated toolchain further reduce the surface area of errors agents must debug.
 
 \emph{Fast feedback.}
 Incremental compilation and the built-in test harness produce results in seconds, enabling agents to iterate rapidly.
