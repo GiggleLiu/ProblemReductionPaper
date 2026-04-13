@@ -658,21 +658,19 @@ In about three months, a small team used this harness to build a reduction graph
 \subsection{Discussion}
 
 \emph{Verification as a scaling prerequisite.}
-Recent evidence shows that scaling agent output without domain-specific verification amplifies defects.
-AI co-authored code carries $1.7{\times}$ more major issues~\cite{CodeRabbit2025AICodeQuality}; Cursor's 3M-line FastRender browser scored 1.3/5 for maintainability~\cite{SIGFastRender2026}; experienced developers using AI tools were measured 19\% slower on their own repositories~\cite{Becker2025METRProductivityRCT}.
+As reviewed in \Cref{sec:related}, scaling agent output without domain-specific verification amplifies defects---AI co-authored code carries more major issues and security vulnerabilities, and large-scale agent swarms produce unmaintainable codebases.
 Our results point in the opposite direction---not because the agents are better, but because the harness provides a \emph{verification gate} (round-trip testing) that rejects incorrect output before it enters the codebase.
 The lesson is structural: agents can produce verified software at scale when every contribution is machine-checkable, and they produce technical debt at scale when it is not.
 
 \emph{Task decomposition as a design pattern.}
-Long-horizon benchmarks consistently show agent degradation: SWE-EVO reports 25\% success on multi-file tasks vs.\ 73\% on single-issue fixes~\cite{Thai2025SWEEVO}; LongCLI-Bench finds pass rates below 20\% beyond 35 minutes~\cite{LongCLIBench2026}.
+Long-horizon benchmarks consistently show agent degradation on multi-file, multi-hour tasks (\Cref{sec:related}).
 Our methodology sidesteps this wall by decomposing the project into hundreds of uniform, bounded tasks---each reduction is an independent unit with a clear interface, a self-contained correctness check, and a completion time well within agent capability.
 The two preconditions for this decomposition are: the domain must consist of \emph{uniform tasks} sharing a common interface, and each task must admit a \emph{cheap automatic check}.
 Automatic differentiation engines, compiler optimization passes, codec libraries, and serialization format converters satisfy both.
 The methodology does \emph{not} transfer to heterogeneous tasks---feature requests, UI redesigns, cross-cutting refactors---where each issue is structurally unique and resists decomposition into independently testable units.
 
 \emph{Position in the verification spectrum.}
-Kleppmann~\cite{Kleppmann2025FormalVerification} argues that AI-generated code volumes will force formal verification into the mainstream.
-Neural theorem provers are closing the gap: Harmonic's Aristotle~\cite{Harmonic2025Aristotle} produces formally verified IMO proofs in Lean~4, and VeriCoding~\cite{Bursuc2025VeriCoding} achieves 82\% success on verified code generation in Dafny (but only 44\% in Verus/Rust).
+Neural theorem provers now produce formally verified competition-level proofs, and the argument that AI-generated code volumes will force formal verification into the mainstream is gaining traction (\Cref{sec:related}).
 Our round-trip testing sits between unit tests and formal proofs: it verifies a mathematical property (reduction correctness) automatically, without a proof assistant, at the cost of covering only finite instances rather than all inputs.
 For reduction-graph construction this trade-off is favorable---round-trip tests catch implementation errors cheaply, and the mathematical correctness argument is provided separately in each reduction's proof sketch.
 
