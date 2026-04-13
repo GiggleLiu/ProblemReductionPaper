@@ -633,11 +633,15 @@ combining automation with human judgment and creativity.
 
 \subsection{Discussion}
 
-\emph{The evolving role of humans.} Harness engineering shifts where human effort is spent. In our work, none of the code was written manually; most effort went into the harness itself. This shift---from writing code to designing constraints---is what keeps an AI-coded project maintainable at scale: without a harness enforcing uniform conventions, a codebase grown at agent speed quickly becomes unmanageable. The harness is what makes the output of many short, disposable agent sessions add up to a coherent library rather than a pile of sediment.
+\emph{The evolving role of humans.} Harness engineering shifts where human effort is spent, from writing code to designing constraints. The carefully designed harness enforces uniform conventions and quality control across contributors. The most unsettling fact is that none of us is genuinely irreplaceable. We are all replaceable "plugins" for responsibilities, creativity, and deep reasoning.
 
-\emph{Automation and advisor skills.} We found this distinction useful when designing the harness. Automation skills handle routine work. Advisor skills keep humans more actively involved by lowering the barrier to learning the project's conventions. When an AI agent knows less than the human, its main role is to shoulder routine work. When it knows more, its role shifts toward guidance and onboarding. We expect this distinction to become standard vocabulary in harness design.
+\emph{Automation and advisor skills.} It is well known that skills can delegate routine work to AI agents. We find them most useful when they guide human contributors. Advisor skills keep humans more actively involved. They either support onboarding by lowering the barrier to learning the project's conventions or draw on human expertise for critical decisions. We found this distinction useful when designing the harness and expect it to become standard vocabulary in harness design.
 
 \emph{Toward machine-checked correctness.} Round-trip tests verify reduction correctness without a proof assistant. A natural next step is to route proofs through a formal system such as Lean and accept only proofs that typecheck. Whether current provers can handle the combinatorial arguments that reductions typically involve remains open, but integrating a proof assistant into the pipeline seems to us the most promising direction for future work.
+
+\emph{Further Directions.}
+The reduction graph at scale opens several research directions: one is understanding how computational hard problems are clustered in the problem space; another is identifying high-value missing edges to provide guidelines for automated reduction rule discovery.
+This reduction graph can be improved in several directions: one is to improve the \emph{fine-grained cost prediction} for a given instance rather than relying on the asymptotic complexity; another is to extend beyond NP to \emph{other complexity classes} (\#P, PSPACE etc).
 
 \section*{Acknowledgments}
 
