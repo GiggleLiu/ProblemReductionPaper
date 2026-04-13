@@ -132,7 +132,7 @@ This sidesteps the sharp performance degradation that agents exhibit on longer-h
 In harness engineering, \emph{scaffold} and \emph{skills} are the two key components.
 The \emph{scaffold} comprises repository structure, CI configuration, formatting rules, and a project specification file (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) auto-loaded into every agent session.
 Together these anchor the system as a single source of truth for architecture and constraints.
-\emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch''~\cite{Claude2026AgentSkills}.
+\emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists, some targeting agents and others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch''~\cite{Claude2026AgentSkills}.
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
 Together, scaffold and skills form a domain-specific harness that addresses both barriers:
 \begin{itemize}
