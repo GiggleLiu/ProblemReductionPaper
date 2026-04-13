@@ -600,7 +600,7 @@ These works are indispensable references, but they remain prose and formulae on 
 
 \textbf{Reduction repositories.}
 PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave's Ocean SDK~\cite{DWaveOcean2026} compile combinatorial problems into QUBO/Ising models, but support no reductions between other problem types.
-The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students write and auto-check reductions in a classroom setting; neither provides a reusable reduction graph or inverse maps.
+The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students write and auto-check reductions in a classroom setting; neither provides a reusable reduction graph.
 ProblemReductions.jl~\cite{gao2025programming}, our earlier Julia prototype, implements 18~problem types with a reduction graph structure as part of the generic tensor network ecosystem for combinatorial optimization~\cite{Liu2023GenericTN}; its limited growth motivated the present work.
 Our library differs from all of these in three ways: it connects \emph{many} source types to \emph{many} target types through a reduction graph with composable overhead, it requires inverse maps for solution recovery, and it is maintained by AI agents rather than by hand.
 
