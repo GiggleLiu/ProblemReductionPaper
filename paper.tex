@@ -53,7 +53,7 @@ A tool for polynomial-time reductions between hard problems would let practition
 Building such a library at scale, however, has remained out of reach.
 We show that \emph{harness engineering}---designing the constraints, verification systems, and feedback loops that channel AI coding agents---can overcome this barrier.
 Our harness combines a no-code contribution route for domain experts, a multilayer verification stack ranging from type-level checks to agentic feature tests (AI agents role-playing as end users), and a fully automated implementation-review-integration pipeline.
-In under three months, we built a command-line tool backed by a library of 100+ problem types and 200+~reduction rules in over 170k lines of Rust.
+In about three months, we built a command-line tool backed by a library of 100+ problem types and 200+~reduction rules in over 170k lines of Rust.
 The result suggests that a well-engineered harness lets agents build verified software at a scale and pace that prior efforts have not reached.
 Because the reduction graph composes transitively, a new solver registered for any single problem type instantly becomes available to every problem connected by a reduction path.
 The source code is available at \url{https://github.com/CodingThrust/problem-reductions}.
@@ -626,11 +626,10 @@ They identify three pillars: context engineering (repository as single source of
 
 \subsection{Conclusion}
 
-We showed how to build a large, verified code library by letting AI agents do the coding while humans design the rules they follow.
-The approach works because every piece of the library looks the same: each reduction has the same interface, the same tests, and the same review checklist.
-This means each agent task is small and self-checking, so agents never need to reason about the whole project at once.
-The human effort goes into writing templates, tests, and workflow scripts---not source code.
-Applying this approach to NP-hard problem reductions, a small team built a verified reduction graph connecting 100+ problem types and 200+ reduction rules, totaling over 170k lines of Rust code in about three months.
+We showed that harness engineering---designing contribution templates, verification checks, and agent skills---lets AI coding agents build verified software at a scale that manual effort has not reached.
+Every reduction in the library has the same interface, the same tests, and the same review checklist, so each agent task stays small and self-checking.
+The human effort goes into the harness, not the source code.
+In about three months, a small team used this approach to build a reduction graph connecting 100+ problem types and 200+ reduction rules to specialized solvers, totaling over 170k lines of Rust.
 
 
 \subsection{Discussion}
