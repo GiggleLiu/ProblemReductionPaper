@@ -42,15 +42,14 @@
   content((lx, y0 - bh/2), anchor: "east",
     text(10pt, fill: col-top.darken(20%), weight: "bold", [Interfaces]))
 
-  // Middle row: Core
+  // Infrastructure rows
   let y1 = y0 - bh - gy
-  row(y1, col-mid, ([Problem Types], [Reduction Rules], [Example Database]))
-  content((lx, y1 - bh/2), anchor: "east",
-    text(10pt, fill: col-mid.darken(20%), weight: "bold", [Core]))
+  row(y1, col-bot, ([Problem Types], [Reduction Rules], [Example Database]))
 
-  // Bottom row: Infrastructure
   let y2 = y1 - bh - gy
   row(y2, col-bot, ([Solvers], [Symbolic Engine]))
-  content((lx, y2 - bh/2), anchor: "east",
+
+  // Single label centered between the two infrastructure rows
+  content((lx, (y1 + y2 - bh) / 2), anchor: "east",
     text(10pt, fill: col-bot.darken(20%), weight: "bold", [Infrastructure]))
 })
