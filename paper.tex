@@ -632,17 +632,18 @@ combining automation with human judgment and creativity.
 
 \subsection{Discussion}
 
-Scaling agent output without domain-specific verification amplifies defects.
-Our correctness assurance mechanism sits between unit tests and formal proofs: it verifies a mathematical property (reduction correctness) automatically, without a proof assistant.
-Domain experts review every proof sketch before integration, providing a human safeguard; AI-assisted theorem proving could further strengthen these guarantees with machine-checked proofs.
-We welcome community contributions through the existing issue-based route.
+To generalize harness engineering beyond our work, two properties are especially important: maintainability and correctness as the codebase and contributor pool grow.
 
-\emph{Future directions.}
-The reduction graph exhibits network effects: each new edge benefits all existing nodes, so marginal cost falls as the graph grows while marginal benefit rises.
-Three extensions exploit this.
-First, \emph{fine-grained cost prediction}---a symbolic engine that composes overhead expressions to select the cheapest reduction path for a given instance.
-Second, extending beyond NP to \emph{other complexity classes} (APX, PTAS, \#P), preserving hardness guarantees.
-Third, \emph{automated discovery}: the graph's topology reveals high-value missing edges, and an agentic pipeline can generate, validate, and absorb new reductions.
+The codebase should be easy for both newcomers and long-term maintainers to understand, modify, and extend. A well-structured and readable implementation lowers the barrier to entry for new contributors while also reducing the burden on existing maintainers as requirements evolve. More broadly, these engineering practices and toolchains should not remain limited to a narrow set of projects. They should be extended and adapted as a general convention for software development, so that a wider range of codebases can benefit from the same standards of clarity, reliability, and scalability.
+
+Maintainability alone is not sufficient---correctness must scale with the codebase.
+Our correctness-assurance mechanism occupies a middle ground between unit tests and formal proofs: it
+automatically verifies a mathematical property, namely reduction correctness by round-trip testing,
+without relying on a proof assistant. Domain experts still play an important role in validating
+correctness, and AI-assisted theorem proving could further strengthen these guarantees through
+machine-checked proofs.
+
+We welcome community contributions through the existing issue-based route.
 
 \section*{Acknowledgments}
 
