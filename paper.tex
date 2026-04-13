@@ -130,7 +130,7 @@ This sidesteps the sharp performance degradation that agents exhibit on longer-h
 
 In harness engineering, \emph{scaffold} and \emph{skills} are the two key components.
 The \emph{scaffold}---repository structure, CI configuration, formatting rules, and a project specification file (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) auto-loaded into every agent session---anchors the system as a single source of truth for architecture and constraints.
-\emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch''. \jinguo{add citations}
+\emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch''~\cite{Claude2026AgentSkills}.
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
 Together, scaffold and skills form a domain-specific harness that addresses both barriers:
 \begin{itemize}
@@ -593,16 +593,15 @@ External domain experts began contributing through the \texttt{propose} skill, f
 %======================================================================
 \section{Related Work}\label{sec:related}
 
-\textbf{Reduction catalogues.}
+\textbf{Reduction catalogues \& tools.}
 Karp's seminal paper~\cite{karp1972} established 21~polynomial-time reductions among combinatorial problems; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems.
 Lucas~\cite{lucas2014} revisited Karp's list by providing explicit Ising formulations for each problem.
+The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students write and auto-check reductions in a classroom setting; neither provides a reusable reduction graph.
 These works are indispensable references, but they remain prose and formulae on paper, not executable code.
 
-\textbf{Reduction tools.}
 PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave's Ocean SDK~\cite{DWaveOcean2026} compile combinatorial problems into QUBO/Ising models, but support no reductions between other problem types.
-The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students write and auto-check reductions in a classroom setting; neither provides a reusable reduction graph.
 ProblemReductions.jl~\cite{gao2025programming}, our earlier Julia prototype, implements 18~problem types with a reduction graph structure as part of the generic tensor network ecosystem for combinatorial optimization~\cite{Liu2023GenericTN}; its limited growth motivated the present work.
-Our library differs from all of these in three ways: it connects \emph{many} source types to \emph{many} target types through a reduction graph with composable overhead, it requires inverse maps for solution recovery, and it is maintained by AI agents rather than by hand.
+Our work differs from all of these in three ways: it connects \emph{many} source types to \emph{many} target types through a reduction graph with composable overhead, it requires inverse maps for solution recovery, and it is maintained by AI agents rather than by hand.
 
 \textbf{AI coding agents.}
 SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} resolve isolated GitHub issues with increasing reliability~\cite{Xia2025LiveSWEagent}.
