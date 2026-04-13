@@ -594,53 +594,25 @@ External domain experts began contributing through the \texttt{propose} skill, f
 \section{Related Work}\label{sec:related}
 
 \textbf{Polynomial reductions.}
-Karp's seminal paper~\cite{karp1972} established 21~polynomial-time reductions among combinatorial problems; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems.
-Lucas~\cite{lucas2014} revisited Karp's list by providing explicit Ising formulations for each problem.
-The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students write and auto-check reductions in a classroom setting; neither provides a reusable reduction graph.
-These works are indispensable references, but they remain prose and formulae on paper, not executable code.
+Karp~\cite{karp1972} established 21~reductions; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems with reduction sketches; Lucas~\cite{lucas2014} gave explicit Ising formulations for Karp's list.
+The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students write and auto-check reductions but provide no reusable graph.
+PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave Ocean~\cite{DWaveOcean2026} compile problems into QUBO/Ising but support no inter-type reductions.
+ProblemReductions.jl~\cite{gao2025programming}, our Julia prototype with 18~types~\cite{Liu2023GenericTN}, motivated the present work.
+Our library differs by connecting \emph{many} source types to \emph{many} targets with composable overhead and inverse maps, maintained by AI agents.
 
-PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave's Ocean SDK~\cite{DWaveOcean2026} compile combinatorial problems into QUBO/Ising models, but support no reductions between other problem types.
-ProblemReductions.jl~\cite{gao2025programming}, our earlier Julia prototype, implements 18~problem types with a reduction graph structure as part of the generic tensor network ecosystem for combinatorial optimization~\cite{Liu2023GenericTN}; its limited growth motivated the present work.
-Our work differs from all of these in three ways: it connects \emph{many} source types to \emph{many} target types through a reduction graph with composable overhead, it requires inverse maps for solution recovery, and it is maintained by AI agents rather than by hand.
+% ---- Sources below from April 2026 literature survey.   ----
+% ---- Please verify each source before final submission.  ----
 
-\textbf{LLM-based code generation.}
-SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} resolve isolated GitHub issues with increasing reliability~\cite{Xia2025LiveSWEagent}.
-However, longer-horizon benchmarks reveal a capability cliff~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}, and specification inference remains the central difficulty~\cite{Roychoudhury2025AgenticAI}.
-These systems operate on arbitrary codebases with minimal structure.
-Our approach exploits the project's homogeneous, verifiable structure so that each agent invocation is short and self-contained, sidestepping the long-horizon planning that degrades general-purpose agents.
+\textbf{AI coding agents.}
+SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} resolve isolated issues with increasing reliability~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff: SWE-bench Pro~\cite{Deng2025SWEBenchPro} and SWE-EVO~\cite{Thai2025SWEEVO} report 23--25\% success on multi-file tasks vs.\ 80\%+ on single-issue fixes; LongCLI-Bench~\cite{LongCLIBench2026} finds pass rates below 20\% beyond 35 minutes.
+Quality concerns are equally sharp: AI co-authored code carries $1.7{\times}$ more major issues~\cite{CodeRabbit2025AICodeQuality}; the METR randomized trial found experienced developers 19\% \emph{slower} with AI tools on their own repositories~\cite{Becker2025METRProductivityRCT}; Cursor's FastRender---3M+ lines from $\sim$2{,}000 agents---scored 1.3/5 for maintainability~\cite{CursorFastRender2026,SIGFastRender2026}.
+To tame this variance, \emph{harness engineering}~\cite{OpenAI2026HarnessEngineering,Fowler2026HarnessEngineering} shifts the engineer's role from code authorship to environment design: persistent project instructions~\cite{CursorRules2026,WindsurfRules2026,ClaudeCodeSkills2026}, composable skills~\cite{Obra2025Superpowers}, and verification pipelines constrain agents toward reliable output.
+Our approach instantiates this pattern for a mathematical domain, exploiting the project's uniform, verifiable structure so that each agent invocation is short and self-contained.
 
-\textbf{Context engineering.}
-Chain-of-thought prompting~\cite{Wei2022CoT}, ReAct~\cite{Yao2023ReAct}, and tool-use frameworks decompose agent reasoning into steps, but the decomposition is generated per invocation and is not reusable across tasks.
-Several industry systems now attach persistent, per-project instructions to coding agents: Cursor Rules~\cite{CursorRules2026}, Windsurf Rules~\cite{WindsurfRules2026}, and Claude Code Skills~\cite{ClaudeCodeSkills2026} all store Markdown files alongside source code so that conventions and workflows survive across sessions.
-Superpowers~\cite{Obra2025Superpowers} layers composable skill documents on top of these mechanisms for test-driven development, debugging, and code review.
-
-\textbf{Harness engineering.}
-OpenAI coined \emph{harness engineering} for the discipline of designing constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
-Their internal experiment produced roughly one million lines of code with no manually written source, by shifting the engineer's role from code authorship to environment design.
-They identify three pillars: context engineering (repository as single source of truth), architectural constraint enforcement (linters and structural tests), and continuous maintenance (``garbage collection'' of technical debt).
-Fowler~\cite{Fowler2026HarnessEngineering} formalizes the concept with a taxonomy of guides, sensors, and inferential elements, distinguishing first-time correctness from self-correcting feedback loops.
-
-% ---- Below: new paragraphs from April 2026 literature survey. ----
-% ---- Please verify each source before final submission.       ----
-
-\textbf{Quality and productivity of AI-generated code.}
-Empirical evidence on AI coding quality is mixed.
-A CodeRabbit study of 470 open-source PRs found that AI co-authored code contains $1.7{\times}$ more major issues and $2.74{\times}$ more security vulnerabilities than human-written code~\cite{CodeRabbit2025AICodeQuality}.
-The METR randomized controlled trial---16 experienced developers working on their own repositories---found that AI tool use made developers 19\% \emph{slower}, despite developers predicting a 24\% speedup~\cite{Becker2025METRProductivityRCT}.
-On the other end of the scale spectrum, Cursor's FastRender experiment orchestrated $\sim$2{,}000 agents to build a web browser in 3M+ lines of Rust; an independent quality audit scored it 1.3/5 for maintainability~\cite{CursorFastRender2026,SIGFastRender2026}.
-These results suggest that without domain-specific verification, scaling agent output amplifies defects rather than reducing them.
-
-\textbf{Long-horizon agent limitations.}
-Several benchmarks quantify the gap between short-horizon bug fixing and sustained development.
-SWE-bench Verified is now considered saturated and contaminated~\cite{SWEBenchLive2025}; SWE-bench Pro~\cite{Deng2025SWEBenchPro} and SWE-EVO~\cite{Thai2025SWEEVO} target longer-horizon, multi-file tasks and report dramatically lower success rates (23--25\% vs.\ 80\%+ on Verified).
-LongCLI-Bench~\cite{LongCLIBench2026} finds pass rates below 20\% for tasks exceeding 35 minutes, and shows that human-agent collaboration via plan injection yields larger gains than agent self-correction.
-No existing benchmark measures the capability demonstrated in this paper: sustained, verified \emph{construction} of a mathematical library over weeks.
-
-\textbf{AI-assisted formal mathematics.}
-Neural theorem provers have reached competition level: AlphaProof achieved an IMO silver medal~\cite{Novikov2025AlphaEvolve}, DeepSeek-Prover-V2~\cite{DeepSeekProverV2} reaches 88.9\% on MiniF2F, and Harmonic's Aristotle~\cite{Harmonic2025Aristotle} solved 5/6 IMO 2025 problems with formally verified Lean~4 proofs.
-Kleppmann~\cite{Kleppmann2025FormalVerification} argues that AI will make formal verification mainstream---not because AI makes proofs easier, but because the volume of AI-generated code makes human review impossible.
-VeriCoding~\cite{Bursuc2025VeriCoding} benchmarks LLM generation of formally verified code, achieving 82\% in Dafny but only 44\% in Verus/Rust.
-Our round-trip testing occupies a pragmatic middle ground between unit tests and full formal proofs: it verifies a mathematical property (reduction correctness) automatically, without requiring a proof assistant.
+\textbf{AI-assisted formal verification.}
+Neural theorem provers have reached competition level---DeepSeek-Prover-V2~\cite{DeepSeekProverV2} scores 88.9\% on MiniF2F, and Harmonic's Aristotle~\cite{Harmonic2025Aristotle} solved 5/6 IMO~2025 problems with verified Lean~4 proofs---strengthening the argument that AI-generated code volumes will force machine-checkable correctness into the mainstream~\cite{Kleppmann2025FormalVerification}.
+VeriCoding~\cite{Bursuc2025VeriCoding} benchmarks verified code generation, achieving 82\% in Dafny but only 44\% in Verus/Rust.
+Our round-trip testing occupies a pragmatic middle ground: it verifies a mathematical property (reduction correctness) automatically, without a proof assistant, at the cost of covering finite instances rather than all inputs.
 
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION
