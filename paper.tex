@@ -594,13 +594,12 @@ External domain experts began contributing through the \texttt{propose} skill, f
 \section{Related Work}\label{sec:related}
 
 \textbf{Reduction catalogues.}
-Karp's seminal paper~\cite{karp1972} established 21~polynomial-time reductions among combinatorial problems; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems with a compendium of known results.
+Karp's seminal paper~\cite{karp1972} established 21~polynomial-time reductions among combinatorial problems; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems.
 Lucas~\cite{lucas2014} revisited Karp's list by providing explicit Ising formulations for each problem.
 These works are indispensable references, but they remain prose and formulae on paper, not executable code.
 
 \textbf{Reduction repositories.}
-Several tools convert optimization problems into a single target formulation.
-PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave's Ocean SDK~\cite{DWaveOcean2026} target QUBO/Ising models but provide no inter-problem reductions and no composable inverse maps that chain across problem types.
+PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave's Ocean SDK~\cite{DWaveOcean2026} compile combinatorial problems into QUBO/Ising models, but support no reductions between other problem types and no inverse maps for solution recovery.
 The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} provide languages for writing and testing reductions, but are pedagogical tools not designed for production optimization pipelines.
 ProblemReductions.jl~\cite{gao2025programming}, our earlier Julia prototype, implements 18~problem types with a reduction graph structure as part of the generic tensor network ecosystem for combinatorial optimization~\cite{Liu2023GenericTN}; its limited growth motivated the present work.
 Our library differs from all of these in three ways: it connects \emph{many} source types to \emph{many} target types through a reduction graph with composable overhead, it requires inverse maps for solution recovery, and it is maintained by AI agents rather than by hand.
