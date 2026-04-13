@@ -207,9 +207,9 @@ The build system also produces a PDF manual from Typst source.
 The manual serves two audiences: domain experts reviewing the mathematical content, and agents reading it as reference material during implementation.
 Each entry contains a formal definition, a proof sketch, and a worked example with visualization---the example is the same canonical instance that the contributor provided in the original issue.
 
-\subsection{Core and Infrastructure}\label{sec:graph-structure}
+\subsection{Infrastructure}\label{sec:graph-structure}
 
-Behind the interfaces, the library separates into two internal layers (\Cref{fig:library-architecture}): a \emph{core} layer that defines the problems, their reduction rules, and an example database, and an \emph{infrastructure} layer that supports them.
+Behind the interfaces, the infrastructure layer (\Cref{fig:library-architecture}) defines the problems, their reduction rules, and an example database, and provides solvers and a symbolic engine for overhead analysis.
 
 \emph{Problem types.}
 Every problem type implements a uniform interface for checking candidate solutions, called \emph{configurations} (Appendix~\ref{app:architecture}).
