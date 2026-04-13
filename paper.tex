@@ -214,7 +214,10 @@ It comprises five modules: formal definitions of problem types, polynomial-time 
 
 \emph{Problem types.}
 Every problem type implements a uniform interface for checking candidate solutions, called \emph{configurations} (Appendix~\ref{app:architecture}).
-Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}. Problems may have \emph{variants} due to different type parameterization, e.g., MIS on unit disk graph is a variant represented as a different node in the reduction graph, which is solvable in sub-exponential time.
+Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}.
+Restricting the input domain of a problem type produces a \emph{variant}: the combinatorial structure is identical, but the tighter constraint can change the complexity class.
+For instance, MIS on unit disk graphs~\cite{Nguyen2023UnitDiskMapping} admits a sub-exponential-time algorithm, whereas general MIS does not (unless the Exponential Time Hypothesis fails).
+Each variant is represented as a distinct node in the reduction graph, preserving these complexity distinctions.
 
 \emph{Reduction rules.}
 Each rule requires two mappings, a forward map for mapping a source problem instance to a target problem instance, and an inverse map for solution extraction (Appendix~\ref{app:architecture}).
