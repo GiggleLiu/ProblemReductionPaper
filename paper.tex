@@ -209,7 +209,8 @@ Each entry contains a formal definition, a proof sketch, and a worked example wi
 
 \subsection{Infrastructure}\label{sec:graph-structure}
 
-Behind the interfaces, the infrastructure layer (\Cref{fig:library-architecture}) defines the problems, their reduction rules, and an example database, and provides solvers and a symbolic engine for overhead analysis.
+The infrastructure layer (\Cref{fig:library-architecture}) encodes the computational content of the reduction graph.
+It comprises five modules: formal definitions of problem types, polynomial-time reduction rules between them, a database of canonical instances for testing and documentation, backend solvers for exact verification, and a symbolic engine for analyzing reduction overhead.
 
 \emph{Problem types.}
 Every problem type implements a uniform interface for checking candidate solutions, called \emph{configurations} (Appendix~\ref{app:architecture}).
