@@ -14,9 +14,6 @@
 \usepackage{amsthm}
 \newtheorem{definition}{Definition}
 
-\newcommand{\jinguo}[1]{\textcolor{red}{JG: #1}}
-\newcommand{\claude}[1]{\textcolor{blue}{[Claude: #1]}}
-
 % Inline project-board column label
 \newcommand{\col}[1]{%
   \tikz[baseline=(X.base)]{%
@@ -603,9 +600,6 @@ The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students w
 PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave Ocean~\cite{DWaveOcean2026} compile problems into QUBO/Ising but support no inter-type reductions.
 ProblemReductions.jl~\cite{gao2025programming}, our Julia prototype with 18~types~\cite{Liu2023GenericTN}, motivated the present work.
 Our library differs by connecting \emph{many} source types to \emph{many} targets with composable overhead and inverse maps, maintained by AI agents.
-
-% ---- Sources below from April 2026 literature survey.   ----
-% ---- Please verify each source before final submission.  ----
 
 \textbf{AI coding agents: capabilities and limitations.}
 SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} resolve isolated issues with increasing reliability~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff: SWE-bench Pro~\cite{Deng2025SWEBenchPro} and SWE-EVO~\cite{Thai2025SWEEVO} report 23--25\% success on multi-file tasks vs.\ 80\%+ on single-issue fixes; LongCLI-Bench~\cite{LongCLIBench2026} finds pass rates below 20\% beyond 35 minutes.
