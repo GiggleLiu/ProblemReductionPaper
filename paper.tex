@@ -632,7 +632,9 @@ combining automation with human judgment and creativity.
 
 \subsection{Discussion}
 
-Round-trip testing verifies reduction correctness on finite instances, and domain experts review every proof sketch before integration; AI-assisted theorem proving is making machine-checked proofs increasingly feasible and could further strengthen these guarantees.
+Scaling agent output without domain-specific verification amplifies defects.
+Our correctness assurance mechanism sits between unit tests and formal proofs: it verifies a mathematical property (reduction correctness) automatically, without a proof assistant.
+Domain experts review every proof sketch before integration, providing a human safeguard; AI-assisted theorem proving could further strengthen these guarantees with machine-checked proofs.
 We welcome community contributions through the existing issue-based route.
 
 \emph{Future directions.}
