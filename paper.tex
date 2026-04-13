@@ -657,22 +657,36 @@ In about three months, a small team used this harness to build a reduction graph
 
 \subsection{Discussion}
 
-Two preconditions determine whether the methodology transfers to a new domain: the domain must decompose into \emph{uniform tasks} that share a common interface, and each task must admit a \emph{cheap automatic check} that serves as a verification gate.
-An automatic differentiation (AD) engine satisfies both: each differentiation rule transforms one operation into its derivative (uniform task), and a finite-difference comparison verifies each rule independently (automatic check).
-Compiler optimization passes, codec libraries, and serialization format converters exhibit the same structure.
-The methodology does \emph{not} transfer to heterogeneous tasks---feature requests, UI redesigns, cross-cutting refactors---where each issue is structurally unique and resists decomposition into uniform, independently testable units.
+\emph{Verification as a scaling prerequisite.}
+Recent evidence shows that scaling agent output without domain-specific verification amplifies defects.
+AI co-authored code carries $1.7{\times}$ more major issues~\cite{CodeRabbit2025AICodeQuality}; Cursor's 3M-line FastRender browser scored 1.3/5 for maintainability~\cite{SIGFastRender2026}; experienced developers using AI tools were measured 19\% slower on their own repositories~\cite{Becker2025METRProductivityRCT}.
+Our results point in the opposite direction---not because the agents are better, but because the harness provides a \emph{verification gate} (round-trip testing) that rejects incorrect output before it enters the codebase.
+The lesson is structural: agents can produce verified software at scale when every contribution is machine-checkable, and they produce technical debt at scale when it is not.
 
-The reduction graph exhibits \emph{network effects}: every new edge increases the value of all existing nodes.
-Adding a single solver backend (e.g., a Rydberg-atom quantum device that natively solves Maximum Independent Set) makes it reachable from every problem type connected by a reduction path---without modifying any existing code.
-Conversely, adding a single problem type with one outgoing edge to an existing node immediately inherits access to every solver the graph already supports.
-This multiplicative payoff means the marginal cost of a new contribution falls as the graph grows, while the marginal benefit rises---the opposite of most software projects, where maintenance cost scales with size.
+\emph{Task decomposition as a design pattern.}
+Long-horizon benchmarks consistently show agent degradation: SWE-EVO reports 25\% success on multi-file tasks vs.\ 73\% on single-issue fixes~\cite{Thai2025SWEEVO}; LongCLI-Bench finds pass rates below 20\% beyond 35 minutes~\cite{LongCLIBench2026}.
+Our methodology sidesteps this wall by decomposing the project into hundreds of uniform, bounded tasks---each reduction is an independent unit with a clear interface, a self-contained correctness check, and a completion time well within agent capability.
+The two preconditions for this decomposition are: the domain must consist of \emph{uniform tasks} sharing a common interface, and each task must admit a \emph{cheap automatic check}.
+Automatic differentiation engines, compiler optimization passes, codec libraries, and serialization format converters satisfy both.
+The methodology does \emph{not} transfer to heterogeneous tasks---feature requests, UI redesigns, cross-cutting refactors---where each issue is structurally unique and resists decomposition into independently testable units.
 
-Three directions extend this work.
-First, replacing asymptotic overhead with \emph{fine-grained cost prediction} requires a stronger symbolic engine---one that can simplify, compare, and compose overhead expressions to select the cheapest reduction path for a given instance.
+\emph{Position in the verification spectrum.}
+Kleppmann~\cite{Kleppmann2025FormalVerification} argues that AI-generated code volumes will force formal verification into the mainstream.
+Neural theorem provers are closing the gap: Harmonic's Aristotle~\cite{Harmonic2025Aristotle} produces formally verified IMO proofs in Lean~4, and VeriCoding~\cite{Bursuc2025VeriCoding} achieves 82\% success on verified code generation in Dafny (but only 44\% in Verus/Rust).
+Our round-trip testing sits between unit tests and formal proofs: it verifies a mathematical property (reduction correctness) automatically, without a proof assistant, at the cost of covering only finite instances rather than all inputs.
+For reduction-graph construction this trade-off is favorable---round-trip tests catch implementation errors cheaply, and the mathematical correctness argument is provided separately in each reduction's proof sketch.
+
+\emph{Network effects in the reduction graph.}
+Every new edge increases the value of all existing nodes.
+Adding a single solver backend (e.g., a Rydberg-atom quantum device for Maximum Independent Set) makes it reachable from every connected problem type without modifying existing code.
+Conversely, a new problem type with one outgoing edge inherits access to every solver the graph already supports.
+The marginal cost of a new contribution falls as the graph grows, while the marginal benefit rises---the opposite of most software projects, where maintenance cost scales with size.
+
+\emph{Future directions.}
+Three extensions follow naturally.
+First, replacing asymptotic overhead with \emph{fine-grained cost prediction} requires a symbolic engine that can simplify, compare, and compose overhead expressions to select the cheapest reduction path for a given instance.
 Second, extending the reduction graph beyond NP to \emph{other complexity classes} (approximation hierarchies such as APX and PTAS, counting problems in \#P), preserving hardness guarantees across reductions.
-Third, closing the loop between the reduction graph and \emph{automated research}.
-The reduction graph's topology reveals which missing edges would connect the most isolated problem types.
-An agentic discovery pipeline can target those high-value reductions---generating candidates, validating them through round-trip tests, and absorbing verified rules as new edges.
+Third, closing the loop between the reduction graph and \emph{automated research}: the graph's topology reveals which missing edges would connect the most isolated problem types, and an agentic discovery pipeline can target those high-value reductions---generating candidates, validating them through round-trip tests, and absorbing verified rules as new edges.
 
 \section*{Acknowledgments}
 
