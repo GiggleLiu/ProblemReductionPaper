@@ -593,7 +593,7 @@ External domain experts began contributing through the \texttt{propose} skill, f
 %======================================================================
 \section{Related Work}\label{sec:related}
 
-\textbf{Reduction catalogues \& tools.}
+\textbf{Polynomial reductions.}
 Karp's seminal paper~\cite{karp1972} established 21~polynomial-time reductions among combinatorial problems; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems.
 Lucas~\cite{lucas2014} revisited Karp's list by providing explicit Ising formulations for each problem.
 The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students write and auto-check reductions in a classroom setting; neither provides a reusable reduction graph.
@@ -612,18 +612,12 @@ Our approach exploits the project's homogeneous, verifiable structure so that ea
 \textbf{Structured agent workflows.}
 Chain-of-thought prompting~\cite{Wei2022CoT}, ReAct~\cite{Yao2023ReAct}, and tool-use frameworks decompose agent reasoning into steps, but the decomposition is generated per invocation and is not reusable across tasks.
 Several industry systems now attach persistent, per-project instructions to coding agents: Cursor Rules~\cite{CursorRules2026}, Windsurf Rules~\cite{WindsurfRules2026}, and Claude Code Skills~\cite{ClaudeCodeSkills2026} all store Markdown files alongside source code so that conventions and workflows survive across sessions.
-Superpowers~\cite{Obra2025Superpowers} layers composable skill documents on top of these mechanisms for TDD, debugging, and code review.
-Our skills build on this pattern but are domain-specific: they encode the structure of a reduction PR, the verification checks to run, and the review criteria an agent must satisfy before merging.
+Superpowers~\cite{Obra2025Superpowers} layers composable skill documents on top of these mechanisms for test-driven development, debugging, and code review.
 
 \textbf{Harness engineering.}
 OpenAI coined \emph{harness engineering} for the discipline of designing constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
 Their internal experiment produced roughly one million lines of code with no manually written source, by shifting the engineer's role from code authorship to environment design.
 They identify three pillars: context engineering (repository as single source of truth), architectural constraint enforcement (linters and structural tests), and continuous maintenance (``garbage collection'' of technical debt).
-Our work adapts this paradigm for a mathematical domain, adding two components absent from OpenAI's agent-only framework: advisor skills that guide human contributors, and a domain-specific verification layer (\Cref{sec:method}).
-OpenAI's ``garbage collection'' pillar (continuous maintenance against entropy) is handled implicitly by our review pipeline, which catches drift at every PR.
-We do not yet run recurring background cleanup tasks.
-The key addition is a domain-specific verification layer---round-trip testing and agentic feature tests---that addresses functional correctness.
-Fowler~\cite{Fowler2026HarnessLimits} identified this as the open problem in harness engineering.
 
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION
