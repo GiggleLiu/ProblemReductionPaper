@@ -618,6 +618,29 @@ Superpowers~\cite{Obra2025Superpowers} layers composable skill documents on top 
 OpenAI coined \emph{harness engineering} for the discipline of designing constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
 Their internal experiment produced roughly one million lines of code with no manually written source, by shifting the engineer's role from code authorship to environment design.
 They identify three pillars: context engineering (repository as single source of truth), architectural constraint enforcement (linters and structural tests), and continuous maintenance (``garbage collection'' of technical debt).
+Fowler~\cite{Fowler2026HarnessEngineering} formalizes the concept with a taxonomy of guides, sensors, and inferential elements, distinguishing first-time correctness from self-correcting feedback loops.
+
+% ---- Below: new paragraphs from April 2026 literature survey. ----
+% ---- Please verify each source before final submission.       ----
+
+\textbf{Quality and productivity of AI-generated code.}
+Empirical evidence on AI coding quality is mixed.
+A CodeRabbit study of 470 open-source PRs found that AI co-authored code contains $1.7{\times}$ more major issues and $2.74{\times}$ more security vulnerabilities than human-written code~\cite{CodeRabbit2025AICodeQuality}.
+The METR randomized controlled trial---16 experienced developers working on their own repositories---found that AI tool use made developers 19\% \emph{slower}, despite developers predicting a 24\% speedup~\cite{Becker2025METRProductivityRCT}.
+On the other end of the scale spectrum, Cursor's FastRender experiment orchestrated $\sim$2{,}000 agents to build a web browser in 3M+ lines of Rust; an independent quality audit scored it 1.3/5 for maintainability~\cite{CursorFastRender2026,SIGFastRender2026}.
+These results suggest that without domain-specific verification, scaling agent output amplifies defects rather than reducing them.
+
+\textbf{Long-horizon agent limitations.}
+Several benchmarks quantify the gap between short-horizon bug fixing and sustained development.
+SWE-bench Verified is now considered saturated and contaminated~\cite{SWEBenchLive2025}; SWE-bench Pro~\cite{Deng2025SWEBenchPro} and SWE-EVO~\cite{Thai2025SWEEVO} target longer-horizon, multi-file tasks and report dramatically lower success rates (23--25\% vs.\ 80\%+ on Verified).
+LongCLI-Bench~\cite{LongCLIBench2026} finds pass rates below 20\% for tasks exceeding 35 minutes, and shows that human-agent collaboration via plan injection yields larger gains than agent self-correction.
+No existing benchmark measures the capability demonstrated in this paper: sustained, verified \emph{construction} of a mathematical library over weeks.
+
+\textbf{AI-assisted formal mathematics.}
+Neural theorem provers have reached competition level: AlphaProof achieved an IMO silver medal~\cite{Novikov2025AlphaEvolve}, DeepSeek-Prover-V2~\cite{DeepSeekProverV2} reaches 88.9\% on MiniF2F, and Harmonic's Aristotle~\cite{Harmonic2025Aristotle} solved 5/6 IMO 2025 problems with formally verified Lean~4 proofs.
+Kleppmann~\cite{Kleppmann2025FormalVerification} argues that AI will make formal verification mainstream---not because AI makes proofs easier, but because the volume of AI-generated code makes human review impossible.
+VeriCoding~\cite{Bursuc2025VeriCoding} benchmarks LLM generation of formally verified code, achieving 82\% in Dafny but only 44\% in Verus/Rust.
+Our round-trip testing occupies a pragmatic middle ground between unit tests and full formal proofs: it verifies a mathematical property (reduction correctness) automatically, without requiring a proof assistant.
 
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION
