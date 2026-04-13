@@ -469,7 +469,7 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 Correctness is enforced by six layers: issue check (Stage~2), compile-time type checks, unit tests, round-trip tests, agentic feature tests (Stage~4), and manual verification (Stage~6).
 The first three are standard; we describe the two novel mechanisms below.
 
-\textbf{Round-trip test.}
+\textbf{Round-trip tests.}
 As illustrated in~\Cref{fig:example-pipeline}, correctness begins with the issue provided by the domain expert.
 The issue's canonical example---a small, fully worked instance with known optimal solution goes to the example database.
 This example is used to generate the JSON fixtures, the PDF manual's visual diagram, and the CLI's \texttt{pred create -{}-example} command.
