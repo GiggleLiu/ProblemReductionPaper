@@ -611,8 +611,9 @@ Our approach exploits the project's homogeneous, verifiable structure so that ea
 
 \textbf{Structured agent workflows.}
 Chain-of-thought prompting~\cite{Wei2022CoT}, ReAct~\cite{Yao2023ReAct}, and tool-use frameworks decompose agent reasoning into steps, but the decomposition is generated per invocation and is not reusable across tasks.
-Our skills are closer to stored procedures: persistent, version-controlled documents that encode domain-specific workflows and are inherited by every agent session.
-Superpowers~\cite{Obra2025Superpowers} provides a general-purpose skills framework; we build on it for engineering workflows while adding domain-specific skills for reductions.
+Several industry systems now attach persistent, per-project instructions to coding agents: Cursor Rules~\cite{CursorRules2026}, Windsurf Rules~\cite{WindsurfRules2026}, and Claude Code Skills~\cite{ClaudeCodeSkills2026} all store Markdown files alongside source code so that conventions and workflows survive across sessions.
+Superpowers~\cite{Obra2025Superpowers} layers composable skill documents on top of these mechanisms for TDD, debugging, and code review.
+Our skills build on this pattern but are domain-specific: they encode the structure of a reduction PR, the verification checks to run, and the review criteria an agent must satisfy before merging.
 
 \textbf{Harness engineering.}
 OpenAI coined \emph{harness engineering} for the discipline of designing constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
