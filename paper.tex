@@ -632,10 +632,8 @@ combining automation with human judgment and creativity.
 
 \subsection{Discussion}
 
-Our round-trip testing verifies reduction correctness automatically, but only on finite instances---it is not a formal proof.
-Recent progress in AI-assisted theorem proving, where neural provers now produce machine-checked proofs at competition level, suggests that formally verifying each reduction in a proof assistant such as Lean is becoming feasible.
-Integrating such guarantees would elevate the library from a tested software artifact to a certified reference for complexity theory.
-We plan to pursue this in collaboration with domain experts and welcome community contributions through the existing issue-based route.
+Round-trip testing verifies reduction correctness on finite instances; AI-assisted theorem proving is making machine-checked proofs increasingly feasible and could further strengthen these guarantees.
+We plan to pursue this in collaboration with complexity-theory experts and welcome community contributions through the existing issue-based route.
 
 \emph{Future directions.}
 The reduction graph exhibits network effects: each new edge benefits all existing nodes, so marginal cost falls as the graph grows while marginal benefit rises.
