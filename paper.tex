@@ -603,16 +603,14 @@ Our library differs by connecting \emph{many} source types to \emph{many} target
 % ---- Sources below from April 2026 literature survey.   ----
 % ---- Please verify each source before final submission.  ----
 
-\textbf{AI coding agents.}
+\textbf{AI coding agents: capabilities and limitations.}
 SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} resolve isolated issues with increasing reliability~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff: SWE-bench Pro~\cite{Deng2025SWEBenchPro} and SWE-EVO~\cite{Thai2025SWEEVO} report 23--25\% success on multi-file tasks vs.\ 80\%+ on single-issue fixes; LongCLI-Bench~\cite{LongCLIBench2026} finds pass rates below 20\% beyond 35 minutes.
 Quality concerns are equally sharp: AI co-authored code carries $1.7{\times}$ more major issues~\cite{CodeRabbit2025AICodeQuality}; the METR randomized trial found experienced developers 19\% \emph{slower} with AI tools on their own repositories~\cite{Becker2025METRProductivityRCT}; Cursor's FastRender---3M+ lines from $\sim$2{,}000 agents---scored 1.3/5 for maintainability~\cite{CursorFastRender2026,SIGFastRender2026}.
-To tame this variance, \emph{harness engineering}~\cite{OpenAI2026HarnessEngineering,Fowler2026HarnessEngineering} shifts the engineer's role from code authorship to environment design: persistent project instructions~\cite{CursorRules2026,WindsurfRules2026,ClaudeCodeSkills2026}, composable skills~\cite{Obra2025Superpowers}, and verification pipelines constrain agents toward reliable output.
-Our approach instantiates this pattern for a mathematical domain, exploiting the project's uniform, verifiable structure so that each agent invocation is short and self-contained.
 
-\textbf{AI-assisted formal verification.}
-Neural theorem provers have reached competition level---DeepSeek-Prover-V2~\cite{DeepSeekProverV2} scores 88.9\% on MiniF2F, and Harmonic's Aristotle~\cite{Harmonic2025Aristotle} solved 5/6 IMO~2025 problems with verified Lean~4 proofs---strengthening the argument that AI-generated code volumes will force machine-checkable correctness into the mainstream~\cite{Kleppmann2025FormalVerification}.
-VeriCoding~\cite{Bursuc2025VeriCoding} benchmarks verified code generation, achieving 82\% in Dafny but only 44\% in Verus/Rust.
-Our round-trip testing occupies a pragmatic middle ground: it verifies a mathematical property (reduction correctness) automatically, without a proof assistant, at the cost of covering finite instances rather than all inputs.
+\textbf{Harness engineering.}
+To tame this variance, \emph{harness engineering}~\cite{OpenAI2026HarnessEngineering,Fowler2026HarnessEngineering} shifts the engineer's role from code authorship to environment design.
+Persistent project instructions~\cite{CursorRules2026,WindsurfRules2026,ClaudeCodeSkills2026} and composable skills~\cite{Obra2025Superpowers} keep agents aligned with repository conventions across sessions; verification pipelines reject incorrect output before it enters the codebase.
+Our approach instantiates this pattern for a mathematical domain, exploiting the project's uniform, verifiable structure so that each agent invocation is short, self-contained, and human-reviewable.
 
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION
