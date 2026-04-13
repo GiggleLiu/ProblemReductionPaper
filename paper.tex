@@ -475,7 +475,7 @@ The first three are standard; we describe the two novel mechanisms below.
 
 \textbf{Round-trip tests.}
 As illustrated in~\Cref{fig:example-pipeline}, correctness begins with the issue provided by the domain expert.
-The issue's canonical example, a small, fully worked instance with known optimal solution, goes to the example database.
+The issue's canonical example, a small, fully worked instance with known solution, goes to the example database.
 This example is used to generate the JSON fixtures, the PDF manual's visual diagram, and the CLI's \texttt{pred create -{}-example} command.
 The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this.
 
@@ -584,7 +584,7 @@ We believe this solver-access coverage alone is a practical contribution to the 
   \label{fig:growth-curve}
 \end{figure}
 
-In Phase~1 (weeks~0--7; \Cref{fig:growth-curve}), the team and AI agents ported reduction rules from existing packages---ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping,pan2025encodingcomputationallyhardproblems}, and qubogen~\cite{Tamura2020qubogen}---and from Garey and Johnson's catalogue~\cite{garey1979}.
+In Phase~1 (weeks~0--7; \Cref{fig:growth-curve}), the team and AI agents ported reduction rules from existing packages (ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping,pan2025encodingcomputationallyhardproblems}, and qubogen~\cite{Tamura2020qubogen}) and from Garey and Johnson's catalogue~\cite{garey1979}.
 Growth was steady but slow: roughly 20~problem types and 55~rules by week~7.
 Through this process, the skill-based automation pipeline was established and iteratively refined.
 In Phase~2 (weeks~7--8.5), basic skills were introduced, but the pipeline was not yet end-to-end automated.
