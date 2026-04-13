@@ -632,19 +632,17 @@ combining automation with human judgment and creativity.
 
 \subsection{Discussion}
 
-One benefit of a clean architecture for modern software is high maintainability.
-A newcomer can read any single reduction in isolation, and a maintainer can modify the harness without understanding the mathematics of every rule.
-Conventions are enforced by the harness, not by tribal knowledge, so the codebase remains navigable as it grows.
-
-The same harness pattern extends naturally beyond reductions.
-Any scientific computing domain that decomposes into uniform, independently testable tasks---automatic differentiation rules, compiler optimization passes, numerical quadrature schemes---can adopt a similar scaffold-and-skill structure.
-We view the methodology not as specific to NP-hard problems but as a template for building scientific software with AI agents, one where the human effort goes into designing the harness rather than writing the code.
-
-The current verification stack---round-trip tests on finite instances plus human review of proof sketches---catches implementation errors effectively but does not constitute a formal proof of correctness.
-Strengthening the mathematical guarantees, for example by machine-checking reduction proofs in a proof assistant, is a natural next step that would raise the library's value as a reference for complexity theory.
+Our round-trip testing verifies reduction correctness automatically, but only on finite instances---it is not a formal proof.
+Recent progress in AI-assisted theorem proving, where neural provers now produce machine-checked proofs at competition level, suggests that formally verifying each reduction in a proof assistant such as Lean is becoming feasible.
+Integrating such guarantees would elevate the library from a tested software artifact to a certified reference for complexity theory.
 We plan to pursue this in collaboration with domain experts and welcome community contributions through the existing issue-based route.
 
-The reduction graph itself opens three further directions: \emph{fine-grained cost prediction} via a symbolic engine that selects the cheapest reduction path for a given instance; extension beyond NP to \emph{other complexity classes} (APX, PTAS, \#P) with preserved hardness guarantees; and \emph{automated discovery}, where the graph's topology identifies high-value missing edges and an agentic pipeline generates, validates, and absorbs new reductions.
+\emph{Future directions.}
+The reduction graph exhibits network effects: each new edge benefits all existing nodes, so marginal cost falls as the graph grows while marginal benefit rises.
+Three extensions exploit this.
+First, \emph{fine-grained cost prediction}---a symbolic engine that composes overhead expressions to select the cheapest reduction path for a given instance.
+Second, extending beyond NP to \emph{other complexity classes} (APX, PTAS, \#P), preserving hardness guarantees.
+Third, \emph{automated discovery}: the graph's topology reveals high-value missing edges, and an agentic pipeline can generate, validate, and absorb new reductions.
 
 \section*{Acknowledgments}
 
