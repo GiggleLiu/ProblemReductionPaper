@@ -620,8 +620,7 @@ Our approach instantiates this pattern for a mathematical domain, exploiting the
 \subsection{Conclusion}
 
 In about three months, a small team and AI agents built a verified reduction graph with 100+ problem
-types and 200+ reduction rules. More than the size of the artifact, we take this as evidence that a well-
-designed harness system can change how scientific software is built. The \emph{scaffold} gives every
+types and 200+ reduction rules. More than the size of the artifact, we take this as evidence that a well-designed harness system can change how scientific software is built. The \emph{scaffold} gives every
 agent session the same experimental conditions, while \emph{skills} and the \emph{automation pipeline}
 turn recurring engineering work into a repeatable flow, unlocking a level of productivity that manual
 workflows have not reached. At the same time, \emph{correctness assurance} remains the necessary
@@ -633,23 +632,18 @@ combining automation with human judgment and creativity.
 
 \subsection{Discussion}
 
-\emph{Verification as a scaling prerequisite.}
-As reviewed in \Cref{sec:related}, scaling agent output without domain-specific verification amplifies defects.
-Our round-trip testing sits between unit tests and formal proofs: it verifies a mathematical property (reduction correctness) automatically, without a proof assistant, at the cost of covering only finite instances.
-The lesson is structural: agents produce verified software at scale when every contribution is machine-checkable, and technical debt at scale when it is not.
+Because every reduction follows the same interface and every contribution passes the same verification pipeline, the codebase remains navigable: a newcomer can read any single reduction in isolation, and a maintainer can modify the harness without understanding the mathematics of every rule.
+This uniformity is what makes the library sustainable as it grows---the conventions are enforced by the harness, not by tribal knowledge.
 
-\emph{Task decomposition as a design pattern.}
-Long-horizon benchmarks show agent degradation on multi-file, multi-hour tasks (\Cref{sec:related}).
-Our methodology sidesteps this by decomposing the project into hundreds of uniform, bounded tasks---each with a clear interface, a self-contained correctness check, and a completion time within agent capability.
-Two preconditions enable this: \emph{uniform tasks} sharing a common interface, and a \emph{cheap automatic check} per task.
-Automatic differentiation engines, compiler passes, and codec libraries satisfy both; heterogeneous tasks---feature requests, UI redesigns, cross-cutting refactors---do not.
+The same harness pattern extends naturally beyond reductions.
+Any scientific computing domain that decomposes into uniform, independently testable tasks---automatic differentiation rules, compiler optimization passes, numerical quadrature schemes---can adopt a similar scaffold-and-skill structure.
+We view the methodology not as specific to NP-hard problems but as a template for building scientific software with AI agents, one where the human effort goes into designing the harness rather than writing the code.
 
-\emph{Future directions.}
-The reduction graph exhibits network effects: each new edge benefits all existing nodes, so marginal cost falls as the graph grows while marginal benefit rises.
-Three extensions exploit this.
-First, \emph{fine-grained cost prediction}---a symbolic engine that composes overhead expressions to select the cheapest reduction path for a given instance.
-Second, extending beyond NP to \emph{other complexity classes} (APX, PTAS, \#P), preserving hardness guarantees.
-Third, \emph{automated discovery}: the graph's topology reveals high-value missing edges, and an agentic pipeline can generate, validate, and absorb new reductions.
+The current verification stack---round-trip tests on finite instances plus human review of proof sketches---catches implementation errors effectively but does not constitute a formal proof of correctness.
+Strengthening the mathematical guarantees, for example by machine-checking reduction proofs in a proof assistant, is a natural next step that would raise the library's value as a reference for complexity theory.
+We plan to pursue this in collaboration with domain experts and welcome community contributions through the existing issue-based route.
+
+The reduction graph itself opens three further directions: \emph{fine-grained cost prediction} via a symbolic engine that selects the cheapest reduction path for a given instance; extension beyond NP to \emph{other complexity classes} (APX, PTAS, \#P) with preserved hardness guarantees; and \emph{automated discovery}, where the graph's topology identifies high-value missing edges and an agentic pipeline generates, validates, and absorbs new reductions.
 
 \section*{Acknowledgments}
 
