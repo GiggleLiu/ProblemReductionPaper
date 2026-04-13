@@ -619,10 +619,16 @@ Our approach instantiates this pattern for a mathematical domain, exploiting the
 
 \subsection{Conclusion}
 
-We built a harness that lets AI coding agents produce verified software at a scale that manual effort has not reached.
-The harness rests on three pillars: \emph{scaffolds} that define the structure of every contribution, \emph{skills} that encode domain workflows as reusable agent instructions, and a \emph{correctness assurance} pipeline that validates every change from compilation through round-trip testing.
-The human effort goes into these three pillars, not the source code.
-In about three months, a small team used this harness to build a reduction graph connecting 100+ problem types and 200+ reduction rules to specialized solvers, totaling over 170k lines of Rust.
+In about three months, a small team and AI agents built a verified reduction graph with 100+ problem
+types and 200+ reduction rules. More than the size of the artifact, we take this as evidence that a well-
+designed harness system can change how scientific software is built. The \emph{scaffold} gives every
+agent session the same experimental conditions, while \emph{skills} and the \emph{automation pipeline}
+turn recurring engineering work into a repeatable flow, unlocking a level of productivity that manual
+workflows have not reached. At the same time, \emph{correctness assurance} remains the necessary
+counterweight: with round-trip tests, agentic checks, and final human interpretation, the library stays
+grounded in mathematical rigor rather than speed alone. In this sense, harness engineering is not just a
+convenience around AI coding agents, but a new kind of scientific instrument, whose power comes from
+combining automation with human judgment and creativity.
 
 
 \subsection{Discussion}
