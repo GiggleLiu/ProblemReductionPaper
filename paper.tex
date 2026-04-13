@@ -128,9 +128,9 @@ The central requirement of any harness is a \emph{verification gate}---a cheap, 
 Reduction-graph construction supplies one for free: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality.
 This sidesteps the sharp performance degradation that agents exhibit on longer-horizon tasks~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}.
 
-We build our harness from two components, a \emph{scaffold} and \emph{skills}.
+In harness engineering, \emph{scaffold} and \emph{skills} are the two key components.
 The \emph{scaffold}---repository structure, CI configuration, formatting rules, and a project specification file (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) auto-loaded into every agent session---anchors the system as a single source of truth for architecture and constraints.
-\emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch''.
+\emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists---some targeting agents, others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch''. \jinguo{add citations}
 The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
 Together, scaffold and skills form a domain-specific harness that addresses both barriers:
 \begin{itemize}
@@ -209,20 +209,20 @@ Each entry contains a formal definition, a proof sketch, and a worked example wi
 
 \subsection{Infrastructure}\label{sec:graph-structure}
 
-The infrastructure layer (\Cref{fig:library-architecture}) encodes the computational content of the reduction graph.
-It comprises five modules: formal definitions of problem types, polynomial-time reduction rules between them, a database of canonical instances for testing and documentation, backend solvers for exact verification, and a symbolic engine for analyzing reduction overhead.
+The infrastructure layer (\Cref{fig:library-architecture}) comprises five modules: problem types, reduction rules between them, a database of canonical instances for testing and documentation, backend solvers for exact verification, and a symbolic engine for analyzing computational complexity.
 
 \emph{Problem types.}
-Every problem type implements a uniform interface for checking candidate solutions, called \emph{configurations} (Appendix~\ref{app:architecture}).
-Each type defines its own \emph{size measures} and \emph{best-known algorithm complexity}---for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}.
+Every problem type implements a uniform interface for problems, such as input domain, solution type and \emph{size measures}.
+Each type defines its own size measures and \emph{best-known algorithm complexity}, for example, Maximum Independent Set (MIS) is parameterized by $|V|$ and $|E|$, with a known $O(1.1996^{|V|})$ algorithm~\cite{Xiao2017MIS}.
 A problem type may have \emph{variants}: restricting the input domain to a narrower class preserves the combinatorial objective but can change the complexity.
-Each variant occupies a distinct node in the reduction graph, so these distinctions are explicitly tracked.
-For instance, general MIS requires $O(1.1996^{|V|})$ time, whereas MIS on unit disk graphs~\cite{Nguyen2023UnitDiskMapping} admits an $O(2^{O(\sqrt{|V|})})$ algorithm---an exponential improvement from the geometric constraint.
+Each variant occupies a distinct node in the reduction graph.
+For instance, general MIS requires $O(1.1996^{|V|})$ time, whereas MIS on unit disk graphs admits an $O(2^{O(\sqrt{|V|})})$ algorithm, which is subexponential, unlike the general case~\cite{Nguyen2023UnitDiskMapping}\jinguo{check citation}.
 
 \emph{Reduction rules.}
-Each rule requires two mappings, a forward map for mapping a source problem instance to a target problem instance, and an inverse map for solution extraction (Appendix~\ref{app:architecture}).
+Each rule requires two mappings, a forward map and a inverse map. The forward map maps a source problem instance to a target problem instance. 
+After solving the target problem, the inverse map extracts source solutions from target solutions.
 Each rule also carries a \emph{reduction overhead}: a set of multivariate polynomials mapping the source's size measures to the target's.
-For example, the Satisfiability $\to$ Maximum Independent Set reduction creates one vertex per literal occurrence in the formula, yielding $O(L)$ vertices and $O(L^2)$ edges where $L$ is the total number of literal occurrences.
+For example, the 3-SAT $\to$ MIS reduction creates one vertex per literal occurrence in the formula, yielding $O(L)$ vertices and $O(L^2)$ edges where $L$ is the total number of literal occurrences.
 
 \emph{Example database.}
 Canonical instances serve as the single source of truth.
@@ -233,26 +233,27 @@ Every problem type needs a minimal but reasonably efficient solver, because roun
 Most types (e.g., Maximum Independent Set, Traveling Salesman, flow-shop scheduling) have a reduction path to ILP.
 The default validation strategy reduces the problem to ILP and solves it with HiGHS~\cite{Huangfu2018HiGHS}, an open-source solver.
 For problems without an ILP path, the library provides customized exact solvers that exploit problem structure---for example, functional-dependency closure for Minimum Cardinality Key, and cycle enumeration with branch-and-bound for Partial Feedback Edge Set.
-The remaining problems fall back to brute-force enumeration on small instances.
+The remaining problems fall back to brute-force enumeration on small instances. \jinguo{add citations}
 
 \emph{Symbolic engine.}
-Choosing the cheapest reduction path between two problems requires manipulating the overhead polynomials defined above.
-Since these polynomials cannot be compared definitively until the input sizes are known, the library provides a symbolic engine that defers the comparison to runtime.
-It supports three operations: \emph{composition} substitutes one edge's output polynomial into the next edge's input; \emph{comparison} checks whether a composite path dominates a direct rule, for redundancy detection; and \emph{evaluation} computes numeric cost for a concrete instance, enabling instance-dependent path search.
+Both reduction overheads and algorithm complexities are represented as symbolic expressions.
+The symbolic engine supports three operations: \emph{composition} substitutes one edge's output polynomial into the next edge's input, often used to determine the composite overhead of a multi-step reduction path; \emph{comparison} determines whether a symbolic expression has lower asymptotic growth than another, used for finding the cheapest reduction path; and \emph{evaluation} evaluates a symbolic expression.
+
+Appendix~\ref{app:architecture} provides more details about the Rust language specific design choices.
 
 \subsection{Why Rust?}\label{sec:why-rust}
 
-The choice of implementation language has an outsized impact in agentic workflows, because the agent's edit--compile--test loop runs hundreds of times per session.
 None of the maintainers had written Rust before this project---the language was chosen in large part for properties that benefit agents.
 
 \emph{Explicit, actionable error messages.}
 The Rust compiler produces diagnostics that include the error location, the conflicting types or lifetimes, and often a suggested fix.
 Agents parse these messages and resolve errors without human intervention.
-Languages with less structured diagnostics (e.g., C++ template errors) would require more agent reasoning per cycle.
+Languages with less structured diagnostics would require more agent reasoning per cycle.
+Rust's well-known strengths---memory safety eliminating memory leaks, etc. at compile time, and Cargo's integrated toolchain---further reduce the surface area of errors agents must debug.
 
 \emph{Fast feedback.}
 Incremental compilation and the built-in test harness produce results in seconds, enabling agents to iterate rapidly.
-Rust's well-known strengths---memory safety eliminating entire bug categories at compile time, high performance, small binary size, and Cargo's integrated toolchain---further reduce the surface area of errors agents must debug.
+
 
 %======================================================================
 %  SECTION 4: SKILLS AND AUTOMATION
@@ -262,37 +263,35 @@ Rust's well-known strengths---memory safety eliminating entire bug categories at
 \subsection{Anatomy of the Harness}\label{sec:skills}
 
 \begin{definition}[Harness System]
-A \emph{harness system} constrains agent behavior through five components: a project specification auto-loaded into every agent session, a set of tools the agent may invoke, a progressively-disclosed knowledge base, a set of automation skills (executable checklists that compose the previous three into multi-step pipelines), and a set of advisor skills for human contributors.
+A \emph{harness system} constrains agent behavior through five components: a project specification auto-loaded into every agent session, a set of tools the agent may invoke, a progressively-disclosed knowledge base, a set of automation skills (executable checklists that compose the previous three into multi-step pipelines), and a set of advisor skills for human contributors onboarding.
 \end{definition}
 
 The five components address successive needs in an agent session: what conventions to follow, what actions to take, what domain knowledge to consult, and how to orchestrate these into workflows.
-The last component splits into \emph{automation skills} that agents execute autonomously and \emph{advisor skills} that agents execute with humans in the loop (\Cref{fig:skill-architecture}).
 
-\emph{Project specification} files at the repository root (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) encode architecture constraints, naming conventions, file layout rules, and verification requirements.
+\emph{Project specification} files at the repository root (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) encode how to find the rest four components and what conventions to follow.
 Every agent session loads these files automatically on startup, ensuring that a new agent inherits the same conventions as every prior session---without human briefing.
 
 \emph{Tools} include command-line interfaces (CLI), model context providers (MCP), and external search services.
 The CLI and the language's built-in test harness are the agent's hands.
-In this project, the \texttt{pred} CLI lets agents create problem instances, run reductions, invoke solvers, execute tests, and inspect topological connectivity in the reduction graph.
+In this project, the \texttt{pred} CLI lets agents create problem instances, run reductions, invoke solvers, and inspect topological connectivity in the reduction graph.
 ArXiv MCP and web search retrieve references, and Typst compiles the PDF manual and its documentation artifacts.
-Without tools, conventions remain inert.
 
 \emph{Knowledge base.}
 Domain knowledge---Garey and Johnson's catalogue~\cite{garey1979}, reference papers converted to Markdown for agent consumption, reference implementations already in the codebase---is too large to fit in a single agent context window.
 The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents discover relevant files through search and read full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
 
 \emph{Automation skills} are plain-Markdown documents that orchestrate multi-step pipelines---connecting specification, tools, and knowledge into repeatable workflows.
-Unlike traditional automation (Makefiles, shell scripts), which chains deterministic commands, skills can include \emph{abstract} steps: ``implement the reduction algorithm,'' ``review the pull request for correctness,'' ``fix failing tests and summarize the changes.''
+Unlike traditional automation (Makefiles, shell scripts), which chains deterministic commands, skills can include \emph{abstract} steps: ``implement the reduction algorithm''(\texttt{run-pipeline} skill in~\Cref{fig:skill-architecture}), ``review the pull request for correctness''(\texttt{review-pipeline} skill), ``fact check with web search for issues''(\texttt{fact-check} skill) and ``make a new release''(\texttt{release} skill).
 These steps require judgment and are interpreted by the agent using its own capabilities.
 Unlike bare prompts, skills break a complex task into concrete, ordered steps small enough for an agent to execute faithfully, preventing the drift and omissions that occur when agents plan from scratch.
-Concrete examples appear in \Cref{sec:pipeline-overview}.
 
-\emph{Advisor skills} actively involve humans by soliciting feedback at each step.
-They serve two purposes: \emph{training} humans to use the library or contribute to it, and \emph{utilizing} humans for tasks agents cannot reliably perform---critical decisions, hard mathematical reasoning, and creative work like designing canonical examples.
-For end users, \texttt{find-solver} guides a user from a real-world problem to a concrete solving strategy by exploring the reduction graph.
-\texttt{find-problem} does the reverse: given a solver, it discovers what other problems it can handle via incoming reductions.
-For contributors, \texttt{propose} conducts a structured brainstorming session to elicit a new problem or reduction in mathematical language, then files a well-formed GitHub issue---no programming required (\Cref{fig:skill-propose}).
-These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
+\emph{Advisor skills} more actively involve humans, for two purposes: \emph{training} humans to use the library or contribute to it, and \emph{utilizing} humans for tasks agents cannot reliably perform, such as critical decisions, hard mathematical reasoning, and creative work like designing canonical examples.
+For end users, agents use \texttt{find-solver} skill in~\Cref{fig:skill-architecture} to guide a user from a real-world problem to a concrete solving strategy by exploring the reduction graph.
+\texttt{find-problem} skill does the reverse: given a solver, it discovers what other problems it can handle via incoming reductions.
+For contributors, they can invoke \texttt{propose} skill to conduct a structured brainstorming session to elicit a new problem or reduction in mathematical language, then files a well-formed GitHub issue---no programming required.
+For maintainers, they can invoke \texttt{fix-issue} skill to identify potentially unsound proofs, low quality examples, etc. and fix or report them interactively.
+They can also invoke \texttt{final-review} skill to identify potential dangerous commits, check for correctness gap and address them interactively.
+These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.'' 
 
 \begin{figure}[t]
 \centering
@@ -306,8 +305,8 @@ These skills lower the usage barrier from ``knows the library'' to ``knows the p
 \subsection{What Cannot Be Delegated}\label{sec:human-responsibilities}
 Four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
 Selecting which rules to pursue requires understanding the needs of the community; the human is the information source.
-Verifying the algorithm's correctness requires deep reasoning; current models are not yet reliable enough to substitute for humans.
-Reasoning degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}. Research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2026HLE,Merrill2024ExpressivePower}.
+Verifying the algorithm's correctness requires deep reasoning.
+Reasoning ability of large language models degrades sharply with problem complexity~\cite{Mirzadeh2025GSMSymbolic,Shojaee2025IllusionOfThinking,Dziri2023FaithFate}. Research-level mathematics remains largely unsolved~\cite{Glazer2024FrontierMath,Paster2026HLE,Merrill2024ExpressivePower}.
 Constructing canonical examples requires creative work; the human is the end user and the best judge.
 Authorizing merges is security critical; a human with long-term memory must be responsible.
 
@@ -391,19 +390,20 @@ cargo run --example detect_unreachable_from_3sat
 
 
 \textbf{Stage~1: Propose} ( $\to$ \col{Backlog}).
-A domain expert clones the repository and runs the \texttt{propose} skill (\Cref{fig:skill-propose}) in Claude Code or a similar agentic coding tool.
-The skill conducts a structured brainstorming session---one question at a time---to elicit the core content of the contribution: which problem to add, its formal definition, and the reduction algorithm connecting it to existing problems. The expert answers in mathematical language; no programming is required.
+A domain expert clones the repository and invokes the \texttt{propose} skill (\Cref{fig:skill-propose}) in Claude Code or a similar agentic coding tool.
+The skill conducts a structured brainstorming session---one question at a time---to elicit the core content of the contribution: which problem or reduction rule to add, its formal definition, etc. The expert answers in mathematical language; no programming is required.
 The agent runs a topology analysis to avoid duplicates and to identify high-value gaps in the reduction graph, then pre-validates the draft against Stage~2's quality checks.
 The output is a structured GitHub issue filed into \col{Backlog}.
 
 \textbf{Stage~2: Validate} (\col{Backlog} $\to$ \col{Ready}).
-A maintainer uses the \texttt{fix-issue} skill to triage each issue in \col{Backlog}.
-The skill first runs \texttt{check-issue}, which automatically evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+A maintainer invokes the \texttt{fix-issue} skill to triage each issue in \col{Backlog}.
+The agent first evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
 It then auto-corrects mechanical failures (undefined symbols, missing metrics) and brainstorms substantive fixes with the maintainer interactively.
 Only issues passing all four checks move to \col{Ready}.
 
 \textbf{Stage~3: Implement} (\col{Ready} $\to$ \col{Review Pool}).
-An implementation agent executes the \texttt{run-pipeline} skill. It checks the \col{Ready} column, picks the highest-priority issue (e.g.\ new problem types before new reduction rules, since rules depend on types), claims it by moving it to \col{In Progress}, produces one pull request (PR) with code implementation and manual writing, and moves the issue to \col{Review Pool}.
+An implementation agent reads the \texttt{run-pipeline} skill, picks issue automatically from \col{Ready} column, implements it in headless mode, and submits a pull request (PR)---no human intervention at all.
+It produces one pull request (PR) with code implementation and manual writing, and moves the issue to \col{Review Pool}.
 The implementation agent separates two kinds of knowledge.
 \emph{Domain skills} (\texttt{add-model}, \texttt{add-rule}) encode what makes a reduction correct: a correctness argument, a size overhead expression, and a worked example must all exist \emph{before any code is written} (\Cref{fig:skill-addrule}).
 This is knowledge the agent cannot infer from existing code---it must come from the issue's mathematical content.
