@@ -126,7 +126,7 @@ Repeating this cycle for every entry exhausts even dedicated maintainers (\emph{
 AI agents offer a way forward.
 OpenAI's recent ``harness engineering'' framing captures the shift: the engineer's primary job becomes designing the constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
 The central requirement of any harness is a \emph{verification gate}, a cheap, automatic check that rejects incorrect output before it enters the codebase.
-Reduction-graph construction supplies one for free: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality.
+Reduction-graph construction supplies one for free: every reduction admits a \emph{round-trip test}: reduce a small instance, solve the target problem, map the solution back, and check optimality.
 This sidesteps the sharp performance degradation that agents exhibit on longer-horizon tasks~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}.
 
 In harness engineering, \emph{scaffold} and \emph{skills} are the two key components.
