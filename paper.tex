@@ -632,18 +632,11 @@ combining automation with human judgment and creativity.
 
 \subsection{Discussion}
 
-To generalize harness engineering beyond our work, two properties are especially important: maintainability and correctness as the codebase and contributor pool grow.
+\emph{The evolving role of humans.} Harness engineering shifts where human effort is spent. In our work, none of the code was written manually; most effort went into the harness itself. This reallocation is what keeps an AI-coded project maintainable at scale: without a harness enforcing uniform conventions, a codebase grown at agent speed quickly becomes unmanageable. The harness is what makes the output of many short, disposable agent sessions add up to a coherent library rather than a pile of sediment.
 
-The codebase should be easy for both newcomers and long-term maintainers to understand, modify, and extend. A well-structured and readable implementation lowers the barrier to entry for new contributors while also reducing the burden on existing maintainers as requirements evolve. More broadly, these engineering practices and toolchains should not remain limited to a narrow set of projects. They should be extended and adapted as a general convention for software development, so that a wider range of codebases can benefit from the same standards of clarity, reliability, and scalability.
+\emph{Automation and advisor skills.} A harness that only automates is brittle. Our split follows a simple principle: delegate what the verifier can catch, keep a human in the loop for what it cannot. Humans are still needed where errors are expensive and hard to detect downstream. We expect this distinction to become standard vocabulary in harness design.
 
-Maintainability alone is not sufficient---correctness must scale with the codebase.
-Our correctness-assurance mechanism occupies a middle ground between unit tests and formal proofs: it
-automatically verifies a mathematical property, namely reduction correctness by round-trip testing,
-without relying on a proof assistant. Domain experts still play an important role in validating
-correctness, and AI-assisted theorem proving could further strengthen these guarantees through
-machine-checked proofs.
-
-We welcome community contributions through the existing issue-based route.
+\emph{Toward machine-checked correctness.} Round-trip tests verify reduction correctness without a proof assistant, but leave the proof sketches themselves unverified. A natural next step is to route proofs through a formal system such as Lean and accept only those that typecheck. Whether current provers handle the combinatorial arguments reductions typically involve remains open, but integrating a proof assistant into the pipeline is, we think, the most promising direction for future work.
 
 \section*{Acknowledgments}
 
