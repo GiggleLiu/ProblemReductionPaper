@@ -292,7 +292,7 @@ Unlike bare prompts, skills break a complex task into concrete, ordered steps sm
 \emph{Advisor skills} more actively involve humans, for two purposes: \emph{training} humans to use the library or contribute to it, and \emph{utilizing} humans for tasks agents cannot reliably perform, such as critical decisions, hard mathematical reasoning, and creative work like designing canonical examples.
 For end users, agents use \texttt{find-solver} skill in~\Cref{fig:skill-architecture} to guide a user from a real-world problem to a concrete solving strategy by exploring the reduction graph.
 \texttt{find-problem} skill does the reverse: given a solver, it discovers what other problems it can handle via incoming reductions.
-For contributors, they can invoke the \texttt{propose} skill to conduct a structured brainstorming session to elicit a new problem or reduction in mathematical language, then file a well-formed GitHub issue---no programming required.
+For contributors, they can invoke the \texttt{propose} skill to conduct a structured brainstorming session to elicit a new problem or reduction in mathematical language, then file a well-formed GitHub issue, with no programming required.
 For maintainers, they can invoke the \texttt{fix-issue} skill to identify potentially unsound proofs, low quality examples, etc. and fix or report them interactively.
 They can also invoke the \texttt{final-review} skill to identify potential dangerous commits, check for correctness gap and address them interactively.
 These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.'' 
