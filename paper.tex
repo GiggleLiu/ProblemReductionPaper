@@ -635,7 +635,7 @@ In about three months, a small team used this harness to build a reduction graph
 \subsection{Discussion}
 
 Two preconditions determine whether the methodology transfers to a new domain: the domain must decompose into \emph{uniform tasks} that share a common interface, and each task must admit a \emph{cheap automatic check} that serves as a verification gate.
-An automatic differentiation (AD) engine satisfies both: each differentiation rule transforms one operation into its derivative (homogeneous unit), and a finite-difference comparison verifies each rule independently (automatic check).
+An automatic differentiation (AD) engine satisfies both: each differentiation rule transforms one operation into its derivative (uniform task), and a finite-difference comparison verifies each rule independently (automatic check).
 Compiler optimization passes, codec libraries, and serialization format converters exhibit the same structure.
 The methodology does \emph{not} transfer to heterogeneous tasks---feature requests, UI redesigns, cross-cutting refactors---where each issue is structurally unique and resists decomposition into uniform, independently testable units.
 
