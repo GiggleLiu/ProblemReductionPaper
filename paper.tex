@@ -626,10 +626,11 @@ They identify three pillars: context engineering (repository as single source of
 
 \subsection{Conclusion}
 
-In about three months, a small team and AI agents built a verified reduction graph connecting 100+ problem types and 200+ reduction rules to specialized solvers, totaling over 170k lines of Rust code.
-The harness that made this possible rests on three pillars: a no-code contribution route that lets domain experts specify reductions in mathematical language, a multilayer verification stack from compile-time checks to agentic feature tests, and a skill-based automation pipeline that enforces conventions at every step.
-68\% of problem types now have a reduction path to ILP, granting solver access without problem-specific code.
-78 types are reachable from 3-SAT, providing tested NP-hardness arguments backed by executable code.
+We presented a methodology for building large, verified libraries with AI coding agents.
+The key insight is that when a codebase consists of homogeneous, independently verifiable units---here, polynomial reductions---the human role shifts from writing code to engineering the harness: defining contribution templates, layering verification checks, and encoding domain workflows as reusable agent skills.
+Within this harness, each agent task is short, self-contained, and automatically validated, sidestepping the long-horizon planning that limits general-purpose agents.
+Applying this methodology to NP-hard problem reductions, a small team and AI agents built a verified reduction graph connecting 100+ problem types and 200+ reduction rules to specialized solvers, totaling over 170k lines of Rust code in about three months.
+
 
 \subsection{Discussion}
 
