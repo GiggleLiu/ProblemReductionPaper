@@ -692,7 +692,7 @@ Wrapper & Class & Witness & Example \\
 {\footnotesize $^\dagger$\texttt{Extremum} differs from \texttt{Max}/\texttt{Min} only in that the optimization sense is chosen at runtime.}
 \end{table}
 A single problem type admits multiple \emph{variants}: parameterizations by graph type (\texttt{SimpleGraph}, \texttt{PlanarGraph}, \texttt{BipartiteGraph}, \texttt{KingsSubgraph}, \texttt{UnitDiskGraph}, etc.) and weight type (unit, \texttt{i32}, \texttt{f64}).
-Each variant may have a better complexity bound---MIS on king's subgraphs runs in $O(2^{\sqrt{|V|}})$ versus $O(1.1996^{|V|})$ on general graphs~\cite{Xiao2017MIS}.
+Each variant may have a better complexity bound---MIS on king's subgraphs runs in $2^{O(\sqrt{|V|})}$~\cite{deBerg2020ETHTight} versus $O(1.1996^{|V|})$ on general graphs~\cite{Xiao2017MIS}.
 The \texttt{declare\_variants!} macro registers each concrete instantiation with its best-known complexity, a factory for JSON deserialization, and a solve function.
 All variable names in complexity expressions are validated at compile time against the problem's getter methods.
 This registry produces the registered variants from 100+ base problem types.
