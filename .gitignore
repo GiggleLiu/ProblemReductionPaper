@@ -17,6 +17,7 @@ paper.synctex(busy)
 
 # PDF output (keep source, not build output)
 paper.pdf
+main.pdf
 
 # arXiv packaging output
 submit/arxiv/
