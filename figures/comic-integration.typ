@@ -67,7 +67,7 @@
   // X mark
   content(
     (3 + jam-cx + bw * 0.5, jam-cy + bh * 0.8),
-    text(8pt, [?]),
+    text(8pt, [*?*]),
   )
 
   // Bob — small

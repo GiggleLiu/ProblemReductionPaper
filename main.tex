@@ -179,22 +179,21 @@ The target solver's time complexity, $t_I$ for ILP, thereby upper-bounds the end
 
 
 \subsection{The Challenge}
-
-Building a reduction graph at scale is itself a hard problem---not computationally, but organizationally.
-Despite decades of work on reduction libraries (\Cref{sec:related}), the gap between \emph{known} and \emph{implemented} reductions has only widened.
-Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software implementation covers fewer than 20.
-The bottleneck was never mathematical knowledge; it was building and maintaining the software.
-
 \begin{wrapfigure}{r}{0.4\textwidth}
   \vspace{-\baselineskip}
   \centering
   \includegraphics[width=0.4\textwidth]{figures/comic-integration.pdf}
   \caption{The integration problem.
-    (a) a contributor's new reduction does not fit the library's conventions---different interface, different layout---and cannot be integrated without learning the codebase.
-    (b) the contributor files a structured GitHub issue; an AI agent handles implementation, review and documentation automatically.}
+    (a) A new reduction does not fit the library's conventions and cannot be integrated without learning the codebase.
+    (b) The contributor files a structured issue; an agent handles implementation, review, and documentation.}
   \label{fig:comic}
   \vspace{-\baselineskip}
 \end{wrapfigure}
+
+Building a reduction graph at scale is itself a hard problem---not computationally, but organizationally.
+Despite decades of work on reduction libraries (\Cref{sec:related}), the gap between \emph{known} and \emph{implemented} reductions has only widened.
+Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software implementation covers fewer than 20.
+The bottleneck was never mathematical knowledge; it was building and maintaining the software.
 
 The reduction graph's value grows with every edge, but so does the cost of maintaining it.
 Every edge must conform to the same conventions---same interface, same file layout, same test pattern---but maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
