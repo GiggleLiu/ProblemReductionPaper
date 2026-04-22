@@ -160,12 +160,6 @@ To bridge \emph{many} problems to \emph{many} solvers, we organize primitive rul
 Each node is a problem type; each directed edge is a primitive rule.
 Every edge carries a \emph{reduction overhead}, a polynomial mapping the source's size measures to the target's.
 \Cref{fig:reduction-graph-concept} illustrates the structure.
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.65\columnwidth]{figures/reduction-graph-concept.pdf}
-  \caption{The reduction graph.  Each node is a problem type; each directed edge is a primitive reduction rule.  Highlighted nodes mark the two anchor roles: \emph{3-SAT} (source of NP-hardness proofs) and \emph{ILP} (gateway to mature solvers).  Edge labels $r_{B \leftarrow A}$ and $r_{C \leftarrow B}$ denote reduction overhead---multivariate polynomials mapping input sizes to output sizes.  Nodes carry the time complexity of best known algorithms (e.g., $t_S$, $t_I$).  A directed path from 3-SAT to a problem~$H$ makes $H$ \emph{NP-hard certified}; a path from any problem to ILP grants solver access.}
-  \label{fig:reduction-graph-concept}
-\end{figure}
 
 Reductions compose along directed paths.
 Chaining $A \to B$ and $B \to C$ yields $A \to C$.
