@@ -73,9 +73,10 @@
 
   node((5.0, 0.4), [$C$], "s-dwave")
 
-  rect-node((9.0, -0.4), [ILP], "s-ilp", highlight: true)
-  content((rel: (-1.1, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
-  content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
+  rect-node((9.0, -0.4), [#set par(leading: 0.3em)
+    #text(4pt)[Integer linear\ programming]], "s-ilp", highlight: true, size: (3.5, 1.5))
+  content((rel: (-2.1, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
+  // content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
 
   // ── Edges ──
   edge("sat", "mis", name: "sat-mis", fill: red)
