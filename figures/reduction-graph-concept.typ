@@ -11,14 +11,14 @@
   let r = 0.50
 
   // ── Node helper (uniform style) ──
-  let node(pos, label, name-id, label-anchor: "center", label-pad: 0.15, highlight: false) = {
+  let node(pos, label, name-id, label-anchor: "center", label-pad: 0.15, highlight: false, radius: r) = {
     let nfill = if highlight { fill-accent } else { fill-light }
     let nstroke = if highlight { (thickness: 1.0pt, paint: accent) } else { (thickness: 0.7pt, paint: border) }
-    circle(pos, radius: r, fill: nfill, stroke: nstroke, name: name-id)
+    circle(pos, radius: radius, fill: nfill, stroke: nstroke, name: name-id)
     if label-anchor == "center" {
       content(name-id, text(7pt, fill: fg, label))
     } else {
-      let lp = if label-anchor == "south" { (rel: (0, -r - label-pad), to: name-id) } else if label-anchor == "north" { (rel: (0, r + label-pad), to: name-id) } else if label-anchor == "east" { (rel: (r + label-pad + 0.05, 0), to: name-id) } else { (rel: (-r - label-pad - 0.05, 0), to: name-id) }
+      let lp = if label-anchor == "south" { (rel: (0, -radius - label-pad), to: name-id) } else if label-anchor == "north" { (rel: (0, radius + label-pad), to: name-id) } else if label-anchor == "east" { (rel: (radius + label-pad + 0.05, 0), to: name-id) } else { (rel: (-radius - label-pad - 0.05, 0), to: name-id) }
       let la = if label-anchor == "south" { "north" } else if label-anchor == "north" { "south" } else if label-anchor == "east" { "west" } else { "east" }
       content(lp, anchor: la, text(7pt, fill: fg, label))
     }
@@ -35,7 +35,7 @@
 
   // ── Layout ──
   // Top row
-  node((3.5, 5.4), [3-SAT], "3sat", label-anchor: "north", highlight: true)
+  node((3.5, 5.4), [3-SAT], "3sat", label-anchor: "center", highlight: true)
   node((6.5, 5.4), [], "gc", label-anchor: "north")
 
   // Middle row

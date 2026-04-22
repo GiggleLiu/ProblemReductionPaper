@@ -5,7 +5,7 @@
 
 // ── Page setup (standalone figures) ──
 #let fig-page = (width: auto, height: auto, margin: 5pt)
-#let fig-text = (size: 7.5pt, font: "New Computer Modern")
+#let fig-text = (size: 7.5pt, font: "Helvetica")
 
 // ── Palette: black + one accent ──
 #let accent     = rgb("#4e79a7")          // steel blue — the single accent
