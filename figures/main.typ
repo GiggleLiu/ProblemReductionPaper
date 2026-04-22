@@ -341,7 +341,7 @@
 
 // Reduction graph sketch. Not the final 190-node graph — a stylized stand-in
 // with ILP as a large central hub and 3-SAT highlighted on the upper-left.
-#let reduction-graph-sketch = canvas(length: 0.35cm, {
+#let reduction-graph-sketch = canvas(length: 0.32cm, {
   import draw: *
 
   let palette = (
@@ -355,23 +355,23 @@
     (s, s / 2147483648)
   }
 
-  // Pre-placed nodes (x, y, radius, color-index, label).
-  // ILP is the big center hub; 3-SAT is the tagged upper-left node.
-  let anchors = (
-    // (id, x, y, r, col-idx, label)
-    ("sat",   2.0, 14.0, 1.0, 0, "3-SAT"),
-    ("ilp",  13.0,  8.0, 1.6, 5, "ILP"),
-  )
+  // Hub positions.
+  let sat-x = 1.5
+  let sat-y = 11.5
+  let sat-r = 0.95
+  let ilp-x = 9.5
+  let ilp-y = 6.0
+  let ilp-r = 1.5
 
   // Generated small nodes on a jittered grid, skipping the hub zones.
   let smalls = ()
   let state = seed
-  let rows = 8
-  let cols = 10
-  let x0 = 1.0
-  let y0 = 1.0
-  let dx = 2.6
-  let dy = 2.0
+  let rows = 7
+  let cols = 7
+  let x0 = 1.3
+  let y0 = 1.3
+  let dx = 2.35
+  let dy = 1.9
   for r in range(rows) {
     for c in range(cols) {
       let (s1, jx) = rand(state)
@@ -380,14 +380,14 @@
       state = s2
       let (s3, jc) = rand(state)
       state = s3
-      let x = x0 + c * dx + (jx - 0.5) * 1.2
-      let y = y0 + r * dy + (jy - 0.5) * 1.1
-      // Skip points inside either hub zone.
-      let near-ilp = calc.pow(x - 13.0, 2) + calc.pow(y - 8.0, 2) < 4.0
-      let near-sat = calc.pow(x - 2.0, 2) + calc.pow(y - 14.0, 2) < 2.5
+      let x = x0 + c * dx + (jx - 0.5) * 1.0
+      let y = y0 + r * dy + (jy - 0.5) * 0.9
+      // Skip points inside either hub zone (with buffer).
+      let near-ilp = calc.pow(x - ilp-x, 2) + calc.pow(y - ilp-y, 2) < 6.5
+      let near-sat = calc.pow(x - sat-x, 2) + calc.pow(y - sat-y, 2) < 3.2
       if not near-ilp and not near-sat {
         let cidx = calc.rem(int(jc * 1000), palette.len())
-        smalls.push((x, y, 0.42, cidx))
+        smalls.push((x, y, 0.38, cidx))
       }
     }
   }
