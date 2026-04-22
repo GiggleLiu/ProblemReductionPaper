@@ -172,7 +172,7 @@ Every edge carries a \emph{reduction overhead}: a multivariate polynomial mappin
 Reductions compose along directed paths.
 Chaining $A \to B$ and $B \to C$ along the central chain in \Cref{fig:reduction-graph-concept} yields a composite rule $A \to C$ with overhead $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
 Two kinds of paths play a special role, marked by the highlighted nodes in the figure.
-A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$, backed by tested code rather than a pen-and-paper proof.
+A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$.
 We say $H$ is \emph{NP-hard certified} by the reduction graph.
 A path from a problem to \emph{integer linear programming} (ILP; highlighted, bottom right) grants access to mature solvers---crucial for testing reduction correctness, since the target's solver cost~$t_I$ upper-bounds the end-to-end cost of any problem routed through it.
 
