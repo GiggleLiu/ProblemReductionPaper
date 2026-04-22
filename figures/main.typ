@@ -197,16 +197,16 @@
 
 // Verification harness box: 4 mini-cards in a row.
 #let verif-cell(label) = box(
-  width: 100%, height: 1.5cm,
+  width: 100%, height: 1.8cm,
   stroke: (thickness: 0.6pt, paint: col-violet),
   radius: 3pt,
   fill: white,
   inset: 3pt,
 )[
-  #align(center + horizon)[
-    #icon-slot(w: 0.55cm, h: 0.55cm, label: [ ])
-    #v(2pt)
-    #text(6pt, fill: col-violet.darken(20%), weight: "regular", align(center, label))
+  #align(center + top)[
+    #icon-slot(w: 0.5cm, h: 0.5cm, label: [ ])
+    #v(3pt)
+    #text(5.8pt, fill: col-violet.darken(20%), weight: "regular", align(center, label))
   ]
 ]
 
