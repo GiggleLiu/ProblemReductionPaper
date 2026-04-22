@@ -176,7 +176,7 @@
   )
   content(
     (issue-x + bw / 2, issue-y + bh / 2),
-    text(6.5pt, [*issue*]),
+    text(6.5pt, [*Issue*]),
   )
 
   // // Bob on the left of the wall

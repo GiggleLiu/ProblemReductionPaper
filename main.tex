@@ -185,6 +185,17 @@ Despite decades of work on reduction libraries (\Cref{sec:related}), the gap bet
 Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software implementation covers fewer than 20.
 The bottleneck was never mathematical knowledge; it was building and maintaining the software.
 
+\begin{wrapfigure}{r}{0.4\textwidth}
+  \vspace{-\baselineskip}
+  \centering
+  \includegraphics[width=0.4\textwidth]{figures/comic-integration.pdf}
+  \caption{The integration problem.
+    (a) a contributor's new reduction does not fit the library's conventions---different interface, different layout---and cannot be integrated without learning the codebase.
+    (b) the contributor files a structured GitHub issue; an AI agent handles implementation, review and documentation automatically.}
+  \label{fig:comic}
+  \vspace{-\baselineskip}
+\end{wrapfigure}
+
 The reduction graph's value grows with every edge, but so does the cost of maintaining it.
 Every edge must conform to the same conventions---same interface, same file layout, same test pattern---but maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
 Conventions drift as contributors accumulate their own patterns (\emph{convention drift}).
