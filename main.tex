@@ -174,8 +174,8 @@ Chaining $A \to B$ and $B \to C$ along the central chain in \Cref{fig:reduction-
 Two kinds of paths play a special role, marked by the highlighted nodes in the figure.
 3-SAT serves as the source of NP-hardness proofs: any path from 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$.
 We say $H$ is \emph{NP-hard certified} by the reduction graph.
-Integer linear programming (ILP) serves as the gateway to mature solvers: any path from a problem to ILP grants access to those solvers.
-Such access is crucial for testing the correctness of reductions.
+Integer linear programming (ILP) is backed by mature solvers: any path from a problem to ILP routes it to one of them, which is crucial for testing the correctness of reductions.
+The target solver's time complexity, $t_I$ for ILP, thereby upper-bounds the end-to-end solving cost of any problem routed to it, up to reduction overhead.
 
 
 \subsection{The Challenge}
