@@ -527,7 +527,7 @@
 })
 
 #let panel3 = box(
-  width: 10.2cm,
+  width: 10.8cm,
   stroke: panel-stroke,
   radius: panel-radius,
   fill: panel-fill(col-p3),
