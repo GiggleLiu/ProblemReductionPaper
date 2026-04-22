@@ -29,20 +29,21 @@
   let mk = (end: "straight", scale: 0.32)
   let gap = 0.08
 
-  let edge(from, to, name: none, dash: none) = {
-    line(from, to, stroke: (thickness: lw, paint: col-edge-normal, dash: dash), mark: mk, shorten: (start: gap, end: gap), name: name)
+  let edge(from, to, name: none, dash: none, fill: none) = {
+    let paint = if fill == none { col-edge-normal } else { fill }
+    line(from, to, stroke: (thickness: lw, paint: paint, dash: dash), mark: mk, shorten: (start: gap, end: gap), name: name)
   }
 
   // ── Layout ──
   // Top row
-  node((3.5, 5.4), [3-SAT], "3sat", label-anchor: "center", highlight: true)
+  node((3.5, 5.4), [3-SAT], "3sat", label-anchor: "center", highlight: true, radius: 0.8)
   node((6.5, 5.4), [], "gc", label-anchor: "north")
 
   // Middle row
   node((1.2, 3.5), [], "csat", label-anchor: "west")
   node((4.5, 3.5), [$A$], "sat")
   node((8.0, 3.5), [$H$], "mc")
-  content((rel: (0, 0.9), to: "mc"), text(7pt)[NP-hard certified])
+  content((rel: (0.2, 1.2), to: "mc"), text(7pt)[NP-hard\ certified])
 
   // Lower row
   node((3.0, 1.6), [$B$], "mis")
@@ -54,12 +55,12 @@
 
   node((5.0, 0.4), [$C$], "s-dwave")
 
-  node((9.0, -0.4), [$I$], "s-ilp", highlight: true)
-  content((rel: (0.9, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
-  content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
+  node((9.0, -0.4), [ILP], "s-ilp", highlight: true, radius: 0.8)
+  content((rel: (-1.1, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
+  // content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
 
   // ── Edges ──
-  edge("sat", "mis", name: "sat-mis")
+  edge("sat", "mis", name: "sat-mis", fill: red)
   edge("sat", "s-dwave", name: "sat-dwave", dash: "dashed")
   edge("sat", "ising")
   edge("gc", "sat")
@@ -67,7 +68,7 @@
   edge("mis", "s-rydberg")
   edge("ising", "s-dwave", name: "ising-dwave")
 
-  content((rel: (-1, 0.3), to: "sat-mis.mid"), [$r_(B arrow.l A)$])
+  content((rel: (-0.7, 0.3), to: "sat-mis.mid"), [$r_(B arrow.l A)$])
 
   // ── Bidirectional: Max-Cut ↔ Ising ──
   bezier("mc.south", "ising.east", (rel: (0.0, -1.3), to: "mc"),
@@ -86,5 +87,5 @@
 
   // MIS → D-Wave
   edge("mis", "s-dwave", name: "mis-dwave")
-  content((rel: (0.2, 0.5), to: "mis-dwave.mid"), [$r_(C arrow.l B)$])
+  content((rel: (-0.5, -0.3), to: "mis-dwave.mid"), [$r_(C arrow.l B)$])
 })
