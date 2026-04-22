@@ -24,6 +24,24 @@
     }
   }
 
+  // ── Rounded-rectangle node helper (same style knobs as `node`) ──
+  let rect-node(pos, label, name-id, size: (1.6, 1.0), corner-radius: 0.25, label-anchor: "center", label-pad: 0.15, highlight: false) = {
+    let nfill = if highlight { fill-accent } else { fill-light }
+    let nstroke = if highlight { (thickness: 1.0pt, paint: accent) } else { (thickness: 0.7pt, paint: border) }
+    let (w, h) = size
+    let hw = w / 2
+    let hh = h / 2
+    let (x, y) = pos
+    rect((x - hw, y - hh), (x + hw, y + hh), fill: nfill, stroke: nstroke, radius: corner-radius, name: name-id)
+    if label-anchor == "center" {
+      content(name-id, text(7pt, fill: fg, label))
+    } else {
+      let lp = if label-anchor == "south" { (rel: (0, -hh - label-pad), to: name-id) } else if label-anchor == "north" { (rel: (0, hh + label-pad), to: name-id) } else if label-anchor == "east" { (rel: (hw + label-pad + 0.05, 0), to: name-id) } else { (rel: (-hw - label-pad - 0.05, 0), to: name-id) }
+      let la = if label-anchor == "south" { "north" } else if label-anchor == "north" { "south" } else if label-anchor == "east" { "west" } else { "east" }
+      content(lp, anchor: la, text(7pt, fill: fg, label))
+    }
+  }
+
   // ── Edge helpers ──
   let lw = 0.8pt
   let mk = (end: "straight", scale: 0.32)
@@ -57,7 +75,7 @@
 
   node((9.0, -0.4), [ILP], "s-ilp", highlight: true, radius: 0.8)
   content((rel: (-1.1, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
-  // content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
+  content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
 
   // ── Edges ──
   edge("sat", "mis", name: "sat-mis", fill: red)
@@ -86,6 +104,6 @@
   edge("ising", "s-ilp")
 
   // MIS → D-Wave
-  edge("mis", "s-dwave", name: "mis-dwave")
+  edge("mis", "s-dwave", name: "mis-dwave", fill: red)
   content((rel: (-0.5, -0.3), to: "mis-dwave.mid"), [$r_(C arrow.l B)$])
 })
