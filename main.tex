@@ -165,18 +165,15 @@ Each verified reduction is a bridge connecting a new problem to an existing solv
 \end{wrapfigure}
 
 A single reduction between two problems is a \emph{primitive reduction rule}.
-To bridge \emph{many} problems to \emph{many} solvers, we organize primitive rules as a directed \emph{reduction graph}.
+To bridge \emph{many} problems to \emph{many} solvers, we organize primitive rules as a directed \emph{reduction graph} (\Cref{fig:reduction-graph-concept}).
 Each node is a problem type; each directed edge is a primitive rule.
-Every edge carries a \emph{reduction overhead}, a polynomial mapping the source's size measures to the target's.
-\Cref{fig:reduction-graph-concept} illustrates the structure.
+Every edge carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's; we write $r_{B \leftarrow A}$ for the overhead of the rule $A \to B$, as labeled on the middle edge of the figure.
 
 Reductions compose along directed paths.
-Chaining $A \to B$ and $B \to C$ yields $A \to C$.
-Writing $r_{X \leftarrow Y}$ for the overhead polynomial of rule $Y \to X$, the composite overhead is $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
-In the following discussions, two kinds of paths play a special role.
-A path from a well-established NP-complete problem like 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$, backed by tested code rather than a pen-and-paper proof.
-We say $H$ is \emph{NP-hard certified} by the reduction graph.
-A path from a problem to integer linear programming (ILP) grants access to mature solvers, which is crucial for testing the reduction correctness.
+Chaining $A \to B$ and $B \to C$ along the central chain in \Cref{fig:reduction-graph-concept} yields a composite rule $A \to C$ with overhead $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
+Two kinds of paths play a special role, marked by the highlighted nodes in the figure.
+A path from the well-established NP-complete problem \emph{3-SAT} (highlighted, top) to a problem~$H$ provides an NP-hardness argument for~$H$, backed by tested code rather than a pen-and-paper proof; we say $H$ is \emph{NP-hard certified} (see the node labeled ``NP-hard certified'' in the figure).
+A path from a problem to \emph{integer linear programming} (ILP; highlighted, bottom right) grants access to mature solvers---crucial for testing reduction correctness, since the target's solver cost~$t_I$ upper-bounds the end-to-end cost of any problem routed through it.
 
 \subsection{The Challenge}
 
