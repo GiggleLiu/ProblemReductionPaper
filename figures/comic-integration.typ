@@ -77,8 +77,8 @@
   )
 
   // ─── Right Panel: Agentic Integration ───
-  let rx = 12
-  let ry = 0
+  let rx = 0
+  let ry = -7.5
 
   content(
     (rx, ry - 4.5),
@@ -98,7 +98,7 @@
     stroke: none,
     radius: 1pt,
   )
-  content((new-bx + bw / 2, new-by + bh / 2), text(white, 6.5pt)[Code])
+  content((new-bx + bw / 2, new-by + bh / 2), text(white, 6.5pt)[*Code*])
 
   // --- Robotic arm growing from wall surface ---
   let arm-col = accent
@@ -176,7 +176,7 @@
   )
   content(
     (issue-x + bw / 2, issue-y + bh / 2),
-    text(6.5pt, [issue]),
+    text(6.5pt, [*issue*]),
   )
 
   // // Bob on the left of the wall

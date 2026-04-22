@@ -55,14 +55,14 @@
 
   // ── Layout ──
   // Top row
-  rect-node((3.5, 5.4), [3-SAT], "3sat", label-anchor: "center", highlight: true)
+  rect-node((3.5, 5.4), [#text(6pt)[3-SAT]], "3sat", label-anchor: "center", highlight: true)
   node((6.5, 5.4), [], "gc", label-anchor: "north")
 
   // Middle row
   node((1.2, 3.5), [], "csat", label-anchor: "west")
   node((4.5, 3.5), [$A$], "sat")
   node((8.0, 3.5), [$H$], "mc")
-  content((rel: (0.2, 1.2), to: "mc"), text(7pt)[NP-hard\ certified])
+  content((rel: (1.3, 0), to: "mc"), [#text(5pt)[NP-hard\ certified]])
 
   // Lower row
   node((3.0, 1.6), [$B$], "mis")
@@ -80,7 +80,7 @@
   // content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
 
   // ── Edges ──
-  edge("sat", "mis", name: "sat-mis", fill: red)
+  edge("sat", "mis", name: "sat-mis")
   edge("sat", "s-dwave", name: "sat-dwave", dash: "dashed",fill:gray.darken(50%))
   edge("sat", "ising")
   edge("gc", "sat")
@@ -88,7 +88,7 @@
   edge("mis", "s-rydberg")
   edge("ising", "s-dwave", name: "ising-dwave")
 
-  content((rel: (-0.7, 0.3), to: "sat-mis.mid"), [$r_(B arrow.l A)$])
+  content((rel: (-0.7, 0.3), to: "sat-mis.mid"), [#text(6pt)[$r_(B arrow.l A)$]])
 
   // ── Bidirectional: Max-Cut ↔ Ising ──
   bezier("mc.south", "ising.east", (rel: (0.0, -1.3), to: "mc"),
@@ -106,6 +106,7 @@
   edge("ising", "s-ilp")
 
   // MIS → D-Wave
-  edge("mis", "s-dwave", name: "mis-dwave", fill: red)
-  content((rel: (-0.5, -0.3), to: "mis-dwave.mid"), [$r_(C arrow.l B)$])
+  edge("mis", "s-dwave", name: "mis-dwave")
+  content((rel: (-0.5, -0.3), to: "mis-dwave.mid"), [#text(6pt)[$r_(C arrow.l B)$]])
+  content((rel: (0.6, -0.2), to: "sat-dwave.mid"), [#text(3pt, style: "italic", fill: gray.darken(50%))[compose]])
 })

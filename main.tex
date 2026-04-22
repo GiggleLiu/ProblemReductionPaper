@@ -86,7 +86,7 @@
 %
 % Using \And between authors leaves it to LaTeX to determine where to break the
 % lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
-% authors names on the first line, and the last on the second line, try using
+% authors names on sthe first line, and the last on the second line, try using
 % \AND instead of \And before the third author name.
 
 
@@ -160,7 +160,7 @@ Each verified reduction is a bridge connecting a new problem to an existing solv
   \vspace{-\baselineskip}
   \centering
   \includegraphics[width=0.4\textwidth]{figures/reduction-graph-concept.pdf}
-  \caption{The reduction graph.  Two anchor problems are highlighted: \emph{3-SAT} at the top and \emph{ILP} at the bottom right.  Edge labels are reduction overheads $r_{\cdot \leftarrow \cdot}$; node labels like $t_S$, $t_I$ denote the time complexity of the node's best known solver.}
+  \caption{The reduction graph.  Two anchor problems are highlighted: \emph{3-SAT} at the top and \emph{Integer linear programming (ILP)} at the bottom right.  Edge labels are reduction overheads $r_{\cdot \leftarrow \cdot}$; node labels like $t_S$, $t_I$ denote the time complexity of the node's best known solver.}
   \label{fig:reduction-graph-concept}
   \vspace{-\baselineskip}
 \end{wrapfigure}
@@ -169,7 +169,7 @@ A single reduction between two problems is a \emph{primitive reduction rule}.
 Primitive rules collectively form a directed \emph{reduction graph} (\Cref{fig:reduction-graph-concept}): each node is a problem type, each directed edge is a primitive rule.
 Every edge carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's; we write $r_{B \leftarrow A}$ for the overhead of the rule $A \to B$.
 
-Reductions compose along directed paths.
+Reductions \emph{compose} along directed paths.
 Chaining $A \to B$ and $B \to C$ along the central chain in \Cref{fig:reduction-graph-concept} yields a composite rule $A \to C$ with overhead $r_{C \leftarrow A} = r_{C \leftarrow B} \circ r_{B \leftarrow A}$.
 Two kinds of paths play a special role, marked by the highlighted nodes in the figure.
 3-SAT serves as the source of NP-hardness proofs: any path from 3-SAT to a problem~$H$ provides an NP-hardness argument for~$H$.
@@ -211,14 +211,6 @@ Together, scaffold and skills form a domain-specific harness that addresses both
   \item \emph{Effort exhaustion} $\to$ the routine work---coding, testing, documenting---becomes repeatable without human attention.
 \end{itemize}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/comic-integration.pdf}
-  \caption{The integration problem.
-    (a) a contributor's new reduction does not fit the library's conventions---different interface, different layout---and cannot be integrated without learning the codebase.
-    (b) the contributor files a structured GitHub issue; an AI agent handles implementation, review and documentation automatically.}
-  \label{fig:comic}
-\end{figure}
 
 \subsection{Contributions}
 
