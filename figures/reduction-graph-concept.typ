@@ -73,7 +73,7 @@
 
   node((5.0, 0.4), [$C$], "s-dwave")
 
-  node((9.0, -0.4), [ILP], "s-ilp", highlight: true, radius: 0.8)
+  rect-node((9.0, -0.4), [ILP], "s-ilp", highlight: true)
   content((rel: (-1.1, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
   content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
 
