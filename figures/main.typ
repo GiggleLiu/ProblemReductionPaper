@@ -1,0 +1,595 @@
+#import "lib.typ": *
+#import "@preview/pixel-family:0.2.0": bob, grace, crank, sentinel
+
+#set page(width: auto, height: auto, margin: 6pt)
+#set text(size: 7.5pt, font: "Helvetica")
+
+// ── Panel-specific palette ──
+#let col-p1   = rgb("#4e79a7")   // blue
+#let col-p2   = rgb("#f28e2b")   // orange
+#let col-p3   = rgb("#59a14f")   // green
+#let col-red  = rgb("#e15759")
+#let col-violet = rgb("#b07aa1")
+#let col-teal = rgb("#76b7b2")
+
+// ── Panel chrome parameters ──
+#let panel-stroke = (thickness: 0.7pt, paint: luma(180))
+#let panel-fill(col) = col.lighten(95%)
+#let panel-radius = 6pt
+
+// Icon placeholder: dashed-edge rounded square we fill in later with artwork.
+#let icon-slot(w: 1.2cm, h: 1.2cm, label: none) = box(
+  width: w, height: h,
+  stroke: (thickness: 0.4pt, paint: luma(180), dash: "dashed"),
+  radius: 3pt,
+  inset: 2pt,
+  align(center + horizon, text(5pt, fill: luma(150),
+    if label == none { [icon] } else { label })),
+)
+
+// Small tile for an NP-hard problem type (icon on top, caption below).
+#let problem-tile(label, icon: none) = align(center)[
+  #if icon == none {
+    icon-slot(w: 1.0cm, h: 1.0cm, label: [ ])
+  } else {
+    icon
+  }
+  #v(2pt)
+  #text(6.5pt, weight: "regular", fill: fg, label)
+]
+
+// Solver-format box (icon on the left, two-line label on the right).
+#let solver-box(label, sub, icon: none, col: col-p2, w: 3.3cm) = box(
+  width: w,
+  stroke: (thickness: 0.7pt, paint: col),
+  radius: 4pt,
+  inset: 5pt,
+  fill: white,
+)[
+  #std.grid(
+    columns: (0.9cm, 1fr),
+    gutter: 4pt,
+    align: (center + horizon, left + horizon),
+    if icon == none { icon-slot(w: 0.8cm, h: 0.7cm, label: [ ]) } else { icon },
+    [
+      #text(8pt, weight: "bold", fill: col.darken(10%), label) \
+      #text(6pt, fill: fg-light, sub)
+    ],
+  )
+]
+
+// Section header inside a panel: thin divider + centered caption.
+#let panel-section(label, col) = align(center)[
+  #text(7.5pt, weight: "bold", fill: col.darken(10%), label)
+]
+
+// ─────────────────────────────────────────────────────────────
+// Panel 1: Many hard problems, many solver formats
+// ─────────────────────────────────────────────────────────────
+#let panel1 = box(
+  width: 6.7cm,
+  stroke: panel-stroke,
+  radius: panel-radius,
+  fill: panel-fill(col-p1),
+  inset: 10pt,
+)[
+  // Header: numbered circle + bold title
+  #std.grid(
+    columns: (0.9cm, 1fr),
+    gutter: 6pt,
+    align: (center + horizon, left + horizon),
+    box(width: 0.8cm, height: 0.8cm,
+      stroke: (thickness: 1.2pt, paint: col-p1),
+      radius: 50%, fill: white,
+      align(center + horizon, text(13pt, weight: "bold", fill: col-p1, [1]))),
+    text(11pt, weight: "bold", fill: col-p1.darken(10%),
+      [Many hard problems,\ many solver formats]),
+  )
+
+  #v(8pt)
+  #panel-section([NP-hard problem types], col-p1)
+  #v(4pt)
+
+  // 3 × 3 grid of problem tiles (last row has only "Bin Packing" and "…").
+  #std.grid(
+    columns: (1fr, 1fr, 1fr),
+    rows: (auto, auto, auto),
+    gutter: 6pt,
+    problem-tile([3-SAT]),
+    problem-tile([Max-Cut]),
+    problem-tile([Set Cover]),
+    problem-tile([K-Coloring]),
+    problem-tile([TSP]),
+    problem-tile([MIS]),
+    problem-tile([Bin Packing]),
+    align(center + horizon, text(14pt, fill: fg-light, [$dots$])),
+    [],
+  )
+
+  #v(4pt)
+  #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
+  #v(2pt)
+  #align(center, text(6.5pt, fill: fg-light,
+    [Direct access is difficult:\ different languages, constraints, and APIs]))
+
+  #v(8pt)
+  #panel-section([Solver formats / backends], col-p2)
+  #v(4pt)
+
+  // 3 rows: (SAT, ILP) ; (QUBO/Ising, SDP) ; (Rydberg spans — centered).
+  #std.grid(
+    columns: (1fr, 1fr),
+    rows: (auto, auto),
+    gutter: 5pt,
+    solver-box([SAT], [CNF], col: col-p2, w: 100%),
+    solver-box([ILP], [Linear constraints], col: col-p2, w: 100%),
+    solver-box([QUBO / Ising], [Quadratic model], col: col-p2, w: 100%),
+    solver-box([SDP], [Matrix PSD], col: col-p2, w: 100%),
+  )
+  #v(5pt)
+  #align(center, solver-box([Rydberg], [Quantum hardware], col: col-p2, w: 50%))
+
+  #v(8pt)
+  #align(center)[
+    #text(6.5pt, style: "italic", fill: col-p2.darken(10%),
+      [Reducers are the bridge.\ Without them, hard problems remain isolated.])
+  ]
+]
+
+// ─────────────────────────────────────────────────────────────
+// Panel 2: Harness-engineered agentic integration
+// ─────────────────────────────────────────────────────────────
+
+// Rounded card: title line, multi-line body, accent bar on left.
+#let agent-card(col, title, body, icon: none) = box(
+  width: 100%,
+  stroke: (thickness: 0.9pt, paint: col),
+  radius: 5pt,
+  fill: white,
+  inset: 6pt,
+)[
+  #std.grid(
+    columns: (0.9cm, 1fr),
+    gutter: 5pt,
+    align: (center + horizon, left + horizon),
+    if icon == none { icon-slot(w: 0.8cm, h: 0.8cm, label: [bot]) } else { icon },
+    [
+      #text(8pt, weight: "bold", fill: col.darken(10%), title) \
+      #text(6.3pt, fill: fg-light, body)
+    ],
+  )
+]
+
+// GitHub issue card (table-style body).
+#let github-card = box(
+  width: 100%,
+  stroke: (thickness: 0.9pt, paint: luma(140)),
+  radius: 5pt,
+  fill: white,
+  inset: 6pt,
+)[
+  #std.grid(
+    columns: (auto, 1fr),
+    gutter: (6pt, 2pt),
+    align: (left + horizon, left + horizon),
+    // Header row
+    std.grid.cell(colspan: 2)[
+      #std.grid(
+        columns: (auto, auto, 1fr),
+        gutter: 4pt,
+        align: horizon,
+        icon-slot(w: 0.5cm, h: 0.5cm, label: [GH]),
+        text(9pt, weight: "bold", fill: fg, [GitHub Issue]),
+        text(7pt, fill: fg-light, [(no-code)]),
+      )
+    ],
+    std.grid.cell(colspan: 2, v(2pt)),
+    text(6.5pt, fill: fg-light, [Source problem]),  text(6.5pt, fill: fg, [K-Coloring]),
+    text(6.5pt, fill: fg-light, [Target solver]),   text(6.5pt, fill: fg, [ILP]),
+    text(6.5pt, fill: fg-light, [Input mapping]),
+      text(6.5pt, fill: fg, [n, edges #sym.arrow vars, cons]),
+    text(6.5pt, fill: fg-light, [Output mapping]),
+      text(6.5pt, fill: fg, [coloring #sym.arrow solution]),
+    text(6.5pt, fill: fg-light, [Notes]),
+      text(6.5pt, fill: fg, [symmetry breaking, ...]),
+  )
+]
+
+// Verification harness box: 4 mini-cards in a row.
+#let verif-cell(label) = box(
+  width: 100%, height: 1.5cm,
+  stroke: (thickness: 0.6pt, paint: col-violet),
+  radius: 3pt,
+  fill: white,
+  inset: 3pt,
+)[
+  #align(center + horizon)[
+    #icon-slot(w: 0.55cm, h: 0.55cm, label: [ ])
+    #v(2pt)
+    #text(6pt, fill: col-violet.darken(20%), weight: "regular", align(center, label))
+  ]
+]
+
+#let verif-box = box(
+  width: 100%,
+  stroke: (thickness: 0.9pt, paint: col-violet),
+  radius: 5pt,
+  fill: col-violet.lighten(92%),
+  inset: 6pt,
+)[
+  #std.grid(
+    columns: (auto, 1fr),
+    gutter: 5pt,
+    align: (center + horizon, left + horizon),
+    icon-slot(w: 0.5cm, h: 0.5cm, label: [#sym.checkmark]),
+    text(8.5pt, weight: "bold", fill: col-violet.darken(15%), [Multi-layer verification harness]),
+  )
+  #v(4pt)
+  #std.grid(
+    columns: (1fr, 1fr, 1fr, 1fr),
+    gutter: 4pt,
+    verif-cell([type / compile checks]),
+    verif-cell([unit tests]),
+    verif-cell([round-trip reduction tests]),
+    verif-cell([agentic feature tests]),
+  )
+]
+
+#let panel2 = box(
+  width: 7.2cm,
+  stroke: panel-stroke,
+  radius: panel-radius,
+  fill: panel-fill(col-p2),
+  inset: 10pt,
+)[
+  // Header
+  #std.grid(
+    columns: (0.9cm, 1fr),
+    gutter: 6pt,
+    align: (center + horizon, left + horizon),
+    box(width: 0.8cm, height: 0.8cm,
+      stroke: (thickness: 1.2pt, paint: col-p2),
+      radius: 50%, fill: white,
+      align(center + horizon, text(13pt, weight: "bold", fill: col-p2, [2]))),
+    text(11pt, weight: "bold", fill: col-p2.darken(10%),
+      [Harness-engineered\ agentic integration]),
+  )
+
+  #v(8pt)
+
+  // Person-at-laptop (left) and GitHub issue card (right).
+  #std.grid(
+    columns: (1.6cm, 1fr),
+    gutter: 5pt,
+    align: (center + horizon, left + horizon),
+    [
+      #icon-slot(w: 1.4cm, h: 1.4cm, label: [person\ at laptop])
+      #v(3pt)
+      #text(5.5pt, style: "italic", fill: col-p3.darken(10%),
+        align(center, [no-code\ contribution\ route]))
+    ],
+    github-card,
+  )
+
+  #v(6pt)
+  // Downward arrow
+  #align(center, text(10pt, fill: fg-light, sym.arrow.b))
+  #v(2pt)
+
+  #agent-card(col-p1, [Implementation Agent],
+    [Plan #sym.arrow Encode #sym.arrow Generate code \
+     Propose reduction rule])
+
+  #v(4pt)
+  #align(center, text(10pt, fill: fg-light, sym.arrow.b))
+  #v(2pt)
+
+  #agent-card(col-p3, [Review Agent],
+    [Static analysis #sym.arrow Semantics check \
+     Approve or request changes])
+
+  #v(6pt)
+  #verif-box
+  #v(4pt)
+  #align(center, text(10pt, fill: fg-light, sym.arrow.b))
+  #v(2pt)
+
+  #box(
+    width: 100%,
+    stroke: (thickness: 0.9pt, paint: col-p3),
+    radius: 5pt,
+    fill: col-p3.lighten(92%),
+    inset: 6pt,
+  )[
+    #std.grid(
+      columns: (auto, 1fr),
+      gutter: 6pt,
+      align: (center + horizon, left + horizon),
+      icon-slot(w: 0.55cm, h: 0.55cm, label: [`</>`]),
+      [
+        #text(8.5pt, weight: "bold", fill: col-p3.darken(15%),
+          [Validated Reduction Code]) \
+        #text(6.3pt, fill: fg-light, [Merged into the reduction library])
+      ],
+    )
+  ]
+]
+
+// ─────────────────────────────────────────────────────────────
+// Panel 3: A reduction graph built at scale
+// ─────────────────────────────────────────────────────────────
+
+// Small statistic tile for the right rail.
+#let stat-tile(value, label, icon-label: [ ]) = box(
+  width: 100%,
+  stroke: (thickness: 0.6pt, paint: luma(180)),
+  radius: 4pt,
+  fill: white,
+  inset: 5pt,
+)[
+  #std.grid(
+    columns: (0.7cm, 1fr),
+    gutter: 5pt,
+    align: (center + horizon, left + horizon),
+    icon-slot(w: 0.6cm, h: 0.6cm, label: icon-label),
+    [
+      #text(10pt, weight: "bold", fill: fg, value) \
+      #text(6pt, fill: fg-light, label)
+    ],
+  )
+]
+
+// Reduction graph sketch. Not the final 190-node graph — a stylized stand-in
+// with ILP as a large central hub and 3-SAT highlighted on the upper-left.
+#let reduction-graph-sketch = canvas(length: 0.35cm, {
+  import draw: *
+
+  let palette = (
+    col-p1, col-p3, col-red, col-violet, col-teal,
+    rgb("#edc949"), rgb("#ff9da7"), rgb("#9c755f"),
+  )
+  // Deterministic pseudo-random using a small LCG.
+  let seed = 17
+  let rand(state) = {
+    let s = calc.rem(state * 1103515245 + 12345, 2147483648)
+    (s, s / 2147483648)
+  }
+
+  // Pre-placed nodes (x, y, radius, color-index, label).
+  // ILP is the big center hub; 3-SAT is the tagged upper-left node.
+  let anchors = (
+    // (id, x, y, r, col-idx, label)
+    ("sat",   2.0, 14.0, 1.0, 0, "3-SAT"),
+    ("ilp",  13.0,  8.0, 1.6, 5, "ILP"),
+  )
+
+  // Generated small nodes on a jittered grid, skipping the hub zones.
+  let smalls = ()
+  let state = seed
+  let rows = 8
+  let cols = 10
+  let x0 = 1.0
+  let y0 = 1.0
+  let dx = 2.6
+  let dy = 2.0
+  for r in range(rows) {
+    for c in range(cols) {
+      let (s1, jx) = rand(state)
+      state = s1
+      let (s2, jy) = rand(state)
+      state = s2
+      let (s3, jc) = rand(state)
+      state = s3
+      let x = x0 + c * dx + (jx - 0.5) * 1.2
+      let y = y0 + r * dy + (jy - 0.5) * 1.1
+      // Skip points inside either hub zone.
+      let near-ilp = calc.pow(x - 13.0, 2) + calc.pow(y - 8.0, 2) < 4.0
+      let near-sat = calc.pow(x - 2.0, 2) + calc.pow(y - 14.0, 2) < 2.5
+      if not near-ilp and not near-sat {
+        let cidx = calc.rem(int(jc * 1000), palette.len())
+        smalls.push((x, y, 0.42, cidx))
+      }
+    }
+  }
+
+  // Build edge list: connect each small node to its 2 nearest neighbors.
+  let dist2(a, b) = {
+    let ax = a.at(0)
+    let ay = a.at(1)
+    let bx = b.at(0)
+    let by = b.at(1)
+    (ax - bx) * (ax - bx) + (ay - by) * (ay - by)
+  }
+
+  // Merge hub points for neighbor search.
+  let all = smalls
+  all.push((2.0, 14.0, 1.0, 0))   // sat
+  all.push((13.0, 8.0, 1.6, 5))   // ilp
+
+  // Draw edges (behind nodes).
+  for (i, p) in smalls.enumerate() {
+    // Find 2 closest peers in `all` (excluding self).
+    let best1 = -1
+    let d1 = 1e9
+    let best2 = -1
+    let d2 = 1e9
+    for (j, q) in all.enumerate() {
+      if j == i { continue }
+      let d = dist2(p, q)
+      if d < d1 {
+        d2 = d1
+        best2 = best1
+        d1 = d
+        best1 = j
+      } else if d < d2 {
+        d2 = d
+        best2 = j
+      }
+    }
+    for b in (best1, best2) {
+      if b < 0 { continue }
+      let q = all.at(b)
+      let px = p.at(0)
+      let py = p.at(1)
+      let qx = q.at(0)
+      let qy = q.at(1)
+      let len = calc.sqrt((qx - px) * (qx - px) + (qy - py) * (qy - py))
+      if len < 0.01 { continue }
+      let ux = (qx - px) / len
+      let uy = (qy - py) / len
+      let pr = p.at(2)
+      let qr = q.at(2)
+      line(
+        (px + ux * pr, py + uy * pr),
+        (qx - ux * qr, qy - uy * qr),
+        stroke: (thickness: 0.35pt, paint: luma(120)),
+        mark: (end: "straight", scale: 0.18),
+      )
+    }
+  }
+
+  // Draw small nodes on top.
+  for p in smalls {
+    let (x, y, r, cidx) = p
+    let col = palette.at(cidx)
+    circle((x, y), radius: r,
+      fill: col.lighten(85%),
+      stroke: (thickness: 0.5pt, paint: col.darken(5%)))
+  }
+
+  // Hubs — larger, labeled.
+  circle((2.0, 14.0), radius: 1.0,
+    fill: col-p1.lighten(80%),
+    stroke: (thickness: 1.1pt, paint: col-p1),
+    name: "sat")
+  content("sat", text(7pt, weight: "bold", fill: col-p1.darken(20%), [3-SAT]))
+
+  circle((13.0, 8.0), radius: 1.6,
+    fill: rgb("#edc949").lighten(60%),
+    stroke: (thickness: 1.2pt, paint: rgb("#edc949").darken(20%)),
+    name: "ilp")
+  content("ilp", text(9pt, weight: "bold", fill: fg, [ILP]))
+})
+
+// Mini growth-over-time curve (Phase 1 → Phase 2 → Phase 3, schematic).
+#let growth-mini = canvas(length: 0.3cm, {
+  import draw: *
+
+  // Axes
+  let x0 = 0.0
+  let y0 = 0.0
+  let w = 18.0
+  let h = 5.5
+  line((x0, y0), (x0 + w, y0),
+    stroke: (thickness: 0.6pt, paint: fg),
+    mark: (end: "straight", scale: 0.3))
+  line((x0, y0), (x0, y0 + h),
+    stroke: (thickness: 0.6pt, paint: fg))
+
+  // Data points (schematic: shallow then steep).
+  let pts = (
+    (1.0, 0.4), (3.0, 0.6), (5.0, 0.9),
+    (7.0, 1.4), (9.0, 1.8), (11.0, 2.4),
+    (13.0, 3.5), (15.0, 4.8), (16.5, 5.1),
+  )
+
+  // Fill under curve.
+  let fill-pts = pts + ((16.5, 0.0), (1.0, 0.0))
+  merge-path(close: true, fill: col-p3.lighten(80%), stroke: none, {
+    line(..fill-pts)
+  })
+
+  // Curve
+  line(..pts,
+    stroke: (thickness: 1.4pt, paint: col-p3.darken(5%)))
+
+  // Markers
+  for p in pts {
+    circle(p, radius: 0.2, fill: white, stroke: (thickness: 0.8pt, paint: col-p3.darken(5%)))
+  }
+
+  // Phase boundaries (vertical dashed)
+  line((6.0, 0), (6.0, h),
+    stroke: (thickness: 0.4pt, paint: luma(170), dash: "dashed"))
+  line((12.0, 0), (12.0, h),
+    stroke: (thickness: 0.4pt, paint: luma(170), dash: "dashed"))
+
+  // Labels under x-axis
+  content((3.0, -0.9), text(6pt, fill: fg, [manual]))
+  content((6.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
+  content((9.0, -0.9), text(6pt, fill: fg, [basic skills]))
+  content((12.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
+  content((15.0, -0.9), text(6pt, fill: fg, [full pipeline]))
+
+  // Title, upper-left
+  content((x0 + 0.3, y0 + h - 0.3), anchor: "north-west",
+    text(7pt, fill: col-p3.darken(15%), [Growth over time]))
+})
+
+#let panel3 = box(
+  width: 10.2cm,
+  stroke: panel-stroke,
+  radius: panel-radius,
+  fill: panel-fill(col-p3),
+  inset: 10pt,
+)[
+  // Header
+  #std.grid(
+    columns: (0.9cm, 1fr),
+    gutter: 6pt,
+    align: (center + horizon, left + horizon),
+    box(width: 0.8cm, height: 0.8cm,
+      stroke: (thickness: 1.2pt, paint: col-p3),
+      radius: 50%, fill: white,
+      align(center + horizon, text(13pt, weight: "bold", fill: col-p3, [3]))),
+    text(11pt, weight: "bold", fill: col-p3.darken(10%),
+      [A reduction graph built at scale]),
+  )
+
+  #v(8pt)
+
+  // Graph on the left, stats column on the right.
+  #std.grid(
+    columns: (1fr, 2.9cm),
+    gutter: 8pt,
+    align: (center + horizon, left + top),
+    reduction-graph-sketch,
+    std.grid(
+      columns: 1,
+      rows: (auto,) * 6,
+      gutter: 4pt,
+      stat-tile([190], [problem types], icon-label: [#sym.circle.filled.tiny]),
+      stat-tile([265], [reduction rules], icon-label: [#sym.arrow.l.r]),
+      stat-tile([129], [reducible to ILP], icon-label: [bar]),
+      stat-tile([78], [reachable from 3-SAT], icon-label: [net]),
+      stat-tile([~170k], [lines of Rust], icon-label: [`</>`]),
+      stat-tile([~3], [months], icon-label: [#sym.clock]),
+    ),
+  )
+
+  #v(10pt)
+
+  // Growth curve panel
+  #box(
+    width: 100%,
+    stroke: (thickness: 0.5pt, paint: luma(190)),
+    radius: 4pt,
+    fill: white,
+    inset: 8pt,
+  )[
+    #align(center, growth-mini)
+  ]
+]
+
+// ─────────────────────────────────────────────────────────────
+// Assemble the three panels with connector arrows.
+// ─────────────────────────────────────────────────────────────
+#let big-arrow = align(horizon,
+  text(18pt, fill: luma(130), weight: "bold", sym.arrow))
+
+#std.grid(
+  columns: (auto, 0.5cm, auto, 0.5cm, auto),
+  gutter: 2pt,
+  align: (top, center + horizon, top, center + horizon, top),
+  panel1, big-arrow, panel2, big-arrow, panel3,
+)

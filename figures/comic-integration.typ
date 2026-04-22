@@ -1,7 +1,7 @@
 #import "lib.typ": *
 #import "@preview/pixel-family:0.2.1": bob, sentinel
 
-#set page(..fig-page)
+#set page(width: auto, height: auto, margin: 1pt)
 #set text(..fig-text)
 
 // Muted palette
@@ -37,7 +37,7 @@
 
   // ─── Left Panel: Manual Integration ───
   let lx = 0
-  let ly = 0
+  let ly = -0.5
 
   content(
     (lx, ly - 4.5),
@@ -66,8 +66,8 @@
 
   // X mark
   content(
-    (3 + jam-cx + bw * 0.5, jam-cy + bh * 0.8),
-    text(8pt, [*?*]),
+    (2.2 + jam-cx + bw * 0.5, - 1.5 - jam-cy + bh * 0.8),
+    text(8pt, fill: red.darken(30%), [*?*]),
   )
 
   // Bob — small
