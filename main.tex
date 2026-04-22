@@ -165,8 +165,7 @@ Each verified reduction is a bridge connecting a new problem to an existing solv
 \end{wrapfigure}
 
 A single reduction between two problems is a \emph{primitive reduction rule}.
-To bridge \emph{many} problems to \emph{many} solvers, we organize primitive rules as a directed \emph{reduction graph} (\Cref{fig:reduction-graph-concept}).
-Each node is a problem type; each directed edge is a primitive rule.
+Primitive rules collectively form a directed \emph{reduction graph} (\Cref{fig:reduction-graph-concept}): each node is a problem type, each directed edge is a primitive rule.
 Every edge carries a \emph{reduction overhead}: a multivariate polynomial mapping the source's size measures to the target's; we write $r_{B \leftarrow A}$ for the overhead of the rule $A \to B$.
 
 Reductions compose along directed paths.
