@@ -403,8 +403,8 @@
 
   // Merge hub points for neighbor search.
   let all = smalls
-  all.push((2.0, 14.0, 1.0, 0))   // sat
-  all.push((13.0, 8.0, 1.6, 5))   // ilp
+  all.push((sat-x, sat-y, sat-r, 0))   // sat
+  all.push((ilp-x, ilp-y, ilp-r, 5))   // ilp
 
   // Draw edges (behind nodes).
   for (i, p) in smalls.enumerate() {
