@@ -563,7 +563,7 @@
       stat-tile([129], [reducible to ILP], icon-label: [bar]),
       stat-tile([78], [reachable from 3-SAT], icon-label: [net]),
       stat-tile([~170k], [lines of Rust], icon-label: [`</>`]),
-      stat-tile([~3], [months], icon-label: [#sym.clock]),
+      stat-tile([~3], [months], icon-label: [#sym.circle.stroked.small]),
     ),
   )
 
