@@ -458,13 +458,13 @@
   }
 
   // Hubs — larger, labeled.
-  circle((2.0, 14.0), radius: 1.0,
+  circle((sat-x, sat-y), radius: sat-r,
     fill: col-p1.lighten(80%),
     stroke: (thickness: 1.1pt, paint: col-p1),
     name: "sat")
   content("sat", text(7pt, weight: "bold", fill: col-p1.darken(20%), [3-SAT]))
 
-  circle((13.0, 8.0), radius: 1.6,
+  circle((ilp-x, ilp-y), radius: ilp-r,
     fill: rgb("#edc949").lighten(60%),
     stroke: (thickness: 1.2pt, paint: rgb("#edc949").darken(20%)),
     name: "ilp")
