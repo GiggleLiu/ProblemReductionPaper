@@ -134,6 +134,15 @@
 
 \subsection{The Problem: Many Hard Problems, Few Solvers}
 
+\begin{wrapfigure}{r}{0.42\textwidth}
+  \vspace{-\baselineskip}
+  \centering
+  \includegraphics[width=0.42\textwidth]{figures/reduction-graph-concept.pdf}
+  \caption{The reduction graph.  Each node is a problem type; each directed edge is a primitive reduction rule.  Highlighted nodes mark the two anchor roles: \emph{3-SAT} (source of NP-hardness proofs) and \emph{ILP} (gateway to mature solvers).  Edge labels $r_{B \leftarrow A}$ and $r_{C \leftarrow B}$ denote reduction overhead---multivariate polynomials mapping input sizes to output sizes.  Nodes carry the time complexity of best known algorithms (e.g., $t_S$, $t_I$).  A directed path from 3-SAT to a problem~$H$ makes $H$ \emph{NP-hard certified}; a path from any problem to ILP grants solver access.}
+  \label{fig:reduction-graph-concept}
+  \vspace{-\baselineskip}
+\end{wrapfigure}
+
 Combinatorial optimization problems arise throughout science and engineering~\cite{korte2008combinatorial,Schuetz2022PhysicsGNN}.
 An airline needs to assign crews to flights~\cite{gopalakrishnan2005airline}.
 A chip designer needs to allocate registers, commonly modeled as graph coloring in compilers~\cite{chaitin1981register}.
