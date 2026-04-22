@@ -49,12 +49,13 @@
 
   let edge(from, to, name: none, dash: none, fill: none) = {
     let paint = if fill == none { col-edge-normal } else { fill }
-    line(from, to, stroke: (thickness: lw, paint: paint, dash: dash), mark: mk, shorten: (start: gap, end: gap), name: name)
+    let edge-mk = (end: "straight", scale: 0.32, stroke: (thickness: lw, paint: paint, dash: none), fill: paint)
+    line(from, to, stroke: (thickness: lw, paint: paint, dash: dash), mark: edge-mk, shorten: (start: gap, end: gap), name: name)
   }
 
   // ── Layout ──
   // Top row
-  node((3.5, 5.4), [3-SAT], "3sat", label-anchor: "center", highlight: true, radius: 0.8)
+  rect-node((3.5, 5.4), [3-SAT], "3sat", label-anchor: "center", highlight: true)
   node((6.5, 5.4), [], "gc", label-anchor: "north")
 
   // Middle row
@@ -74,13 +75,13 @@
   node((5.0, 0.4), [$C$], "s-dwave")
 
   rect-node((9.0, -0.4), [#set par(leading: 0.3em)
-    #text(4pt)[Integer linear\ programming]], "s-ilp", highlight: true, size: (3.5, 1.5))
-  content((rel: (-2.1, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
+    #text(6pt)[Integer linear\ programming]], "s-ilp", highlight: true, size: (3.0, 1.3))
+  content((rel: (-1.9, 0), to: "s-ilp"), text(7pt)[$t_(I)$])
   // content((rel: (-1.5, -1), to: "s-ilp"), text(7pt)[Integer linear programming])
 
   // ── Edges ──
   edge("sat", "mis", name: "sat-mis", fill: red)
-  edge("sat", "s-dwave", name: "sat-dwave", dash: "dashed")
+  edge("sat", "s-dwave", name: "sat-dwave", dash: "dashed",fill:gray.darken(50%))
   edge("sat", "ising")
   edge("gc", "sat")
   edge("csat", "mis")
