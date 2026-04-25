@@ -2,6 +2,7 @@
     <g>
         <g class="typst-group" transform="matrix(1 0 0 1 1 1)">
             <g>
+                <path class="typst-shape" fill="none" transform="matrix(1 0 0 1 0.2834645669291341 0.2834645669291341)" d="M 0 0v 53.85827 h 53.85827 v -53.85827 h -53.85827 Z "/>
                 <path class="typst-shape" fill="none" stroke="#e1e1e1" stroke-width="0.4" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 0 0.2834645669291341)" d="M 0 0m 0 53.85827 v -53.85827 "/>
                 <path class="typst-shape" fill="none" stroke="#e1e1e1" stroke-width="0.4" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 0.2834645669291341 54.425196850393704)" d="M 0 0h 53.85827 "/>
                 <path class="typst-shape" fill="none" stroke="#e1e1e1" stroke-width="0.4" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 9.070866141732282 0.2834645669291341)" d="M 0 0m 0 53.85827 v -53.85827 "/>

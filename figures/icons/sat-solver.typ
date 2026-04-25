@@ -19,26 +19,26 @@
   )
   // Leaf node: ✓ (sat) or ✗ (conflict).
   let leaf-sat(p) = {
-    circle(p, radius: 0.18cm,
+    circle(p, radius: 0.16cm,
       fill: rgb("#59a14f"),
       stroke: 0.5pt + black.lighten(10%))
-    content(p, text(8pt, weight: "bold", fill: white, [#sym.checkmark]))
+    content(p, text(7pt, weight: "bold", fill: white, [#sym.checkmark]))
   }
   let leaf-bad(p) = {
-    circle(p, radius: 0.18cm,
+    circle(p, radius: 0.16cm,
       fill: rgb("#e42f29").lighten(15%),
       stroke: 0.5pt + black.lighten(10%))
-    content(p, text(8pt, weight: "bold", fill: white, [#sym.crossmark]))
+    content(p, text(7pt, weight: "bold", fill: white, [#sym.crossmark]))
   }
 
   // Tree positions.
-  let root  = (0, 0.85)
-  let il    = (-0.55, 0.22)
-  let ir    = (0.55, 0.22)
-  let l1 = (-0.90, -0.55)
-  let l2 = (-0.30, -0.55)
-  let l3 = (0.30, -0.55)
-  let l4 = (0.90, -0.55)
+  let root = (0, 0.85)
+  let il   = (-0.50, 0.20)
+  let ir   = (0.50, 0.20)
+  let l1 = (-0.78, -0.70)
+  let l2 = (-0.26, -0.70)
+  let l3 = (0.26, -0.70)
+  let l4 = (0.78, -0.70)
 
   // Highlighted successful path: root -> il -> l2.
   let path-stroke = (paint: rgb("#4e79a7"), thickness: 1.4pt)
