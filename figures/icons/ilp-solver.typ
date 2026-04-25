@@ -58,8 +58,8 @@
     fill: rgb("#59a14f"),
     stroke: 0.5pt + black.lighten(10%))
 
-  // Objective gradient — arrow in the upper-left exterior, direction = max c·x.
-  line((-0.85, 0.35), (-0.40, 0.80),
+  // Objective gradient — long arrow up the lower-left exterior, direction = max c·x.
+  line((-0.95, -0.95), (-0.50, -0.50),
     stroke: (paint: rgb("#59a14f").darken(20%), thickness: 1.2pt),
     mark: (end: "straight", scale: 0.6))
 })

@@ -6,6 +6,9 @@
 #canvas({
   import draw: *
 
+  // Fixed bounding box so all solver icons render at the same size.
+  rect((-0.95, -0.95), (0.95, 0.95), stroke: none, fill: none)
+
   let edge-stroke = (paint: black.lighten(20%), thickness: 0.7pt)
 
   // Internal node (small white circle).
