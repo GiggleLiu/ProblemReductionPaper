@@ -1,12 +1,12 @@
 #import "@preview/cetz:0.4.2": *
 
-#set page(width: auto, height: auto, margin: 1pt)
-#set text(size: 7.5pt, font: "DejaVu Sans Mono")
+#set page(width: auto, height: auto, margin: 1pt, fill: none)
+#set text(size: 7.5pt, weight: "bold", font: "DejaVu Sans Mono")
 
-#let text-size = 9pt
-#let text-red(body, size: text-size) = text(size, weight: "bold", fill: red, body)
-#let text-blue(body, size: text-size) = text(size, weight: "bold", fill: blue, body)
-#let text-green(body, size: text-size) = text(size, weight: "bold", fill: rgb("#59a14f"), body)
+#let text-size = 7.5pt
+#let text-red(body, size: text-size) = text(size, fill: red, body)
+#let text-blue(body, size: text-size) = text(size, fill: blue, body)
+#let text-green(body, size: text-size) = text(size, fill: rgb("#59a14f"), body)
 
 #canvas({
   import draw: *

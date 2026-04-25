@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.4.2": *
 
-#set page(width: auto, height: auto, margin: 1pt)
+#set page(width: auto, height: auto, margin: 1pt, fill: none)
 #set text(size: 7.5pt, font: "DejaVu Sans Mono")
 #canvas({
   import draw: *
