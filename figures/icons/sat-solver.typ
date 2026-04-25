@@ -51,7 +51,7 @@
   // Edge labels — 0/1 branch decisions.
   let label(p, txt) = content(p,
     text(5pt, fill: black.lighten(20%), txt),
-    frame: "rect", fill: rgb("#f6f9fe"), padding: 0.01, stroke: none)
+    frame: "rect", fill: white, padding: 0.01, stroke: none)
   label((-0.32, 0.55), [0])
   label((0.32, 0.55),  [1])
   label((-0.78, -0.18), [0])
