@@ -122,7 +122,7 @@
     rows: (auto, auto),
     gutter: 5pt,
     solver-box([SAT], [CNF], icon: image("icons/sat-solver.svg", width: 0.85cm), col: col-p2, w: 100%),
-    solver-box([ILP], [Linear constraints], col: col-p2, w: 100%),
+    solver-box([ILP], [Linear constraints], icon: image("icons/ilp-solver.svg", width: 0.85cm), col: col-p2, w: 100%),
     solver-box([QUBO / Ising], [Quadratic model], col: col-p2, w: 100%),
     solver-box([SDP], [Matrix PSD], col: col-p2, w: 100%),
   )
