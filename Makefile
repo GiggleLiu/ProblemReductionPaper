@@ -21,6 +21,16 @@ figures:
 		typst compile $$src figures/$$base.pdf; \
 	done
 
+# Compile Typst icon sources to SVG (incremental)
+ICON_TYP := $(wildcard figures/icons/*.typ)
+ICON_SVG := $(ICON_TYP:.typ=.svg)
+
+icons: $(ICON_SVG)
+
+figures/icons/%.svg: figures/icons/%.typ
+	@echo "Compiling $<..."
+	typst compile --root . --format svg $< $@
+
 # Package an arXiv-ready tarball into submit/
 arxiv:
 	bash scripts/package-arxiv.sh

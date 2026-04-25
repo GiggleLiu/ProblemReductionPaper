@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.4.2": *
 
 #set page(width: auto, height: auto, margin: 1pt)
-#set text(size: 7.5pt, font: "Helvetica")
+#set text(size: 7.5pt, weifont: "Helvetica")
 
 #let text-size = 4.5pt
 #let text-purple(body, size: text-size) = text(size, fill: rgb("#83379d"), body)
