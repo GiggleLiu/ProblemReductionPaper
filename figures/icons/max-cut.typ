@@ -16,7 +16,17 @@
   blue-circle((0.85, -0.1), name: "b2")
   blue-circle((0.5, -0.7), name: "b3")
 
-  line("r1", "b1", stroke: (paint: luma(80), thickness: 0.4pt, dash: "dashed"))
+  line("r1", "b1", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
+  line("r1", "b2", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
+  line("r2", "b2", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
+  line("r3", "b1", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
+  line("r4", "b2", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
+  line("r4", "b3", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
 
+  line("r1", "r2", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
+  line("r3", "r2", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
+  line("r3", "r4", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
 
+  line("b1", "b2", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
+  line("b2", "b3", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
 })
