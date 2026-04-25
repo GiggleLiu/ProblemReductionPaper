@@ -32,7 +32,7 @@
   }
 
   // Top: full sequence (sum = 16; equal partition into two halves of 8).
-  cell-row(0, 0.75, ([4], [1], [3], [2], [5], [1]), black.lighten(10%))
+  cell-row(0, 0.75, ([1], [1], [5], [2], [3], [4]), black.lighten(10%))
 
   // Down arrow.
   line((0, 0.52), (0, 0.10),
