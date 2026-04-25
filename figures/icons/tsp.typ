@@ -27,7 +27,7 @@
     (-0.20, -0.90),   // 4 bottom
     (-0.80, -0.40),   // 5 lower-left
     (-0.90,  0.30),   // 6 left
-    (-0.25,  0.30),   // 7 interior
+    (-0.45,  0.70),   // 7 interior
   )
 
   // Faint candidate edges in the background (a few non-tour pairs) to suggest
