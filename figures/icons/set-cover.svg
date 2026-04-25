@@ -2,7 +2,7 @@
     <g>
         <g class="typst-group" transform="matrix(1 0 0 1 1 1)">
             <g>
-                <path class="typst-shape" fill="#f6f9fe" fill-rule="nonzero" stroke="#aac4e9" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" d="M 0 0m 39.68504 0 c -21.89757 0 -39.68504 17.78747 -39.68504 39.68504 c 0 21.897568 17.78747 39.68504 39.68504 39.68504 c 21.897568 0 39.68504 -17.787472 39.68504 -39.68504 c 0 -21.89757 -17.787472 -39.68504 -39.68504 -39.68504 Z "/>
+                <path class="typst-shape" fill="#f6f9fe" fill-rule="nonzero" stroke="#aac4e9" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" d="M 0 0m 39.68504 0 c -21.89757 0 -39.68504 17.78747 -39.68504 39.68504 c 0 21.897568 17.78747 39.68504 39.68504 39.68504 c 21.897568 0 39.68504 -17.787472 39.68504 -39.68504 c 0 -21.89757 -17.787472 -39.68504 -39.68504 -39.68504 Z "/>
                 <path class="typst-shape" fill="none" stroke="#000000" stroke-width="0.5" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 14.173228346456689 14.173228346456689)" d="M 0 0m 1.4173229 0 c -0.7820561 0 -1.4173229 0.6352668 -1.4173229 1.4173229 v 8.503937 c 0 0.78205585 0.6352668 1.4173231 1.4173229 1.4173231 h 48.188976 c 0.7820549 0 1.4173203 -0.63526726 1.4173203 -1.4173231 v -8.503937 c 0 -0.7820561 -0.63526535 -1.4173229 -1.4173203 -1.4173229 h -48.188976 Z "/>
                 <path class="typst-shape" fill="none" transform="matrix(1 0 0 1 15.017070620078737 17.53905288816437)" d="M 0 0h 49.335938 v 4.6069336 h -49.335938 v -4.6069336 Z "/>
                 <g class="typst-group">

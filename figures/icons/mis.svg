@@ -2,7 +2,7 @@
     <g>
         <g class="typst-group" transform="matrix(1 0 0 1 1 1)">
             <g>
-                <path class="typst-shape" fill="#f6f9fe" fill-rule="nonzero" stroke="#aac4e9" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" d="M 0 0m 39.68504 0 c -21.89757 0 -39.68504 17.78747 -39.68504 39.68504 c 0 21.897568 17.78747 39.68504 39.68504 39.68504 c 21.897568 0 39.68504 -17.787472 39.68504 -39.68504 c 0 -21.89757 -17.787472 -39.68504 -39.68504 -39.68504 Z "/>
+                <path class="typst-shape" fill="#f6f9fe" fill-rule="nonzero" stroke="#aac4e9" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" d="M 0 0m 39.68504 0 c -21.89757 0 -39.68504 17.78747 -39.68504 39.68504 c 0 21.897568 17.78747 39.68504 39.68504 39.68504 c 21.897568 0 39.68504 -17.787472 39.68504 -39.68504 c 0 -21.89757 -17.787472 -39.68504 -39.68504 -39.68504 Z "/>
                 <path class="typst-shape" fill="none" stroke="#333333" stroke-width="0.8" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 38.26771653543307 15.590551181102361)" d="M 0 0l 17.007874 11.338583 "/>
                 <path class="typst-shape" fill="none" stroke="#333333" stroke-width="0.8" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 38.26771653543307 15.590551181102361)" d="M 0 0l 2.8346457 25.51181 "/>
                 <path class="typst-shape" fill="none" stroke="#333333" stroke-width="0.8" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 55.275590551181104 26.929133858267715)" d="M 0 0l 11.338583 14.173228 "/>

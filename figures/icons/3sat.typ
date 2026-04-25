@@ -10,7 +10,7 @@
 
 #canvas({
   import draw: *
-  circle((0, 0), radius: 1.4cm, fill: rgb("#f6f9fe"), stroke: 1pt + rgb("#AAC4E9"))
+  circle((0, 0), radius: 1.4cm, fill: rgb("#f6f9fe"), stroke: 2pt + rgb("#AAC4E9"))
   content((0, 0.5), text(text-size, [(#text-green("x") ∨ ¬#text-red("y") ∨ #text-blue("z"))]))
   content((0, 0), text(text-size,[(¬#text-green("x") ∨ #text-red("y") ∨ ¬#text-blue("z"))]))
   content((0, -0.5), text(text-size,[(¬#text-red("y") ∨ #text-blue("z") ∨ ¬#text-green("x"))]))

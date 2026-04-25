@@ -16,7 +16,7 @@
   // Background disc.
   circle((0, 0), radius: 1.4cm,
     fill: rgb("#f6f9fe"),
-    stroke: 1pt + rgb("#AAC4E9"))
+    stroke: 2pt + rgb("#AAC4E9"))
 
   // 8 cities — irregular scatter, looks like a real TSP instance.
   let cities = (

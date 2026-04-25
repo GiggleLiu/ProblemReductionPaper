@@ -34,7 +34,7 @@
   } else {
     icon
   }
-  #v(2pt)
+  #v(-5pt)
   #text(6.5pt, weight: "regular", fill: fg, label)
 ]
 

@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.4.2": *
 
 #set page(width: auto, height: auto, margin: 1pt, fill: none)
-#set text(size: 7.5pt, font: "DejaVu Sans Mono")
+#set text(size: 7.5pt, font: "Helvetica")
 
 #canvas({
   import draw: *
@@ -9,7 +9,7 @@
   // Background disc.
   circle((0, 0), radius: 1.4cm,
     fill: rgb("#f6f9fe"),
-    stroke: 1pt + rgb("#AAC4E9"))
+    stroke: 2pt + rgb("#AAC4E9"))
 
   // One bin: U-shaped wall (no top) + a stack of items.
   // Items: list of (color, label).

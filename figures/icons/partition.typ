@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.4.2": *
 
 #set page(width: auto, height: auto, margin: 1pt, fill: none)
-#set text(size: 7.5pt, font: "DejaVu Sans Mono")
+#set text(size: 7.5pt, font: "Helvetica")
 
 #canvas({
   import draw: *
@@ -9,7 +9,7 @@
   // Background disc.
   circle((0, 0), radius: 1.4cm,
     fill: rgb("#f6f9fe"),
-    stroke: 1pt + rgb("#AAC4E9"))
+    stroke: 2pt + rgb("#AAC4E9"))
 
   // A row of small numbered cells.
   // cx, cy: center of the row. nums: list of label content.
@@ -35,7 +35,7 @@
   cell-row(0, 0.75, ([1], [1], [5], [2], [3], [4]), black.lighten(10%))
 
   // Down arrow.
-  line((0, 0.52), (0, 0.10),
+  line((0, 0.4), (0, -0.10),
     stroke: (paint: black.lighten(20%), thickness: 0.8pt),
     mark: (end: "straight", scale: 0.45))
 
