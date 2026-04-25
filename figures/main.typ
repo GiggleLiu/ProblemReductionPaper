@@ -106,9 +106,24 @@
     align(center + horizon, text(14pt, fill: fg-light, [$dots$])),
   )
 
-  #v(8pt)
-  #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
-  #v(4pt)
+  #v(6pt)
+  // Five colored ribbons — each a candidate problem→solver path — woven into
+  // a visual knot. No clean direct mapping; reducers are needed to untangle.
+  #align(center, canvas(length: 1cm, {
+    import draw: *
+    let palette = (col-p1, col-p3, col-red, col-violet, col-teal)
+    let ribbons = (
+      ((-2.75,  0.45), (-1.40, -0.40), (0,  0.40), (1.40, -0.40), (2.75,  0.45)),
+      ((-2.75,  0.25), (-1.40,  0.40), (0, -0.30), (1.40,  0.35), (2.75, -0.40)),
+      ((-2.75,  0.00), (-1.40,  0.20), (0,  0.00), (1.40, -0.25), (2.75,  0.15)),
+      ((-2.75, -0.25), (-1.40, -0.45), (0,  0.40), (1.40,  0.25), (2.75, -0.40)),
+      ((-2.75, -0.45), (-1.40,  0.30), (0, -0.40), (1.40,  0.45), (2.75,  0.30)),
+    )
+    for (i, pts) in ribbons.enumerate() {
+      hobby(..pts, stroke: (paint: palette.at(i).transparentize(15%), thickness: 1.4pt))
+    }
+  }))
+  #v(6pt)
   #panel-section([Solver formats / backends], col-p2)
   #v(4pt)
 
