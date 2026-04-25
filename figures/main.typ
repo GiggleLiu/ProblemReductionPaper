@@ -121,7 +121,7 @@
     columns: (1fr, 1fr),
     rows: (auto, auto),
     gutter: 5pt,
-    solver-box([SAT], [$and.big_i or.big_j ell_(i j)$], icon: image("icons/sat-solver.svg", width: 0.85cm), col: col-p2, w: 100%),
+    solver-box([SAT], [CNF formula], icon: image("icons/sat-solver.svg", width: 0.85cm), col: col-p2, w: 100%),
     solver-box([ILP], [$A x ≤ b, x in ZZ^n$], icon: image("icons/ilp-solver.svg", width: 0.85cm), col: col-p2, w: 100%),
     solver-box([Annealer], [QUBO / Ising], icon: image("icons/annealer.svg", width: 0.85cm), col: col-p2, w: 100%),
     align(center + horizon, text(14pt, fill: fg-light, [$dots$])),
