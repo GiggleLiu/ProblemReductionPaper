@@ -39,8 +39,8 @@
     stroke: (paint: black.lighten(20%), thickness: 0.8pt),
     mark: (end: "straight", scale: 0.45))
 
-  // Bottom: two halves, with "=" between.
-  cell-row(-0.55, -0.55, ([3], [1], [2]), rgb("#4e79a7"))
+  // Bottom: two halves, each summing to 8.
+  cell-row(-0.55, -0.55, ([4], [1], [3]), rgb("#4e79a7"))
   content((0.0, -0.55), text(10pt, weight: "bold", fill: black.lighten(20%), [=]))
-  cell-row(0.55, -0.55, ([4], [2], [1]), rgb("#e42f29"))
+  cell-row(0.55, -0.55, ([2], [5], [1]), rgb("#e42f29"))
 })
