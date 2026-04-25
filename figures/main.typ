@@ -107,36 +107,11 @@
   )
 
   #v(6pt)
-  // Miniature reduction graph: problems (top) reach solver formats (bottom)
-  // through intermediate reductions. The bridge is a DAG, not a direct mapping.
-  #align(center, canvas(length: 1cm, {
-    import draw: *
-    // (position, stroke, fill) for each node.
-    let nodes = (
-      ((-2.4,  0.55), col-p1,    col-p1.lighten(72%)),
-      (( 0.0,  0.65), col-p1,    col-p1.lighten(72%)),
-      (( 2.4,  0.55), col-p1,    col-p1.lighten(72%)),
-      ((-1.4,  0.05), luma(150), white),
-      (( 0.6,  0.15), luma(150), white),
-      (( 1.8, -0.15), luma(150), white),
-      ((-0.8, -0.65), col-p2,    col-p2.lighten(72%)),
-      (( 1.4, -0.65), col-p2,    col-p2.lighten(72%)),
-    )
-    let edges = (
-      (0, 3), (1, 3), (1, 4), (2, 4), (2, 5),
-      (3, 4), (3, 6), (4, 6), (4, 7), (5, 7),
-    )
-    let edge-stroke = (paint: luma(150), thickness: 0.5pt)
-    for (a, b) in edges {
-      line(nodes.at(a).at(0), nodes.at(b).at(0),
-        stroke: edge-stroke,
-        mark: (end: "straight", scale: 0.3))
-    }
-    for (pos, sc, fc) in nodes {
-      circle(pos, radius: 0.10cm, fill: fc, stroke: 0.5pt + sc)
-    }
-  }))
-  #v(6pt)
+  #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
+  #v(3pt)
+  #align(center, text(6.5pt, fill: fg-light,
+    [Different backends, different formats, different APIs.]))
+  #v(3pt)
   #panel-section([Solver formats / backends], col-p2)
   #v(4pt)
 
