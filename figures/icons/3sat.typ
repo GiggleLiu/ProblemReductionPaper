@@ -1,11 +1,9 @@
 #import "../lib.typ": *
-#set page(width: auto, height: auto, margin: 0pt)
+#set page(width: auto, height: auto, margin: 1pt)
 #set text(size: 7.5pt, font: "Helvetica")
 
-#box(
-  width: 1.2cm, height: 1.2cm,
-  stroke: (thickness: 0.4pt, paint: luma(180), dash: "dashed"),
-  radius: 3pt,
-  inset: 2pt,
-  align(center + horizon, text(5pt, fill: luma(150), [3SAT])),
-)
+#canvas({
+  import draw: *
+  circle((0, 0), radius: 1.4cm)
+  content((0, 0), text(7.5pt, weight: "bold", fill: red, [3SAT]))
+})
