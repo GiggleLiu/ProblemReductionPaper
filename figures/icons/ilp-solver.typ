@@ -54,12 +54,12 @@
   // ILP optimum — bright green dot at a lattice point near the polytope's
   // upper-right vertex.
   let opt = (2, 1)
-  circle((opt.at(0) * step, opt.at(1) * step), radius: 0.13cm,
+  circle((opt.at(0) * step, opt.at(1) * step), radius: 0.1cm,
     fill: rgb("#59a14f"),
     stroke: 0.5pt + black.lighten(10%))
 
-  // Objective gradient — long arrow up the lower-left exterior, direction = max c·x.
-  line((-0.95, -0.95), (-0.50, -0.50),
+  // Objective gradient — arrow in the upper-left exterior, direction = max c·x.
+  line((-0.95, 0.50), (-0.50, 0.95),
     stroke: (paint: rgb("#59a14f").darken(20%), thickness: 1.2pt),
     mark: (end: "straight", scale: 0.6))
 })
