@@ -55,12 +55,12 @@
   let label(p, txt) = content(p,
     text(5pt, fill: black.lighten(20%), txt),
     frame: "rect", fill: white, padding: 0.01, stroke: none)
-  label((-0.32, 0.55), [0])
-  label((0.32, 0.55),  [1])
-  label((-0.78, -0.18), [0])
-  label((-0.38, -0.18), [1])
-  label((0.38, -0.18),  [0])
-  label((0.78, -0.18),  [1])
+  label((-0.30, 0.53), [0])
+  label((0.30, 0.53),  [1])
+  label((-0.70, -0.25), [0])
+  label((-0.34, -0.25), [1])
+  label((0.34, -0.25),  [0])
+  label((0.70, -0.25),  [1])
 
   // Nodes on top.
   internal(root)
