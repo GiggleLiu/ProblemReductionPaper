@@ -6,60 +6,60 @@
 #canvas({
   import draw: *
 
-  // Feasible polytope (LP relaxation): regular hexagon, light orange fill.
-  let R = 0.78
-  let verts = (
-    (R * 0.866,  R * 0.5),
-    (0, R),
-    (-R * 0.866, R * 0.5),
-    (-R * 0.866, -R * 0.5),
-    (0, -R),
-    (R * 0.866, -R * 0.5),
+  // Faint integer-lattice grid lines (the "integer" of ILP, without the noise
+  // of per-point dots).
+  let step = 0.32
+  let grid-stroke = (paint: luma(225), thickness: 0.4pt)
+  let extent = 0.95
+  let n = 3
+  for k in range(-n, n + 1) {
+    line((k * step, -extent), (k * step, extent), stroke: grid-stroke)
+    line((-extent, k * step), (extent, k * step), stroke: grid-stroke)
+  }
+
+  // Feasible polytope: irregular convex pentagon (looks like a real LP region,
+  // not a logo-style hexagon).
+  let poly = (
+    (-0.80, -0.30),
+    (-0.40, 0.75),
+    ( 0.55, 0.80),
+    ( 0.90, 0.05),
+    ( 0.35, -0.80),
   )
   merge-path(close: true,
-    fill: rgb("#f28e2b").lighten(82%),
-    stroke: (paint: rgb("#f28e2b"), thickness: 1.0pt),
+    fill: rgb("#f28e2b").lighten(80%),
+    stroke: (paint: rgb("#f28e2b").darken(5%), thickness: 1.2pt),
     {
-      for i in range(verts.len()) {
-        let a = verts.at(i)
-        let b = verts.at(calc.rem(i + 1, verts.len()))
+      for i in range(poly.len()) {
+        let a = poly.at(i)
+        let b = poly.at(calc.rem(i + 1, poly.len()))
         line(a, b)
       }
     })
 
-  // Integer lattice (5×5), step 0.32.
-  // Hand-listed which lattice cells fall inside the hexagon.
-  let step = 0.32
-  let inside-set = (
-    (-2, -1), (-1, -1), (0, -1), (1, -1), (2, -1),
-    (-2,  0), (-1,  0), (0,  0), (1,  0), (2,  0),
-    (-2,  1), (-1,  1), (0,  1), (1,  1), (2,  1),
-    (0, -2), (0, 2),
+  // A few visible lattice points inside the polytope (just enough to read as
+  // "integer points", not a sea of dots).
+  let inside-pts = (
+    (-1, -1), (0, -1), (1, -1),
+    (-1,  0), (0,  0), (1,  0), (2, 0),
+    (-1,  1), (0,  1), (1,  1),
+    (0,  2),
   )
-  let optimum = (2, 1)
-
-  for i in range(-2, 3) {
-    for j in range(-2, 3) {
-      let x = i * step
-      let y = j * step
-      if (i, j) == optimum {
-        circle((x, y), radius: 0.13cm,
-          fill: rgb("#59a14f"),
-          stroke: 0.5pt + black.lighten(10%))
-      } else if inside-set.contains((i, j)) {
-        circle((x, y), radius: 0.075cm,
-          fill: rgb("#4e79a7"),
-          stroke: 0.4pt + black.lighten(10%))
-      } else {
-        circle((x, y), radius: 0.045cm,
-          fill: luma(170),
-          stroke: none)
-      }
-    }
+  for (i, j) in inside-pts {
+    circle((i * step, j * step), radius: 0.055cm,
+      fill: black.lighten(25%),
+      stroke: none)
   }
 
-  // Objective gradient (small arrow in lower-left, direction = max c·x).
-  line((-0.55, -0.55), (-0.10, -0.10),
-    stroke: (paint: rgb("#59a14f").darken(15%), thickness: 1.0pt),
+  // ILP optimum — bright green dot at a lattice point near the polytope's
+  // upper-right vertex.
+  let opt = (2, 1)
+  circle((opt.at(0) * step, opt.at(1) * step), radius: 0.13cm,
+    fill: rgb("#59a14f"),
+    stroke: 0.5pt + black.lighten(10%))
+
+  // Objective gradient — short arrow in lower-left, direction = max c·x.
+  line((-0.55, -0.55), (-0.20, -0.20),
+    stroke: (paint: rgb("#59a14f").darken(20%), thickness: 1.0pt),
     mark: (end: "straight", scale: 0.5))
 })
