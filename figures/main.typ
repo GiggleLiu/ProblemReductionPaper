@@ -107,20 +107,22 @@
   )
 
   #v(6pt)
-  // Five colored ribbons — each a candidate problem→solver path — woven into
-  // a visual knot. No clean direct mapping; reducers are needed to untangle.
+  // Four colored ribbons flow from problems (top) down to solver formats
+  // (bottom). Each one ends at a different column than it started, so they
+  // cross in the middle — no clean direct path; reducers must untangle.
   #align(center, canvas(length: 1cm, {
     import draw: *
-    let palette = (col-p1, col-p3, col-red, col-violet, col-teal)
-    let ribbons = (
-      ((-2.75,  0.45), (-1.40, -0.40), (0,  0.40), (1.40, -0.40), (2.75,  0.45)),
-      ((-2.75,  0.25), (-1.40,  0.40), (0, -0.30), (1.40,  0.35), (2.75, -0.40)),
-      ((-2.75,  0.00), (-1.40,  0.20), (0,  0.00), (1.40, -0.25), (2.75,  0.15)),
-      ((-2.75, -0.25), (-1.40, -0.45), (0,  0.40), (1.40,  0.25), (2.75, -0.40)),
-      ((-2.75, -0.45), (-1.40,  0.30), (0, -0.40), (1.40,  0.45), (2.75,  0.30)),
+    let palette = (col-p1, col-p3, col-red, col-violet)
+    let pairs = (
+      (-2.4,  2.4),
+      (-0.8,  0.8),
+      ( 0.8, -0.8),
+      ( 2.4, -2.4),
     )
-    for (i, pts) in ribbons.enumerate() {
-      hobby(..pts, stroke: (paint: palette.at(i).transparentize(15%), thickness: 1.4pt))
+    for (i, p) in pairs.enumerate() {
+      let (xs, xe) = p
+      bezier((xs, 0.75), (xe, -0.75), (xs, 0.0), (xe, 0.0),
+        stroke: (paint: palette.at(i).transparentize(15%), thickness: 1.4pt))
     }
   }))
   #v(6pt)
