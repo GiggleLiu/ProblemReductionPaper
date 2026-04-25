@@ -110,7 +110,8 @@
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   #v(3pt)
   #align(center, text(6.5pt, fill: fg-light,
-    [Direct access is difficult:\ different languages, constraints, and APIs]))
+    [To be solved, a problem must be encoded into a backend's input.\
+     Each backend has its own language, constraints, and API.]))
   #v(3pt)
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   #panel-section([Solver formats / backends], col-p2)
