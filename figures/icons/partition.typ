@@ -27,7 +27,7 @@
         stroke: 0.8pt + stroke-col,
         radius: 0.04)
       content(((lx + rx) / 2, cy),
-        text(8.5pt, weight: "bold", fill: stroke-col, val))
+        text(7.5pt, weight: "bold", fill: stroke-col, val))
     }
   }
 
