@@ -127,11 +127,6 @@
     align(center + horizon, text(14pt, fill: fg-light, [$dots$])),
   )
 
-  #v(8pt)
-  #align(center)[
-    #text(6.5pt, style: "italic", fill: col-p2.darken(10%),
-      [Reducers are the bridge.\ Without them, hard problems remain isolated.])
-  ]
 ]
 
 // ─────────────────────────────────────────────────────────────
