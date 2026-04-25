@@ -110,8 +110,9 @@
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   #v(3pt)
   #align(center, text(6.5pt, fill: fg-light,
-    [Different backends, different formats, different APIs.]))
+    [Direct access is difficult:\ different languages, constraints, and APIs]))
   #v(3pt)
+  #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   #panel-section([Solver formats / backends], col-p2)
   #v(4pt)
 
