@@ -13,8 +13,8 @@
 
   // A row of small numbered cells.
   // cx, cy: center of the row. nums: list of label content.
-  let cell-w = 0.30
-  let cell-h = 0.38
+  let cell-w = 0.25
+  let cell-h = 0.32
   let cell-row(cx, cy, nums, stroke-col) = {
     let n = nums.len()
     let total = n * cell-w
