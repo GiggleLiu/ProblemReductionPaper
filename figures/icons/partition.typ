@@ -32,15 +32,15 @@
   }
 
   // Top: full sequence.
-  cell-row(0, 0.82, ([3], [1], [4], [2], [2], [1]), black.lighten(10%))
+  cell-row(0, 0.75, ([3], [1], [4], [2], [2], [1]), black.lighten(10%))
 
   // Down arrow.
-  line((0, 0.55), (0, 0.05),
-    stroke: (paint: black.lighten(20%), thickness: 0.9pt),
-    mark: (end: "straight", scale: 0.5))
+  line((0, 0.52), (0, 0.10),
+    stroke: (paint: black.lighten(20%), thickness: 0.8pt),
+    mark: (end: "straight", scale: 0.45))
 
   // Bottom: two halves, with "=" between.
-  cell-row(-0.65, -0.65, ([3], [1], [2]), rgb("#4e79a7"))
-  content((0.0, -0.65), text(12pt, weight: "bold", fill: black.lighten(20%), [=]))
-  cell-row(0.65, -0.65, ([4], [2], [1]), rgb("#e42f29"))
+  cell-row(-0.55, -0.55, ([3], [1], [2]), rgb("#4e79a7"))
+  content((0.0, -0.55), text(10pt, weight: "bold", fill: black.lighten(20%), [=]))
+  cell-row(0.55, -0.55, ([4], [2], [1]), rgb("#e42f29"))
 })
