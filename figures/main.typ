@@ -106,30 +106,8 @@
     align(center + horizon, text(14pt, fill: fg-light, [$dots$])),
   )
 
-  #v(4pt)
-  // Tangled "many-to-many" mesh between problems and solver formats — a visual
-  // stand-in for the impedance mismatch (12 dashed connectors, all-pairs).
-  #align(center, canvas(length: 0.30cm, {
-    import draw: *
-    let top = ((-2.6, 0.55), (-0.85, 0.55), (0.85, 0.55), (2.6, 0.55))
-    let bot = ((-2.0, -0.55), (0, -0.55), (2.0, -0.55))
-    let mesh = (paint: luma(170), thickness: 0.35pt, dash: "densely-dashed")
-    for s in top {
-      for t in bot {
-        line(s, t, stroke: mesh)
-      }
-    }
-    for p in top {
-      circle(p, radius: 0.10cm,
-        fill: col-p1.lighten(55%),
-        stroke: 0.4pt + col-p1)
-    }
-    for p in bot {
-      circle(p, radius: 0.10cm,
-        fill: col-p2.lighten(55%),
-        stroke: 0.4pt + col-p2)
-    }
-  }))
+  #v(8pt)
+  #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   #v(4pt)
   #panel-section([Solver formats / backends], col-p2)
   #v(4pt)
