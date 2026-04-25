@@ -58,7 +58,7 @@
   // above the optimum (direction = max c·x). Drawn before the optimum so the
   // green dot sits on top.
   let opt-pt = (2 * step, 1 * step)
-  line((-0.55, -0.50), (opt-pt.at(0), opt-pt.at(1) + 0.46),
+  line((-0.70, -0.2), (opt-pt.at(0), opt-pt.at(1) + 0.38),
     stroke: (paint: rgb("#59a14f").darken(20%), thickness: 1.2pt),
     mark: (end: "straight", scale: 0.6))
 

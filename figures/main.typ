@@ -116,18 +116,16 @@
   #panel-section([Solver formats / backends], col-p2)
   #v(4pt)
 
-  // 3 rows: (SAT, ILP) ; (QUBO/Ising, SDP) ; (Rydberg spans — centered).
+  // 2×2 grid: (SAT, ILP) ; (Annealer, …).
   #std.grid(
     columns: (1fr, 1fr),
     rows: (auto, auto),
     gutter: 5pt,
     solver-box([SAT], [CNF], icon: image("icons/sat-solver.svg", width: 0.85cm), col: col-p2, w: 100%),
     solver-box([ILP], [Linear constraints], icon: image("icons/ilp-solver.svg", width: 0.85cm), col: col-p2, w: 100%),
-    solver-box([QUBO / Ising], [Quadratic model], col: col-p2, w: 100%),
-    solver-box([SDP], [Matrix PSD], col: col-p2, w: 100%),
+    solver-box([Annealer], [QUBO / Ising], col: col-p2, w: 100%),
+    align(center + horizon, text(14pt, fill: fg-light, [$dots$])),
   )
-  #v(5pt)
-  #align(center, solver-box([Rydberg], [Quantum hardware], col: col-p2, w: 50%))
 
   #v(8pt)
   #align(center)[
