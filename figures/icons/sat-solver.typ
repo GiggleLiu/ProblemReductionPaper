@@ -6,11 +6,6 @@
 #canvas({
   import draw: *
 
-  // Background disc.
-  circle((0, 0), radius: 1.4cm,
-    fill: rgb("#f6f9fe"),
-    stroke: 2pt + rgb("#AAC4E9"))
-
   let edge-stroke = (paint: black.lighten(20%), thickness: 0.7pt)
 
   // Internal node (small white circle).
