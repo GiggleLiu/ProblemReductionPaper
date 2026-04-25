@@ -6,6 +6,9 @@
 #canvas({
   import draw: *
 
+  // Fixed bounding box so all solver icons render at the same size.
+  rect((-0.95, -0.95), (0.95, 0.95), stroke: none, fill: none)
+
   // Faint integer-lattice grid lines (the "integer" of ILP, without the noise
   // of per-point dots).
   let step = 0.32
