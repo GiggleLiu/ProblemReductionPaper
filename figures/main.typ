@@ -306,7 +306,7 @@
     columns: (auto, 1fr),
     gutter: 5pt,
     align: (center + horizon, left + horizon),
-    text(11pt, fill: col-violet.darken(15%), [#sym.arrows.ccw]),
+    text(11pt, fill: col-violet.darken(15%), [↻]),
     text(8.5pt, weight: "bold", fill: col-violet.darken(15%),
       [Agents under verification harness]),
   )
