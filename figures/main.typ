@@ -355,8 +355,9 @@
   )
 ]
 
-#let panel2 = box(
+#let panel2(h: auto) = box(
   width: 7.2cm,
+  height: h,
   stroke: panel-stroke,
   radius: panel-radius,
   fill: panel-fill(col-p2),
