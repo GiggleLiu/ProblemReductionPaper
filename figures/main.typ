@@ -635,8 +635,9 @@
     text(7pt, fill: col-p3.darken(15%), [Growth over time]))
 })
 
-#let panel3 = box(
+#let panel3(h: auto) = box(
   width: 10.8cm,
+  height: h,
   stroke: panel-stroke,
   radius: panel-radius,
   fill: panel-fill(col-p3),
