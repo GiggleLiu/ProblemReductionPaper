@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="800px" height="800px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>agent_user_24_regular</title>
-    <!-- Bot (shifted slightly left to make room for user on right) -->
-    <g transform="translate(-3, 0)">
+    <!-- Bot on left -->
+    <g transform="translate(-4, 0)">
         <g stroke="#8a5f7e" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" fill="none">
             <line x1="12" y1="2.4" x2="12" y2="3.6"/>
             <rect x="5.6" y="3.6" width="12.8" height="8.9" rx="2.2" ry="2.2"/>
@@ -17,21 +17,15 @@
         </g>
     </g>
 
-    <!-- Imitation arrow → from bot toward user -->
-    <g stroke="#8a5f7e" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <line x1="16" y1="6" x2="17.6" y2="6"/>
-        <polyline points="16.9, 5.2 17.6, 6 16.9, 6.8"/>
+    <!-- User silhouette on right (the persona being mimicked) -->
+    <g stroke="#8a5f7e" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <circle cx="19.5" cy="11" r="2.4" fill="white"/>
+        <path d="M 15 19.5 Q 19.5 13.5 24 19.5"/>
     </g>
 
-    <!-- User silhouette (top-right) -->
-    <g stroke="#8a5f7e" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <circle cx="20" cy="5.5" r="1.6" fill="white"/>
-        <path d="M 17 10.6 Q 20 6.6 23 10.6"/>
-    </g>
-
-    <!-- Green check stamp (bottom-right, fully clear of bot body) -->
-    <g stroke="#59a14f" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <circle cx="20.5" cy="14.5" r="1.5" fill="white"/>
-        <polyline points="19.5,14.5 20.3,15.3 21.5,13.7"/>
+    <!-- Green check stamped on user's top-right corner -->
+    <g stroke="#59a14f" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <circle cx="22.5" cy="6" r="1.6" fill="white"/>
+        <polyline points="21.5,6 22.3,6.8 23.5,5.2"/>
     </g>
 </svg>
