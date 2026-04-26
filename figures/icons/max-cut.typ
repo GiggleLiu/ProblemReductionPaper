@@ -7,7 +7,7 @@
   let red-circle(position, name: none) = circle(position, radius: 0.1cm, fill: rgb("#e42f29"), stroke: 0.5pt, name: name)
   let blue-circle(position, name: none) = circle(position, radius: 0.1cm, fill: rgb("#4e79a7"), stroke: 0.5pt, name: name)
 
-  circle((0, 0), radius: 1.4cm, fill: rgb("#f6f9fe"), stroke: 2pt + rgb("#AAC4E9"))
+  circle((0, 0), radius: 1.4cm, fill: white, stroke: 2pt + rgb("#AAC4E9"))
   red-circle((-0.4, 0.9), name: "r1")
   red-circle((-0.9, 0.4), name: "r2")
   red-circle((-0.5, -0.1), name: "r3")

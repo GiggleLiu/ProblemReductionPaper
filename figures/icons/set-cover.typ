@@ -11,7 +11,7 @@
 
 #canvas({
   import draw: *
-  circle((0, 0), radius: 1.4cm, fill: rgb("#f6f9fe"), stroke: 2pt + rgb("#AAC4E9"))
+  circle((0, 0), radius: 1.4cm, fill: white, stroke: 2pt + rgb("#AAC4E9"))
   rect((-0.9, 0.9), (0.9, 0.5), radius: 0.05cm, fill: none, stroke: 0.5pt)
   content((0, 0.7), text(text-size, [U = {1, 2, 3, 4, 5, 6, 7}]))
 

@@ -691,13 +691,23 @@
 // ─────────────────────────────────────────────────────────────
 // Assemble the three panels with connector arrows.
 // ─────────────────────────────────────────────────────────────
+// Chunky filled block arrow (PowerPoint-style) — bold visual weight for the
+// top-level pipeline between the three independent panels.
 #let big-arrow = align(horizon + center,
   canvas(length: 1pt, {
     import draw: *
-    let len = 18  // shaft length in pt
-    line((0, 0), (len, 0),
-      stroke: (paint: black, thickness: 3.5pt, cap: "round"),
-      mark: (end: "stealth", scale: 0.7, fill: black))
+    let col = rgb("#4a4a4a")
+    let shaft = 14   // shaft length (pt)
+    let head  = 9    // head length  (pt)
+    let sh    = 4    // shaft half-thickness
+    let hh    = 9    // head  half-thickness
+    line(
+      (0, sh), (shaft, sh),
+      (shaft, hh), (shaft + head, 0), (shaft, -hh),
+      (shaft, -sh), (0, -sh),
+      close: true,
+      fill: col, stroke: none,
+    )
   }))
 
 #std.grid(

@@ -22,7 +22,7 @@
 
   // Background disc.
   circle((0, 0), radius: 1.4cm,
-    fill: rgb("#f6f9fe"),
+    fill: white,
     stroke: 2pt + rgb("#AAC4E9"))
 
   // Vertices: 3 in the independent set (top, right, lower-left) drawn blue.
