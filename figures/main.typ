@@ -289,21 +289,52 @@
   ]
 ]
 
-#let verif-box = box(
+// Harness container — wraps the two agents in a feedback loop, with the
+// 4 verification layers as a base strip below.
+#let harness-box = box(
   width: 100%,
   stroke: (thickness: 0.9pt, paint: col-violet),
   radius: 5pt,
   fill: col-violet.lighten(92%),
   inset: 6pt,
 )[
+  #set block(spacing: 0pt)
+  #set par(spacing: 0pt)
+
+  // Title
   #std.grid(
     columns: (auto, 1fr),
     gutter: 5pt,
     align: (center + horizon, left + horizon),
     icon-slot(w: 0.5cm, h: 0.5cm, label: [#sym.checkmark]),
-    text(8.5pt, weight: "bold", fill: col-violet.darken(15%), [Multi-layer verification harness]),
+    text(8.5pt, weight: "bold", fill: col-violet.darken(15%),
+      [Multi-layer verification harness]),
   )
-  #v(4pt)
+
+  #v(6pt)
+
+  // Implementation agent
+  #agent-card(col-p1, [Implementation Agent],
+    [Plan #sym.arrow Encode #sym.arrow Generate code \
+     Propose reduction rule],
+    icon: image("icons/agent-impl.svg", width: 1cm))
+
+  #v(3pt)
+  #align(center, text(10pt, fill: fg-light, sym.arrow.b))
+  #v(3pt)
+
+  // Review agent
+  #agent-card(col-p3, [Review Agent],
+    [Static analysis #sym.arrow Semantics check \
+     Approve or request changes],
+    icon: image("icons/agent-review.svg", width: 1cm))
+
+  #v(6pt)
+  #line(length: 100%,
+    stroke: (thickness: 0.4pt, paint: col-violet.lighten(40%), dash: "dashed"))
+  #v(6pt)
+
+  // 4 verification layers — base strip
   #std.grid(
     columns: (1fr, 1fr, 1fr, 1fr),
     gutter: 4pt,
