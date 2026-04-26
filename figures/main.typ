@@ -234,21 +234,24 @@
     #line(length: 100%, stroke: (thickness: 0.3pt, paint: luma(220)))
     #v(4pt)
 
-    // Issue-template fields: left labels / right values.
+    // Issue-template fields: left labels / right values
+    // (mirrors .github/ISSUE_TEMPLATE/rule.md — Source/Target are in the title).
     #std.grid(
       columns: (auto, 1fr),
       gutter: (10pt, 3pt),
       align: (left + top, left + top),
-      text(6.2pt, fill: fg-light, [Source]),
-        text(6.4pt, fill: fg, [K-Coloring]),
-      text(6.2pt, fill: fg-light, [Target]),
-        text(6.4pt, fill: fg, [ILP]),
-      text(6.2pt, fill: fg-light, [Input]),
-        text(6.4pt, fill: fg, [graph $G = (V, E)$, int $k$]),
-      text(6.2pt, fill: fg-light, [Output]),
-        text(6.4pt, fill: fg, [coloring $c: V #sym.arrow [k]$]),
-      text(6.2pt, fill: fg-light, [Notes]),
-        text(6.4pt, fill: fg, [one-hot per vertex; break color symmetry]),
+      text(6.2pt, fill: fg-light, [Motivation]),
+        text(6.4pt, fill: fg,
+          [connects K-Coloring to the ILP-reachable hub]),
+      text(6.2pt, fill: fg-light, [Reference]),
+        text(6.4pt, fill: fg, [Garey & Johnson, 1979]),
+      text(6.2pt, fill: fg-light, [Algorithm]),
+        text(6.4pt, fill: fg,
+          [$x_(v,c) in {0,1}$; one-hot per $v$; $x_(u,c) + x_(v,c) <= 1$ on edges]),
+      text(6.2pt, fill: fg-light, [Overhead]),
+        text(6.4pt, fill: fg, [vars $|V| dot k$, constraints $|E| dot k + |V|$]),
+      text(6.2pt, fill: fg-light, [Validation]),
+        text(6.4pt, fill: fg, [round-trip vs brute force on $|V| <= 8$]),
     )
 
     #v(5pt)
