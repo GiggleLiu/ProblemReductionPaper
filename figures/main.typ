@@ -357,7 +357,7 @@
 
   #agent-card(col-p1, [Implementation Agent],
     [Plan #sym.arrow Encode #sym.arrow Generate code \
-     Propose reduction rule], icon: image("icons/bot.svg", width: 1cm))
+     Propose reduction rule], icon: image("icons/agent-impl.svg", width: 1cm))
 
   #v(4pt)
   #align(center, text(10pt, fill: fg-light, sym.arrow.b))
