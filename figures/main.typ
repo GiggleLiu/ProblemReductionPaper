@@ -691,8 +691,14 @@
 // ─────────────────────────────────────────────────────────────
 // Assemble the three panels with connector arrows.
 // ─────────────────────────────────────────────────────────────
-#let big-arrow = align(horizon,
-  text(18pt, fill: black, weight: "bold", sym.arrow))
+#let big-arrow = align(horizon + center,
+  canvas(length: 1pt, {
+    import draw: *
+    let len = 18  // shaft length in pt
+    line((0, 0), (len, 0),
+      stroke: (paint: black, thickness: 3.5pt, cap: "round"),
+      mark: (end: "stealth", scale: 0.7, fill: black))
+  }))
 
 #std.grid(
   columns: (auto, 0.5cm, auto, 0.5cm, auto),
