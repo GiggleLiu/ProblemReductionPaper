@@ -580,79 +580,59 @@
   content("ilp", text(9pt, weight: "bold", fill: fg, [ILP]))
 })
 
-// Mini growth-over-time curve — same plot style as growth-curve.typ, scaled
-// down to fit panel 3. Data is mined weekly from the project's git history.
-#let growth-data-models = (
-  (0, 17), (2, 20), (3, 20), (4, 20), (5, 21),
-  (6, 21), (7, 23), (8, 23), (9, 39), (10, 107), (11, 116),
-  (12, 187), (13, 187),
-)
-#let growth-data-rules = (
-  (0, 0), (2, 21), (3, 24), (4, 35), (5, 45),
-  (6, 52), (7, 52), (8, 52), (9, 56), (10, 73), (11, 153),
-  (12, 214), (13, 239),
-)
-#let growth-phase2 = 7
-#let growth-phase3 = 8.5
-
-#let growth-mini = canvas(length: 0.4cm, {
+// Mini growth-over-time curve (Phase 1 → Phase 2 → Phase 3, schematic).
+#let growth-mini = canvas(length: 0.3cm, {
   import draw: *
 
-  plot.plot(
-    size: (12, 4),
-    axis-style: "scientific",
-    x-label: text(5.5pt, [Weeks since project start]),
-    y-label: text(5.5pt, [Count]),
-    x-tick-step: 2,
-    y-tick-step: 50,
-    x-min: 0, x-max: 14,
-    y-min: 0, y-max: 260,
-    legend: "inner-north-west",
-    legend-style: (
-      stroke: none,
-      fill: white,
-      padding: 0.2,
-    ),
-    name: "plot",
-    {
-      plot.add-vline(growth-phase2,
-        style: (stroke: (paint: luma(180), thickness: 0.6pt, dash: "dashed")))
-      plot.add-vline(growth-phase3,
-        style: (stroke: (paint: luma(180), thickness: 0.6pt, dash: "dashed")))
+  // Axes
+  let x0 = 0.0
+  let y0 = 0.0
+  let w = 18.0
+  let h = 5.5
+  line((x0, y0), (x0 + w, y0),
+    stroke: (thickness: 0.6pt, paint: fg),
+    mark: (end: "straight", scale: 0.3))
+  line((x0, y0), (x0, y0 + h),
+    stroke: (thickness: 0.6pt, paint: fg))
 
-      plot.add(
-        growth-data-models,
-        mark: "o",
-        mark-size: 0.10,
-        line: "linear",
-        label: text(5.5pt, [Problem types]),
-        style: (stroke: (paint: col-p1, thickness: 1.2pt)),
-      )
-      plot.add(
-        growth-data-rules,
-        mark: "triangle",
-        mark-size: 0.10,
-        line: "linear",
-        label: text(5.5pt, [Reduction rules]),
-        style: (stroke: (paint: col-red, thickness: 1.2pt)),
-      )
-    },
+  // Data points (schematic: shallow then steep).
+  let pts = (
+    (1.0, 0.4), (3.0, 0.6), (5.0, 0.9),
+    (7.0, 1.4), (9.0, 1.8), (11.0, 2.4),
+    (13.0, 3.5), (15.0, 4.8), (16.5, 5.1),
   )
 
-  // Phase labels above the plot top
-  let label-y = 0.35
-  content(
-    (rel: (5.5 * 12/14, label-y), to: "plot.north-west"),
-    text(5pt, fill: fg-light, [Phase 1: Manual]),
-  )
-  content(
-    (rel: (9.6 * 12/14, label-y + 0.1), to: "plot.north-west"),
-    text(5pt, fill: fg-light, [Phase 2:\ Basic skills]),
-  )
-  content(
-    (rel: (13.2 * 12/14, label-y), to: "plot.north-west"),
-    text(5pt, fill: fg-light, [Phase 3: Full pipeline]),
-  )
+  // Fill under curve.
+  let fill-pts = pts + ((16.5, 0.0), (1.0, 0.0))
+  merge-path(close: true, fill: col-p3.lighten(80%), stroke: none, {
+    line(..fill-pts)
+  })
+
+  // Curve
+  line(..pts,
+    stroke: (thickness: 1.4pt, paint: col-p3.darken(5%)))
+
+  // Markers
+  for p in pts {
+    circle(p, radius: 0.2, fill: white, stroke: (thickness: 0.8pt, paint: col-p3.darken(5%)))
+  }
+
+  // Phase boundaries (vertical dashed)
+  line((6.0, 0), (6.0, h),
+    stroke: (thickness: 0.4pt, paint: luma(170), dash: "dashed"))
+  line((12.0, 0), (12.0, h),
+    stroke: (thickness: 0.4pt, paint: luma(170), dash: "dashed"))
+
+  // Labels under x-axis
+  content((3.0, -0.9), text(6pt, fill: fg, [manual]))
+  content((6.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
+  content((9.0, -0.9), text(6pt, fill: fg, [basic skills]))
+  content((12.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
+  content((15.0, -0.9), text(6pt, fill: fg, [full pipeline]))
+
+  // Title, upper-left
+  content((x0 + 0.3, y0 + h - 0.3), anchor: "north-west",
+    text(7pt, fill: col-p3.darken(15%), [Growth over time]))
 })
 
 #let panel3(h: auto) = box(
