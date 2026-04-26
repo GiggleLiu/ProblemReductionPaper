@@ -710,9 +710,20 @@
     )
   }))
 
-#std.grid(
-  columns: (auto, 0.5cm, auto, 0.5cm, auto),
-  gutter: 2pt,
-  align: (top, center + horizon, top, center + horizon, top),
-  panel1, big-arrow, panel2, big-arrow, panel3,
-)
+// Panel widths (kept here so the overlay arrows know where the seams sit).
+#let p1w = 6.7cm
+#let p2w = 7.2cm
+#let arrow-half = 11.5pt   // half the big-arrow's geometric width
+
+// Panels sit edge-to-edge; the block arrows overlay each seam, sitting on top
+// of both adjacent panels rather than separating them.
+#box({
+  std.grid(
+    columns: (auto, auto, auto),
+    gutter: 0pt,
+    align: top,
+    panel1, panel2, panel3,
+  )
+  place(left + horizon, dx: p1w - arrow-half, big-arrow)
+  place(left + horizon, dx: p1w + p2w - arrow-half, big-arrow)
+})
