@@ -55,7 +55,7 @@
 
   // Head
   circle((ux, uy), radius: 0.18,
-    stroke: frame-stroke, fill: col-frame.lighten(85%))
+    stroke: user-stroke, fill: col-frame.lighten(85%))
 
   // Shoulders (rounded bezier, tangent to the head, kept inside bbox)
   bezier(
@@ -63,7 +63,7 @@
     (ux + 0.36, -0.58),
     (ux - 0.20, -0.20),
     (ux + 0.20, -0.20),
-    stroke: frame-stroke,
+    stroke: user-stroke,
   )
 
   // ─── Dialogue dots between them (•••) ───
