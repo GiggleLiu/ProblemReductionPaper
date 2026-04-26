@@ -11,6 +11,8 @@
   let user-stroke = (paint: col-frame, thickness: 1.4pt, cap: "round", join: "round")
   let pass-stroke = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
   let pass-thin   = (paint: col-pass,  thickness: 1.4pt, cap: "round", join: "round")
+  let imitate-stroke = (paint: col-frame, thickness: 1.2pt, cap: "round", join: "round")
+  let imitate-mark   = (end: "straight", scale: 0.35)
 
   hide(rect((-0.78, -0.78), (0.78, 0.78)))
 
