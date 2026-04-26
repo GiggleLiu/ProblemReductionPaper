@@ -338,7 +338,7 @@
   #std.grid(
     columns: (1fr, 1fr, 1fr, 1fr),
     gutter: 4pt,
-    verif-cell([type / compile checks], icon: image("icons/file-check-tick.svg", width: 0.5cm)),
+    verif-cell([type / compile checks], icon: image("icons/type-check.svg", width: 0.5cm)),
     verif-cell([unit tests], icon: image("icons/unit-tests.svg", width: 0.5cm)),
     verif-cell([round-trip reduction tests]),
     verif-cell([agentic feature tests]),
