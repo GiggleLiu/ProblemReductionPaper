@@ -240,13 +240,9 @@
     // (mirrors .github/ISSUE_TEMPLATE/rule.md — Source/Target are in the title).
     #std.grid(
       columns: (auto, 1fr),
-      gutter: (10pt, 3pt),
+      column-gutter: 10pt,
+      row-gutter: 3pt,
       align: (left + top, left + top),
-      text(6.2pt, fill: fg-light, [Motivation]),
-        text(6.4pt, fill: fg,
-          [connects K-Coloring to the ILP-reachable hub]),
-      text(6.2pt, fill: fg-light, [Reference]),
-        text(6.4pt, fill: fg, [Garey & Johnson, 1979]),
       text(6.2pt, fill: fg-light, [Algorithm]),
         text(6.4pt, fill: fg,
           [$x_(v,c) in {0,1}$; one-hot per $v$; $x_(u,c) + x_(v,c) <= 1$ on edges]),
@@ -254,20 +250,22 @@
         text(6.4pt, fill: fg, [vars $|V| dot k$, constraints $|E| dot k + |V|$]),
       text(6.2pt, fill: fg-light, [Validation]),
         text(6.4pt, fill: fg, [round-trip vs brute force on $|V| <= 8$]),
+        text(6.2pt, fill: fg-light, [Reference]),
+      text(6.4pt, fill: fg, [Garey & Johnson, 1979]),
     )
 
     #v(5pt)
 
     // Label chips
-    #std.grid(
-      columns: (auto, auto, auto, 1fr),
-      gutter: 3pt,
-      align: (left + horizon,) * 4,
-      issue-chip([enhancement], rgb("#0969da")),
-      issue-chip([reduction], col-p3),
-      issue-chip([no-code], col-violet),
-      [],
-    )
+    // #std.grid(
+    //   columns: (auto, auto, auto, 1fr),
+    //   gutter: 3pt,
+    //   align: (left + horizon,) * 4,
+    //   issue-chip([enhancement], rgb("#0969da")),
+    //   issue-chip([reduction], col-p3),
+    //   issue-chip([no-code], col-violet),
+    //   [],
+    // )
   ]
 ]
 
