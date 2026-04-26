@@ -71,26 +71,26 @@
   // ─── 4 curved arrows connecting boxes (loop around perimeter) ───
   // top: top-left → top-right via above
   bezier(
-    (-0.42, 0.83), (0.42, 0.83),
-    (-0.14, 1.00), (0.14, 1.00),
+    (-0.34, 0.66), (0.34, 0.66),
+    (-0.10, 0.78), (0.10, 0.78),
     stroke: arrow-stroke, mark: arrow-mark,
   )
   // right: top-right → bottom-right via right
   bezier(
-    (0.83, 0.42), (0.83, -0.42),
-    (1.00, 0.14), (1.00, -0.14),
+    (0.66, 0.34), (0.66, -0.34),
+    (0.78, 0.10), (0.78, -0.10),
     stroke: arrow-stroke, mark: arrow-mark,
   )
   // bottom: bottom-right → bottom-left via below
   bezier(
-    (0.42, -0.83), (-0.42, -0.83),
-    (0.14, -1.00), (-0.14, -1.00),
+    (0.34, -0.66), (-0.34, -0.66),
+    (0.10, -0.78), (-0.10, -0.78),
     stroke: arrow-stroke, mark: arrow-mark,
   )
   // left: bottom-left → top-left via left
   bezier(
-    (-0.83, -0.42), (-0.83, 0.42),
-    (-1.00, -0.14), (-1.00, 0.14),
+    (-0.66, -0.34), (-0.66, 0.34),
+    (-0.78, -0.10), (-0.78, 0.10),
     stroke: arrow-stroke, mark: arrow-mark,
   )
 })
