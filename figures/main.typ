@@ -110,7 +110,7 @@
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   #v(3pt)
   #align(center, text(6.5pt, fill: fg-light,
-    [Each backend takes its own format; problems must be encoded to fit.]))
+    [Each backend takes its own format;\ problems must be encoded to fit.]))
   #v(3pt)
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   #panel-section([Solver formats / backends], col-p2)
@@ -153,39 +153,105 @@
   )
 ]
 
-// GitHub issue card (table-style body).
+// Small status pill (e.g. "Open" badge).
+#let issue-pill(label, col) = box(
+  fill: col,
+  radius: 6pt,
+  inset: (x: 4pt, y: 1pt),
+  text(5.8pt, weight: "bold", fill: white, label),
+)
+
+// Tag chip (GitHub-style label).
+#let issue-chip(label, col) = box(
+  fill: col.lighten(80%),
+  stroke: (thickness: 0.4pt, paint: col.lighten(40%)),
+  radius: 8pt,
+  inset: (x: 4pt, y: 1pt),
+  text(5.6pt, fill: col.darken(20%), label),
+)
+
+// GitHub issue card — mimics a real issue panel.
 #let github-card = box(
   width: 100%,
-  stroke: (thickness: 0.9pt, paint: luma(140)),
+  stroke: (thickness: 0.7pt, paint: luma(180)),
   radius: 5pt,
   fill: white,
-  inset: 6pt,
+  clip: true,
 )[
-  #std.grid(
-    columns: (auto, 1fr),
-    gutter: (6pt, 2pt),
-    align: (left + horizon, left + horizon),
-    // Header row
-    std.grid.cell(colspan: 2)[
-      #std.grid(
-        columns: (auto, auto, 1fr),
-        gutter: 4pt,
-        align: horizon,
-        icon-slot(w: 0.5cm, h: 0.5cm, label: [GH]),
-        text(9pt, weight: "bold", fill: fg, [GitHub Issue]),
-        text(7pt, fill: fg-light, [(no-code)]),
+  // Header strip (GitHub-like: light gray bar with icon + repo path).
+  #box(
+    width: 100%,
+    fill: luma(245),
+    stroke: (bottom: (thickness: 0.5pt, paint: luma(200))),
+    inset: (x: 6pt, y: 4pt),
+  )[
+    #std.grid(
+      columns: (auto, 1fr, auto),
+      gutter: 4pt,
+      align: horizon,
+      image("icons/github.svg", width: 0.42cm),
+      text(6.5pt, fill: fg-light)[
+        CodingThrust/problem-reductions
+      ],
+      text(6.2pt, fill: fg-light, [#sym.dot.c #sym.dot.c #sym.dot.c]),
+    )
+  ]
+
+  // Body
+  #block(inset: (x: 7pt, y: 6pt))[
+    // Title line: status pill + title + issue number
+    #std.grid(
+      columns: (auto, 1fr),
+      gutter: 5pt,
+      align: (left + top, left + top),
+      issue-pill([Open], rgb("#2da44e")),
+      [
+        #text(8.2pt, weight: "bold", fill: fg,
+          [Add reduction: K-Coloring #sym.arrow ILP])
+        #h(3pt)
+        #text(8.2pt, fill: fg-light, [#024])
+      ],
+    )
+
+    #v(3pt)
+
+    // Meta line: author + opened time
+    #text(5.8pt, fill: fg-light)[
+      #box(
+        width: 0.34cm, height: 0.34cm,
+        radius: 50%,
+        fill: col-p2.lighten(60%),
+        baseline: 1.5pt,
       )
-    ],
-    std.grid.cell(colspan: 2, v(2pt)),
-    text(6.5pt, fill: fg-light, [Source problem]),  text(6.5pt, fill: fg, [K-Coloring]),
-    text(6.5pt, fill: fg-light, [Target solver]),   text(6.5pt, fill: fg, [ILP]),
-    text(6.5pt, fill: fg-light, [Input mapping]),
-      text(6.5pt, fill: fg, [n, edges #sym.arrow vars, cons]),
-    text(6.5pt, fill: fg-light, [Output mapping]),
-      text(6.5pt, fill: fg, [coloring #sym.arrow solution]),
-    text(6.5pt, fill: fg-light, [Notes]),
-      text(6.5pt, fill: fg, [symmetry breaking, ...]),
-  )
+      #h(1pt) *@alice* opened this issue 2 days ago #sym.dot.c 0 comments
+    ]
+
+    #v(4pt)
+    #line(length: 100%, stroke: (thickness: 0.3pt, paint: luma(220)))
+    #v(4pt)
+
+    // Body text — natural-language no-code request.
+    #text(6.4pt, fill: fg)[
+      We're missing a direct reduction from *K-Coloring* into *ILP*. \
+      Encode each vertex's color choice as binary variables, add
+      one-hot and edge-disagreement constraints, and break color
+      symmetry. Round-trip tests should recover a valid coloring
+      from any feasible ILP solution.
+    ]
+
+    #v(5pt)
+
+    // Label chips
+    #std.grid(
+      columns: (auto, auto, auto, 1fr),
+      gutter: 3pt,
+      align: (left + horizon,) * 4,
+      issue-chip([enhancement], rgb("#0969da")),
+      issue-chip([reduction], col-p3),
+      issue-chip([no-code], col-violet),
+      [],
+    )
+  ]
 ]
 
 // Verification harness box: 4 mini-cards in a row.
