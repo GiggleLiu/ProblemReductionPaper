@@ -24,9 +24,8 @@
   let xc = -0.42
   let yC = -0.50
 
-  // ─── A: source problem ───
+  // ─── A: source problem (empty — "unsolved") ───
   circle((xa, yA), radius: r, stroke: frame-stroke, fill: white)
-  content((xa, yA), text(8pt, weight: "bold", fill: col-frame, [?]))
 
   // ─── B: target with solver indicator ───
   rect((xb - r, yB - r), (xb + r, yB + r), radius: 0.04,
