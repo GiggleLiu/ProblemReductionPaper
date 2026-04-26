@@ -19,13 +19,13 @@
 
     <!-- User silhouette on right (the persona being mimicked) -->
     <g stroke="#8a5f7e" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <circle cx="19.5" cy="11" r="2.4" fill="white"/>
-        <path d="M 15 19.5 Q 19.5 13.5 24 19.5"/>
+        <circle cx="20" cy="11" r="2.0" fill="white"/>
+        <path d="M 17 18.5 Q 20 13 23 18.5"/>
     </g>
 
     <!-- Green check stamped on user's top-right corner -->
-    <g stroke="#59a14f" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <circle cx="22.5" cy="6" r="1.6" fill="white"/>
-        <polyline points="21.5,6 22.3,6.8 23.5,5.2"/>
+    <g stroke="#59a14f" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <circle cx="22.5" cy="5" r="1.4" fill="white"/>
+        <polyline points="21.6,5 22.3,5.7 23.4,4"/>
     </g>
 </svg>
