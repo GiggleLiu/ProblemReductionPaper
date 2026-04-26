@@ -157,7 +157,7 @@
 #let issue-pill(label, col) = box(
   fill: col,
   radius: 6pt,
-  inset: (x: 4pt, y: 1pt),
+  inset: (x: 1pt, y: 2pt),
   text(5.8pt, weight: "bold", fill: white, label),
 )
 
@@ -191,7 +191,7 @@
       align: horizon,
       image("icons/github.svg", width: 0.42cm),
       text(6.5pt, fill: fg-light)[
-        CodingThrust/problem-reductions
+        problem-reductions
       ],
       text(6.2pt, fill: fg-light, [#sym.dot.c #sym.dot.c #sym.dot.c]),
     )
@@ -201,43 +201,55 @@
   #block(inset: (x: 7pt, y: 6pt))[
     // Title line: status pill + title + issue number
     #std.grid(
-      columns: (auto, 1fr),
-      gutter: 5pt,
+      columns: (18pt, auto),
+      gutter: 3pt,
       align: (left + top, left + top),
       issue-pill([Open], rgb("#2da44e")),
       [
         #text(8.2pt, weight: "bold", fill: fg,
-          [Add reduction: K-Coloring #sym.arrow ILP])
-        #h(3pt)
-        #text(8.2pt, fill: fg-light, [#024])
+          [[Rule] K-Coloring #sym.arrow ILP])
+        // #h(3pt)
+        // #text(8.2pt, fill: fg-light, [#024])
       ],
     )
 
-    #v(3pt)
+    // #v(3pt)
 
     // Meta line: author + opened time
-    #text(5.8pt, fill: fg-light)[
-      #box(
-        width: 0.34cm, height: 0.34cm,
-        radius: 50%,
-        fill: col-p2.lighten(60%),
-        baseline: 1.5pt,
-      )
-      #h(1pt) *\@alice* opened this issue 2 days ago #sym.dot.c 0 comments
-    ]
+    // #text(5.8pt, fill: fg-light)[
+    //   #box(
+    //     width: 0.34cm, height: 0.34cm,
+    //     radius: 50%,
+    //     fill: col-p2.lighten(60%),
+    //     baseline: 1.5pt,
+    //   )
+    //   #h(1pt) *\@alice* opened this issue 2 days ago #sym.dot.c 0 comments
+    // ]
+
+    // #v(4pt)
+    // #line(length: 100%, stroke: (thickness: 0.3pt, paint: luma(220)))
+    // #v(4pt)
 
     #v(4pt)
     #line(length: 100%, stroke: (thickness: 0.3pt, paint: luma(220)))
     #v(4pt)
 
-    // Body text — natural-language no-code request.
-    #text(6.4pt, fill: fg)[
-      We're missing a direct reduction from *K-Coloring* into *ILP*. \
-      Encode each vertex's color choice as binary variables, add
-      one-hot and edge-disagreement constraints, and break color
-      symmetry. Round-trip tests should recover a valid coloring
-      from any feasible ILP solution.
-    ]
+    // Issue-template fields: left labels / right values.
+    #std.grid(
+      columns: (auto, 1fr),
+      gutter: (10pt, 3pt),
+      align: (left + top, left + top),
+      text(6.2pt, fill: fg-light, [Source]),
+        text(6.4pt, fill: fg, [K-Coloring]),
+      text(6.2pt, fill: fg-light, [Target]),
+        text(6.4pt, fill: fg, [ILP]),
+      text(6.2pt, fill: fg-light, [Input]),
+        text(6.4pt, fill: fg, [graph $G = (V, E)$, int $k$]),
+      text(6.2pt, fill: fg-light, [Output]),
+        text(6.4pt, fill: fg, [coloring $c: V #sym.arrow [k]$]),
+      text(6.2pt, fill: fg-light, [Notes]),
+        text(6.4pt, fill: fg, [one-hot per vertex; break color symmetry]),
+    )
 
     #v(5pt)
 
