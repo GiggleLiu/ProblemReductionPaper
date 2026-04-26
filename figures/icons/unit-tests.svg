@@ -1,19 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="800px" height="800px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <title>unit_tests_24_regular</title>
-    <g stroke="#000000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <!-- Top-left: ✓ -->
-        <rect x="3" y="3" width="8" height="8" rx="1.2"/>
-        <polyline points="5,7 6.8,8.8 9.5,5.5"/>
-        <!-- Top-right: ✓ -->
-        <rect x="13" y="3" width="8" height="8" rx="1.2"/>
-        <polyline points="15,7 16.8,8.8 19.5,5.5"/>
-        <!-- Bottom-left: ✓ -->
-        <rect x="3" y="13" width="8" height="8" rx="1.2"/>
-        <polyline points="5,17 6.8,18.8 9.5,15.5"/>
-        <!-- Bottom-right: ✗ -->
-        <rect x="13" y="13" width="8" height="8" rx="1.2"/>
-        <line x1="15" y1="15" x2="19" y2="19"/>
-        <line x1="19" y1="15" x2="15" y2="19"/>
+<svg class="typst-doc" viewBox="0 0 79.11811023622049 79.11811023622049" width="79.11811023622049pt" height="79.11811023622049pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:h5="http://www.w3.org/1999/xhtml">
+    <g>
+        <g class="typst-group" transform="matrix(1 0 0 1 2 2)">
+            <g>
+                <path class="typst-shape" fill="#ffffff" fill-rule="nonzero" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 22.281488857092576 22.28148885709258)" d="M 0 0m 26.632055 18.857622 l 3.9230766 -0.47179985 v -6.2165117 l -3.9230766 -0.4718008 l -0.7941704 -1.9172974 l 2.4404202 -3.107648 l -4.3957367 -4.3957376 l -3.1076488 2.4404218 l -1.9172974 -0.7941706 l -0.47179985 -3.9230778 h -6.2165117 l -0.4718008 3.9230778 l -1.9172974 0.7941706 l -3.107648 -2.4404218 l -4.3957376 4.3957376 l 2.4404218 3.107648 l -0.7941706 1.9172974 l -3.9230778 0.4718008 l -0.0000000000000031470889 6.2165117 l 3.9230778 0.47179985 l 0.7941706 1.9172974 l -2.4404218 3.1076488 l 4.3957376 4.3957367 l 3.107648 -2.4404202 l 1.9172974 0.7941704 l 0.4718008 3.9230766 h 6.2165117 l 0.47179985 -3.9230766 l 1.9172974 -0.7941704 l 3.1076488 2.4404202 l 4.3957367 -4.3957367 l -2.4404202 -3.1076488 l 0.7941704 -1.9172974 Z "/>
+                <path class="typst-shape" fill="#ffffff" fill-rule="nonzero" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 31.889763779527566 31.889763779527566)" d="M 0 0m 5.6692915 0 c -3.1282244 0 -5.6692915 2.5410671 -5.6692915 5.6692915 c 0 3.1282244 2.5410671 5.6692915 5.6692915 5.6692915 c 3.1282244 0 5.6692915 -2.5410671 5.6692915 -5.6692915 c 0 -3.1282244 -2.5410671 -5.6692915 -5.6692915 -5.6692915 Z "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 34.724409448818896 35.00787401574803)" d="M 0 0m 0 2.551181 l 2.2677166 2.2677166 l 3.9685037 -4.8188977 "/>
+                <path class="typst-shape" fill="#ffffff" fill-rule="nonzero" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 5.527559055118118 5.527559055118118)" d="M 0 0m 1.1338583 0 c -0.6256449 0 -1.1338583 0.5082134 -1.1338583 1.1338583 v 7.9370084 c 0 0.6256447 0.5082134 1.1338577 1.1338583 1.1338577 h 7.9370084 c 0.6256447 0 1.1338577 -0.50821304 1.1338577 -1.1338577 v -7.9370084 c 0 -0.6256449 -0.50821304 -1.1338583 -1.1338577 -1.1338583 h -7.9370084 Z "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 7.795275590551185 8.362204724409452)" d="M 0 0m 0 2.2677166 l 2.2677166 2.2677166 l 3.9685037 -4.5354333 "/>
+                <path class="typst-shape" fill="#ffffff" fill-rule="nonzero" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 59.38582677165355 5.527559055118118)" d="M 0 0m 1.1338583 0 c -0.6256449 0 -1.1338583 0.5082134 -1.1338583 1.1338583 v 7.9370084 c 0 0.6256447 0.5082134 1.1338577 1.1338583 1.1338577 h 7.9370084 c 0.6256447 0 1.1338577 -0.50821304 1.1338577 -1.1338577 v -7.9370084 c 0 -0.6256449 -0.50821304 -1.1338583 -1.1338577 -1.1338583 h -7.9370084 Z "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 61.65354330708662 7.795275590551185)" d="M 0 0m 0 5.6692915 l 5.6692915 -5.6692915 "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 61.65354330708662 7.795275590551185)" d="M 0 0l 5.6692915 5.6692915 "/>
+                <path class="typst-shape" fill="#ffffff" fill-rule="nonzero" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 5.527559055118118 59.38582677165355)" d="M 0 0m 1.1338583 0 c -0.6256449 0 -1.1338583 0.5082134 -1.1338583 1.1338583 v 7.9370084 c 0 0.6256447 0.5082134 1.1338577 1.1338583 1.1338577 h 7.9370084 c 0.6256447 0 1.1338577 -0.50821304 1.1338577 -1.1338577 v -7.9370084 c 0 -0.6256449 -0.50821304 -1.1338583 -1.1338577 -1.1338583 h -7.9370084 Z "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 7.795275590551185 62.22047244094489)" d="M 0 0m 0 2.2677166 l 2.2677166 2.2677166 l 3.9685037 -4.5354333 "/>
+                <path class="typst-shape" fill="#ffffff" fill-rule="nonzero" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 59.38582677165355 59.38582677165355)" d="M 0 0m 1.1338583 0 c -0.6256449 0 -1.1338583 0.5082134 -1.1338583 1.1338583 v 7.9370084 c 0 0.6256447 0.5082134 1.1338577 1.1338583 1.1338577 h 7.9370084 c 0.6256447 0 1.1338577 -0.50821304 1.1338577 -1.1338577 v -7.9370084 c 0 -0.6256449 -0.50821304 -1.1338583 -1.1338577 -1.1338583 h -7.9370084 Z "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" transform="matrix(1 0 0 1 61.65354330708662 62.22047244094489)" d="M 0 0m 0 2.2677166 l 2.2677166 2.2677166 l 3.9685037 -4.5354333 "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 19.98425196850394 0)" d="M 0 0m 0 6.3779526 c 11.509727 -8.221233 22.489592 -8.494538 33.96409 -0.8199167 "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 51.62256448440946 3.562888753700791)" d="M 0 0m 0.9760701 0 l 1.3690665 1.9978399 l -2.3451366 -0.6050137 "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 68.74015748031498 19.98425196850394)" d="M 0 0c 8.221233 11.509727 8.494539 22.489592 0.819917 33.96409 "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 69.55738157480314 51.62256448440946)" d="M 0 0m 1.9978399 0.9760701 l -1.9978399 1.3690665 l 0.60501367 -2.3451366 "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 21.169770142523213 68.74015748031498)" d="M 0 0m 33.96409 0 c -11.5097275 8.221233 -22.489592 8.494539 -33.96409 0.819917 "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 21.150409039370082 69.55738157480314)" d="M 0 0m 1.3690666 1.9978399 l -1.3690666 -1.9978399 l 2.3451366 0.60501367 "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 0 21.169770142523213)" d="M 0 0m 6.3779526 33.96409 c -8.221233 -11.5097275 -8.494538 -22.489592 -0.8199167 -33.96409 "/>
+                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 3.562888753700791 21.150409039370082)" d="M 0 0m 0 1.3690666 l 1.9978399 -1.3690666 l -0.6050137 2.3451366 "/>
+            </g>
+        </g>
     </g>
 </svg>
