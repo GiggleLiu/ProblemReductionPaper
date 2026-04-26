@@ -13,18 +13,18 @@
   let pass-stroke  = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
   let pass-thin    = (paint: col-pass,  thickness: 1.4pt, cap: "round", join: "round")
 
-  // Match other harness icons (±0.78 bbox)
+  // Match type-check / unit-tests / round-trip bbox (±0.78) for visual size parity.
   hide(rect((-0.78, -0.78), (0.78, 0.78)))
 
   // ─── BOT (left): rounded-square head with antenna and two eye dots ───
-  let bx = -0.42
-  let by = -0.02
-  let hw = 0.30
+  let bx = -0.45
+  let by = -0.05
+  let hw = 0.27
   let hh = 0.26
 
   // Antenna
-  line((bx, by + hh), (bx, by + hh + 0.16), stroke: thin-stroke)
-  circle((bx, by + hh + 0.22), radius: 0.06,
+  line((bx, by + hh), (bx, by + hh + 0.14), stroke: thin-stroke)
+  circle((bx, by + hh + 0.20), radius: 0.06,
     fill: col-frame, stroke: none)
 
   // Head (stroke + light fill, matches other icons)
@@ -37,36 +37,36 @@
   )
 
   // Eyes (filled violet dots)
-  circle((bx - 0.11, by + 0.04), radius: 0.05,
+  circle((bx - 0.10, by + 0.04), radius: 0.05,
     fill: col-frame, stroke: none)
-  circle((bx + 0.11, by + 0.04), radius: 0.05,
+  circle((bx + 0.10, by + 0.04), radius: 0.05,
     fill: col-frame, stroke: none)
 
   // ─── USER (right): head + shoulder silhouette ───
-  let ux = 0.46
-  let uy = 0.04
+  let ux = 0.40
+  let uy = 0.06
 
   // Head
-  circle((ux, uy), radius: 0.20,
+  circle((ux, uy), radius: 0.18,
     stroke: frame-stroke, fill: col-frame.lighten(85%))
 
-  // Shoulders (rounded bezier, tangent to the head)
+  // Shoulders (rounded bezier, tangent to the head, kept inside bbox)
   bezier(
-    (ux - 0.42, -0.58),
-    (ux + 0.42, -0.58),
+    (ux - 0.36, -0.58),
+    (ux + 0.36, -0.58),
     (ux - 0.20, -0.20),
     (ux + 0.20, -0.20),
     stroke: frame-stroke,
   )
 
   // ─── Dialogue dots between them (•••) ───
-  let dy = -0.05
-  circle((-0.06, dy), radius: 0.045, fill: col-frame, stroke: none)
-  circle(( 0.06, dy), radius: 0.045, fill: col-frame, stroke: none)
-  circle(( 0.18, dy), radius: 0.045, fill: col-frame, stroke: none)
+  let dy = -0.07
+  circle((-0.07, dy), radius: 0.045, fill: col-frame, stroke: none)
+  circle(( 0.05, dy), radius: 0.045, fill: col-frame, stroke: none)
+  circle(( 0.17, dy), radius: 0.045, fill: col-frame, stroke: none)
 
-  // ─── Green check badge (top-right corner) ───
-  let cx = 0.62
+  // ─── Green check badge (top-right corner, mirrors type-check placement) ───
+  let cx = 0.60
   let cy = 0.58
   circle((cx, cy), radius: 0.16, stroke: pass-thin, fill: white)
   line(
