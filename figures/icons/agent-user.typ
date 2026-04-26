@@ -13,10 +13,11 @@
   let pass-stroke  = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
   let pass-thin    = (paint: col-pass,  thickness: 1.4pt, cap: "round", join: "round")
 
-  // Force bbox to ±0.78 (matches type-check / unit-tests / round-trip).
-  // Uses a near-invisible stroke instead of hide() because hide() does not
-  // contribute to layout, so it would not actually constrain the bounding box.
-  rect((-0.78, -0.78), (0.78, 0.78),
+  // Force bbox height to match type-check.typ exactly. (Width can vary;
+  // height parity matters because the icon shares a row with type-check
+  // in the harness panel.) hide() does not contribute to layout, so we use
+  // an invisible-but-real stroke to anchor the canvas extent.
+  rect((-0.78, -0.765), (0.78, 0.765),
     stroke: (paint: white, thickness: 0.1pt), fill: none)
 
   // ─── BOT (left): rounded-square head with antenna and two eye dots ───
