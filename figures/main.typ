@@ -580,59 +580,112 @@
   content("ilp", text(9pt, weight: "bold", fill: fg, [ILP]))
 })
 
-// Mini growth-over-time curve (Phase 1 → Phase 2 → Phase 3, schematic).
-#let growth-mini = canvas(length: 0.3cm, {
+// Mini growth-over-time curve — schematic style (arrow axes, area fills, dot
+// markers, dashed phase boundaries) charting real weekly counts mined from
+// the project's git history.
+#let growth-mini = canvas(length: 0.32cm, {
   import draw: *
 
-  // Axes
+  // Real weekly data: (week index, count).
+  let data-models = (
+    (0, 17), (2, 20), (3, 20), (4, 20), (5, 21),
+    (6, 21), (7, 23), (8, 23), (9, 39), (10, 107), (11, 116),
+    (12, 187), (13, 187),
+  )
+  let data-rules = (
+    (0, 0), (2, 21), (3, 24), (4, 35), (5, 45),
+    (6, 52), (7, 52), (8, 52), (9, 56), (10, 73), (11, 153),
+    (12, 214), (13, 239),
+  )
+  let phase2 = 7
+  let phase3 = 8.5
+
+  // Plot frame in canvas units.
+  let x-min  = 0
+  let x-max  = 13.5
+  let y-max  = 260
+  let plot-w = 17.0
+  let plot-h = 5.0
   let x0 = 0.0
   let y0 = 0.0
-  let w = 18.0
-  let h = 5.5
-  line((x0, y0), (x0 + w, y0),
-    stroke: (thickness: 0.6pt, paint: fg),
-    mark: (end: "straight", scale: 0.3))
-  line((x0, y0), (x0, y0 + h),
-    stroke: (thickness: 0.6pt, paint: fg))
 
-  // Data points (schematic: shallow then steep).
-  let pts = (
-    (1.0, 0.4), (3.0, 0.6), (5.0, 0.9),
-    (7.0, 1.4), (9.0, 1.8), (11.0, 2.4),
-    (13.0, 3.5), (15.0, 4.8), (16.5, 5.1),
+  // Data → canvas coords.
+  let sx(w) = x0 + (w - x-min) / (x-max - x-min) * plot-w
+  let sy(c) = y0 + c / y-max * plot-h
+  let pt(p) = (sx(p.at(0)), sy(p.at(1)))
+
+  // Phase boundary verticals (behind everything).
+  line((sx(phase2), y0), (sx(phase2), y0 + plot-h),
+    stroke: (thickness: 0.4pt, paint: luma(170), dash: "dashed"))
+  line((sx(phase3), y0), (sx(phase3), y0 + plot-h),
+    stroke: (thickness: 0.4pt, paint: luma(170), dash: "dashed"))
+
+  // Reduction rules curve (red, drawn first → behind).
+  let rules-pts = data-rules.map(pt)
+  let rules-fill = rules-pts + (
+    (rules-pts.last().at(0),  y0),
+    (rules-pts.first().at(0), y0),
   )
-
-  // Fill under curve.
-  let fill-pts = pts + ((16.5, 0.0), (1.0, 0.0))
-  merge-path(close: true, fill: col-p3.lighten(80%), stroke: none, {
-    line(..fill-pts)
+  merge-path(close: true, fill: col-red.lighten(85%), stroke: none, {
+    line(..rules-fill)
   })
-
-  // Curve
-  line(..pts,
-    stroke: (thickness: 1.4pt, paint: col-p3.darken(5%)))
-
-  // Markers
-  for p in pts {
-    circle(p, radius: 0.2, fill: white, stroke: (thickness: 0.8pt, paint: col-p3.darken(5%)))
+  line(..rules-pts, stroke: (thickness: 1.0pt, paint: col-red))
+  for p in rules-pts {
+    circle(p, radius: 0.13, fill: white,
+      stroke: (thickness: 0.5pt, paint: col-red))
   }
 
-  // Phase boundaries (vertical dashed)
-  line((6.0, 0), (6.0, h),
-    stroke: (thickness: 0.4pt, paint: luma(170), dash: "dashed"))
-  line((12.0, 0), (12.0, h),
-    stroke: (thickness: 0.4pt, paint: luma(170), dash: "dashed"))
+  // Problem types curve (blue, on top).
+  let models-pts = data-models.map(pt)
+  let models-fill = models-pts + (
+    (models-pts.last().at(0),  y0),
+    (models-pts.first().at(0), y0),
+  )
+  merge-path(close: true, fill: col-p1.lighten(85%), stroke: none, {
+    line(..models-fill)
+  })
+  line(..models-pts, stroke: (thickness: 1.0pt, paint: col-p1))
+  for p in models-pts {
+    circle(p, radius: 0.13, fill: white,
+      stroke: (thickness: 0.5pt, paint: col-p1))
+  }
 
-  // Labels under x-axis
-  content((3.0, -0.9), text(6pt, fill: fg, [manual]))
-  content((6.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
-  content((9.0, -0.9), text(6pt, fill: fg, [basic skills]))
-  content((12.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
-  content((15.0, -0.9), text(6pt, fill: fg, [full pipeline]))
+  // Axes (arrow-headed, schematic).
+  line((x0, y0), (x0 + plot-w + 0.5, y0),
+    stroke: (thickness: 0.6pt, paint: fg),
+    mark: (end: "straight", scale: 0.3))
+  line((x0, y0), (x0, y0 + plot-h + 0.6),
+    stroke: (thickness: 0.6pt, paint: fg),
+    mark: (end: "straight", scale: 0.3))
 
-  // Title, upper-left
-  content((x0 + 0.3, y0 + h - 0.3), anchor: "north-west",
-    text(7pt, fill: col-p3.darken(15%), [Growth over time]))
+  // Phase labels under the x-axis. Phase 2 is narrow (1.5 wks) so its label
+  // gets two lines / smaller text to fit.
+  content((sx(3.5),   -0.7),  text(5.5pt, fill: fg, [manual]))
+  content((sx(7.75),  -0.85), text(5pt,   fill: fg, [basic\ skills]))
+  content((sx(10.75), -0.7),  text(5.5pt, fill: fg, [full pipeline]))
+
+  // Title, top-left above plot.
+  content((x0 + 0.2, y0 + plot-h + 0.4), anchor: "north-west",
+    text(7pt, fill: col-p3.darken(15%), weight: "bold", [Growth over time]))
+
+  // Inline legend, top-left inside plot (curves are flat there until week 9).
+  let lx = sx(0.5)
+  let ly = y0 + plot-h - 0.4
+  let lh = 0.55
+  // Problem types entry
+  line((lx, ly), (lx + 0.55, ly),
+    stroke: (thickness: 1.0pt, paint: col-p1))
+  circle((lx + 0.275, ly), radius: 0.11, fill: white,
+    stroke: (thickness: 0.5pt, paint: col-p1))
+  content((lx + 0.7, ly), anchor: "west",
+    text(5pt, fill: fg, [problem types]))
+  // Reduction rules entry
+  line((lx, ly - lh), (lx + 0.55, ly - lh),
+    stroke: (thickness: 1.0pt, paint: col-red))
+  circle((lx + 0.275, ly - lh), radius: 0.11, fill: white,
+    stroke: (thickness: 0.5pt, paint: col-red))
+  content((lx + 0.7, ly - lh), anchor: "west",
+    text(5pt, fill: fg, [reduction rules]))
 })
 
 #let panel3(h: auto) = box(
