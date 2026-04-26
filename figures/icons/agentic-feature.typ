@@ -7,31 +7,36 @@
 
   let col-frame = rgb("#8a5f7e")    // violet (harness)
   let col-pass  = rgb("#59a14f")    // green
-  let col-eye   = col-frame.darken(15%)
 
   let frame-stroke = (paint: col-frame, thickness: 1.4pt, cap: "round", join: "round")
+  let thin-stroke  = (paint: col-frame, thickness: 1.0pt, cap: "round", join: "round")
   let pass-stroke  = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
 
   hide(rect((-0.78, -0.78), (0.78, 0.78)))
 
-  // ─── Mask body (ellipse) ───
-  circle((0, 0), radius: (0.55, 0.68),
+  // ─── Mask body (slightly egg-shaped: wider on top) ───
+  circle((0, 0.05), radius: (0.50, 0.62),
     stroke: frame-stroke, fill: col-frame.lighten(85%))
 
-  // ─── Two eye holes (hollow, slightly tilted up — comedy mask) ───
-  // Left eye
-  circle((-0.22, 0.18), radius: (0.13, 0.10),
-    stroke: frame-stroke, fill: col-eye)
-  // Right eye
-  circle((0.22, 0.18), radius: (0.13, 0.10),
-    stroke: frame-stroke, fill: col-eye)
+  // ─── Mask tie ribbon stub on left side (visual cue: this is a mask) ───
+  line((-0.50, 0.05), (-0.68, 0.18), stroke: thin-stroke)
+  line((-0.50, 0.05), (-0.68, -0.10), stroke: thin-stroke)
 
-  // ─── Smile mouth ───
+  // ─── Eyes: white fill, violet outline (friendly bot-style, not creepy) ───
+  circle((-0.20, 0.18), radius: 0.11,
+    stroke: frame-stroke, fill: white)
+  circle((0.20, 0.18), radius: 0.11,
+    stroke: frame-stroke, fill: white)
+  // Small pupils
+  circle((-0.20, 0.18), radius: 0.045, fill: col-frame, stroke: none)
+  circle((0.20, 0.18), radius: 0.045, fill: col-frame, stroke: none)
+
+  // ─── Big upturned smile (clearly comedy mask) ───
   bezier(
-    (-0.22, -0.18),
-    (0.22, -0.18),
-    (-0.10, -0.40),
-    (0.10, -0.40),
+    (-0.25, -0.12),
+    (0.25, -0.12),
+    (-0.15, -0.40),
+    (0.15, -0.40),
     stroke: frame-stroke,
   )
 
