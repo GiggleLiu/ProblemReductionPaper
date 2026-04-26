@@ -77,11 +77,10 @@
     fill: col-frame, stroke: none,
   )
 
-  // ─── Imitation arrows (bot ⇉ user) ───
-  line((-0.06, 0.08), (0.12, 0.08),
-    stroke: imitate-stroke, mark: imitate-mark)
-  line((-0.06, -0.08), (0.12, -0.08),
-    stroke: imitate-stroke, mark: imitate-mark)
+  // ─── Magnification cone: two diverging lines from bot toward user ───
+  // (like a comic-book "this is the zoomed-in view" effect)
+  line((-0.04, 0.06), (0.32, 0.34), stroke: mag-stroke)
+  line((-0.04, -0.06), (0.32, -0.34), stroke: mag-stroke)
 
   // ─── USER silhouette (right) ───
   let user-cx = 0.50
