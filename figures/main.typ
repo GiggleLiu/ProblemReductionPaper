@@ -185,7 +185,7 @@
     width: 100%,
     fill: luma(245),
     stroke: (bottom: (thickness: 0.5pt, paint: luma(200))),
-    inset: (x: 6pt, y: 4pt),
+    inset: (x: 6pt, y: 2pt),
   )[
     #std.grid(
       columns: (auto, 1fr, auto),
@@ -201,7 +201,7 @@
 
   #v(2pt)
   // Body
-  #block(inset: (x: 7pt, y: 6pt))[
+  #block(inset: (x: 7pt, y: 5pt))[
     #set block(spacing: 0pt)
     #set par(spacing: 0pt)
     // Title line: status pill + title + issue number
@@ -244,13 +244,13 @@
     #std.grid(
       columns: (auto, 1fr),
       column-gutter: 10pt,
-      row-gutter: 3pt,
+      row-gutter: 4pt,
       align: (left + top, left + top),
       text(6.2pt, fill: fg-light, [Algorithm]),
         text(6.4pt, fill: fg,
           [$x_(v,c) in {0,1}$; one-hot per $v$; $x_(u,c) + x_(v,c) <= 1$ on edges]),
       text(6.2pt, fill: fg-light, [Overhead]),
-        text(6.4pt, fill: fg, [variables $|V| dot k$,\ constraints $|E| dot k + |V|.$]),
+        text(6.4pt, fill: fg, [variables $|V| dot k$,\ constraints $|E| dot k + |V|$]),
         text(6.2pt, fill: fg-light, [Reference]),
       text(6.4pt, fill: fg, [Mehrotra & Trick, 1996]),
        text(6.2pt, fill: fg-light, [Example]),
@@ -357,7 +357,7 @@
 
   #agent-card(col-p1, [Implementation Agent],
     [Plan #sym.arrow Encode #sym.arrow Generate code \
-     Propose reduction rule])
+     Propose reduction rule], icon: image("icons/bot.svg", width: 1cm))
 
   #v(4pt)
   #align(center, text(10pt, fill: fg-light, sym.arrow.b))
@@ -365,7 +365,7 @@
 
   #agent-card(col-p3, [Review Agent],
     [Static analysis #sym.arrow Semantics check \
-     Approve or request changes])
+     Approve or request changes], icon: image("icons/bot.svg", width: 1cm))
 
   #v(6pt)
   #verif-box
