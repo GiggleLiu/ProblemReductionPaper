@@ -64,7 +64,7 @@
 ]
 
 // Vertical flow connector — longer shaft, smaller head than the text glyph.
-#let flow-arrow(color: fg-light, h: 18pt) = align(center,
+#let flow-arrow(color: black, h: 18pt) = align(center,
   canvas(length: 1pt, {
     import draw: *
     let s = h / 1pt
@@ -692,7 +692,7 @@
 // Assemble the three panels with connector arrows.
 // ─────────────────────────────────────────────────────────────
 #let big-arrow = align(horizon,
-  text(18pt, fill: luma(130), weight: "bold", sym.arrow))
+  text(18pt, fill: black, weight: "bold", sym.arrow))
 
 #std.grid(
   columns: (auto, 0.5cm, auto, 0.5cm, auto),
