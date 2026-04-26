@@ -394,7 +394,7 @@
   )
 
   // Issue → harness
-  #flow-arrow(color: black)
+  #flow-arrow()
 
   #harness-box
 
