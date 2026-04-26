@@ -76,17 +76,23 @@
     fill: col-frame, stroke: none,
   )
 
+  // ─── Imitation arrows (bot ⇉ user) ───
+  line((-0.06, 0.08), (0.12, 0.08),
+    stroke: imitate-stroke, mark: imitate-mark)
+  line((-0.06, -0.08), (0.12, -0.08),
+    stroke: imitate-stroke, mark: imitate-mark)
+
   // ─── USER silhouette (right) ───
-  let user-cx = 0.40
+  let user-cx = 0.50
   // Head
-  circle((user-cx, 0.18), radius: 0.18,
+  circle((user-cx, 0.18), radius: 0.16,
     stroke: user-stroke, fill: white)
   // Shoulders
   bezier(
-    (user-cx - 0.32, -0.40),
-    (user-cx + 0.32, -0.40),
-    (user-cx - 0.18, -0.05),
-    (user-cx + 0.18, -0.05),
+    (user-cx - 0.28, -0.38),
+    (user-cx + 0.28, -0.38),
+    (user-cx - 0.16, -0.05),
+    (user-cx + 0.16, -0.05),
     stroke: user-stroke,
   )
 
