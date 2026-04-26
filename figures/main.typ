@@ -331,7 +331,7 @@
     icon: image("icons/agent-impl.svg", width: 1cm))
 
   #v(3pt)
-  #align(center, text(10pt, fill: fg-light, sym.arrow.b))
+  #flow-arrow(color: fg-light)
   #v(3pt)
 
   // Review agent
