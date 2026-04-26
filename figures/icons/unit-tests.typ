@@ -52,7 +52,7 @@
       (cx - bh, cy - bh),
       (cx + bh, cy + bh),
       radius: 0.04,
-      stroke: line-stroke,
+      stroke: frame-stroke,
       fill: white,
     )
     if mark == "v" {
@@ -60,11 +60,11 @@
         (cx - 0.10, cy + 0.00),
         (cx - 0.02, cy - 0.08),
         (cx + 0.12, cy + 0.08),
-        stroke: line-stroke,
+        stroke: pass-stroke,
       )
     } else {
-      line((cx - 0.10, cy - 0.10), (cx + 0.10, cy + 0.10), stroke: line-stroke)
-      line((cx - 0.10, cy + 0.10), (cx + 0.10, cy - 0.10), stroke: line-stroke)
+      line((cx - 0.10, cy - 0.10), (cx + 0.10, cy + 0.10), stroke: fail-stroke)
+      line((cx - 0.10, cy + 0.10), (cx + 0.10, cy - 0.10), stroke: fail-stroke)
     }
   }
 
