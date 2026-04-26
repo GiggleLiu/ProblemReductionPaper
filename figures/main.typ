@@ -330,9 +330,7 @@
      Propose reduction rule],
     icon: image("icons/agent-impl.svg", width: 1cm))
 
-  #v(3pt)
   #flow-arrow(color: fg-light)
-  #v(3pt)
 
   // Review agent
   #agent-card(col-p3, [Review Agent],
