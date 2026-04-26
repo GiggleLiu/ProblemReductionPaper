@@ -5,10 +5,16 @@
 #canvas(length: 1cm, {
   import draw: *
 
-  let stroke-c = black
-  let line-stroke = (paint: stroke-c, thickness: 1.4pt, cap: "round", join: "round")
-  let arrow-stroke = (paint: stroke-c, thickness: 1.0pt, cap: "round")
-  let arrow-mark = (end: "straight", scale: 0.4)
+  let col-frame = rgb("#8a5f7e")    // violet (harness)
+  let col-pass  = rgb("#59a14f")    // green
+  let col-fail  = rgb("#e15759")    // red
+  let col-arrow = rgb("#b07aa1")    // light violet
+
+  let frame-stroke = (paint: col-frame, thickness: 1.4pt, cap: "round", join: "round")
+  let pass-stroke  = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
+  let fail-stroke  = (paint: col-fail,  thickness: 1.6pt, cap: "round", join: "round")
+  let arrow-stroke = (paint: col-arrow, thickness: 1.0pt, cap: "round")
+  let arrow-mark   = (end: "straight", scale: 0.4)
 
   // ─── Gear in center (8 trapezoidal teeth + circular hub) ───
   let n = 8
