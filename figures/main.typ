@@ -63,14 +63,14 @@
   #text(7.5pt, weight: "bold", fill: col.darken(10%), label)
 ]
 
-// Thick vertical flow connector — replaces text-glyph arrows that read too thin.
-#let flow-arrow(color: fg-light, h: 10pt) = align(center,
+// Vertical flow connector — longer shaft, smaller head than the text glyph.
+#let flow-arrow(color: fg-light, h: 18pt) = align(center,
   canvas(length: 1pt, {
     import draw: *
     let s = h / 1pt
     line((0, s), (0, 0),
-      stroke: (paint: color, thickness: 1.8pt, cap: "round"),
-      mark: (end: "stealth", scale: 0.9, fill: color))
+      stroke: (paint: color, thickness: 1.4pt, cap: "round"),
+      mark: (end: "stealth", scale: 0.5, fill: color))
   })
 )
 
