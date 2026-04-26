@@ -1,4 +1,5 @@
 #import "lib.typ": *
+#import "@preview/cetz-plot:0.1.2": plot
 #import "@preview/pixel-family:0.2.0": bob, grace, crank, sentinel
 
 #set page(width: auto, height: auto, margin: 6pt)
@@ -379,7 +380,7 @@
       [Harness-engineered\ agentic integration]),
   )
 
-  #v(8pt)
+  #v(15pt)
 
   // Person-at-laptop (left) and GitHub issue card (right).
   #std.grid(
