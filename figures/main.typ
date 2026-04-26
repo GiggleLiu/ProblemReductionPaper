@@ -393,7 +393,7 @@
   )
 
   // Issue → harness
-  #align(center, text(10pt,weight: "bold", fill: black, sym.arrow.b))
+  #flow-arrow(color: black)
 
   #harness-box
 
