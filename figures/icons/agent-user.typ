@@ -13,8 +13,11 @@
   let pass-stroke  = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
   let pass-thin    = (paint: col-pass,  thickness: 1.4pt, cap: "round", join: "round")
 
-  // Match type-check / unit-tests / round-trip bbox (±0.78) for visual size parity.
-  hide(rect((-0.78, -0.78), (0.78, 0.78)))
+  // Force bbox to ±0.78 (matches type-check / unit-tests / round-trip).
+  // Uses a near-invisible stroke instead of hide() because hide() does not
+  // contribute to layout, so it would not actually constrain the bounding box.
+  rect((-0.78, -0.78), (0.78, 0.78),
+    stroke: (paint: white, thickness: 0.1pt), fill: none)
 
   // ─── BOT (left): rounded-square head with antenna and two eye dots ───
   let bx = -0.45
