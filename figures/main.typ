@@ -399,7 +399,7 @@
   #harness-box
 
   // Harness → validated code
-  #flow-arrow(color: fg-light)
+  #flow-arrow()
 
   #box(
     width: 100%,
