@@ -713,17 +713,25 @@
 // Panel widths (kept here so the overlay arrows know where the seams sit).
 #let p1w = 6.7cm
 #let p2w = 7.2cm
-#let arrow-half = 11.5pt   // half the big-arrow's geometric width
+#let arrow-half-w = 11.5pt   // half the big-arrow's geometric width
+#let arrow-half-h = 9pt      // half its geometric height
 
 // Panels sit edge-to-edge; the block arrows overlay each seam, sitting on top
-// of both adjacent panels rather than separating them.
-#box({
-  std.grid(
+// of both adjacent panels rather than separating them. We measure the panel
+// row's actual height to vertically center the arrows.
+#context {
+  let panels-row = std.grid(
     columns: (auto, auto, auto),
     gutter: 0pt,
     align: top,
     panel1, panel2, panel3,
   )
-  place(left + horizon, dx: p1w - arrow-half, big-arrow)
-  place(left + horizon, dx: p1w + p2w - arrow-half, big-arrow)
-})
+  let h = measure(panels-row).height
+  block({
+    panels-row
+    place(top + left, dx: p1w - arrow-half-w,
+      dy: h / 2 - arrow-half-h, big-arrow)
+    place(top + left, dx: p1w + p2w - arrow-half-w,
+      dy: h / 2 - arrow-half-h, big-arrow)
+  })
+}
