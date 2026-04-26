@@ -14,7 +14,9 @@
   let imitate-stroke = (paint: col-frame, thickness: 1.2pt, cap: "round", join: "round")
   let imitate-mark   = (end: "straight", scale: 0.35)
 
-  hide(rect((-0.78, -0.78), (0.78, 0.78)))
+  // Force bbox to match other harness icons (±0.78)
+  rect((-0.78, -0.78), (0.78, 0.78),
+    stroke: (paint: white, thickness: 0.1pt), fill: none)
 
   // ─── BOT (head-only, on the left) ───
   let bot-cx = -0.42
