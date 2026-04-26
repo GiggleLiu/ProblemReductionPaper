@@ -43,7 +43,7 @@
   let positions = (
     (-0.55, 0.55, "v"),    // top-left ✓
     (0.55, 0.55, "x"),     // top-right ✗
-    (-0.55, -0.55, "v"),   // bottom-left ✓
+    (-0.55, -0.55, "x"),   // bottom-left ✓
     (0.55, -0.55, "v"),    // bottom-right ✓
   )
   let bh = 0.14
