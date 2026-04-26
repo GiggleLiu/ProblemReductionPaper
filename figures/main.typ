@@ -757,7 +757,7 @@
     ),
   )
 
-  #v(10pt)
+  #v(45pt)
 
   // Growth curve panel
   #box(
