@@ -259,7 +259,7 @@
         ]),
     )
 
-    #v(5pt)
+    #v(2pt)
 
     // Label chips
     // #std.grid(
@@ -381,17 +381,13 @@
     github-card,
   )
 
-  #v(6pt)
   // Issue → harness
-  #align(center, text(10pt, fill: fg-light, sym.arrow.b))
-  #v(2pt)
+  #align(center, text(10pt,weight: "bold", fill: black, sym.arrow.b))
 
   #harness-box
 
-  #v(4pt)
   // Harness → validated code
   #align(center, text(10pt, fill: fg-light, sym.arrow.b))
-  #v(2pt)
 
   #box(
     width: 100%,
