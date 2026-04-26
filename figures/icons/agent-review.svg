@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="800px" height="800px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>agent_review_24_regular</title>
-    <g stroke="#59a14f" stroke-width="0.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <g stroke="#59a14f" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" fill="none">
         <line x1="12" y1="2.4" x2="12" y2="3.6"/>
         <rect x="5.6" y="3.6" width="12.8" height="8.9" rx="2.2" ry="2.2"/>
         <path d="M 6.25 14 L 17.75 14 Q 20 14 20 16.25 L 20 17.15 Q 20 20.5 17 20.5 L 7 20.5 Q 4 20.5 4 17.15 L 4 16.25 Q 4 14 6.25 14 Z"/>
