@@ -655,12 +655,13 @@
       stroke: (thickness: 0.7pt, paint: col-p1.darken(5%)))
   }
 
-  // X-axis (arrow). Y-axis is plain (no arrow), matches mockup.
+  // X- and Y-axis with arrow heads at the ends.
   line((x0, y0), (x0 + plot-w + 0.5, y0),
     stroke: (thickness: 0.6pt, paint: fg),
     mark: (end: "straight", scale: 0.3))
-  line((x0, y0), (x0, y0 + plot-h),
-    stroke: (thickness: 0.6pt, paint: fg))
+  line((x0, y0), (x0, y0 + plot-h + 0.5),
+    stroke: (thickness: 0.6pt, paint: fg),
+    mark: (end: "straight", scale: 0.3))
 
   // Y-axis tick marks + labels (0, 100, 200 — data peaks at 239).
   for tv in (100, 200) {
@@ -684,16 +685,16 @@
 
   // Phase strip below the x-axis — evenly spaced like the mockup, with
   // arrows between phase names rather than tied to the (uneven) boundaries.
-  content((7.5,  -1.4), text(6pt, fill: fg, [manual]))
-  content((12.0, -1.4), text(6pt, fill: fg-light, sym.arrow))
-  content((17.3, -1.4), text(6pt, fill: fg, [basic skills]))
-  content((21.0, -1.4), text(6pt, fill: fg-light, sym.arrow))
-  content((25.0, -1.4), text(6pt, fill: fg, [full pipeline]))
+  content((7.5,  -1.4), text(6pt, fill: col-p3.darken(15%), [*manual*]))
+  content((12.0, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
+  content((17.3, -1.4), text(6pt, fill: col-p3.darken(15%), [*basic skills*]))
+  content((21.0, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
+  content((25.0, -1.4), text(6pt, fill: col-p3.darken(15%), [*full pipeline*]))
 
   // Title in upper-left, with a compact two-row legend underneath. The
   // curves are flat in the left third (week 0–8), so this region is empty.
-  content((x0 + 0.3, y0 + plot-h - 0.2), anchor: "north-west",
-    text(7pt, fill: col-p3.darken(15%), [Growth over time]))
+  content((x0 + 0.3, y0 + plot-h+0.6), anchor: "north-west",
+    text(7pt, fill: col-p3.darken(15%), [*Growth over time*]))
 
   let lx = x0 + 0.4
   let ly = y0 + plot-h - 1.1
@@ -704,14 +705,14 @@
   circle((lx + 0.275, ly), radius: 0.11, fill: white,
     stroke: (thickness: 0.5pt, paint: col-p1.darken(5%)))
   content((lx + 0.7, ly), anchor: "west",
-    text(5.2pt, fill: fg, [problem types]))
+    text(5.2pt, fill: fg, [\#problem types]))
   // Reduction rules entry
   line((lx, ly - row-gap), (lx + 0.55, ly - row-gap),
     stroke: (thickness: 1.0pt, paint: col-red.darken(5%)))
   circle((lx + 0.275, ly - row-gap), radius: 0.11, fill: white,
     stroke: (thickness: 0.5pt, paint: col-red.darken(5%)))
   content((lx + 0.7, ly - row-gap), anchor: "west",
-    text(5.2pt, fill: fg, [reduction rules]))
+    text(5.2pt, fill: fg, [\#reduction rules]))
 })
 
 #let panel3(h: auto) = box(
