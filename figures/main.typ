@@ -63,6 +63,17 @@
   #text(7.5pt, weight: "bold", fill: col.darken(10%), label)
 ]
 
+// Thick vertical flow connector — replaces text-glyph arrows that read too thin.
+#let flow-arrow(color: fg-light, h: 10pt) = align(center,
+  canvas(length: 1pt, {
+    import draw: *
+    let s = h / 1pt
+    line((0, s), (0, 0),
+      stroke: (paint: color, thickness: 1.8pt, cap: "round"),
+      mark: (end: "stealth", scale: 0.9, fill: color))
+  })
+)
+
 // ─────────────────────────────────────────────────────────────
 // Panel 1: Many hard problems, many solver formats
 // ─────────────────────────────────────────────────────────────
@@ -276,7 +287,7 @@
 
 // Verification harness box: 4 mini-cards in a row.
 #let verif-cell(label, icon: none) = box(
-  width: 100%, height: 1.8cm,
+  width: 100%, height: 1.3cm,
   stroke: (thickness: 0.6pt, paint: col-violet),
   radius: 3pt,
   fill: white,
@@ -296,7 +307,7 @@
   stroke: (thickness: 0.9pt, paint: col-violet),
   radius: 5pt,
   fill: col-violet.lighten(92%),
-  inset: 6pt,
+  inset: 4pt,
 )[
   #set block(spacing: 0pt)
   #set par(spacing: 0pt)
@@ -337,11 +348,11 @@
   // 4 verification layers — base strip
   #std.grid(
     columns: (1fr, 1fr, 1fr, 1fr),
-    gutter: 4pt,
-    verif-cell([type / compile checks], icon: image("icons/type-check.svg", height: 0.5cm)),
-    verif-cell([unit tests], icon: image("icons/unit-tests.svg", height: 0.5cm)),
-    verif-cell([round-trip reduction tests], icon: image("icons/round-trip.svg", height: 0.5cm)),
-    verif-cell([agentic feature tests], icon: image("icons/agent-user.svg", height: 0.5cm)),
+    gutter: 3pt,
+    verif-cell([*compile-time checks*], icon: image("icons/type-check.svg", height: 0.5cm)),
+    verif-cell([*automated unit tests*], icon: image("icons/unit-tests.svg", height: 0.5cm)),
+    verif-cell([*round-trip verifications*], icon: image("icons/round-trip.svg", height: 0.5cm)),
+    verif-cell([*agentic feature tests*], icon: image("icons/agent-user.svg", height: 0.5cm)),
   )
 ]
 
