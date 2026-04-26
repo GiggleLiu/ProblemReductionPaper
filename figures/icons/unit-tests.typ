@@ -13,7 +13,7 @@
   let frame-stroke = (paint: col-frame, thickness: 1.4pt, cap: "round", join: "round")
   let pass-stroke  = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
   let fail-stroke  = (paint: col-fail,  thickness: 1.6pt, cap: "round", join: "round")
-  let arrow-stroke = (paint: col-arrow, thickness: 1.0pt, cap: "round")
+  let arrow-stroke = (paint: col-arrow, thickness: 1.4pt, cap: "round")
   let arrow-mark   = (end: "straight", scale: 0.4)
 
   // ─── Gear in center (8 trapezoidal teeth + circular hub) ───
