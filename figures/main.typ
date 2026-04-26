@@ -199,6 +199,7 @@
     )
   ]
 
+  #v(2pt)
   // Body
   #block(inset: (x: 7pt, y: 6pt))[
     #set block(spacing: 0pt)
@@ -217,7 +218,7 @@
       ],
     )
 
-    // #v(3pt)
+    #v(2pt)
 
     // Meta line: author + opened time
     // #text(5.8pt, fill: fg-light)[
@@ -249,11 +250,13 @@
         text(6.4pt, fill: fg,
           [$x_(v,c) in {0,1}$; one-hot per $v$; $x_(u,c) + x_(v,c) <= 1$ on edges]),
       text(6.2pt, fill: fg-light, [Overhead]),
-        text(6.4pt, fill: fg, [vars $|V| dot k$, constraints $|E| dot k + |V|$]),
-      text(6.2pt, fill: fg-light, [Validation]),
-        text(6.4pt, fill: fg, [round-trip vs brute force on $|V| <= 8$]),
+        text(6.4pt, fill: fg, [variables $|V| dot k$,\ constraints $|E| dot k + |V|.$]),
         text(6.2pt, fill: fg-light, [Reference]),
-      text(6.4pt, fill: fg, [Garey & Johnson, 1979]),
+      text(6.4pt, fill: fg, [Mehrotra & Trick, 1996]),
+       text(6.2pt, fill: fg-light, [Example]),
+        text(6.4pt, fill: fg, [
+          ...
+        ]),
     )
 
     #v(5pt)
