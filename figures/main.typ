@@ -275,7 +275,7 @@
 ]
 
 // Verification harness box: 4 mini-cards in a row.
-#let verif-cell(label) = box(
+#let verif-cell(label, icon: none) = box(
   width: 100%, height: 1.8cm,
   stroke: (thickness: 0.6pt, paint: col-violet),
   radius: 3pt,
@@ -283,7 +283,7 @@
   inset: 3pt,
 )[
   #align(center + top)[
-    #icon-slot(w: 0.5cm, h: 0.5cm, label: [ ])
+    #if icon == none { icon-slot(w: 0.5cm, h: 0.5cm, label: [ ]) } else { icon }
     #v(3pt)
     #text(5.8pt, fill: col-violet.darken(20%), weight: "regular", align(center, label))
   ]
@@ -306,9 +306,9 @@
     columns: (auto, 1fr),
     gutter: 5pt,
     align: (center + horizon, left + horizon),
-    image("icons/loop.svg", width: 0.45cm),
+    image("icons/loop.svg", width: 0.5cm),
     text(8.5pt, weight: "bold", fill: col-violet.darken(15%),
-      [Agents under verification harness]),
+      [Agents under harness]),
   )
 
   #v(6pt)
@@ -338,7 +338,7 @@
   #std.grid(
     columns: (1fr, 1fr, 1fr, 1fr),
     gutter: 4pt,
-    verif-cell([type / compile checks]),
+    verif-cell([type / compile checks], icon: image("icons/file-check-tick.svg", width: 0.5cm)),
     verif-cell([unit tests]),
     verif-cell([round-trip reduction tests]),
     verif-cell([agentic feature tests]),
