@@ -398,7 +398,7 @@
   #harness-box
 
   // Harness → validated code
-  #align(center, text(10pt, fill: fg-light, sym.arrow.b))
+  #flow-arrow(color: fg-light)
 
   #box(
     width: 100%,
