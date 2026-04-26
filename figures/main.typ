@@ -723,13 +723,19 @@
 // Panels keep a visible gap; the block arrows are placed *over* each seam so
 // they straddle the gap and sit on top of both neighbouring panels.
 #context {
+  // Measure each panel at its natural height, then force all three to the
+  // tallest so the row reads as a single horizontal band.
+  let h = calc.max(
+    measure(panel1()).height,
+    measure(panel2()).height,
+    measure(panel3()).height,
+  )
   let panels-row = std.grid(
     columns: (auto, auto, auto),
     gutter: panel-gap,
     align: top,
-    panel1, panel2, panel3,
+    panel1(h: h), panel2(h: h), panel3(h: h),
   )
-  let h = measure(panels-row).height
   // Seam centers (where each arrow sits horizontally).
   let seam1 = p1w + panel-gap / 2
   let seam2 = p1w + panel-gap + p2w + panel-gap / 2
