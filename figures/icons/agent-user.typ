@@ -11,8 +11,7 @@
   let user-stroke = (paint: col-frame, thickness: 1.4pt, cap: "round", join: "round")
   let pass-stroke = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
   let pass-thin   = (paint: col-pass,  thickness: 1.4pt, cap: "round", join: "round")
-  let imitate-stroke = (paint: col-frame, thickness: 1.2pt, cap: "round", join: "round")
-  let imitate-mark   = (end: "straight", scale: 0.35)
+  let mag-stroke = (paint: col-frame, thickness: 1.0pt, cap: "round")
 
   // Force bbox to match other harness icons (±0.78)
   rect((-0.78, -0.78), (0.78, 0.78),
