@@ -7,43 +7,44 @@
 
   let col-frame = rgb("#8a5f7e")    // violet (harness)
   let col-pass  = rgb("#59a14f")    // green
-  let col-arrow = rgb("#8a5f7e")    // arrows match frame
 
   let frame-stroke = (paint: col-frame, thickness: 1.4pt, cap: "round", join: "round")
-  let arrow-stroke = (paint: col-arrow, thickness: 1.4pt, cap: "round")
-  let pass-stroke  = (paint: col-pass,  thickness: 1.8pt, cap: "round", join: "round")
+  let arrow-stroke = (paint: col-frame, thickness: 1.4pt, cap: "round")
+  let pass-stroke  = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
   let arrow-mark   = (end: "straight", scale: 0.4)
 
   // Match bbox of unit-tests / type-check
   hide(rect((-0.78, -0.78), (0.78, 0.78)))
 
-  // ─── Two endpoint nodes (source ↔ target) ───
-  let r = 0.20
-  let cx = 0.50
-  circle((-cx, 0), radius: r,
-    stroke: frame-stroke, fill: col-frame.lighten(70%))
-  circle((cx, 0),  radius: r,
-    stroke: frame-stroke, fill: col-frame.lighten(70%))
+  // ─── Two endpoint nodes — white fill, violet stroke (matches other icons) ───
+  let r = 0.22
+  let cx = 0.48
+  circle((-cx, 0), radius: r, stroke: frame-stroke, fill: white)
+  circle((cx, 0),  radius: r, stroke: frame-stroke, fill: white)
+
+  // Tiny green check inside the right node — "verified equal after round-trip"
+  line(
+    (cx - 0.10, 0.00),
+    (cx - 0.02, -0.07),
+    (cx + 0.10, 0.07),
+    stroke: pass-stroke,
+  )
 
   // ─── Top arrow: left → right via top (reduce) ───
   bezier(
-    (-cx + r + 0.02, 0.06),
-    (cx - r - 0.02, 0.06),
-    (-0.20, 0.55),
-    (0.20, 0.55),
+    (-cx + r + 0.04,  0.04),
+    (cx - r - 0.04,   0.04),
+    (-0.18, 0.42),
+    (0.18,  0.42),
     stroke: arrow-stroke, mark: arrow-mark,
   )
 
   // ─── Bottom arrow: right → left via bottom (extract) ───
   bezier(
-    (cx - r - 0.02, -0.06),
-    (-cx + r + 0.02, -0.06),
-    (0.20, -0.55),
-    (-0.20, -0.55),
+    (cx - r - 0.04,   -0.04),
+    (-cx + r + 0.04,  -0.04),
+    (0.18,  -0.42),
+    (-0.18, -0.42),
     stroke: arrow-stroke, mark: arrow-mark,
   )
-
-  // ─── Equality mark in center: round-trip preserves the value ───
-  line((-0.10, 0.05),  (0.10, 0.05),  stroke: pass-stroke)
-  line((-0.10, -0.05), (0.10, -0.05), stroke: pass-stroke)
 })
