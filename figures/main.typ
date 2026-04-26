@@ -340,7 +340,7 @@
     gutter: 4pt,
     verif-cell([type / compile checks], icon: image("icons/type-check.svg", width: 0.5cm)),
     verif-cell([unit tests], icon: image("icons/unit-tests.svg", width: 0.5cm)),
-    verif-cell([round-trip reduction tests]),
+    verif-cell([round-trip reduction tests], icon: image("icons/round-trip.svg", width: 0.5cm)),
     verif-cell([agentic feature tests]),
   )
 ]
