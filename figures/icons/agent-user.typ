@@ -96,9 +96,9 @@
     stroke: user-stroke,
   )
 
-  // ─── Check stamp (top-right of user) ───
-  let cx = 0.62
-  let cy = 0.55
+  // ─── Check stamp (top-right corner of user) ───
+  let cx = 0.68
+  let cy = 0.50
   circle((cx, cy), radius: 0.13, stroke: pass-thin, fill: white)
   line(
     (cx - 0.07, cy + 0.00),
