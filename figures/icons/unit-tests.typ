@@ -35,9 +35,9 @@
   line(..pts, close: true, stroke: frame-stroke, fill: col-frame.lighten(85%))
 
   // Hub
-  circle((0, 0), radius: 0.20, stroke: frame-stroke, fill: white)
+  circle((0, 0), radius: 0.16, stroke: frame-stroke, fill: white)
   // Checkmark inside hub (passing)
-  line((-0.10, 0.00), (-0.02, -0.08), (0.12, 0.09), stroke: pass-stroke)
+  line((-0.08, 0.00), (-0.02, -0.06), (0.10, 0.07), stroke: pass-stroke)
 
   // ─── 4 corner checkboxes ───
   let positions = (
