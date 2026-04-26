@@ -28,20 +28,13 @@
 )
 
 // Small tile for an NP-hard problem type (icon on top, caption below).
-// Icon sits on a white card so it stays visible against the tinted panel fill.
 #let problem-tile(label, icon: none) = align(center)[
-  #box(
-    fill: white,
-    stroke: (thickness: 0.4pt, paint: luma(210)),
-    radius: 3pt,
-    inset: 2pt,
-    if icon == none {
-      icon-slot(w: 1.0cm, h: 1.0cm, label: [ ])
-    } else {
-      icon
-    },
-  )
-  #v(-3pt)
+  #if icon == none {
+    icon-slot(w: 1.0cm, h: 1.0cm, label: [ ])
+  } else {
+    icon
+  }
+  #v(-5pt)
   #text(6.5pt, weight: "regular", fill: fg, label)
 ]
 
