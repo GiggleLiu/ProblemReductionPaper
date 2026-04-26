@@ -18,8 +18,8 @@
 
   // ─── Gear in center (8 trapezoidal teeth + circular hub) ───
   let n = 8
-  let r-tip = 0.55
-  let r-base = 0.42
+  let r-tip = 0.45
+  let r-base = 0.35
   let pts = ()
   for i in range(n) {
     let cdeg = i * 360 / n
