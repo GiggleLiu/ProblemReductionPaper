@@ -693,7 +693,7 @@
 
   // Title in upper-left, with a compact two-row legend underneath. The
   // curves are flat in the left third (week 0–8), so this region is empty.
-  content((x0 + 0.3, y0 + plot-h+0.6), anchor: "north-west",
+  content((x0 + 0.3, y0 + plot-h + 0.3), anchor: "north-west",
     text(7pt, fill: col-p3.darken(15%), [*Growth over time*]))
 
   let lx = x0 + 0.4
@@ -705,18 +705,18 @@
   circle((lx + 0.275, ly), radius: 0.11, fill: white,
     stroke: (thickness: 0.5pt, paint: col-p1.darken(5%)))
   content((lx + 0.7, ly), anchor: "west",
-    text(5.2pt, fill: fg, [\#problem types]))
+    text(5.2pt, fill: fg, [\# problem types]))
   // Reduction rules entry
   line((lx, ly - row-gap), (lx + 0.55, ly - row-gap),
     stroke: (thickness: 1.0pt, paint: col-red.darken(5%)))
   circle((lx + 0.275, ly - row-gap), radius: 0.11, fill: white,
     stroke: (thickness: 0.5pt, paint: col-red.darken(5%)))
   content((lx + 0.7, ly - row-gap), anchor: "west",
-    text(5.2pt, fill: fg, [\#reduction rules]))
+    text(5.2pt, fill: fg, [\# reduction rules]))
 })
 
 #let panel3(h: auto) = box(
-  width: 10.8cm,
+  width: 9.5cm,
   height: h,
   stroke: panel-stroke,
   radius: panel-radius,
