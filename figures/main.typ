@@ -621,31 +621,35 @@
   line((sx(phase3), y0), (sx(phase3), y0 + plot-h),
     stroke: (thickness: 0.4pt, paint: luma(170), dash: "dashed"))
 
-  // Reduction rules (red) — drawn first so the blue series sits on top.
+  // Both filled areas are drawn first (background layer), then both line
+  // strokes and point markers on top — otherwise a later fill would occlude
+  // an earlier line.
   let rules-pts = data-rules.map(pt)
   let rules-fill = rules-pts + (
     (rules-pts.last().at(0),  y0),
     (rules-pts.first().at(0), y0),
   )
-  merge-path(close: true, fill: col-red.lighten(80%), stroke: none, {
-    line(..rules-fill)
-  })
-  line(..rules-pts, stroke: (thickness: 1.2pt, paint: col-red.darken(5%)))
-  for p in rules-pts {
-    circle(p, radius: 0.18, fill: white,
-      stroke: (thickness: 0.7pt, paint: col-red.darken(5%)))
-  }
-
-  // Problem types (blue) — front layer.
   let models-pts = data-models.map(pt)
   let models-fill = models-pts + (
     (models-pts.last().at(0),  y0),
     (models-pts.first().at(0), y0),
   )
+
+  // Fills (back layer).
+  merge-path(close: true, fill: col-red.lighten(80%), stroke: none, {
+    line(..rules-fill)
+  })
   merge-path(close: true, fill: col-p1.lighten(80%), stroke: none, {
     line(..models-fill)
   })
+
+  // Strokes and points (front layer).
+  line(..rules-pts, stroke: (thickness: 1.2pt, paint: col-red.darken(5%)))
   line(..models-pts, stroke: (thickness: 1.2pt, paint: col-p1.darken(5%)))
+  for p in rules-pts {
+    circle(p, radius: 0.18, fill: white,
+      stroke: (thickness: 0.7pt, paint: col-red.darken(5%)))
+  }
   for p in models-pts {
     circle(p, radius: 0.18, fill: white,
       stroke: (thickness: 0.7pt, paint: col-p1.darken(5%)))
