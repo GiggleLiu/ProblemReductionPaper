@@ -41,12 +41,12 @@
 
   // ─── 4 corner checkboxes ───
   let positions = (
-    (-0.68, 0.68, "v"),    // top-left ✓
-    (0.68, 0.68, "x"),     // top-right ✗
-    (-0.68, -0.68, "v"),   // bottom-left ✓
-    (0.68, -0.68, "v"),    // bottom-right ✓
+    (-0.55, 0.55, "v"),    // top-left ✓
+    (0.55, 0.55, "x"),     // top-right ✗
+    (-0.55, -0.55, "v"),   // bottom-left ✓
+    (0.55, -0.55, "v"),    // bottom-right ✓
   )
-  let bh = 0.15
+  let bh = 0.14
   for (cx, cy, mark) in positions {
     rect(
       (cx - bh, cy - bh),
