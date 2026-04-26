@@ -32,12 +32,12 @@
     pts.push((r-tip  * calc.cos(a-tip-r),  r-tip  * calc.sin(a-tip-r)))
     pts.push((r-base * calc.cos(a-base-r), r-base * calc.sin(a-base-r)))
   }
-  line(..pts, close: true, stroke: line-stroke, fill: white)
+  line(..pts, close: true, stroke: frame-stroke, fill: col-frame.lighten(85%))
 
   // Hub
-  circle((0, 0), radius: 0.20, stroke: line-stroke, fill: white)
-  // Checkmark inside hub
-  line((-0.10, 0.00), (-0.02, -0.08), (0.12, 0.09), stroke: line-stroke)
+  circle((0, 0), radius: 0.20, stroke: frame-stroke, fill: white)
+  // Checkmark inside hub (passing)
+  line((-0.10, 0.00), (-0.02, -0.08), (0.12, 0.09), stroke: pass-stroke)
 
   // ─── 4 corner checkboxes ───
   let positions = (
