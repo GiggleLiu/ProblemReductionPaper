@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="800px" height="800px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>agent_user_24_regular</title>
+    <!-- Bot (shifted slightly left to make room for user on right) -->
+    <g transform="translate(-3, 0)">
+        <g stroke="#8a5f7e" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <line x1="12" y1="2.4" x2="12" y2="3.6"/>
+            <rect x="5.6" y="3.6" width="12.8" height="8.9" rx="2.2" ry="2.2"/>
+            <path d="M 10.2 9.6 Q 12 11.0 13.8 9.6"/>
+        </g>
+        <path fill="#8a5f7e" stroke="#8a5f7e" stroke-width="0.7" stroke-linejoin="round"
+              d="M 6.25 14 L 17.75 14 Q 20 14 20 16.25 L 20 17.15 Q 20 20.5 17 20.5 L 7 20.5 Q 4 20.5 4 17.15 L 4 16.25 Q 4 14 6.25 14 Z"/>
+        <g fill="#8a5f7e" stroke="none">
+            <circle cx="12" cy="2.1" r="0.4"/>
+            <circle cx="9.75" cy="7.55" r="0.8"/>
+            <circle cx="14.25" cy="7.55" r="0.8"/>
+        </g>
+    </g>
+
+    <!-- Imitation arrow → from bot toward user -->
     <g stroke="#8a5f7e" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <line x1="12" y1="2.4" x2="12" y2="3.6"/>
-        <rect x="5.6" y="3.6" width="12.8" height="8.9" rx="2.2" ry="2.2"/>
-        <path d="M 10.2 9.6 Q 12 11.0 13.8 9.6"/>
+        <line x1="16" y1="6" x2="17.6" y2="6"/>
+        <polyline points="16.9, 5.2 17.6, 6 16.9, 6.8"/>
     </g>
-    <path fill="#8a5f7e" stroke="#8a5f7e" stroke-width="0.7" stroke-linejoin="round"
-          d="M 6.25 14 L 17.75 14 Q 20 14 20 16.25 L 20 17.15 Q 20 20.5 17 20.5 L 7 20.5 Q 4 20.5 4 17.15 L 4 16.25 Q 4 14 6.25 14 Z"/>
-    <g stroke="#ffffff" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <!-- User silhouette on chest: head + shoulders arc -->
-        <circle cx="12" cy="16.4" r="0.85"/>
-        <path d="M 9.6 19.6 Q 12 17.7 14.4 19.6"/>
+
+    <!-- User silhouette (top-right) -->
+    <g stroke="#8a5f7e" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <circle cx="20" cy="5.5" r="1.6" fill="white"/>
+        <path d="M 17 10.6 Q 20 6.6 23 10.6"/>
     </g>
-    <g fill="#8a5f7e" stroke="none">
-        <circle cx="12" cy="2.1" r="0.4"/>
-        <circle cx="9.75" cy="7.55" r="0.8"/>
-        <circle cx="14.25" cy="7.55" r="0.8"/>
+
+    <!-- Green check stamp (bottom-right) -->
+    <g stroke="#59a14f" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <circle cx="20" cy="17" r="1.8" fill="white"/>
+        <polyline points="18.8,17 19.7,17.9 21.2,16.2"/>
     </g>
 </svg>
