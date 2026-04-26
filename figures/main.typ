@@ -306,7 +306,7 @@
     columns: (auto, 1fr),
     gutter: 5pt,
     align: (center + horizon, left + horizon),
-    text(11pt, weight: "bold", fill: col-violet.darken(15%), [↻]),
+    image("icons/loop.svg", width: 0.45cm),
     text(8.5pt, weight: "bold", fill: col-violet.darken(15%),
       [Agents under verification harness]),
   )
