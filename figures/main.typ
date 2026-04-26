@@ -199,6 +199,8 @@
 
   // Body
   #block(inset: (x: 7pt, y: 6pt))[
+    #set block(spacing: 0pt)
+    #set par(spacing: 0pt)
     // Title line: status pill + title + issue number
     #std.grid(
       columns: (18pt, auto),
