@@ -382,25 +382,14 @@
   )
 
   #v(6pt)
-  // Downward arrow
+  // Issue → harness
   #align(center, text(10pt, fill: fg-light, sym.arrow.b))
   #v(2pt)
 
-  #agent-card(col-p1, [Implementation Agent],
-    [Plan #sym.arrow Encode #sym.arrow Generate code \
-     Propose reduction rule], icon: image("icons/agent-impl.svg", width: 1cm))
+  #harness-box
 
   #v(4pt)
-  #align(center, text(10pt, fill: fg-light, sym.arrow.b))
-  #v(2pt)
-
-  #agent-card(col-p3, [Review Agent],
-    [Static analysis #sym.arrow Semantics check \
-     Approve or request changes], icon: image("icons/agent-review.svg", width: 1cm))
-
-  #v(6pt)
-  #verif-box
-  #v(4pt)
+  // Harness → validated code
   #align(center, text(10pt, fill: fg-light, sym.arrow.b))
   #v(2pt)
 
