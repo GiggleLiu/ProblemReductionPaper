@@ -664,11 +664,11 @@
 
   // Phase strip below the x-axis — evenly spaced like the mockup, with
   // arrows between phase names rather than tied to the (uneven) boundaries.
-  content((3.0,  -0.9), text(6pt, fill: fg, [manual]))
-  content((6.0,  -0.9), text(6pt, fill: fg-light, sym.arrow))
-  content((9.0,  -0.9), text(6pt, fill: fg, [basic skills]))
-  content((12.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
-  content((15.0, -0.9), text(6pt, fill: fg, [full pipeline]))
+  content((5.0,  -0.9), text(6pt, fill: fg, [manual]))
+  content((10.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
+  content((15.0, -0.9), text(6pt, fill: fg, [basic skills]))
+  content((20.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
+  content((25.0, -0.9), text(6pt, fill: fg, [full pipeline]))
 
   // Title in upper-left, with a compact two-row legend underneath. The
   // curves are flat in the left third (week 0–8), so this region is empty.
