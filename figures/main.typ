@@ -223,7 +223,7 @@
         fill: col-p2.lighten(60%),
         baseline: 1.5pt,
       )
-      #h(1pt) *@alice* opened this issue 2 days ago #sym.dot.c 0 comments
+      #h(1pt) *\@alice* opened this issue 2 days ago #sym.dot.c 0 comments
     ]
 
     #v(4pt)
