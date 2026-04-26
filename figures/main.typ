@@ -308,7 +308,7 @@
     align: (center + horizon, left + horizon),
     icon-slot(w: 0.5cm, h: 0.5cm, label: [#sym.checkmark]),
     text(8.5pt, weight: "bold", fill: col-violet.darken(15%),
-      [Multi-layer verification harness]),
+      [Agents under verification harness]),
   )
 
   #v(6pt)
