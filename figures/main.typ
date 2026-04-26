@@ -178,6 +178,8 @@
   fill: white,
   clip: true,
 )[
+  #set block(spacing: 0pt)
+  #set par(spacing: 0pt)
   // Header strip (GitHub-like: light gray bar with icon + repo path).
   #box(
     width: 100%,
