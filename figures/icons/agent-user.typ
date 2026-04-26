@@ -44,18 +44,18 @@
 
   // ─── USER (right): head + shoulder silhouette ───
   let ux = 0.46
-  let uy = 0.10
+  let uy = 0.04
 
   // Head
-  circle((ux, uy), radius: 0.18,
+  circle((ux, uy), radius: 0.20,
     stroke: frame-stroke, fill: col-frame.lighten(85%))
 
-  // Shoulders (rounded bezier, anchored below the head)
+  // Shoulders (rounded bezier, tangent to the head)
   bezier(
-    (ux - 0.40, -0.55),
-    (ux + 0.40, -0.55),
-    (ux - 0.22, -0.18),
-    (ux + 0.22, -0.18),
+    (ux - 0.42, -0.58),
+    (ux + 0.42, -0.58),
+    (ux - 0.20, -0.20),
+    (ux + 0.20, -0.20),
     stroke: frame-stroke,
   )
 
