@@ -662,12 +662,21 @@
   line((x0, y0), (x0, y0 + plot-h),
     stroke: (thickness: 0.6pt, paint: fg))
 
+  // Y-axis tick marks + labels (0, 100, 200 — data peaks at 239).
+  for tv in (0, 100, 200) {
+    let ty = sy(tv)
+    line((x0 - 0.18, ty), (x0, ty),
+      stroke: (thickness: 0.5pt, paint: fg))
+    content((x0 - 0.28, ty), anchor: "east",
+      text(5.5pt, fill: fg-light, str(tv)))
+  }
+
   // Phase strip below the x-axis — evenly spaced like the mockup, with
   // arrows between phase names rather than tied to the (uneven) boundaries.
-  content((5.0,  -0.9), text(6pt, fill: fg, [manual]))
-  content((10.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
-  content((15.0, -0.9), text(6pt, fill: fg, [basic skills]))
-  content((20.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
+  content((7.0,  -0.9), text(6pt, fill: fg, [manual]))
+  content((12.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
+  content((17.0, -0.9), text(6pt, fill: fg, [basic skills]))
+  content((21.0, -0.9), text(6pt, fill: fg-light, sym.arrow))
   content((25.0, -0.9), text(6pt, fill: fg, [full pipeline]))
 
   // Title in upper-left, with a compact two-row legend underneath. The
