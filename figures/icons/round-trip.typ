@@ -30,21 +30,17 @@
     stroke: pass-stroke,
   )
 
-  // ─── Top arrow: left → right via top (reduce) ───
-  bezier(
-    (-cx + r + 0.04,  0.04),
-    (cx - r - 0.04,   0.04),
-    (-0.18, 0.42),
-    (0.18,  0.42),
+  // ─── Top arrow: left → right (reduce) ───
+  line(
+    (-cx + r + 0.04, 0.12),
+    (cx - r - 0.04,  0.12),
     stroke: arrow-stroke, mark: arrow-mark,
   )
 
-  // ─── Bottom arrow: right → left via bottom (extract) ───
-  bezier(
-    (cx - r - 0.04,   -0.04),
-    (-cx + r + 0.04,  -0.04),
-    (0.18,  -0.42),
-    (-0.18, -0.42),
+  // ─── Bottom arrow: right → left (extract) ───
+  line(
+    (cx - r - 0.04,  -0.12),
+    (-cx + r + 0.04, -0.12),
     stroke: arrow-stroke, mark: arrow-mark,
   )
 })
