@@ -365,7 +365,7 @@
 
   #agent-card(col-p3, [Review Agent],
     [Static analysis #sym.arrow Semantics check \
-     Approve or request changes], icon: image("icons/bot.svg", width: 1cm))
+     Approve or request changes], icon: image("icons/agent-review.svg", width: 1cm))
 
   #v(6pt)
   #verif-box
