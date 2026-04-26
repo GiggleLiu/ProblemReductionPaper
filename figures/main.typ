@@ -361,6 +361,9 @@
   fill: panel-fill(col-p2),
   inset: 10pt,
 )[
+  #set block(spacing: 0pt)
+  #set par(spacing: 0pt)
+
   // Header
   #std.grid(
     columns: (0.9cm, 1fr),
