@@ -10,6 +10,9 @@
 
   let frame-stroke = (paint: col-frame, thickness: 1.4pt, cap: "round", join: "round")
   let thin-stroke  = (paint: col-frame, thickness: 1.1pt, cap: "round", join: "round")
+  // Dashed stroke for the simulated user (signals "agent acting as user").
+  let user-stroke  = (paint: col-frame, thickness: 1.4pt, cap: "butt",
+                      dash: (array: (3pt, 2pt)))
   let pass-stroke  = (paint: col-pass,  thickness: 1.6pt, cap: "round", join: "round")
   let pass-thin    = (paint: col-pass,  thickness: 1.4pt, cap: "round", join: "round")
 
@@ -70,13 +73,15 @@
   circle(( 0.17, dy), radius: 0.045, fill: col-frame, stroke: none)
 
   // ─── Green check badge (top-right corner, mirrors type-check placement) ───
-  let cx = 0.60
-  let cy = 0.58
+  group({
+  scale(1.2)
+  let cx = 0.50
+  let cy = 0.48
   circle((cx, cy), radius: 0.16, stroke: pass-thin, fill: white)
   line(
     (cx - 0.09, cy + 0.00),
     (cx - 0.02, cy - 0.07),
     (cx + 0.10, cy + 0.08),
     stroke: pass-stroke,
-  )
+  )})
 })
