@@ -653,35 +653,25 @@
 // panel-3 green palette so it sits with the other stat-tile icons.
 #let icon-code = image("icons/Rust.svg", width: 0.55cm, height: 0.55cm)
 
-// Icon: ~3 months — single calendar page with a green header strip, two
-// binder rings, and a clean 3×3 dot grid in the body.
-#let icon-months = canvas(length: 0.55cm, {
+// Icon: variants — three same-shape rounded squares stacked diagonally
+// with progressive fill, reading as "multiple variants of the same
+// underlying problem type" (contrasts with icon-problem-types, which
+// shows four different shapes).
+#let icon-variants = canvas(length: 0.55cm, {
   import draw: *
-  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
-  let xL = -0.34
-  let xR =  0.34
-  let yT =  0.30
-  let yB = -0.40
-  let header-h = 0.13
-  // body
-  rect((xL, yB), (xR, yT), radius: 0.045, stroke: none, fill: white)
-  // green header strip
-  rect((xL + 0.005, yT - header-h), (xR - 0.005, yT - 0.005),
-    stroke: none, fill: col-p3)
-  // page outline (drawn last so corners look crisp)
-  rect((xL, yB), (xR, yT), radius: 0.045, stroke: s, fill: none)
-  // binder rings — small open circles straddling the top edge
-  circle((-0.17, yT + 0.04), radius: 0.05, stroke: s, fill: white)
-  circle(( 0.17, yT + 0.04), radius: 0.05, stroke: s, fill: white)
-  // 3×3 dot grid in the body
-  let xs = (-0.20, 0.00, 0.20)
-  let ys = (0.00, -0.15, -0.30)
-  for y in ys {
-    for x in xs {
-      circle((x, y), radius: 0.040,
-        stroke: none, fill: p3-stroke.lighten(40%))
-    }
-  }
+  let s = (paint: p3-stroke, thickness: 0.65pt, cap: "round", join: "round")
+  let sw = 0.36
+  let sh = 0.36
+  let off = 0.09
+  // Back card (lightest)
+  rect((-off - sw / 2, -off - sh / 2), (-off + sw / 2, -off + sh / 2),
+    radius: 0.045, stroke: s, fill: col-p3.lighten(80%))
+  // Mid card
+  rect((-sw / 2 + 0.0, -sh / 2 + 0.0), ( sw / 2,  sh / 2),
+    radius: 0.045, stroke: s, fill: col-p3.lighten(60%))
+  // Front card (darkest, on top)
+  rect(( off - sw / 2,  off - sh / 2), ( off + sw / 2,  off + sh / 2),
+    radius: 0.045, stroke: s, fill: col-p3.lighten(35%))
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
@@ -962,7 +952,7 @@
       stat-tile([265], [reduction rules],        icon: icon-reduction),
       stat-tile([129], [reducible to ILP],       icon: icon-ilp),
       stat-tile([78],  [reachable from 3-SAT],   icon: icon-reach),
-      stat-tile([\~170k], [lines of Rust],       icon: icon-code),
+      stat-tile([\~170k], [lines of Rust code],       icon: icon-code),
       stat-tile([\~3], [months],                 icon: icon-months),
     ),
   )
