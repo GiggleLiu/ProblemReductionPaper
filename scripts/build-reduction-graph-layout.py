@@ -77,6 +77,25 @@ def drop_isolated(nodes: list[dict], edges: list[tuple[str, str]]) -> list[dict]
     return [n for n in nodes if deg[n["name"]] > 0]
 
 
+HUB_LEAF_HOST = "ILP"
+
+
+def drop_hub_only_leaves(
+    nodes: list[dict], edges: list[tuple[str, str]]
+) -> tuple[list[dict], list[tuple[str, str]], int]:
+    """Drop nodes whose only neighbour is ILP. They visually crowd the
+    central halo without adding structural information; we keep a count
+    so the figure can show "+N leaves to ILP" next to the hub."""
+    nbrs: dict[str, set[str]] = defaultdict(set)
+    for s, t in edges:
+        nbrs[s].add(t)
+        nbrs[t].add(s)
+    leaves = {n["name"] for n in nodes if nbrs[n["name"]] == {HUB_LEAF_HOST}}
+    kept_nodes = [n for n in nodes if n["name"] not in leaves]
+    kept_edges = [(s, t) for s, t in edges if s not in leaves and t not in leaves]
+    return kept_nodes, kept_edges, len(leaves)
+
+
 def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str, tuple[float, float]]:
     """Use Graphviz `twopi` rooted at ILP — radial layout with concentric
     shells by graph distance. ILP has 114 of 155 neighbours here, so any
