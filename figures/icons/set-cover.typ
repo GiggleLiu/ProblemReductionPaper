@@ -12,20 +12,26 @@
   let orange = rgb("#f28e2b")
 
   // Three overlapping sets in a Venn-style triangular arrangement.
-  // Light pastel fills + solid coloured outlines keep the boundaries
-  // legible even when colours overlay.
+  // Draw all three *fills* first, then all three *strokes* on top, so
+  // no fill ever overlays another set's outline.
   let r-set = 0.58
   let s-thick = 1.2pt
   let p-blue   = (-0.40,  0.22)
   let p-green  = ( 0.40,  0.22)
   let p-orange = ( 0.00, -0.45)
 
+  // Pass 1: fills only.
   circle(p-blue,   radius: r-set,
-    fill: blue.lighten(82%),   stroke: s-thick + blue.darken(0%))
+    fill: blue.lighten(82%),   stroke: none)
   circle(p-green,  radius: r-set,
-    fill: green.lighten(82%),  stroke: s-thick + green.darken(0%))
+    fill: green.lighten(82%),  stroke: none)
   circle(p-orange, radius: r-set,
-    fill: orange.lighten(78%), stroke: s-thick + orange.darken(0%))
+    fill: orange.lighten(78%), stroke: none)
+
+  // Pass 2: strokes only — drawn on top so all three rims stay intact.
+  circle(p-blue,   radius: r-set, fill: none, stroke: s-thick + blue)
+  circle(p-green,  radius: r-set, fill: none, stroke: s-thick + green)
+  circle(p-orange, radius: r-set, fill: none, stroke: s-thick + orange)
 
   // Universe elements — small soft dots, placed so each sits in at
   // least one coloured set; some are in 2- or 3-set intersections.
