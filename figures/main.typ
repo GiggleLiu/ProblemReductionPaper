@@ -387,7 +387,7 @@
     gutter: 5pt,
     align: (center + horizon, left + horizon),
     [
-      #iconcm, h: 1.4cm, label: [person\ at laptop])-slot(w: 1.4
+      #image("icons/person-at-laptop.svg", width: 1.5cm),
       #v(3pt)
       #text(5.5pt, style: "italic", fill: col-p3.darken(10%),
         align(center, [no-code\ contribution\ route]))
