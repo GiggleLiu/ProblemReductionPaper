@@ -136,8 +136,9 @@ def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str,
     # neighbours otherwise crowd onto its inner radius while the
     # periphery looks empty. Rank every node by distance from the
     # centroid, blend the original radius with the rank-uniform radius
-    # (alpha=0.6 → 60 % toward fully equalized shells, 40 % original).
-    alpha = 0.6
+    # (alpha controls strength: 0 = sfdp output, 1 = fully uniform
+    # shells; 0.35 keeps the structure but spreads inner halo a bit).
+    alpha = 0.35
     cx = sum(p[0] for p in pos.values()) / len(pos)
     cy = sum(p[1] for p in pos.values()) / len(pos)
     items = list(pos.items())
