@@ -12,9 +12,9 @@
   // Three shades of blue used as the three colour classes — proper
   // 3-colouring of the pentagon (C5).
   let blue = rgb("#4e79a7")
-  let c-dark   = blue.darken(15%)
+  let c-dark   = blue.darken(35%)
   let c-medium = blue
-  let c-light  = blue.lighten(45%)
+  let c-light  = blue.lighten(55%)
   let cols     = (c-dark, c-medium, c-dark, c-medium, c-light)
 
   let edge-stroke = (paint: black.lighten(20%), thickness: 0.8pt)
