@@ -17,16 +17,17 @@
     fill: white,
     stroke: 0.6pt + black.lighten(10%),
   )
-  // Leaf node: ✓ (sat) or ✗ (conflict).
+  // Leaf node: ✓ (sat) or ✗ (conflict). SAT is solid slate; conflicts
+  // are drawn lighter so the satisfying branch reads as the "answer".
   let leaf-sat(p) = {
     circle(p, radius: 0.16cm,
-      fill: rgb("#59a14f"),
+      fill: rgb("#5a6878"),
       stroke: 0.5pt + black.lighten(10%))
     content(p, text(7pt, weight: "bold", fill: white, [#sym.checkmark]))
   }
   let leaf-bad(p) = {
     circle(p, radius: 0.16cm,
-      fill: rgb("#e42f29").lighten(15%),
+      fill: rgb("#5a6878").lighten(50%),
       stroke: 0.5pt + black.lighten(10%))
     content(p, text(7pt, weight: "bold", fill: white, [#sym.crossmark]))
   }
