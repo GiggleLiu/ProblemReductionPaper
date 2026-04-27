@@ -948,12 +948,12 @@
       columns: 1,
       rows: (auto,) * 6,
       gutter: 4pt,
-      stat-tile([190], [problem types],         icon: icon-problem-types),
+      stat-tile([190], [problem types],          icon: icon-problem-types),
+      stat-tile([220], [variants],               icon: icon-variants),
       stat-tile([265], [reduction rules],        icon: icon-reduction),
       stat-tile([129], [reducible to ILP],       icon: icon-ilp),
       stat-tile([78],  [reachable from 3-SAT],   icon: icon-reach),
-      stat-tile([\~170k], [lines of Rust code],       icon: icon-code),
-      stat-tile([\~3], [months],                 icon: icon-months),
+      stat-tile([\~170k], [lines of Rust code],  icon: icon-code),
     ),
   )
 
