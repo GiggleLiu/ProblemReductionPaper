@@ -94,9 +94,9 @@
     box(width: 0.8cm, height: 0.8cm,
       stroke: (thickness: 1.2pt, paint: col-p1),
       radius: 50%, fill: white,
-      align(center + horizon, text(13pt, weight: "bold", fill: col-p1, [1]))),
+      align(center + horizon, text(11pt, weight: "bold", fill: col-p1, [(a)]))),
     text(11pt, weight: "bold", fill: col-p1.darken(10%),
-      [Many hard problems,\ many solver formats]),
+      [Many hard problems,\ many solvers]),
   )
 
   #v(2pt)
@@ -321,7 +321,7 @@
     align: (center + horizon, left + horizon),
     image("icons/loop.svg", width: 0.5cm),
     text(8.5pt, weight: "bold", fill: col-violet.darken(15%),
-      [Agents under harness]),
+      [Agents under harness (skill-based)]),
   )
 
   #v(6pt)
@@ -375,7 +375,7 @@
       radius: 50%, fill: white,
       align(center + horizon, text(13pt, weight: "bold", fill: col-p2, [2]))),
     text(11pt, weight: "bold", fill: col-p2.darken(10%),
-      [Harness-engineered\ agentic integration]),
+      [Harness-engineered\ agentic workflow]),
   )
 
   #v(15pt)
