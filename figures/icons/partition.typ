@@ -41,6 +41,6 @@
 
   // Bottom: two halves, each summing to 8.
   cell-row(-0.55, -0.55, ([4], [1], [3]), rgb("#4e79a7"))
-  content((0.0, -0.55), text(10pt, weight: "bold", fill: black.lighten(20%), [=]))
+  content((0.0, -0.55), text(16pt, weight: "bold", fill: black.lighten(20%), [=]))
   cell-row(0.55, -0.55, ([2], [5], [1]), rgb("#e42f29"))
 })
