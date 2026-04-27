@@ -39,7 +39,7 @@
   centered-row(0.60, (5, 3, 4, 2, 6), luma(225))
 
   // Down arrow — "split into two halves".
-  line((0, 0.32), (0, -0.05),
+  line((0, 0.32), (0, -0.25),
     stroke: (paint: black.lighten(20%), thickness: 0.9pt, cap: "round"),
     mark: (end: "straight", scale: 0.5))
 
