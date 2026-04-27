@@ -471,26 +471,22 @@
   let edge-stroke = (thickness: 0.22pt, paint: rgb(120, 120, 130, 70))
   let edge-curve = 0.18
 
-  // Percentile-based bounds (clip outliers) so the bulk of the graph
-  // fills the canvas instead of being compressed by a few far points.
-  // Tight 5/95 clip + small padding push the outermost nodes against
-  // the canvas edges, leaving as little whitespace as possible.
-  let xs-sorted = data.nodes.map(n => n.x).sorted()
-  let ys-sorted = data.nodes.map(n => n.y).sorted()
-  let pct(arr, p) = arr.at(
-    calc.min(arr.len() - 1, calc.max(0, int(p * arr.len()))))
-  let x-min = pct(xs-sorted, 0.05)
-  let x-max = pct(xs-sorted, 0.95)
-  let y-min = pct(ys-sorted, 0.05)
-  let y-max = pct(ys-sorted, 0.95)
+  // Use full data bounds so each node lands at its true sfdp position;
+  // earlier we percentile-clipped + clamped, but that collapsed all
+  // outliers to the same edge coordinate (causing overlapping dots).
+  let xs = data.nodes.map(n => n.x)
+  let ys = data.nodes.map(n => n.y)
+  let x-min = calc.min(..xs)
+  let x-max = calc.max(..xs)
+  let y-min = calc.min(..ys)
+  let y-max = calc.max(..ys)
   let pad = 0.02
-  let clamp-v(v, lo, hi) = calc.max(lo, calc.min(hi, v))
   let nx-pos(x) = {
-    let t = clamp-v((x - x-min) / (x-max - x-min), 0.0, 1.0)
+    let t = (x - x-min) / (x-max - x-min)
     pad * plot-w + t * (1 - 2 * pad) * plot-w
   }
   let ny-pos(y) = {
-    let t = clamp-v((y - y-min) / (y-max - y-min), 0.0, 1.0)
+    let t = (y - y-min) / (y-max - y-min)
     pad * plot-h + t * (1 - 2 * pad) * plot-h
   }
 
