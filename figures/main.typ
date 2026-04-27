@@ -11,6 +11,7 @@
 #let col-red  = rgb("#e15759")
 #let col-violet = rgb("#b07aa1")
 #let col-teal = rgb("#76b7b2")
+#let col-slate = rgb("#5a6878")  // neutral slate for solver-format boxes
 
 // ── Panel chrome parameters ──
 #let panel-stroke = (thickness: 0.7pt, paint: luma(180))
