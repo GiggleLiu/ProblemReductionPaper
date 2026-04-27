@@ -10,8 +10,8 @@
     stroke: 2pt + rgb("#AAC4E9"))
 
   let stroke-col = black.lighten(10%)
-  let cell-h = 0.34
-  let unit  = 0.12
+  let cell-h = 0.28
+  let unit  = 0.10
 
   // Draw a row of cells starting at left-edge x0; each cell's width is
   // its value times `unit`.
