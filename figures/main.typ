@@ -389,7 +389,7 @@
       #image("icons/person-at-laptop.svg", width: 1.5cm)
       #v(3pt)
       #text(5.5pt, style: "italic", fill: col-p3.darken(10%),
-        align(center, [no-code\ contribution\ route]))
+        align(center, [no-code\ contribution]))
     ],
     github-card,
   )
@@ -888,7 +888,7 @@
   // plot bounds when the chart is resized.
   content((plot-w * 0.250, -1.4), text(6pt, fill: col-p3.darken(15%), [*manual*]))
   content((plot-w * 0.400, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
-  content((plot-w * 0.577, -1.4), text(6pt, fill: col-p3.darken(15%), [*basic skills*]))
+  content((plot-w * 0.557, -1.4), text(6pt, fill: col-p3.darken(15%), [*basic skills*]))
   content((plot-w * 0.700, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
   content((plot-w * 0.835, -1.4), text(6pt, fill: col-p3.darken(15%), [*full pipeline*]))
 
