@@ -962,8 +962,8 @@
       stat-tile([265], [reduction rules],        icon: icon-reduction),
       stat-tile([129], [reducible to ILP],       icon: icon-ilp),
       stat-tile([78],  [reachable from 3-SAT],   icon: icon-reach),
-      stat-tile([~170k], [lines of Rust],        icon: icon-code),
-      stat-tile([~3],  [months],                 icon: icon-months),
+      stat-tile([\~170k], [lines of Rust],       icon: icon-code),
+      stat-tile([\~3], [months],                 icon: icon-months),
     ),
   )
 
