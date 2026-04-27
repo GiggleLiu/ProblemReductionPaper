@@ -463,7 +463,7 @@
   let plot-h = 16.0
   let r-node = 0.20
   let r-hub  = 0.60       // hub radius — large enough to hold a label inside
-  let edge-stroke = (thickness: 0.22pt, paint: rgb(120, 120, 130, 70))
+  let edge-stroke = (thickness: 0.22pt, paint: rgb(95, 95, 105, 150))
   let edge-curve = 0.18
 
   // Use full data bounds so each node lands at its true sfdp position;
@@ -517,7 +517,7 @@
         (sx, sy), (tx, ty),
         (mx + (-uy) * bow, my + ux * bow),
         stroke: edge-stroke,
-        mark: (end: "straight", fill: rgb(120, 120, 130, 70), scale: 0.4),
+        mark: (end: "straight", fill: rgb(95, 95, 105, 150), scale: 0.4),
       )
     }
 
