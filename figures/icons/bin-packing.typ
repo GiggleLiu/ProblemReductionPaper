@@ -35,7 +35,7 @@
         stroke: 0.5pt + black.lighten(20%),
         radius: 0.045)
       content((cx, (y0 + y1) / 2),
-        text(7.5pt, weight: "bold", fill: white, label))
+        text(13pt, weight: "bold", fill: white, label))
     }
   }
 
