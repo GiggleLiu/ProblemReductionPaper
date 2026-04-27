@@ -164,8 +164,6 @@ def main() -> None:
     nodes = drop_isolated(nodes, edges)
     keep = {n["name"] for n in nodes}
     edges = [(s, t) for s, t in edges if s in keep and t in keep]
-    nodes, edges, hidden_leaves = drop_hub_only_leaves(nodes, edges)
-    print(f"Hidden ILP-only leaves: {hidden_leaves}", file=sys.stderr)
 
     pos = compute_layout(nodes, edges)
 
@@ -182,7 +180,6 @@ def main() -> None:
         ],
         "edges": [{"source": s, "target": t} for s, t in edges],
         "hubs": list(HUB_ANCHORS),
-        "hidden_leaves": hidden_leaves,
     }
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
