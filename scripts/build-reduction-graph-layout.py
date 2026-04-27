@@ -103,7 +103,7 @@ def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str,
     dot_input = "\n".join(lines)
 
     proc = subprocess.run(
-        ["twopi", "-Tplain"],
+        ["sfdp", "-Tplain"],
         input=dot_input, text=True,
         capture_output=True, check=True,
     )
