@@ -868,12 +868,12 @@
       columns: 1,
       rows: (auto,) * 6,
       gutter: 4pt,
-      stat-tile([190], [problem types], icon-label: [#sym.circle.filled.tiny]),
-      stat-tile([265], [reduction rules], icon-label: [#sym.arrow.l.r]),
-      stat-tile([129], [reducible to ILP], icon-label: [bar]),
-      stat-tile([78], [reachable from 3-SAT], icon-label: [net]),
-      stat-tile([~170k], [lines of Rust], icon-label: [`</>`]),
-      stat-tile([~3], [months], icon-label: [#sym.circle.stroked.small]),
+      stat-tile([190], [problem types],         icon: icon-problem-types),
+      stat-tile([265], [reduction rules],        icon: icon-reduction),
+      stat-tile([129], [reducible to ILP],       icon: icon-ilp),
+      stat-tile([78],  [reachable from 3-SAT],   icon: icon-reach),
+      stat-tile([~170k], [lines of Rust],        icon: icon-code),
+      stat-tile([~3],  [months],                 icon: icon-months),
     ),
   )
 
