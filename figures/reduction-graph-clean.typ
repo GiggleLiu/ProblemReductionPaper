@@ -97,6 +97,7 @@
     bezier(
       (sx, sy), (tx, ty), (cx-pt, cy-pt),
       stroke: edge-stroke,
+      mark: (end: "straight", fill: edge-paint, scale: 0.4),
     )
   }
 
