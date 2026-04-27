@@ -459,137 +459,178 @@
 #let p3-stroke = col-p3.darken(8%)
 #let p3-fill   = col-p3.lighten(82%)
 
-// Icon: problem types — four distinct shapes (square, triangle, circle,
-// diamond) in a 2×2 grid, evoking a catalog of problem categories.
+// Icon: problem types — square, triangle, circle, hexagon in a 2×2 grid,
+// evoking a catalog of distinct problem categories.
 #let icon-problem-types = canvas(length: 0.55cm, {
   import draw: *
-  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
+  let s = (paint: p3-stroke, thickness: 0.65pt, cap: "round", join: "round")
   let f = p3-fill
-  let r = 0.13
-  // top-left: square
-  rect((-0.25 - r, 0.22 - r), (-0.25 + r, 0.22 + r),
-    radius: 0.02, stroke: s, fill: f)
-  // top-right: triangle
-  let tx = 0.25
+  let R = 0.135
+  // top-left: rounded square
+  rect((-0.22 - R, 0.22 - R), (-0.22 + R, 0.22 + R),
+    radius: 0.025, stroke: s, fill: f)
+  // top-right: equilateral triangle (centered on (tx, ty))
+  let tx = 0.22
   let ty = 0.22
-  line((tx, ty + r),
-       (tx - r * 1.0, ty - r * 0.85),
-       (tx + r * 1.0, ty - r * 0.85),
+  let TR = R * 1.10
+  line((tx,             ty + TR * 0.86),
+       (tx - TR * 0.95, ty - TR * 0.55),
+       (tx + TR * 0.95, ty - TR * 0.55),
        close: true, stroke: s, fill: f)
   // bottom-left: circle
-  circle((-0.25, -0.22), radius: r, stroke: s, fill: f)
-  // bottom-right: diamond
-  let dx = 0.25
-  let dy = -0.22
-  line((dx, dy + r), (dx + r, dy),
-       (dx, dy - r), (dx - r, dy),
-       close: true, stroke: s, fill: f)
+  circle((-0.22, -0.22), radius: R, stroke: s, fill: f)
+  // bottom-right: hexagon (flat-top)
+  let hx = 0.22
+  let hy = -0.22
+  let hpts = ()
+  for i in range(6) {
+    let a = (i * 60) * 1deg
+    hpts.push((hx + R * calc.cos(a), hy + R * calc.sin(a)))
+  }
+  line(..hpts, close: true, stroke: s, fill: f)
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: reduction rules — two rounded nodes connected by an arrow (A → B).
+// Icon: reduction rules — two nodes (A, B) on a baseline with a centered
+// arrow A → B. Each node carries a small dot suggesting "a problem".
 #let icon-reduction = canvas(length: 0.55cm, {
   import draw: *
   let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
   let f = p3-fill
-  let r = 0.16
+  let R = 0.16
+  let lcx = -0.30
+  let rcx =  0.30
   // left node
-  rect((-0.45 - 0.02, -0.18), (-0.45 + 2 * r - 0.02, -0.18 + 2 * r),
+  rect((lcx - R, -R), (lcx + R, R),
     radius: 0.04, stroke: s, fill: f)
   // right node
-  rect((0.45 - 2 * r + 0.02, -0.18), (0.45 + 0.02, -0.18 + 2 * r),
+  rect((rcx - R, -R), (rcx + R, R),
     radius: 0.04, stroke: s, fill: f)
+  // tiny dots inside each (a "problem")
+  circle((lcx, 0), radius: 0.05, fill: p3-stroke, stroke: none)
+  circle((rcx, 0), radius: 0.05, fill: p3-stroke, stroke: none)
   // arrow between
-  line((-0.13, 0.18 - r), (0.13, 0.18 - r),
-    stroke: (paint: p3-stroke, thickness: 0.9pt, cap: "round"),
-    mark: (end: "straight", scale: 0.4))
+  line((lcx + R + 0.02, 0), (rcx - R - 0.02, 0),
+    stroke: (paint: p3-stroke, thickness: 1.0pt, cap: "round"),
+    mark: (end: "straight", scale: 0.45))
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: reducible to ILP — three vertical bars under a rule (bar chart),
-// suggesting integer linear constraints / variable assignments.
+// Icon: reducible to ILP — three integer-height bars under a dashed
+// upper-bound (Ax ≤ b style constraint).
 #let icon-ilp = canvas(length: 0.55cm, {
   import draw: *
   let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
-  let base = -0.32
+  let s-dash = (paint: p3-stroke.lighten(10%), thickness: 0.55pt,
+                dash: (array: (1.4pt, 1.4pt)))
+  let base  = -0.32
+  let limit =  0.34
+  // upper-bound dashed line ("≤ b")
+  line((-0.44, limit), (0.44, limit), stroke: s-dash)
   // baseline
-  line((-0.42, base), (0.42, base),
-    stroke: (paint: p3-stroke, thickness: 0.7pt, cap: "round"))
+  line((-0.44, base), (0.44, base),
+    stroke: (paint: p3-stroke, thickness: 0.65pt, cap: "round"))
   // bars
-  let bw = 0.10
-  let xs = (-0.30, -0.05, 0.20)
-  let hs = (0.32, 0.55, 0.42)
+  let bw = 0.085
+  let xs = (-0.28, 0.00, 0.28)
+  let hs = (0.40, 0.60, 0.48)
   for i in range(3) {
     let x = xs.at(i)
-    let h = hs.at(i)
-    rect((x - bw, base), (x + bw, base + h),
-      stroke: s, fill: p3-fill, radius: 0.02)
+    let top = base + hs.at(i)
+    rect((x - bw, base), (x + bw, top),
+      stroke: s, fill: p3-fill, radius: 0.022)
   }
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: reachable from 3-SAT — central hub node with five spokes radiating
-// outward to small leaf dots.
+// Icon: reachable from 3-SAT — fan layout. Filled hub on the left, four
+// leaf nodes spreading right; spokes convey directed reach.
 #let icon-reach = canvas(length: 0.55cm, {
   import draw: *
-  let s-line = (paint: p3-stroke, thickness: 0.55pt, cap: "round")
-  let s-leaf = (paint: p3-stroke, thickness: 0.6pt)
-  // 5 leaves at angles
-  let angles = (90, 162, 234, 306, 18)
-  let R = 0.40
-  for a in angles {
-    let rad = a * 1deg
-    let x = R * calc.cos(rad)
-    let y = R * calc.sin(rad)
-    line((0, 0), (x * 0.78, y * 0.78), stroke: s-line)
-    circle((x, y), radius: 0.07, stroke: s-leaf, fill: p3-fill)
+  let s-edge = (paint: p3-stroke.lighten(5%), thickness: 0.6pt, cap: "round")
+  let s-leaf = (paint: p3-stroke, thickness: 0.55pt)
+  let hx = -0.30
+  let hy = 0
+  let hub-r = 0.13
+  let leaf-r = 0.075
+  let leaves = (
+    (0.30,  0.32),
+    (0.42,  0.10),
+    (0.42, -0.12),
+    (0.30, -0.32),
+  )
+  // spokes (from hub edge to leaf edge)
+  for p in leaves {
+    let dx = p.at(0) - hx
+    let dy = p.at(1) - hy
+    let len = calc.sqrt(dx * dx + dy * dy)
+    let ux = dx / len
+    let uy = dy / len
+    line(
+      (hx + ux * (hub-r + 0.005), hy + uy * (hub-r + 0.005)),
+      (p.at(0) - ux * (leaf-r + 0.005), p.at(1) - uy * (leaf-r + 0.005)),
+      stroke: s-edge,
+    )
   }
-  // hub
-  circle((0, 0), radius: 0.11, stroke: s-leaf, fill: col-p3)
+  // leaves
+  for p in leaves {
+    circle(p, radius: leaf-r, stroke: s-leaf, fill: p3-fill)
+  }
+  // hub (filled — the source)
+  circle((hx, hy), radius: hub-r,
+    stroke: (paint: p3-stroke, thickness: 0.7pt), fill: col-p3)
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: lines of Rust — angle brackets `< >` with three short code lines
-// between them.
+// Icon: lines of Rust — angle brackets ⟨ ⟩ wrapping three rounded code
+// "pills" of varying width.
 #let icon-code = canvas(length: 0.55cm, {
   import draw: *
-  let s = (paint: p3-stroke, thickness: 1.0pt, cap: "round", join: "round")
-  let s-line = (paint: p3-stroke.lighten(15%), thickness: 0.8pt, cap: "round")
-  // left bracket  <
-  line((-0.15, 0.30), (-0.40, 0.00), (-0.15, -0.30), stroke: s)
-  // right bracket >
-  line(( 0.15, 0.30), ( 0.40, 0.00), ( 0.15, -0.30), stroke: s)
-  // 3 code lines (varying width, stacked)
-  line((-0.10, 0.18), ( 0.08, 0.18), stroke: s-line)
-  line((-0.10, 0.00), ( 0.10, 0.00), stroke: s-line)
-  line((-0.10, -0.18), ( 0.05, -0.18), stroke: s-line)
+  let s-bracket = (paint: p3-stroke, thickness: 1.0pt, cap: "round", join: "round")
+  let s-pill    = (paint: p3-stroke.lighten(8%), thickness: 1.5pt, cap: "round")
+  // Brackets  <  >
+  line((-0.13, 0.30), (-0.40, 0.00), (-0.13, -0.30), stroke: s-bracket)
+  line(( 0.13, 0.30), ( 0.40, 0.00), ( 0.13, -0.30), stroke: s-bracket)
+  // 3 code pills (varying widths, evenly stacked)
+  line((-0.07, 0.19), ( 0.10, 0.19), stroke: s-pill)
+  line((-0.07, 0.00), ( 0.05, 0.00), stroke: s-pill)
+  line((-0.07, -0.19), ( 0.08, -0.19), stroke: s-pill)
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: ~3 months — calendar page (header bar + 3×3 grid of dots,
-// one highlighted).
+// Icon: ~3 months — calendar page with a green header strip, two binder
+// rings, and a 3×3 dot grid; the centre column of three dots is
+// highlighted to read as "three months".
 #let icon-months = canvas(length: 0.55cm, {
   import draw: *
-  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
-  // page outline
-  rect((-0.36, -0.40), (0.36, 0.36), radius: 0.04, stroke: s, fill: white)
-  // header strip
-  rect((-0.36, 0.18), (0.36, 0.36),
+  let s = (paint: p3-stroke, thickness: 0.65pt, cap: "round", join: "round")
+  let xL = -0.34
+  let xR =  0.34
+  let yT =  0.30
+  let yB = -0.40
+  let header-h = 0.12
+  // body fill
+  rect((xL, yB), (xR, yT), radius: 0.045, stroke: none, fill: white)
+  // header strip — slightly inset so rounded corners stay clean
+  rect((xL + 0.005, yT - header-h), (xR - 0.005, yT - 0.005),
     stroke: none, fill: col-p3)
-  // re-stroke top so the corner stays rounded
-  rect((-0.36, -0.40), (0.36, 0.36), radius: 0.04, stroke: s, fill: none)
-  // small binder rings
-  line((-0.20, 0.36), (-0.20, 0.44), stroke: s)
-  line(( 0.20, 0.36), ( 0.20, 0.44), stroke: s)
+  // page outline (drawn last so corners look crisp)
+  rect((xL, yB), (xR, yT), radius: 0.045, stroke: s, fill: none)
+  // binder rings (small circles straddling top edge)
+  let ring-y = yT + 0.04
+  circle((-0.16, ring-y), radius: 0.055,
+    stroke: s, fill: white)
+  circle(( 0.16, ring-y), radius: 0.055,
+    stroke: s, fill: white)
   // 3×3 dot grid below header
-  let xs = (-0.22, 0.00, 0.22)
-  let ys = (0.04, -0.14, -0.32)
+  let xs = (-0.20, 0.00, 0.20)
+  let ys = (0.02, -0.14, -0.30)
   for (i, y) in ys.enumerate() {
     for (j, x) in xs.enumerate() {
-      let highlighted = (i == 1 and j == 1)
-      circle((x, y), radius: 0.045,
+      let hl = (j == 1)  // highlight centre column = 3 months
+      circle((x, y), radius: 0.042,
         stroke: none,
-        fill: if highlighted { col-p3 } else { p3-stroke.lighten(40%) })
+        fill: if hl { col-p3 } else { p3-stroke.lighten(45%) })
     }
   }
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
