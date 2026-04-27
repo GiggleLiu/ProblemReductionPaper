@@ -752,8 +752,8 @@
       circle(
         name-to-pos.at(n.name),
         radius: r-node,
-        fill: col-node.lighten(35%),
-        stroke: (thickness: 0.25pt, paint: col-node.darken(15%)),
+        fill: col-node.lighten(60%),
+        stroke: (thickness: 0.25pt, paint: col-node.darken(5%)),
       )
     }
 
