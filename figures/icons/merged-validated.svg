@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="800px" height="800px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>merged_validated_24_regular</title>
-    <!-- Branch lines: left branch curves down and right into the main trunk. -->
-    <g stroke="#59a14f" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <line x1="17" y1="5.6" x2="17" y2="17"/>
-        <path d="M 7 5.6 L 7 11.5 Q 7 14.5 10 14.5 L 14 14.5"/>
+    <!-- Branches: both terminate at the top of the validated disk. -->
+    <g stroke="#59a14f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <line x1="16" y1="5.6" x2="16" y2="15.5"/>
+        <path d="M 6 5.6 L 6 12 Q 6 15.5 10 15.5 L 16 15.5"/>
     </g>
     <!-- Source-branch dots (hollow). -->
     <g fill="#ffffff" stroke="#59a14f" stroke-width="1.2">
-        <circle cx="7" cy="4" r="1.8"/>
-        <circle cx="17" cy="4" r="1.8"/>
+        <circle cx="6" cy="4" r="1.7"/>
+        <circle cx="16" cy="4" r="1.7"/>
     </g>
-    <!-- Merge point on the trunk. -->
-    <circle cx="17" cy="14.5" r="1.5" fill="#59a14f"/>
-    <!-- Validated badge at the trunk's end: filled disk with white check. -->
-    <circle cx="17" cy="19.2" r="3" fill="#59a14f"/>
-    <polyline points="15.4,19.3 16.5,20.3 18.6,18.1"
-              stroke="#ffffff" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Validated merge disk: filled green with white check. -->
+    <circle cx="16" cy="19" r="3.5" fill="#59a14f"/>
+    <polyline points="14.2,19.1 15.5,20.3 17.9,17.6"
+              stroke="#ffffff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 </svg>
