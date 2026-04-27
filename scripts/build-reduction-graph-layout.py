@@ -84,28 +84,42 @@ def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str,
     for s, t in edges:
         if s in g and t in g:
             g.add_edge(s, t)
-
-    # Initial seed: Kamada-Kawai gives a balanced, hub-aware embedding for
-    # graphs with strong centrality (here ILP + a few graph hubs).
     ug = g.to_undirected()
-    pos = nx.kamada_kawai_layout(ug, scale=1.0)
 
-    # Pin hubs and polish with a few spring iterations so neighbors relax
-    # around the new anchor positions without disturbing global structure.
-    fixed = []
-    for hub, anchor in HUB_ANCHORS.items():
-        if hub in pos:
-            pos[hub] = anchor
-            fixed.append(hub)
-
-    pos = nx.spring_layout(
+    # ForceAtlas2 with strong scaling + gravity gives a much wider spread
+    # than spring/Kamada-Kawai when one node (ILP) is a massive sink. We
+    # keep dissuade_hubs on so the hub doesn't drag every neighbor inward.
+    pos = nx.forceatlas2_layout(
         ug,
-        pos=pos,
-        fixed=fixed,
-        iterations=80,
-        k=0.18,
+        max_iter=1500,
+        jitter_tolerance=1.0,
+        scaling_ratio=8.0,
+        gravity=0.8,
+        distributed_action=False,
+        strong_gravity=False,
+        dissuade_hubs=True,
         seed=7,
     )
+
+    # Re-anchor so 3-SAT sits on the left and ILP on the right of the
+    # final figure, regardless of how ForceAtlas2 oriented the embedding.
+    if all(h in pos for h in HUB_ANCHORS):
+        import math
+        sat = pos["KSatisfiability"]
+        ilp = pos["ILP"]
+        dx = ilp[0] - sat[0]
+        dy = ilp[1] - sat[1]
+        theta = math.atan2(dy, dx)  # current SAT→ILP angle
+        c, s = math.cos(-theta), math.sin(-theta)
+        # Center on midpoint, rotate so SAT→ILP is along +x.
+        cx = (sat[0] + ilp[0]) / 2
+        cy = (sat[1] + ilp[1]) / 2
+        rotated = {}
+        for k, (x, y) in pos.items():
+            x0, y0 = x - cx, y - cy
+            rotated[k] = (c * x0 - s * y0, s * x0 + c * y0)
+        pos = rotated
+
     return {k: (float(v[0]), float(v[1])) for k, v in pos.items()}
 
 
