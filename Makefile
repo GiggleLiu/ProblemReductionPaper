@@ -18,7 +18,7 @@ figures:
 	@for src in $(TYPST_FIGURES); do \
 		base=$$(basename $$src .typ); \
 		echo "Compiling $$base..."; \
-		typst compile $$src figures/$$base.pdf; \
+		typst compile --root . $$src figures/$$base.pdf; \
 	done
 
 # Compile Typst icon sources to SVG (incremental)
