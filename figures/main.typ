@@ -152,7 +152,7 @@
   stroke: (thickness: 0.9pt, paint: col),
   radius: 5pt,
   fill: white,
-  inset: (x: 6pt, y: 3pt),
+  inset: (x: 6pt, y: 0.5pt),
 )[
   #std.grid(
     columns: (0.85cm, 1fr),
@@ -289,7 +289,7 @@
 
 // Verification harness box: 4 mini-cards in a row.
 #let verif-cell(label, icon: none) = box(
-  width: 100%, height: 1.85cm,
+  width: 100%, height: 1.9cm,
   stroke: (thickness: 0.6pt, paint: col-violet),
   radius: 3pt,
   fill: white,
@@ -331,7 +331,7 @@
     [Picks an issue, implements, submits a PR],
     icon: image("icons/agent-impl.svg", width: 1cm))
 
-  #flow-arrow()
+  #flow-arrow(h: 13pt)
 
   // Review agent
   #agent-card(col-p3, [Review Agent],
@@ -682,8 +682,8 @@
   let data = json("../data/reduction-graph-layout.json")
   let hubs = ("KSatisfiability", "ILP")
 
-  let col-node = col-p1   // uniform color for every non-hub problem
-  let hub-color(name) = if name == "KSatisfiability" { col-p3 } else { col-violet }
+  let col-node = col-p3   // uniform color for every non-hub problem
+  let hub-color(name) = if name == "KSatisfiability" { col-p1 } else { col-violet }
 
   let plot-w = 8.6
   let plot-h = 16.0
