@@ -367,10 +367,7 @@
     columns: (0.9cm, 1fr),
     gutter: 6pt,
     align: (center + horizon, left + horizon),
-    box(width: 0.8cm, height: 0.8cm,
-      stroke: (thickness: 1.2pt, paint: col-p2),
-      radius: 50%, fill: white,
-      align(center + horizon, text(11pt, weight: "bold", fill: col-p2, [(b)]))),
+    align(center + horizon, text(13pt, weight: "bold", fill: col-p2, [(b)])),
     text(11pt, weight: "bold", fill: col-p2.darken(10%),
       [Harness-engineered\ agentic workflow]),
   )
