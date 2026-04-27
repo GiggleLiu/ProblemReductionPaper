@@ -109,8 +109,8 @@
     circle(
       (nx(n.x), ny(n.y)),
       radius: r-node,
-      fill: col.lighten(70%),
-      stroke: (thickness: 0.4pt, paint: col.darken(5%)),
+      fill: col.lighten(35%),
+      stroke: (thickness: 0.25pt, paint: col.darken(15%)),
     )
   }
 
