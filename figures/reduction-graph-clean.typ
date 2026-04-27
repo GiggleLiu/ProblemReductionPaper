@@ -89,7 +89,6 @@
       (px + ux * r-src, py + uy * r-src),
       (qx - ux * r-tgt, qy - uy * r-tgt),
       stroke: edge-stroke,
-      mark: arrow-mark,
     )
   }
 
