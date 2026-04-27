@@ -110,7 +110,7 @@
     problem-tile([3-SAT], icon: image("icons/3sat.svg", width: 1.5cm)),
     problem-tile([Max-Cut], icon: image("icons/max-cut.svg", width: 1.5cm)),
     problem-tile([Set Cover], icon: image("icons/set-cover.svg", width: 1.5cm)),
-    problem-tile([K-Coloring], icon: image("icons/k-coloring.svg", width: 1.5cm)),
+    problem-tile([3-Coloring], icon: image("icons/k-coloring.svg", width: 1.5cm)),
     problem-tile([TSP], icon: image("icons/tsp.svg", width: 1.5cm)),
     problem-tile([MIS], icon: image("icons/mis.svg", width: 1.5cm)),
     problem-tile([Bin Packing], icon: image("icons/bin-packing.svg", width: 1.5cm)),
