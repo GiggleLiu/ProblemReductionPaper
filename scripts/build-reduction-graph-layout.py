@@ -88,14 +88,14 @@ def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str,
 
     lines = [
         'graph G {',
-        '  layout=twopi;',
-        '  root="ILP";',
-        '  ranksep="3.0 equally";',
-        '  overlap=false;',
+        '  overlap=prism;',
+        '  overlap_scaling=-10;',
+        '  sep="+28";',
+        '  esep="+18";',
         '  node [shape=circle, fixedsize=true];',
     ]
     for n in nodes:
-        w = 1.4 if n["name"] in HUB_ANCHORS else 0.55
+        w = 1.6 if n["name"] in HUB_ANCHORS else 0.75
         lines.append(f'  "{n["name"]}" [width={w}];')
     for s, t in edges:
         lines.append(f'  "{s}" -- "{t}";')
