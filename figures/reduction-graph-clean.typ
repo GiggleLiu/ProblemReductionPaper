@@ -29,10 +29,10 @@
   else { col-misc }
 }
 
-// ── Geometry ──
-#let plot-w = 22.0       // canvas width in cetz units (wide → airy)
-#let plot-h = 14.0
-#let r-node = 0.11       // ordinary-node radius — small, dot-like
+// ── Geometry — portrait, tight ──
+#let plot-w = 11.0
+#let plot-h = 16.0
+#let r-node = 0.13       // ordinary-node radius — small, dot-like
 #let r-hub  = 0.55       // hub-node radius
 #let edge-paint  = rgb(120, 120, 130, 70)   // 70/255 alpha — quiet
 #let edge-stroke = (thickness: 0.22pt, paint: edge-paint)
