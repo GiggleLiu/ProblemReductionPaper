@@ -557,6 +557,20 @@
         text(7pt, weight: "bold", fill: col.darken(25%), label),
       )
     }
+
+    // "+ N leaves" annotation: nodes whose only edge is to ILP are
+    // hidden in the layout (they would crowd the central halo without
+    // adding structural information). Show the count next to ILP.
+    let hidden = data.at("hidden_leaves", default: 0)
+    if hidden > 0 {
+      let (ilp-x, ilp-y) = name-to-pos.at("ILP")
+      content(
+        (ilp-x + 0.35, ilp-y - 0.95),
+        anchor: "west",
+        text(5.5pt, style: "italic", fill: col-violet.darken(15%),
+          [+ #hidden leaves]),
+      )
+    }
   })
 }
 
