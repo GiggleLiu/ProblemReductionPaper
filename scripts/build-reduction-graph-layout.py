@@ -78,38 +78,45 @@ def drop_isolated(nodes: list[dict], edges: list[tuple[str, str]]) -> list[dict]
 
 
 def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str, tuple[float, float]]:
-    g = nx.DiGraph()
-    for n in nodes:
-        g.add_node(n["name"])
-    for s, t in edges:
-        if s in g and t in g:
-            g.add_edge(s, t)
-    ug = g.to_undirected()
-
-    # ForceAtlas2 with strong scaling + gravity gives a much wider spread
-    # than spring/Kamada-Kawai when one node (ILP) is a massive sink. We
-    # keep dissuade_hubs on so the hub doesn't drag every neighbor inward.
-    # Make hubs visually "large" so ForceAtlas2 pushes neighbors farther
-    # from them (node_size acts as a per-node repulsion radius).
-    node_size = {n["name"]: 12.0 if n["name"] in HUB_ANCHORS else 1.0 for n in nodes}
-    pos = nx.forceatlas2_layout(
-        ug,
-        max_iter=2000,
-        jitter_tolerance=1.0,
-        scaling_ratio=15.0,
-        gravity=1.2,
-        distributed_action=False,
-        strong_gravity=False,
-        linlog=True,
-        node_size=node_size,
-        seed=7,
-    )
-
-    # Re-anchor so 3-SAT sits at the TOP and ILP at the BOTTOM of the
-    # final figure (the paper figure is portrait-oriented). ForceAtlas2
-    # picks an arbitrary global orientation, so rotate so SAT→ILP is
-    # along the −y axis (top-down).
+    """Use Graphviz `sfdp` with prism overlap-removal — gives well-spaced,
+    non-overlapping node positions on star-heavy graphs. ILP has 114 of
+    155 neighbors here, so any pure force layout produces a dense halo;
+    prism explicitly opens gaps until no two nodes overlap."""
     import math
+    import subprocess
+
+    lines = [
+        'graph G {',
+        '  overlap=prism;',
+        '  overlap_scaling=-7;',
+        '  sep="+15";',
+        '  esep="+10";',
+        '  node [shape=circle, fixedsize=true];',
+    ]
+    for n in nodes:
+        # Hubs get a slightly bigger footprint so prism reserves space
+        # for the eventual hub label without crowding neighbours.
+        w = 1.4 if n["name"] in HUB_ANCHORS else 0.55
+        lines.append(f'  "{n["name"]}" [width={w}];')
+    for s, t in edges:
+        lines.append(f'  "{s}" -- "{t}";')
+    lines.append('}')
+    dot_input = "\n".join(lines)
+
+    proc = subprocess.run(
+        ["sfdp", "-Tplain"],
+        input=dot_input, text=True,
+        capture_output=True, check=True,
+    )
+    pos: dict[str, tuple[float, float]] = {}
+    for line in proc.stdout.splitlines():
+        parts = line.split()
+        if parts and parts[0] == "node":
+            name = parts[1].strip('"')
+            pos[name] = (float(parts[2]), float(parts[3]))
+
+    # Rotate so 3-SAT sits at the TOP and ILP at the BOTTOM of the
+    # final figure (the paper figure is portrait-oriented).
     if all(h in pos for h in HUB_ANCHORS):
         sat = pos["KSatisfiability"]
         ilp = pos["ILP"]
