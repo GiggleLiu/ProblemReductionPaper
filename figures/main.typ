@@ -923,9 +923,10 @@
     columns: (0.9cm, 1fr),
     gutter: 6pt,
     align: (center + horizon, left + horizon),
-    align(center + horizon, text(13pt, weight: "bold", fill: col-p3, [(c)])),
+    box(width: 0.8cm, height: 0.8cm,
+      align(center + horizon, text(13pt, weight: "bold", fill: col-p3, [(c)]))),
     text(11pt, weight: "bold", fill: col-p3.darken(10%),
-      [A reduction graph\ built at scale]),
+      [A reduction graph built at scale]),
   )
 
   #v(-3pt)
