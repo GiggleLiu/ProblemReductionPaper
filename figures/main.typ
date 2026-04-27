@@ -331,7 +331,7 @@
     [Picks an issue, implements, submits a PR],
     icon: image("icons/agent-impl.svg", width: 1cm))
 
-  #flow-arrow(h: 13pt)
+  #v(4pt)
 
   // Review agent
   #agent-card(col-p1, [Review Agent],
