@@ -689,7 +689,7 @@
   let plot-h = 16.0
   let r-node = 0.20
   let r-hub  = 0.60       // hub radius — large enough to hold a label inside
-  let edge-stroke = (thickness: 0.22pt, paint: rgb(150, 150, 160, 90))
+  let edge-stroke = (thickness: 0.22pt, paint: rgb(120, 120, 130, 130))
   let edge-curve = 0.18
 
   // Use full data bounds so each node lands at its true sfdp position;
