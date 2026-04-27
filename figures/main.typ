@@ -996,7 +996,7 @@
   }))
 
 // Geometry constants for the overlay arrows.
-#let p1w = 6.7cm
+#let p1w = 6.3cm
 #let p2w = 7.2cm
 #let panel-gap = 0.4cm        // visible gap between adjacent panels
 #let arrow-half-w = 11.5pt    // half the big-arrow's geometric width
