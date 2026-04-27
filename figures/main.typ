@@ -483,10 +483,14 @@
   let y-max = pct(ys-sorted, 0.98)
   let pad = 0.04
   let clamp-v(v, lo, hi) = calc.max(lo, calc.min(hi, v))
-  let nx-pos(x) = pad * plot-w
-    + clamp-v((x - x-min) / (x-max - x-min), 0.0, 1.0) * (1 - 2 * pad) * plot-w
-  let ny-pos(y) = pad * plot-h
-    + clamp-v((y - y-min) / (y-max - y-min), 0.0, 1.0) * (1 - 2 * pad) * plot-h
+  let nx-pos(x) = {
+    let t = clamp-v((x - x-min) / (x-max - x-min), 0.0, 1.0)
+    pad * plot-w + t * (1 - 2 * pad) * plot-w
+  }
+  let ny-pos(y) = {
+    let t = clamp-v((y - y-min) / (y-max - y-min), 0.0, 1.0)
+    pad * plot-h + t * (1 - 2 * pad) * plot-h
+  }
 
   let name-to-pos = (:)
   for n in data.nodes {
