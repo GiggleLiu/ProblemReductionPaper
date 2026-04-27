@@ -885,11 +885,13 @@
 
   // Phase strip below the x-axis — evenly spaced like the mockup, with
   // arrows between phase names rather than tied to the (uneven) boundaries.
-  content((6.5,  -1.4), text(6pt, fill: col-p3.darken(15%), [*manual*]))
-  content((10.4, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
-  content((15.0, -1.4), text(6pt, fill: col-p3.darken(15%), [*basic skills*]))
-  content((18.2, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
-  content((21.7, -1.4), text(6pt, fill: col-p3.darken(15%), [*full pipeline*]))
+  // Positions are proportional to plot-w so the strip stays within the
+  // plot bounds when the chart is resized.
+  content((plot-w * 0.250, -1.4), text(6pt, fill: col-p3.darken(15%), [*manual*]))
+  content((plot-w * 0.400, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
+  content((plot-w * 0.577, -1.4), text(6pt, fill: col-p3.darken(15%), [*basic skills*]))
+  content((plot-w * 0.700, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
+  content((plot-w * 0.835, -1.4), text(6pt, fill: col-p3.darken(15%), [*full pipeline*]))
 
   // Title in upper-left, with a compact two-row legend underneath. The
   // curves are flat in the left third (week 0–8), so this region is empty.
