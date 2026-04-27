@@ -805,8 +805,8 @@
   let x-min  = 0
   let x-max  = 13.5
   let y-max  = 260
-  let plot-w = 22.7
-  let plot-h = 5.5
+  let plot-w = 19.5
+  let plot-h = 4.8
   let x0 = 0.0
   let y0 = 0.0
 
