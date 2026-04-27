@@ -491,28 +491,25 @@
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: reduction rules — two nodes (A, B) on a baseline with a centered
-// arrow A → B. Each node carries a small dot suggesting "a problem".
+// Icon: reduction rules — square (problem A) → circle (problem B).
+// The two distinct shapes read as two different problem types; the arrow
+// between them shows the reduction direction.
 #let icon-reduction = canvas(length: 0.55cm, {
   import draw: *
-  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
+  let s = (paint: p3-stroke, thickness: 0.75pt, cap: "round", join: "round")
   let f = p3-fill
-  let R = 0.16
-  let lcx = -0.30
-  let rcx =  0.30
-  // left node
+  let R = 0.14
+  let lcx = -0.34
+  let rcx =  0.34
+  // left node — square
   rect((lcx - R, -R), (lcx + R, R),
-    radius: 0.04, stroke: s, fill: f)
-  // right node
-  rect((rcx - R, -R), (rcx + R, R),
-    radius: 0.04, stroke: s, fill: f)
-  // tiny dots inside each (a "problem")
-  circle((lcx, 0), radius: 0.05, fill: p3-stroke, stroke: none)
-  circle((rcx, 0), radius: 0.05, fill: p3-stroke, stroke: none)
-  // arrow between
-  line((lcx + R + 0.02, 0), (rcx - R - 0.02, 0),
-    stroke: (paint: p3-stroke, thickness: 1.0pt, cap: "round"),
-    mark: (end: "straight", scale: 0.45))
+    radius: 0.035, stroke: s, fill: f)
+  // right node — circle
+  circle((rcx, 0), radius: R, stroke: s, fill: f)
+  // arrow between (longer shaft so the line is clearly visible)
+  line((lcx + R + 0.025, 0), (rcx - R - 0.025, 0),
+    stroke: (paint: p3-stroke, thickness: 0.9pt, cap: "round"),
+    mark: (end: "straight", scale: 0.35, fill: p3-stroke))
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
