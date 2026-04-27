@@ -38,7 +38,7 @@
       <use xlink:href="#cog" transform="rotate(348.75)"/>
     </g>
     <g id="mounts">
-      <polygon id="mount" stroke="#4d8c44" stroke-width="6" stroke-linejoin="round" points="-7,-42 0,-35 7,-42"/>
+      <polygon id="mount" fill="#4d8c44" stroke="#4d8c44" stroke-width="6" stroke-linejoin="round" points="-7,-42 0,-35 7,-42"/>
       <use xlink:href="#mount" transform="rotate(72)"/>
       <use xlink:href="#mount" transform="rotate(144)"/>
       <use xlink:href="#mount" transform="rotate(216)"/>
