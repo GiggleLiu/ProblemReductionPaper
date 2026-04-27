@@ -349,10 +349,10 @@
   #std.grid(
     columns: (1fr, 1fr, 1fr, 1fr),
     gutter: 3pt,
-    verif-cell([*compile-time checks*], icon: image("icons/type-check.svg", height: 0.5cm)),
-    verif-cell([*automated unit tests*], icon: image("icons/unit-tests.svg", height: 0.5cm)),
-    verif-cell([*round-trip verifications*], icon: image("icons/round-trip.svg", height: 0.5cm)),
-    verif-cell([*agentic feature tests*], icon: image("icons/agent-user.svg", height: 0.5cm)),
+    verif-cell([*compile-time checks*], icon: image("icons/type-check.svg", height: 0.75cm)),
+    verif-cell([*automated unit tests*], icon: image("icons/unit-tests.svg", height: 0.75cm)),
+    verif-cell([*round-trip verifications*], icon: image("icons/round-trip.svg", height: 0.75cm)),
+    verif-cell([*agentic feature tests*], icon: image("icons/agent-user.svg", height: 0.75cm)),
   )
 ]
 
