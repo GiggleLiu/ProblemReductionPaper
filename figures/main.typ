@@ -513,30 +513,72 @@
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: reducible to ILP — three integer-height bars under a dashed
-// upper-bound (Ax ≤ b style constraint).
+// Icon: reducible to ILP — three differently-shaped source problems
+// (△, ○, □) on the left, each with an arrow converging into a single ILP
+// target node on the right (marked with a "≤" glyph for the inequality
+// system Ax ≤ b).
 #let icon-ilp = canvas(length: 0.55cm, {
   import draw: *
-  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
-  let s-dash = (paint: p3-stroke.lighten(10%), thickness: 0.55pt,
-                dash: (array: (1.4pt, 1.4pt)))
-  let base  = -0.32
-  let limit =  0.34
-  // upper-bound dashed line ("≤ b")
-  line((-0.44, limit), (0.44, limit), stroke: s-dash)
-  // baseline
-  line((-0.44, base), (0.44, base),
-    stroke: (paint: p3-stroke, thickness: 0.65pt, cap: "round"))
-  // bars
-  let bw = 0.085
-  let xs = (-0.28, 0.00, 0.28)
-  let hs = (0.40, 0.60, 0.48)
-  for i in range(3) {
-    let x = xs.at(i)
-    let top = base + hs.at(i)
-    rect((x - bw, base), (x + bw, top),
-      stroke: s, fill: p3-fill, radius: 0.022)
+  let s     = (paint: p3-stroke, thickness: 0.65pt, cap: "round", join: "round")
+  let s-arr = (paint: p3-stroke, thickness: 0.55pt, cap: "round")
+  let f = p3-fill
+  let r = 0.095
+
+  // ── Three sources on the left ──
+  let sx = -0.36
+  let ys = (0.30, 0.00, -0.30)
+
+  // top: triangle
+  let ty = ys.at(0)
+  line((sx,           ty + r * 1.05),
+       (sx - r * 0.95, ty - r * 0.55),
+       (sx + r * 0.95, ty - r * 0.55),
+       close: true, stroke: s, fill: f)
+  // mid: circle
+  circle((sx, ys.at(1)), radius: r, stroke: s, fill: f)
+  // bottom: square
+  let qy = ys.at(2)
+  rect((sx - r, qy - r), (sx + r, qy + r),
+    radius: 0.022, stroke: s, fill: f)
+
+  // ── ILP target on the right ──
+  let tcx = 0.30
+  let tcy = 0.00
+  let tR  = 0.17
+  rect((tcx - tR, tcy - tR), (tcx + tR, tcy + tR),
+    radius: 0.04,
+    stroke: (paint: p3-stroke, thickness: 0.85pt),
+    fill:  col-p3.lighten(60%))
+  // small "≤" glyph inside (two short horizontals, lower one nudged left)
+  let lx = tcx - 0.07
+  let ly = tcy
+  line((lx,        ly + 0.045), (lx + 0.10, ly + 0.045),
+    stroke: (paint: p3-stroke.darken(15%), thickness: 0.75pt, cap: "round"))
+  line((lx - 0.01, ly - 0.045), (lx + 0.09, ly - 0.045),
+    stroke: (paint: p3-stroke.darken(15%), thickness: 0.75pt, cap: "round"))
+
+  // ── Converging arrows: each source → target ──
+  for y in ys {
+    // start: just outside the source's right edge
+    let x0 = sx + r + 0.025
+    let y0 = y
+    // end: just outside the target's left edge, on the line toward (x0, y0)
+    let x1-edge = tcx - tR - 0.015
+    // angle from source to target centre, then place tip on the box's left edge
+    let dx = tcx - x0
+    let dy = tcy - y0
+    let len = calc.sqrt(dx * dx + dy * dy)
+    let ux = dx / len
+    let uy = dy / len
+    // tip lands on the left edge of the target
+    let t-len = (x1-edge - x0) / ux
+    let x1 = x0 + ux * t-len
+    let y1 = y0 + uy * t-len
+    line((x0, y0), (x1, y1),
+      stroke: s-arr,
+      mark: (end: "straight", scale: 0.30, fill: p3-stroke))
   }
+
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
