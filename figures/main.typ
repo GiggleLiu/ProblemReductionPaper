@@ -417,7 +417,7 @@
       [
         #text(8.5pt, weight: "bold", fill: col-p3.darken(15%),
           [Validated Reduction Code]) \
-        #text(6.3pt, fill: fg-light, [Human-reviewed, merged into the codebase])
+        #text(6.3pt, fill: fg-light, [Human reviewed finally, merged into the codebase])
       ],
     )
   ]
