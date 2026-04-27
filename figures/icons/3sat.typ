@@ -29,26 +29,19 @@
     bezier((xL, -H), (xL, H), (xL + 0.30, -0.32), (xL + 0.30, 0.32))
   })
 
-  // Three coloured input literals on the left; the middle one is negated
-  // (overhead bar). Wires run from each node to the back of the gate.
+  // Three coloured input literals on the left. Wires run from each node
+  // to the back of the gate.
   let r = 0.18
   let in-x = -0.85
   let inputs = (
-    (green, 0.45,  false),
-    (red,   0.00,  true),
-    (blue, -0.45,  false),
+    (green, 0.45),
+    (red,   0.00),
+    (blue, -0.45),
   )
-  for (col, y, neg) in inputs {
-    // Wire — meets the curved back roughly where the back bows in.
+  for (col, y) in inputs {
     line((in-x + r, y), (xL + 0.16, y), stroke: wire-stroke)
-    // Coloured literal node.
     circle((in-x, y), radius: r,
       fill: col, stroke: 0.7pt + col.darken(25%))
-    if neg {
-      line((in-x - r * 0.85, y + r + 0.13),
-           (in-x + r * 0.85, y + r + 0.13),
-        stroke: neg-stroke)
-    }
   }
 
   // Output wire ending in a small dark node (the clause's truth value).
