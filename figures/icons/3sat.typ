@@ -13,7 +13,6 @@
 
   let gate-stroke = (paint: luma(30), thickness: 1.6pt, cap: "round", join: "round")
   let wire-stroke = (paint: luma(70), thickness: 1.1pt, cap: "round")
-  let neg-stroke  = (paint: luma(20), thickness: 1.7pt, cap: "round")
 
   // OR-gate body: convex front + concave back (the canonical "OR gate"
   // glyph). The back curve gently opens to the right.
