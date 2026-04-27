@@ -78,25 +78,26 @@ def drop_isolated(nodes: list[dict], edges: list[tuple[str, str]]) -> list[dict]
 
 
 def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str, tuple[float, float]]:
-    """Use Graphviz `sfdp` with prism overlap-removal — gives well-spaced,
-    non-overlapping node positions on star-heavy graphs. ILP has 114 of
-    155 neighbors here, so any pure force layout produces a dense halo;
-    prism explicitly opens gaps until no two nodes overlap."""
+    """Use Graphviz `twopi` rooted at ILP — radial layout with concentric
+    shells by graph distance. ILP has 114 of 155 neighbours here, so any
+    force layout produces a dense halo around it; twopi spreads those
+    114 nodes uniformly on the inner ring instead, giving balanced
+    density across the whole figure."""
     import math
     import subprocess
 
     lines = [
         'graph G {',
+        '  layout=twopi;',
+        '  root="ILP";',
+        '  ranksep="2.5";',
         '  overlap=prism;',
-        '  overlap_scaling=-10;',
-        '  sep="+28";',
-        '  esep="+18";',
+        '  overlap_scaling=-7;',
+        '  sep="+10";',
         '  node [shape=circle, fixedsize=true];',
     ]
     for n in nodes:
-        # Hubs get a slightly bigger footprint so prism reserves space
-        # for the eventual hub label without crowding neighbours.
-        w = 1.6 if n["name"] in HUB_ANCHORS else 0.75
+        w = 1.4 if n["name"] in HUB_ANCHORS else 0.55
         lines.append(f'  "{n["name"]}" [width={w}];')
     for s, t in edges:
         lines.append(f'  "{s}" -- "{t}";')
@@ -104,7 +105,7 @@ def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str,
     dot_input = "\n".join(lines)
 
     proc = subprocess.run(
-        ["sfdp", "-Tplain"],
+        ["twopi", "-Tplain"],
         input=dot_input, text=True,
         capture_output=True, check=True,
     )
