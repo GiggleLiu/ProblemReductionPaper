@@ -666,31 +666,34 @@
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: ~3 months — three calendar-page tiles in a row, each with a green
-// header strip and a single date dot; reads directly as "three months".
+// Icon: ~3 months — single calendar page with a green header strip, two
+// binder rings, and a clean 3×3 dot grid in the body.
 #let icon-months = canvas(length: 0.55cm, {
   import draw: *
-  let s = (paint: p3-stroke, thickness: 0.6pt, cap: "round", join: "round")
-  let pw = 0.24
-  let ph = 0.62
-  let header-h = 0.16
-  let gap = 0.05
-  let xs = (-pw - gap, 0.0, pw + gap)
-  let yT =  ph / 2
-  let yB = -ph / 2
-  for x in xs {
-    // body
-    rect((x - pw / 2, yB), (x + pw / 2, yT),
-      radius: 0.035, stroke: none, fill: white)
-    // header strip (slightly inset so corner curve stays clean)
-    rect((x - pw / 2 + 0.005, yT - header-h), (x + pw / 2 - 0.005, yT - 0.005),
-      stroke: none, fill: col-p3)
-    // page outline (last, so corners are crisp)
-    rect((x - pw / 2, yB), (x + pw / 2, yT),
-      radius: 0.035, stroke: s, fill: none)
-    // single date dot in the body
-    circle((x, -0.08), radius: 0.045,
-      stroke: none, fill: p3-stroke.lighten(40%))
+  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
+  let xL = -0.34
+  let xR =  0.34
+  let yT =  0.30
+  let yB = -0.40
+  let header-h = 0.13
+  // body
+  rect((xL, yB), (xR, yT), radius: 0.045, stroke: none, fill: white)
+  // green header strip
+  rect((xL + 0.005, yT - header-h), (xR - 0.005, yT - 0.005),
+    stroke: none, fill: col-p3)
+  // page outline (drawn last so corners look crisp)
+  rect((xL, yB), (xR, yT), radius: 0.045, stroke: s, fill: none)
+  // binder rings — small open circles straddling the top edge
+  circle((-0.17, yT + 0.04), radius: 0.05, stroke: s, fill: white)
+  circle(( 0.17, yT + 0.04), radius: 0.05, stroke: s, fill: white)
+  // 3×3 dot grid in the body
+  let xs = (-0.20, 0.00, 0.20)
+  let ys = (0.00, -0.15, -0.30)
+  for y in ys {
+    for x in xs {
+      circle((x, y), radius: 0.040,
+        stroke: none, fill: p3-stroke.lighten(40%))
+    }
   }
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
