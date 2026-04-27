@@ -33,9 +33,9 @@
   let r = 0.18
   let in-x = -0.85
   let inputs = (
-    (green, 0.45),
-    (red,   0.00),
-    (blue, -0.45),
+    (blue,   0.45),
+    (orange, 0.00),
+    (green, -0.45),
   )
   for (col, y) in inputs {
     line((in-x + r, y), (xL + 0.16, y), stroke: wire-stroke)
