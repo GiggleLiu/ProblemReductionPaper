@@ -61,7 +61,7 @@
 
 // Section header inside a panel: thin divider + centered caption.
 #let panel-section(label, col) = align(center)[
-  #text(7.5pt, weight: "bold", fill: col.darken(10%), label)
+  #text(8pt, weight: "bold", fill: col.darken(10%), label)
 ]
 
 // Vertical flow connector — longer shaft, smaller head than the text glyph.
@@ -99,9 +99,9 @@
       [Many hard problems,\ many solver formats]),
   )
 
-  #v(8pt)
+  #v(2pt)
   #panel-section([NP-hard problem types], col-p1)
-  #v(4pt)
+  // #v(0pt)
 
   // 3 × 3 grid of problem tiles (last row has only "Bin Packing" and "…").
   #std.grid(
@@ -121,13 +121,13 @@
 
   #v(6pt)
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
-  #v(3pt)
+  // #v(3pt)
   #align(center, text(6.5pt, fill: fg-light,
     [Each backend takes its own format;\ problems must be encoded to fit.]))
-  #v(3pt)
+  // #v(3pt)
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   #panel-section([Solver formats / backends], col-slate)
-  #v(4pt)
+  // #v(4pt)
 
   // 2×2 grid: (SAT, ILP) ; (Annealer, …).
   #std.grid(
@@ -334,7 +334,7 @@
   #flow-arrow(h: 13pt)
 
   // Review agent
-  #agent-card(col-p3, [Review Agent],
+  #agent-card(col-p1, [Review Agent],
     [Reviews PR via parallel sub-agents],
     icon: image("icons/agent-review.svg", width: 1cm))
 
@@ -937,7 +937,7 @@
       [A reduction graph built at scale]),
   )
 
-  #v(8pt)
+  // #v(8pt)
 
   // Graph on the left, stats column on the right.
   #std.grid(
