@@ -44,7 +44,7 @@
   width: w,
   stroke: (thickness: 0.7pt, paint: col),
   radius: 4pt,
-  inset: 5pt,
+  inset: 2pt,
   fill: white,
 )[
   #std.grid(
@@ -937,7 +937,7 @@
       [A reduction graph built at scale]),
   )
 
-  // #v(8pt)
+  #v(-3pt)
 
   // Graph on the left, stats column on the right.
   #std.grid(
