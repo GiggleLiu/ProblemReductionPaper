@@ -71,7 +71,8 @@
 #canvas(length: 0.55cm, {
   import draw: *
 
-  // ── Edges (back layer) ──
+  // ── Edges (back layer) — quadratic bezier curves with a slight
+  // perpendicular bow so overlapping fans separate visually.
   for e in data.edges {
     let p = name-to-pos.at(e.source)
     let q = name-to-pos.at(e.target)
@@ -83,14 +84,21 @@
     if len < 0.01 { continue }
     let ux = dx / len
     let uy = dy / len
-    // Shrink endpoints so arrowheads don't overlap node disks.
     let r-src = if is-hub(e.source) { r-hub } else { r-node }
     let r-tgt = if is-hub(e.target) { r-hub } else { r-node }
-    line(
-      (px + ux * r-src, py + uy * r-src),
-      (qx - ux * r-tgt, qy - uy * r-tgt),
+    let sx = px + ux * r-src
+    let sy = py + uy * r-src
+    let tx = qx - ux * r-tgt
+    let ty = qy - uy * r-tgt
+    // Control point: midpoint pushed perpendicular by edge-curve * len
+    let mx = (sx + tx) / 2
+    let my = (sy + ty) / 2
+    let bow = edge-curve * len * 0.5
+    let cx-pt = mx + (-uy) * bow
+    let cy-pt = my + ( ux) * bow
+    bezier(
+      (sx, sy), (tx, ty), (cx-pt, cy-pt),
       stroke: edge-stroke,
-      mark: arrow-mark,
     )
   }
 
