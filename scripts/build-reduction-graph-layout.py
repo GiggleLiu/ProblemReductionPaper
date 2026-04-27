@@ -89,15 +89,19 @@ def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str,
     # ForceAtlas2 with strong scaling + gravity gives a much wider spread
     # than spring/Kamada-Kawai when one node (ILP) is a massive sink. We
     # keep dissuade_hubs on so the hub doesn't drag every neighbor inward.
+    # Make hubs visually "large" so ForceAtlas2 pushes neighbors farther
+    # from them (node_size acts as a per-node repulsion radius).
+    node_size = {n["name"]: 12.0 if n["name"] in HUB_ANCHORS else 1.0 for n in nodes}
     pos = nx.forceatlas2_layout(
         ug,
-        max_iter=1500,
+        max_iter=2000,
         jitter_tolerance=1.0,
-        scaling_ratio=8.0,
-        gravity=0.8,
+        scaling_ratio=15.0,
+        gravity=1.2,
         distributed_action=False,
         strong_gravity=False,
-        dissuade_hubs=True,
+        linlog=True,
+        node_size=node_size,
         seed=7,
     )
 
