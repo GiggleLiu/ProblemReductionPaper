@@ -36,19 +36,19 @@
 
   // Top row: full sequence (5, 3, 4, 2, 6) — sum 20. Neutral fill marks
   // them as a single multiset before partitioning.
-  centered-row(0.70, (5, 3, 4, 2, 6), luma(225))
+  centered-row(0.60, (5, 3, 4, 2, 6), luma(225))
 
   // Down arrow — "split into two halves".
-  line((0, 0.40), (0, -0.05),
+  line((0, 0.32), (0, -0.05),
     stroke: (paint: black.lighten(20%), thickness: 0.9pt, cap: "round"),
     mark: (end: "straight", scale: 0.5))
 
   // Two sub-rows, each summing to 10. Same blue hue, two shades — the
   // shade just distinguishes the two halves; equal widths mean equal sums.
   let half-w = 10 * unit
-  let gap    = 0.10
+  let gap    = 0.07
   // Left half: (4, 6) — darker shade.
-  row-at(-half-w - gap, -0.65, (4, 6), blue.lighten(35%))
+  row-at(-half-w - gap, -0.55, (4, 6), blue.lighten(35%))
   // Right half: (5, 3, 2) — lighter shade.
-  row-at(gap, -0.65, (5, 3, 2), blue.lighten(65%))
+  row-at(gap, -0.55, (5, 3, 2), blue.lighten(65%))
 })
