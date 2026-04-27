@@ -137,10 +137,7 @@
     )
   }
 
-  // ── Compact category legend, top-right ──
-  let lx = plot-w - 2.5
-  let ly = plot-h - 0.2
-  let row-gap = 0.42
+  // ── Compact category legend, bottom strip ──
   let entries = (
     (col-graph,     "graph"),
     (col-formula,   "formula"),
@@ -148,17 +145,19 @@
     (col-algebraic, "algebraic"),
     (col-misc,      "misc"),
   )
+  let col-gap = plot-w / entries.len()
+  let ly = -0.55
   for (i, e) in entries.enumerate() {
     let (col, label) = e
-    let cy = ly - i * row-gap
+    let cx-leg = (i + 0.5) * col-gap - 0.4
     circle(
-      (lx, cy),
-      radius: 0.14,
-      fill: col.lighten(70%),
-      stroke: (thickness: 0.4pt, paint: col.darken(5%)),
+      (cx-leg, ly),
+      radius: 0.12,
+      fill: col.lighten(35%),
+      stroke: (thickness: 0.3pt, paint: col.darken(15%)),
     )
     content(
-      (lx + 0.3, cy),
+      (cx-leg + 0.25, ly),
       anchor: "west",
       text(6pt, fill: fg, label),
     )
