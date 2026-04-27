@@ -26,7 +26,7 @@
 #let plot-w = 11.0
 #let plot-h = 16.0
 #let r-node = 0.20       // ordinary-node radius
-#let r-hub  = 0.62       // hub radius — large enough to hold a label inside
+#let r-hub  = 0.78       // hub radius — large enough to hold a label inside
 #let edge-paint  = rgb(120, 120, 130, 70)   // 70/255 alpha — quiet
 #let edge-stroke = (thickness: 0.22pt, paint: edge-paint)
 #let edge-curve  = 0.18  // perpendicular offset of bezier control point
