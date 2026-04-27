@@ -27,8 +27,8 @@
   circle(p-orange, radius: r-set,
     fill: orange.lighten(78%), stroke: s-thick + orange.darken(0%))
 
-  // Universe elements — placed so each dot is enclosed in at least one
-  // coloured set; some sit in 2- or 3-set intersections.
+  // Universe elements — small soft dots, placed so each sits in at
+  // least one coloured set; some are in 2- or 3-set intersections.
   let dots = (
     (-0.78,  0.35),   // blue only
     (-0.30,  0.55),   // blue ∩ green
@@ -40,6 +40,8 @@
     ( 0.30, -0.70),   // orange only
   )
   for d in dots {
-    circle(d, radius: 0.10, fill: black.lighten(10%), stroke: none)
+    circle(d, radius: 0.07,
+      fill: white,
+      stroke: 0.7pt + luma(80))
   }
 })
