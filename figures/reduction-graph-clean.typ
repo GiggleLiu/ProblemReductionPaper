@@ -14,26 +14,19 @@
 #set page(width: auto, height: auto, margin: 6pt)
 #set text(size: 7pt, font: "Helvetica")
 
-// ── Category palette (mirrors panel-3 sketch in main.typ) ──
-#let col-graph     = rgb("#4e79a7")  // blue
-#let col-formula   = rgb("#59a14f")  // green
-#let col-set       = rgb("#e15759")  // red
-#let col-algebraic = rgb("#b07aa1")  // violet
-#let col-misc      = rgb("#76b7b2")  // teal
+// ── Palette — uniform color for all ordinary nodes; hubs keep their own
+// accent colors so 3-SAT and ILP read as distinct landmarks.
+#let col-node    = rgb("#4e79a7")  // blue — every non-hub problem
+#let col-sat     = rgb("#59a14f")  // green — 3-SAT hub
+#let col-ilp     = rgb("#b07aa1")  // violet — ILP hub
 
-#let category-color(c) = {
-  if c == "graph" { col-graph }
-  else if c == "formula" { col-formula }
-  else if c == "set" { col-set }
-  else if c == "algebraic" { col-algebraic }
-  else { col-misc }
-}
+#let hub-color(name) = if name == "KSatisfiability" { col-sat } else { col-ilp }
 
 // ── Geometry — portrait, tight ──
 #let plot-w = 11.0
 #let plot-h = 16.0
 #let r-node = 0.20       // ordinary-node radius
-#let r-hub  = 0.32       // hub radius — only modestly bigger than regular
+#let r-hub  = 0.62       // hub radius — large enough to hold a label inside
 #let edge-paint  = rgb(120, 120, 130, 70)   // 70/255 alpha — quiet
 #let edge-stroke = (thickness: 0.22pt, paint: edge-paint)
 #let edge-curve  = 0.18  // perpendicular offset of bezier control point
