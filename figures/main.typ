@@ -517,7 +517,6 @@
         (sx, sy), (tx, ty),
         (mx + (-uy) * bow, my + ux * bow),
         stroke: edge-stroke,
-        mark: (end: "straight", fill: rgb(95, 95, 105, 150), scale: 0.4),
       )
     }
 
