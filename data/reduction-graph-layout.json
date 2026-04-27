@@ -3,1086 +3,1086 @@
     {
       "name": "AcyclicPartition",
       "category": "graph",
-      "x": 1.6267983007378044,
-      "y": 3.3858785570082617,
+      "x": -1.8099300263277842,
+      "y": 0.3972978099576065,
       "degree": 2
     },
     {
       "name": "AlgebraicEquationsOverGF2",
       "category": "algebraic",
-      "x": -26.00353275402885,
-      "y": -33.52829308559817,
+      "x": -10.366905489626092,
+      "y": 2.902169846711326,
       "degree": 1
     },
     {
       "name": "BMF",
       "category": "algebraic",
-      "x": -10.271616262532588,
-      "y": -25.044120079388925,
+      "x": -3.5870034822375074,
+      "y": -0.059432890018948914,
       "degree": 1
     },
     {
       "name": "BalancedCompleteBipartiteSubgraph",
       "category": "graph",
-      "x": 5.753046683209417,
-      "y": 2.1140726664778473,
+      "x": -4.362269727494435,
+      "y": 0.291226843861667,
       "degree": 2
     },
     {
       "name": "Betweenness",
       "category": "misc",
-      "x": -30.19277288785787,
-      "y": -18.3916217087952,
+      "x": 9.105411243253801,
+      "y": 8.117158918071476,
       "degree": 1
     },
     {
       "name": "BicliqueCover",
       "category": "graph",
-      "x": -9.585609466797182,
-      "y": -13.013584468518383,
+      "x": -5.1216703535892485,
+      "y": 0.7233560943027881,
       "degree": 1
     },
     {
       "name": "BiconnectivityAugmentation",
       "category": "graph",
-      "x": 2.953859632302959,
-      "y": -5.354335118956831,
+      "x": -5.900759639608132,
+      "y": 1.0543846193736437,
       "degree": 2
     },
     {
       "name": "BinPacking",
       "category": "misc",
-      "x": 17.3100795190239,
-      "y": -5.944205199317871,
+      "x": -0.7986065517171267,
+      "y": 3.8588100271397785,
       "degree": 2
     },
     {
       "name": "BottleneckTravelingSalesman",
       "category": "graph",
-      "x": 8.868833107960821,
-      "y": -5.7762261581594885,
+      "x": -1.8526113127631771,
+      "y": 4.06508887649728,
       "degree": 2
     },
     {
       "name": "BoundedComponentSpanningForest",
       "category": "graph",
-      "x": 15.754939115220374,
-      "y": -21.749239945210686,
+      "x": -2.7223582653404077,
+      "y": 3.941055661257881,
       "degree": 2
     },
     {
       "name": "CapacityAssignment",
       "category": "misc",
-      "x": 8.259603295960893,
-      "y": 2.0440965073372563,
+      "x": -3.8013252957750416,
+      "y": 3.344298468393755,
       "degree": 2
     },
     {
       "name": "CircuitSAT",
       "category": "formula",
-      "x": -11.373687538929296,
-      "y": -4.737497118533993,
+      "x": -4.557476337222192,
+      "y": 3.793114246323172,
       "degree": 5
     },
     {
       "name": "ClosestVectorProblem",
       "category": "algebraic",
-      "x": 8.702332803218127,
-      "y": 12.49791900758366,
+      "x": 1.2891781639918176,
+      "y": 5.272799058515951,
       "degree": 2
     },
     {
       "name": "Clustering",
       "category": "misc",
-      "x": -3.220299766942017,
-      "y": -3.3752877858372834,
+      "x": -5.27597042716408,
+      "y": 4.435297431028735,
       "degree": 2
     },
     {
       "name": "ConjunctiveBooleanQuery",
       "category": "misc",
-      "x": 15.237976256099522,
-      "y": 15.981898278684996,
+      "x": -15.27762869278652,
+      "y": -9.622790149709491,
       "degree": 1
     },
     {
       "name": "ConsecutiveBlockMinimization",
       "category": "algebraic",
-      "x": -11.613489114772259,
-      "y": -15.894253597122475,
+      "x": -5.972290880686628,
+      "y": 5.191341626830907,
       "degree": 1
     },
     {
       "name": "ConsecutiveOnesMatrixAugmentation",
       "category": "algebraic",
-      "x": -15.573381995988102,
-      "y": -17.781936856774436,
+      "x": -6.831673326142451,
+      "y": 4.414285764976453,
       "degree": 1
     },
     {
       "name": "ConsecutiveOnesSubmatrix",
       "category": "algebraic",
-      "x": 11.193246354128604,
-      "y": -9.291049681349822,
+      "x": -7.116883964124669,
+      "y": 3.5722781094401292,
       "degree": 2
     },
     {
       "name": "ConsistencyOfDatabaseFrequencyTables",
       "category": "misc",
-      "x": -9.346567321322405,
-      "y": -21.13224761330453,
+      "x": -7.610035313664147,
+      "y": 2.818648395026352,
       "degree": 1
     },
     {
       "name": "CosineProductIntegration",
       "category": "misc",
-      "x": 32.23719053228481,
-      "y": -0.36479313290343995,
+      "x": -6.450946613930116,
+      "y": 6.960459398216732,
       "degree": 1
     },
     {
       "name": "CyclicOrdering",
       "category": "misc",
-      "x": 2.0189313544102667,
-      "y": 24.940737895893022,
+      "x": 1.407285282403344,
+      "y": 7.783519215877288,
       "degree": 1
     },
     {
       "name": "DecisionMinimumDominatingSet",
       "category": "graph",
-      "x": -26.942577936098136,
-      "y": -6.445697565570527,
+      "x": -7.056638884153978,
+      "y": -15.38051909230134,
       "degree": 4
     },
     {
       "name": "DecisionMinimumVertexCover",
       "category": "graph",
-      "x": 2.9779771857986708,
-      "y": 15.03862833833817,
+      "x": 0.5186400783044336,
+      "y": 7.557212562789036,
       "degree": 4
     },
     {
       "name": "DegreeConstrainedSpanningTree",
       "category": "graph",
-      "x": 26.389680195598444,
-      "y": 2.7505363686040383,
+      "x": -12.477086932391911,
+      "y": -6.604768423762863,
       "degree": 1
     },
     {
       "name": "DirectedHamiltonianPath",
       "category": "graph",
-      "x": -0.30043608659674814,
-      "y": -21.859040442424366,
+      "x": -8.242976350079122,
+      "y": 2.0952981033820217,
       "degree": 1
     },
     {
       "name": "DirectedTwoCommodityIntegralFlow",
       "category": "graph",
-      "x": -0.0868543215367028,
-      "y": 0.9106439733347536,
+      "x": -9.196288394169391,
+      "y": 1.432300255276592,
       "degree": 2
     },
     {
       "name": "DisjointConnectingPaths",
       "category": "graph",
-      "x": -8.071993636333477,
-      "y": -15.849729223851082,
+      "x": -9.912253963699653,
+      "y": 0.7220620535110103,
       "degree": 1
     },
     {
       "name": "EnsembleComputation",
       "category": "misc",
-      "x": -18.798238379724722,
-      "y": 17.582463206245272,
+      "x": -10.882226667890016,
+      "y": -14.093824101664646,
       "degree": 1
     },
     {
       "name": "ExactCoverBy3Sets",
       "category": "set",
-      "x": -19.479189969077225,
-      "y": -25.458289308480786,
+      "x": -10.72959945758809,
+      "y": 0.8618774447247926,
       "degree": 8
     },
     {
       "name": "ExpectedRetrievalCost",
       "category": "misc",
-      "x": -1.168713153109569,
-      "y": -26.239802028888015,
+      "x": -10.192138144865131,
+      "y": -0.08736295545111328,
       "degree": 1
     },
     {
       "name": "Factoring",
       "category": "misc",
-      "x": -12.405316539148261,
-      "y": -10.389537340460564,
+      "x": -10.158026186074437,
+      "y": -0.9375607996423698,
       "degree": 2
     },
     {
       "name": "FeasibleRegisterAssignment",
       "category": "misc",
-      "x": 4.263498983806696,
-      "y": 4.634974982364106,
+      "x": -10.02379506235396,
+      "y": -1.8072561517196006,
       "degree": 2
     },
     {
       "name": "FlowShopScheduling",
       "category": "misc",
-      "x": -0.21096365830818953,
-      "y": -31.691720139091437,
+      "x": -10.352540313255746,
+      "y": -2.6112409525768827,
       "degree": 2
     },
     {
       "name": "GraphPartitioning",
       "category": "graph",
-      "x": -5.067143047376943,
-      "y": -6.5032226706681575,
+      "x": -10.596551212987464,
+      "y": -3.4561780394727766,
       "degree": 3
     },
     {
       "name": "HamiltonianCircuit",
       "category": "graph",
-      "x": 10.950855961914195,
-      "y": 3.066239615359807,
+      "x": -2.6276583038509678,
+      "y": 4.798769434782533,
       "degree": 10
     },
     {
       "name": "HamiltonianPath",
       "category": "graph",
-      "x": 16.993039763994098,
-      "y": -2.708108456795882,
+      "x": -10.794490922804346,
+      "y": -4.336575603802441,
       "degree": 5
     },
     {
       "name": "HamiltonianPathBetweenTwoVertices",
       "category": "graph",
-      "x": 18.135402572141107,
-      "y": -36.74972881211801,
+      "x": -9.156221517081956,
+      "y": -14.024882246568966,
       "degree": 1
     },
     {
       "name": "ILP",
       "category": "algebraic",
-      "x": -0.23734378605948636,
-      "y": -10.486499363404963,
+      "x": 1.1102230246251565e-15,
+      "y": -5.213127779941709,
       "degree": 115
     },
     {
       "name": "IntegerExpressionMembership",
       "category": "misc",
-      "x": 21.792007853126172,
-      "y": 15.113818840362713,
+      "x": -8.629033643311727,
+      "y": 4.904901592549474,
       "degree": 1
     },
     {
       "name": "IntegerKnapsack",
       "category": "set",
-      "x": 7.3079780079410845,
-      "y": -1.2147697020139088,
+      "x": -11.094564518931987,
+      "y": -5.186895447688862,
       "degree": 2
     },
     {
       "name": "IntegralFlowBundles",
       "category": "graph",
-      "x": -13.644713309602185,
-      "y": -1.8945897336293953,
+      "x": -11.374929505499864,
+      "y": -6.056335195058852,
       "degree": 2
     },
     {
       "name": "IntegralFlowHomologousArcs",
       "category": "graph",
-      "x": -8.640423686605109,
-      "y": -2.4227212299187304,
+      "x": -11.458181445279648,
+      "y": -6.928503822402729,
       "degree": 2
     },
     {
       "name": "IntegralFlowWithMultipliers",
       "category": "graph",
-      "x": -3.1929894474849085,
-      "y": -21.296175493016225,
+      "x": -11.547999404816643,
+      "y": -7.782074401877333,
       "degree": 1
     },
     {
       "name": "IsomorphicSpanningTree",
       "category": "graph",
-      "x": 7.771973336694289,
-      "y": -8.050685995590074,
+      "x": -11.541407488897715,
+      "y": -8.658495274885569,
       "degree": 2
     },
     {
       "name": "JobShopScheduling",
       "category": "misc",
-      "x": 4.025262230157466,
-      "y": -45.1700179679892,
+      "x": -16.62961434276781,
+      "y": -4.025442716125911,
       "degree": 1
     },
     {
       "name": "KClique",
       "category": "graph",
-      "x": 9.204838065028964,
-      "y": 7.068747930822514,
+      "x": -12.641218339892067,
+      "y": -9.011778577682454,
       "degree": 5
     },
     {
       "name": "KColoring",
       "category": "graph",
-      "x": -8.278030858715812,
-      "y": 6.430210227685805,
+      "x": -14.382278962829933,
+      "y": -9.492841886671217,
       "degree": 6
     },
     {
       "name": "KSatisfiability",
       "category": "formula",
-      "x": 0.10671044034516164,
-      "y": 13.794502739895572,
+      "x": -4.440892098500626e-16,
+      "y": 5.213127779941712,
       "degree": 20
     },
     {
       "name": "Kernel",
       "category": "graph",
-      "x": 7.810196384478182,
-      "y": 20.50187297370126,
+      "x": -0.32391168436291107,
+      "y": 7.562363021617859,
       "degree": 1
     },
     {
       "name": "Knapsack",
       "category": "misc",
-      "x": 9.78598440543855,
-      "y": -3.309778466739453,
+      "x": -13.95234296382684,
+      "y": -10.423995083927831,
       "degree": 3
     },
     {
       "name": "LengthBoundedDisjointPaths",
       "category": "graph",
-      "x": -4.495034820790445,
-      "y": -27.409218930431628,
+      "x": -13.27887186390317,
+      "y": -11.292138642083737,
       "degree": 1
     },
     {
       "name": "LongestCircuit",
       "category": "graph",
-      "x": 5.428019021835907,
-      "y": -5.997076961841186,
+      "x": -12.555962161881222,
+      "y": -11.911647780614025,
       "degree": 2
     },
     {
       "name": "LongestCommonSubsequence",
       "category": "misc",
-      "x": -12.127685006499215,
-      "y": 0.8681414701609125,
+      "x": -11.778204255082832,
+      "y": -12.25474433905288,
       "degree": 3
     },
     {
       "name": "LongestPath",
       "category": "graph",
-      "x": 12.978519824603255,
-      "y": -29.075247993020753,
+      "x": -10.90783987087226,
+      "y": -12.117077753790698,
       "degree": 2
     },
     {
       "name": "MaxCut",
       "category": "graph",
-      "x": -16.721467490868616,
-      "y": -6.618574491724285,
+      "x": -12.270595830420106,
+      "y": -5.476433622027814,
       "degree": 6
     },
     {
       "name": "MaximalIS",
       "category": "graph",
-      "x": -14.868043439539269,
-      "y": -22.219144668144843,
+      "x": -9.966960027321822,
+      "y": -12.140460012032865,
       "degree": 1
     },
     {
       "name": "Maximum2Satisfiability",
       "category": "formula",
-      "x": -11.34533918846433,
-      "y": -6.935826751906047,
+      "x": -10.622380629737634,
+      "y": -11.169164771681665,
       "degree": 3
     },
     {
       "name": "MaximumClique",
       "category": "graph",
-      "x": -15.119440787205075,
-      "y": -4.307629246317969,
+      "x": -9.053885276245374,
+      "y": -11.47482204065001,
       "degree": 3
     },
     {
       "name": "MaximumDomaticNumber",
       "category": "graph",
-      "x": -7.461542783364006,
-      "y": -29.846869718028323,
+      "x": -8.100083027405118,
+      "y": -10.908704323114799,
       "degree": 1
     },
     {
       "name": "MaximumIndependentSet",
       "category": "graph",
-      "x": -18.92422997745977,
-      "y": 1.7754731137889532,
+      "x": -12.752734021943219,
+      "y": -8.135300253559908,
       "degree": 9
     },
     {
       "name": "MaximumLeafSpanningTree",
       "category": "graph",
-      "x": -11.652046286050115,
-      "y": -19.472263715644594,
+      "x": -7.162738969045083,
+      "y": -10.427098959505608,
       "degree": 1
     },
     {
       "name": "MaximumLikelihoodRanking",
       "category": "misc",
-      "x": -7.5453694681517245,
-      "y": -6.599651057689569,
+      "x": -6.692328861424931,
+      "y": -9.675153262896607,
       "degree": 2
     },
     {
       "name": "MaximumMatching",
       "category": "graph",
-      "x": -3.51250418951177,
-      "y": -13.313309769944308,
+      "x": -5.735085875898916,
+      "y": -9.091367457432613,
       "degree": 2
     },
     {
       "name": "MaximumSetPacking",
       "category": "set",
-      "x": -8.93679294273182,
-      "y": -9.90815994993498,
+      "x": -5.361105593370374,
+      "y": -8.196350838436143,
       "degree": 6
     },
     {
       "name": "MinMaxMulticenter",
       "category": "graph",
-      "x": -19.02735020916298,
-      "y": -12.148480360967255,
+      "x": -4.426992004454194,
+      "y": -7.731333846271201,
       "degree": 2
     },
     {
       "name": "MinimumAxiomSet",
       "category": "misc",
-      "x": -23.13160652717479,
-      "y": -31.064882314686585,
+      "x": -11.329662535273668,
+      "y": 2.012803290641251,
       "degree": 1
     },
     {
       "name": "MinimumCapacitatedSpanningTree",
       "category": "graph",
-      "x": -6.984470088402751,
-      "y": -18.492634027968485,
+      "x": -3.5395195128338663,
+      "y": -7.505817601585338,
       "degree": 1
     },
     {
       "name": "MinimumCodeGenerationUnlimitedRegisters",
       "category": "misc",
-      "x": -21.68120170150391,
-      "y": 11.584980029085203,
+      "x": -2.005534861475594,
+      "y": -21.370704297458378,
       "degree": 1
     },
     {
       "name": "MinimumCoveringByCliques",
       "category": "graph",
-      "x": -4.746098232835103,
-      "y": 7.1479610517432,
+      "x": -2.8641178828282885,
+      "y": -8.468676697292391,
       "degree": 2
     },
     {
       "name": "MinimumCutIntoBoundedSets",
       "category": "graph",
-      "x": -13.797056723315123,
-      "y": -13.300237635938483,
+      "x": -3.423441886206661,
+      "y": -9.206363391794055,
       "degree": 2
     },
     {
       "name": "MinimumDominatingSet",
       "category": "graph",
-      "x": -18.994190629441324,
-      "y": -3.0924838966606663,
+      "x": -3.35614802447747,
+      "y": -10.064041965721128,
       "degree": 4
     },
     {
       "name": "MinimumEdgeCostFlow",
       "category": "graph",
-      "x": -5.302456204493028,
-      "y": -9.29460755246337,
+      "x": -3.0546282715859365,
+      "y": -11.011142191999333,
       "degree": 1
     },
     {
       "name": "MinimumExternalMacroDataCompression",
       "category": "misc",
-      "x": -8.26184142468698,
-      "y": -26.959378196906314,
+      "x": -2.560308822921126,
+      "y": -11.988351674491042,
       "degree": 1
     },
     {
       "name": "MinimumFaultDetectionTestSet",
       "category": "misc",
-      "x": -12.92556949202617,
-      "y": -26.680332105345947,
+      "x": -3.963045924078802,
+      "y": -12.918874041248422,
       "degree": 2
     },
     {
       "name": "MinimumFeedbackArcSet",
       "category": "graph",
-      "x": -8.18240699056387,
-      "y": -0.26847069397800105,
+      "x": -3.4804975757189007,
+      "y": -13.914676296465355,
       "degree": 3
     },
     {
       "name": "MinimumFeedbackVertexSet",
       "category": "graph",
-      "x": -12.75137052377994,
-      "y": 4.872784195137397,
+      "x": -2.8601703966225624,
+      "y": -14.888306411485624,
       "degree": 3
     },
     {
       "name": "MinimumGraphBandwidth",
       "category": "graph",
-      "x": 2.521423591326413,
-      "y": -15.168604076532908,
+      "x": -2.1904898521646556,
+      "y": -15.786377242976414,
       "degree": 1
     },
     {
       "name": "MinimumHittingSet",
       "category": "set",
-      "x": -5.3641138099658985,
-      "y": -0.9719110032141325,
+      "x": -2.8002796720557663,
+      "y": -17.49991149286965,
       "degree": 2
     },
     {
       "name": "MinimumInternalMacroDataCompression",
       "category": "misc",
-      "x": -3.6724869028843408,
-      "y": -17.70714425550512,
+      "x": -2.0877877561101466,
+      "y": -18.172915675406536,
       "degree": 1
     },
     {
       "name": "MinimumMatrixCover",
       "category": "algebraic",
-      "x": -2.7674265043454067,
-      "y": -11.257826540175056,
+      "x": -1.2905199112681638,
+      "y": -18.410597802586974,
       "degree": 1
     },
     {
       "name": "MinimumMaximalMatching",
       "category": "graph",
-      "x": -8.89384750635693,
-      "y": 2.9501042251656013,
+      "x": -0.4501855122427516,
+      "y": -18.42713436252546,
       "degree": 2
     },
     {
       "name": "MinimumMetricDimension",
       "category": "graph",
-      "x": 5.232156437954164,
-      "y": -20.866863703466628,
+      "x": 0.44061302484047493,
+      "y": -18.184538966175104,
       "degree": 1
     },
     {
       "name": "MinimumMultiwayCut",
       "category": "graph",
-      "x": -2.1288889165371803,
-      "y": -6.585121697187532,
+      "x": 1.3066111051811173,
+      "y": -17.509529384875464,
       "degree": 2
     },
     {
       "name": "MinimumSetCovering",
       "category": "set",
-      "x": -5.233183821118042,
-      "y": 2.7116035833531225,
+      "x": 2.1759752837147714,
+      "y": -17.379614547068137,
       "degree": 2
     },
     {
       "name": "MinimumSumMulticenter",
       "category": "graph",
-      "x": -20.907020941958496,
-      "y": -8.644060668752367,
+      "x": 3.0485307038028733,
+      "y": -16.705983840467795,
       "degree": 2
     },
     {
       "name": "MinimumTardinessSequencing",
       "category": "misc",
-      "x": 4.72358463752297,
-      "y": -13.795420056030071,
+      "x": 3.9944357934446884,
+      "y": -16.179894673700687,
       "degree": 1
     },
     {
       "name": "MinimumVertexCover",
       "category": "graph",
-      "x": -10.97465720295693,
-      "y": 11.272683909617696,
+      "x": -9.920993515447316,
+      "y": -13.62033484450556,
       "degree": 13
     },
     {
       "name": "MinimumWeightAndOrGraph",
       "category": "misc",
-      "x": -14.918174844239386,
-      "y": 20.50844410649838,
+      "x": -10.177150511087834,
+      "y": -14.820602316190278,
       "degree": 1
     },
     {
       "name": "MinimumWeightDecoding",
       "category": "algebraic",
-      "x": 7.124117942125845,
-      "y": -11.133845521701602,
+      "x": 4.807685847723505,
+      "y": -15.49481654004329,
       "degree": 1
     },
     {
       "name": "MinimumWeightSolutionToLinearEquations",
       "category": "algebraic",
-      "x": -28.04542370019236,
-      "y": -29.777898494434815,
+      "x": -11.953709678817189,
+      "y": 0.9270707440925303,
       "degree": 1
     },
     {
       "name": "MixedChinesePostman",
       "category": "graph",
-      "x": 2.5315945350638582,
-      "y": -8.851217759365763,
+      "x": 5.746673794428839,
+      "y": -14.834224982466216,
       "degree": 1
     },
     {
       "name": "MonochromaticTriangle",
       "category": "graph",
-      "x": 2.5849122154842554,
-      "y": 6.883357662206599,
+      "x": 6.691657719233974,
+      "y": -14.316004834401824,
       "degree": 2
     },
     {
       "name": "MultipleCopyFileAllocation",
       "category": "graph",
-      "x": 8.512082048080766,
-      "y": -14.24881918973273,
+      "x": 7.658422656282255,
+      "y": -13.683847214425576,
       "degree": 1
     },
     {
       "name": "MultiprocessorScheduling",
       "category": "misc",
-      "x": 20.868502437487855,
-      "y": -11.258316335405594,
+      "x": 8.458560611091151,
+      "y": -12.996521226793625,
       "degree": 2
     },
     {
       "name": "NAESatisfiability",
       "category": "formula",
-      "x": -17.52702571853094,
-      "y": -9.277928499366663,
+      "x": 9.349373055372332,
+      "y": -12.326445948101902,
       "degree": 5
     },
     {
       "name": "NonTautology",
       "category": "formula",
-      "x": -26.09756606621134,
-      "y": 7.617687094679761,
+      "x": -9.359149163335019,
+      "y": 4.200475352676824,
       "degree": 1
     },
     {
       "name": "NumericalMatchingWithTargetSums",
       "category": "misc",
-      "x": 1.360979052452823,
-      "y": -12.311335448510572,
+      "x": 9.928049279578316,
+      "y": -11.595584321295087,
       "degree": 1
     },
     {
       "name": "OneInThreeSatisfiability",
       "category": "formula",
-      "x": 0.12349931657658564,
-      "y": 21.553592904023823,
+      "x": -1.1520226922324077,
+      "y": 7.814303805623482,
       "degree": 1
     },
     {
       "name": "OpenShopScheduling",
       "category": "misc",
-      "x": 16.216782469012358,
-      "y": -10.996774297805782,
+      "x": 10.281653694780395,
+      "y": -10.820891532152451,
       "degree": 2
     },
     {
       "name": "OptimalLinearArrangement",
       "category": "graph",
-      "x": 6.51738105453846,
-      "y": -16.564449314838097,
+      "x": 11.013551503746562,
+      "y": -10.119868738492698,
       "degree": 1
     },
     {
       "name": "OptimumCommunicationSpanningTree",
       "category": "misc",
-      "x": 0.4634400306999452,
-      "y": -17.87718698912049,
+      "x": 11.474734943226128,
+      "y": -9.36612621272558,
       "degree": 1
     },
     {
       "name": "PaintShop",
       "category": "misc",
-      "x": 0.12444056506702639,
-      "y": -5.856003503471504,
+      "x": 12.08010961141339,
+      "y": -8.640463921355025,
       "degree": 2
     },
     {
       "name": "PartiallyOrderedKnapsack",
       "category": "misc",
-      "x": 14.394556701704898,
-      "y": -18.631969698515018,
+      "x": 12.415162534290243,
+      "y": -7.862158358692341,
       "degree": 1
     },
     {
       "name": "Partition",
       "category": "misc",
-      "x": 23.445074923048338,
-      "y": -3.7861001743885545,
+      "x": -3.5648303253767137,
+      "y": 4.318047475569782,
       "degree": 11
     },
     {
       "name": "PartitionIntoCliques",
       "category": "graph",
-      "x": -8.862692305692008,
-      "y": 16.043427924475615,
+      "x": -14.131392891126042,
+      "y": -12.018266997226862,
       "degree": 2
     },
     {
       "name": "PartitionIntoPathsOfLength2",
       "category": "graph",
-      "x": 12.621065600585625,
-      "y": -21.266097948819038,
+      "x": 12.823734334159651,
+      "y": -7.098170083683181,
       "degree": 2
     },
     {
       "name": "PartitionIntoPerfectMatchings",
       "category": "graph",
-      "x": -28.16621898949792,
-      "y": -13.363525617494552,
+      "x": 12.184760326498317,
+      "y": -14.508980988539221,
       "degree": 1
     },
     {
       "name": "PartitionIntoTriangles",
       "category": "graph",
-      "x": 13.917442865902064,
-      "y": -15.34521109362696,
+      "x": 13.189843829373547,
+      "y": -6.325912571505912,
       "degree": 1
     },
     {
       "name": "PathConstrainedNetworkFlow",
       "category": "graph",
-      "x": 18.202985222094572,
-      "y": -18.205624862636455,
+      "x": 12.926694557399374,
+      "y": -5.431111310744919,
       "degree": 1
     },
     {
       "name": "PrecedenceConstrainedScheduling",
       "category": "misc",
-      "x": 11.093493292917076,
-      "y": -12.557868340375107,
+      "x": 12.284407749682293,
+      "y": -4.462475663748276,
       "degree": 1
     },
     {
       "name": "PreemptiveScheduling",
       "category": "misc",
-      "x": -2.331052014929978,
-      "y": 1.656930730864417,
+      "x": 11.417351158936201,
+      "y": -3.9166716435690896,
       "degree": 2
     },
     {
       "name": "ProductionPlanning",
       "category": "misc",
-      "x": 32.40318685656887,
-      "y": -5.446980565735822,
+      "x": -7.4088146560704224,
+      "y": 6.383926819912346,
       "degree": 1
     },
     {
       "name": "QUBO",
       "category": "algebraic",
-      "x": -1.081420166910423,
-      "y": -2.02164622817598,
+      "x": -2.6400827067687747,
+      "y": 0.4713486516586943,
       "degree": 13
     },
     {
       "name": "QuadraticAssignment",
       "category": "algebraic",
-      "x": 12.61415825989876,
-      "y": -5.084345929382457,
+      "x": 11.008479423967175,
+      "y": -2.993491951232101,
       "degree": 2
     },
     {
       "name": "QuadraticCongruences",
       "category": "algebraic",
-      "x": 5.023844715838526,
-      "y": 22.814787892966898,
+      "x": -2.024563073364379,
+      "y": 7.932266864646538,
       "degree": 1
     },
     {
       "name": "QuadraticDiophantineEquations",
       "category": "algebraic",
-      "x": -5.461523792483305,
-      "y": 21.73850320677265,
+      "x": -2.8781184028770888,
+      "y": 7.980311629818743,
       "degree": 1
     },
     {
       "name": "RectilinearPictureCompression",
       "category": "misc",
-      "x": 10.151263527383309,
-      "y": -18.31820201810881,
+      "x": 10.344257032695053,
+      "y": -2.0694862288836138,
       "degree": 1
     },
     {
       "name": "RegisterSufficiency",
       "category": "misc",
-      "x": -1.1682665167159567,
-      "y": 5.740777569081336,
+      "x": 9.462671256554463,
+      "y": -2.741358336733455,
       "degree": 2
     },
     {
       "name": "ResourceConstrainedScheduling",
       "category": "misc",
-      "x": -2.682007953894798,
-      "y": -31.519879651995858,
+      "x": 8.70957690212375,
+      "y": -3.439272037218403,
       "degree": 2
     },
     {
       "name": "RootedTreeArrangement",
       "category": "graph",
-      "x": 25.63153423393059,
-      "y": -29.174384828380433,
+      "x": 14.29112305603854,
+      "y": -0.6446646306907784,
       "degree": 1
     },
     {
       "name": "RootedTreeStorageAssignment",
       "category": "set",
-      "x": 17.935594311761193,
-      "y": -24.179795117263396,
+      "x": 8.199594236778509,
+      "y": -2.475007192350893,
       "degree": 2
     },
     {
       "name": "RuralPostman",
       "category": "graph",
-      "x": 13.530780619909537,
-      "y": 2.1067430626074124,
+      "x": 7.8625108054532085,
+      "y": -1.5535823390253707,
       "degree": 2
     },
     {
       "name": "Satisfiability",
       "category": "formula",
-      "x": -16.193050893415787,
-      "y": 4.10985991548552,
+      "x": -5.777508104805513,
+      "y": 5.997982606585871,
       "degree": 11
     },
     {
       "name": "SchedulingToMinimizeWeightedCompletionTime",
       "category": "misc",
-      "x": 8.278557090845503,
-      "y": -21.506607140231697,
+      "x": 8.353503872964135,
+      "y": -0.605962981025433,
       "degree": 1
     },
     {
       "name": "SchedulingWithIndividualDeadlines",
       "category": "misc",
-      "x": 11.946802985667349,
-      "y": -24.767812235248222,
+      "x": 8.622880427554495,
+      "y": 0.24524096741291102,
       "degree": 1
     },
     {
       "name": "SequencingToMinimizeMaximumCumulativeCost",
       "category": "misc",
-      "x": 8.462637718442794,
-      "y": -26.20626630477959,
+      "x": 7.933266466079682,
+      "y": 1.1487218715492482,
       "degree": 1
     },
     {
       "name": "SequencingToMinimizeTardyTaskWeight",
       "category": "misc",
-      "x": 18.985429038637054,
-      "y": -13.583695875998444,
+      "x": 7.870860111635087,
+      "y": 2.067594581408964,
       "degree": 2
     },
     {
       "name": "SequencingToMinimizeWeightedCompletionTime",
       "category": "misc",
-      "x": 5.043206255426709,
-      "y": -24.743005881387198,
+      "x": 7.974575409403225,
+      "y": 3.0040367723683774,
       "degree": 1
     },
     {
       "name": "SequencingToMinimizeWeightedTardiness",
       "category": "misc",
-      "x": 4.874964682330459,
-      "y": -31.399614549501038,
+      "x": 7.936475403344631,
+      "y": 3.8865936257995495,
       "degree": 2
     },
     {
       "name": "SequencingWithDeadlinesAndSetUpTimes",
       "category": "misc",
-      "x": 2.9213462747162757,
-      "y": -19.38075929792193,
+      "x": 7.519358560675505,
+      "y": 4.811378995256563,
       "degree": 1
     },
     {
       "name": "SequencingWithReleaseTimesAndDeadlines",
       "category": "misc",
-      "x": 2.303300772913851,
-      "y": -29.80995048268364,
+      "x": 7.05562356279156,
+      "y": 5.879722672046748,
       "degree": 2
     },
     {
       "name": "SequencingWithinIntervals",
       "category": "misc",
-      "x": 19.4832833616909,
-      "y": -8.208565806305728,
+      "x": 6.248719075204449,
+      "y": 6.068444048450649,
       "degree": 2
     },
     {
       "name": "SetSplitting",
       "category": "set",
-      "x": -20.395506025186275,
-      "y": -16.24104048776218,
+      "x": 5.572278433644071,
+      "y": 6.926570530063576,
       "degree": 3
     },
     {
       "name": "ShortestCommonSupersequence",
       "category": "misc",
-      "x": -2.1434602733972947,
-      "y": -9.106583459294292,
+      "x": 5.098923644702452,
+      "y": 6.175198289568869,
       "degree": 1
     },
     {
       "name": "ShortestWeightConstrainedPath",
       "category": "graph",
-      "x": 14.77238501235071,
-      "y": -8.451611944387949,
+      "x": 4.377944578265291,
+      "y": 6.8046211885480865,
       "degree": 2
     },
     {
       "name": "SimultaneousIncongruences",
       "category": "algebraic",
-      "x": -2.7633506349903656,
-      "y": 24.23056438794997,
+      "x": -3.7292720072588343,
+      "y": 7.941291868825607,
       "degree": 1
     },
     {
       "name": "SparseMatrixCompression",
       "category": "algebraic",
-      "x": -6.15802779001099,
-      "y": -12.039453220207871,
+      "x": 3.615485519560914,
+      "y": 7.2210454719414,
       "degree": 1
     },
     {
       "name": "SpinGlass",
       "category": "graph",
-      "x": -7.632513146997643,
-      "y": -4.4566659006132445,
+      "x": 2.1868333141313223,
+      "y": 5.540140098066605,
       "degree": 5
     },
     {
       "name": "StackerCrane",
       "category": "misc",
-      "x": 10.2342846182464,
-      "y": -1.168816690478371,
+      "x": 2.773316060969764,
+      "y": 7.228159051651202,
       "degree": 2
     },
     {
       "name": "StaffScheduling",
       "category": "misc",
-      "x": -28.73051684121649,
-      "y": -25.7386980535286,
+      "x": -12.137759742522078,
+      "y": -0.2952874579293785,
       "degree": 1
     },
     {
       "name": "SteinerTree",
       "category": "graph",
-      "x": -5.9022846010909475,
-      "y": -23.186360957315117,
+      "x": 3.119799990818917,
+      "y": 5.99926772758862,
       "degree": 1
     },
     {
       "name": "SteinerTreeInGraphs",
       "category": "graph",
-      "x": -4.621505595419077,
-      "y": -15.5073067882158,
+      "x": 2.719577976689939,
+      "y": 4.592837018521676,
       "degree": 1
     },
     {
       "name": "StringToStringCorrection",
       "category": "misc",
-      "x": -0.8697971269565272,
-      "y": -15.214635361151863,
+      "x": 1.7797040263808257,
+      "y": 4.10347216738263,
       "degree": 1
     },
     {
       "name": "StrongConnectivityAugmentation",
       "category": "graph",
-      "x": 4.683816789952878,
-      "y": -2.9777145546958126,
+      "x": 0.8297248183025271,
+      "y": 3.5569856586571804,
       "degree": 2
     },
     {
       "name": "SubgraphIsomorphism",
       "category": "graph",
-      "x": 14.468755930232742,
-      "y": -0.30455400781715447,
+      "x": -0.05124850402247183,
+      "y": 3.3648424689479115,
       "degree": 2
     },
     {
       "name": "SubsetProduct",
       "category": "misc",
-      "x": -21.247508110574,
-      "y": -34.96481464019078,
+      "x": -11.751337792967924,
+      "y": -2.595568979157325,
       "degree": 1
     },
     {
       "name": "SubsetSum",
       "category": "misc",
-      "x": 15.039923207388476,
-      "y": 9.198941956374254,
+      "x": -4.310507903999864,
+      "y": 5.061290335433715,
       "degree": 7
     },
     {
       "name": "SumOfSquaresPartition",
       "category": "misc",
-      "x": 3.9732314234382606,
-      "y": -10.852586494456704,
+      "x": -1.485724564397041,
+      "y": 3.1449915371503367,
       "degree": 1
     },
     {
       "name": "ThreeDimensionalMatching",
       "category": "set",
-      "x": 7.716853377607457,
-      "y": -29.76365221181765,
+      "x": -2.2874013458640627,
+      "y": 2.3974493389724167,
       "degree": 2
     },
     {
       "name": "ThreePartition",
       "category": "misc",
-      "x": 3.0890923597561755,
-      "y": -36.77369954677514,
+      "x": -11.750178987687292,
+      "y": -4.064884009084647,
       "degree": 6
     },
     {
       "name": "TimetableDesign",
       "category": "misc",
-      "x": 1.7813074573123049,
-      "y": -0.2686497993617518,
+      "x": -3.2491440292663207,
+      "y": 1.811483460339352,
       "degree": 2
     },
     {
       "name": "TravelingSalesman",
       "category": "graph",
-      "x": 2.3922340580274177,
-      "y": -3.6733305103285936,
+      "x": -0.6019375761464817,
+      "y": 0.4167462110480426,
       "degree": 3
     },
     {
       "name": "TwoDimensionalConsecutiveSets",
       "category": "set",
-      "x": -13.960764056222946,
-      "y": 16.24496874669645,
+      "x": -11.803157959555707,
+      "y": -13.094356465354712,
       "degree": 1
     },
     {
       "name": "UndirectedFlowLowerBounds",
       "category": "graph",
-      "x": -0.1761162489867213,
-      "y": -8.459198724590989,
+      "x": -1.2469070919402412,
+      "y": -0.6037846918141707,
       "degree": 1
     },
     {
       "name": "UndirectedTwoCommodityIntegralFlow",
       "category": "graph",
-      "x": 2.232242269930343,
-      "y": -24.758839008791114,
+      "x": -2.8165265882211252,
+      "y": -0.47130587503601595,
       "degree": 1
     }
   ],

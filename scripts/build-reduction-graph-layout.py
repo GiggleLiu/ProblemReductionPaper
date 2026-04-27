@@ -90,10 +90,8 @@ def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str,
         'graph G {',
         '  layout=twopi;',
         '  root="ILP";',
-        '  ranksep="2.5";',
-        '  overlap=prism;',
-        '  overlap_scaling=-7;',
-        '  sep="+10";',
+        '  ranksep="3.0 equally";',
+        '  overlap=false;',
         '  node [shape=circle, fixedsize=true];',
     ]
     for n in nodes:
