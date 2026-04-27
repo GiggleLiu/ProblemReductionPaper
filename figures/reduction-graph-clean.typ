@@ -119,21 +119,27 @@
     )
   }
 
-  // ── Hub nodes (drawn last so labels sit on top) ──
+  // ── Hub nodes — slightly bigger filled disk, label set OUTSIDE
+  // (top for 3-SAT, bottom for ILP) so the figure reads as one family
+  // of dots with two callouts.
   for n in data.nodes {
     if not is-hub(n.name) { continue }
     let col = category-color(n.category)
     let label = if n.name == "KSatisfiability" { [3-SAT] } else { [ILP] }
+    let cx = nx(n.x)
+    let cy = ny(n.y)
     circle(
-      (nx(n.x), ny(n.y)),
+      (cx, cy),
       radius: r-hub,
-      fill: col.lighten(75%),
-      stroke: (thickness: 1.0pt, paint: col.darken(10%)),
-      name: n.name,
+      fill: col.darken(5%),
+      stroke: (thickness: 0.4pt, paint: col.darken(20%)),
     )
+    let dy = if n.name == "KSatisfiability" { 0.55 } else { -0.55 }
+    let anchor = if n.name == "KSatisfiability" { "south" } else { "north" }
     content(
-      n.name,
-      text(8pt, weight: "bold", fill: col.darken(25%), label),
+      (cx, cy + dy),
+      anchor: anchor,
+      text(9pt, weight: "bold", fill: col.darken(25%), label),
     )
   }
 
