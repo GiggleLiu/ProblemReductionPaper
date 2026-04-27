@@ -601,11 +601,13 @@
     radius: 0.04,
     stroke: (paint: p3-stroke, thickness: 0.85pt),
     fill: col-p3.lighten(60%))
-  // three literal dots inside ("•••")
-  let dy = scy
-  circle((scx - 0.07, dy), radius: 0.027, fill: p3-stroke.darken(15%), stroke: none)
-  circle((scx,        dy), radius: 0.027, fill: p3-stroke.darken(15%), stroke: none)
-  circle((scx + 0.07, dy), radius: 0.027, fill: p3-stroke.darken(15%), stroke: none)
+  // Three stacked literal-bars inside (mirror of `≤`'s two bars in icon-ilp).
+  let bx = scx - 0.07
+  let bx2 = scx + 0.07
+  let bs = (paint: p3-stroke.darken(15%), thickness: 0.75pt, cap: "round")
+  line((bx, scy + 0.075), (bx2, scy + 0.075), stroke: bs)
+  line((bx, scy        ), (bx2, scy        ), stroke: bs)
+  line((bx, scy - 0.075), (bx2, scy - 0.075), stroke: bs)
 
   // ── Three targets on the right ──
   let tx = 0.36
