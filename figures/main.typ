@@ -466,8 +466,8 @@
 
   let plot-w = 11.0
   let plot-h = 16.0
-  let r-node = 0.16
-  let r-hub  = 0.26
+  let r-node = 0.20
+  let r-hub  = 0.32
   let edge-stroke = (thickness: 0.22pt, paint: rgb(120, 120, 130, 70))
   let edge-curve = 0.18
 
