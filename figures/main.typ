@@ -78,7 +78,7 @@
 // Panel 1: Many hard problems, many solver formats
 // ─────────────────────────────────────────────────────────────
 #let panel1(h: auto) = box(
-  width: 6.7cm,
+  width: 6.0cm,
   height: h,
   stroke: panel-stroke,
   radius: panel-radius,
@@ -959,7 +959,7 @@
     ),
   )
 
-  #v(10pt)
+  #v(8pt)
 
   // Growth curve panel
   #box(
