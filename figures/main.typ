@@ -500,7 +500,7 @@
   }
   let is-hub(name) = name in hubs
 
-  canvas(length: 0.36cm, {
+  canvas(length: 0.5cm, {
     import draw: *
 
     // Edges (back layer) — quadratic bezier with slight perpendicular bow.
