@@ -100,24 +100,21 @@
     )
   }
 
-  // ── Ordinary nodes ──
+  // ── Ordinary nodes (uniform color) ──
   for n in data.nodes {
     if is-hub(n.name) { continue }
-    let col = category-color(n.category)
     circle(
       (nx(n.x), ny(n.y)),
       radius: r-node,
-      fill: col.lighten(35%),
-      stroke: (thickness: 0.25pt, paint: col.darken(15%)),
+      fill: col-node.lighten(35%),
+      stroke: (thickness: 0.25pt, paint: col-node.darken(15%)),
     )
   }
 
-  // ── Hub nodes — slightly bigger filled disk, label set OUTSIDE
-  // (top for 3-SAT, bottom for ILP) so the figure reads as one family
-  // of dots with two callouts.
+  // ── Hub nodes — bigger filled disk with the label INSIDE.
   for n in data.nodes {
     if not is-hub(n.name) { continue }
-    let col = category-color(n.category)
+    let col = hub-color(n.name)
     let label = if n.name == "KSatisfiability" { [3-SAT] } else { [ILP] }
     let cx = nx(n.x)
     let cy = ny(n.y)
@@ -125,41 +122,12 @@
       (cx, cy),
       radius: r-hub,
       fill: col.darken(5%),
-      stroke: (thickness: 0.4pt, paint: col.darken(20%)),
-    )
-    let dy = if n.name == "KSatisfiability" { 0.55 } else { -0.55 }
-    let anchor = if n.name == "KSatisfiability" { "south" } else { "north" }
-    content(
-      (cx, cy + dy),
-      anchor: anchor,
-      text(9pt, weight: "bold", fill: col.darken(25%), label),
-    )
-  }
-
-
-  // ── Compact category legend, bottom strip ──
-  let entries = (
-    (col-graph,     "graph"),
-    (col-formula,   "formula"),
-    (col-set,       "set"),
-    (col-algebraic, "algebraic"),
-    (col-misc,      "misc"),
-  )
-  let col-gap = plot-w / entries.len()
-  let ly = -0.55
-  for (i, e) in entries.enumerate() {
-    let (col, label) = e
-    let cx-leg = (i + 0.5) * col-gap - 0.4
-    circle(
-      (cx-leg, ly),
-      radius: 0.12,
-      fill: col.lighten(35%),
-      stroke: (thickness: 0.3pt, paint: col.darken(15%)),
+      stroke: (thickness: 0.5pt, paint: col.darken(25%)),
     )
     content(
-      (cx-leg + 0.25, ly),
-      anchor: "west",
-      text(6pt, fill: fg, label),
+      (cx, cy),
+      anchor: "center",
+      text(9pt, weight: "bold", fill: white, label),
     )
   }
 })
