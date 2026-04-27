@@ -473,15 +473,17 @@
 
   // Percentile-based bounds (clip outliers) so the bulk of the graph
   // fills the canvas instead of being compressed by a few far points.
+  // Tight 5/95 clip + small padding push the outermost nodes against
+  // the canvas edges, leaving as little whitespace as possible.
   let xs-sorted = data.nodes.map(n => n.x).sorted()
   let ys-sorted = data.nodes.map(n => n.y).sorted()
   let pct(arr, p) = arr.at(
     calc.min(arr.len() - 1, calc.max(0, int(p * arr.len()))))
-  let x-min = pct(xs-sorted, 0.02)
-  let x-max = pct(xs-sorted, 0.98)
-  let y-min = pct(ys-sorted, 0.02)
-  let y-max = pct(ys-sorted, 0.98)
-  let pad = 0.04
+  let x-min = pct(xs-sorted, 0.05)
+  let x-max = pct(xs-sorted, 0.95)
+  let y-min = pct(ys-sorted, 0.05)
+  let y-max = pct(ys-sorted, 0.95)
+  let pad = 0.02
   let clamp-v(v, lo, hi) = calc.max(lo, calc.min(hi, v))
   let nx-pos(x) = {
     let t = clamp-v((x - x-min) / (x-max - x-min), 0.0, 1.0)
@@ -739,7 +741,7 @@
     ),
   )
 
-  #v(45pt)
+  // #v(45pt)
 
   // Growth curve panel
   #box(
