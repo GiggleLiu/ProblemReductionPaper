@@ -582,42 +582,68 @@
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: reachable from 3-SAT — fan layout. Filled hub on the left, four
-// leaf nodes spreading right; spokes convey directed reach.
+// Icon: reachable from 3-SAT — mirror of `icon-ilp`. A 3-SAT source node
+// on the left (rounded square marked with "•••" for the three literals
+// of a clause) fans out via three arrows to △, ○, □ targets on the
+// right.
 #let icon-reach = canvas(length: 0.55cm, {
   import draw: *
-  let s-edge = (paint: p3-stroke.lighten(5%), thickness: 0.6pt, cap: "round")
-  let s-leaf = (paint: p3-stroke, thickness: 0.55pt)
-  let hx = -0.30
-  let hy = 0
-  let hub-r = 0.13
-  let leaf-r = 0.075
-  let leaves = (
-    (0.30,  0.32),
-    (0.42,  0.10),
-    (0.42, -0.12),
-    (0.30, -0.32),
-  )
-  // spokes (from hub edge to leaf edge)
-  for p in leaves {
-    let dx = p.at(0) - hx
-    let dy = p.at(1) - hy
+  let s     = (paint: p3-stroke, thickness: 0.65pt, cap: "round", join: "round")
+  let s-arr = (paint: p3-stroke, thickness: 0.55pt, cap: "round")
+  let f = p3-fill
+  let r = 0.095
+
+  // ── 3-SAT source on the left ──
+  let scx = -0.30
+  let scy = 0.00
+  let sR  = 0.17
+  rect((scx - sR, scy - sR), (scx + sR, scy + sR),
+    radius: 0.04,
+    stroke: (paint: p3-stroke, thickness: 0.85pt),
+    fill: col-p3.lighten(60%))
+  // three literal dots inside ("•••")
+  let dy = scy
+  circle((scx - 0.07, dy), radius: 0.027, fill: p3-stroke.darken(15%), stroke: none)
+  circle((scx,        dy), radius: 0.027, fill: p3-stroke.darken(15%), stroke: none)
+  circle((scx + 0.07, dy), radius: 0.027, fill: p3-stroke.darken(15%), stroke: none)
+
+  // ── Three targets on the right ──
+  let tx = 0.36
+  let ys = (0.30, 0.00, -0.30)
+
+  // top: triangle
+  let ty = ys.at(0)
+  line((tx,            ty + r * 1.05),
+       (tx - r * 0.95, ty - r * 0.55),
+       (tx + r * 0.95, ty - r * 0.55),
+       close: true, stroke: s, fill: f)
+  // mid: circle
+  circle((tx, ys.at(1)), radius: r, stroke: s, fill: f)
+  // bottom: square
+  let qy = ys.at(2)
+  rect((tx - r, qy - r), (tx + r, qy + r),
+    radius: 0.022, stroke: s, fill: f)
+
+  // ── Diverging arrows: source → each target ──
+  for y in ys {
+    // start: source's right edge on the line toward (tx, y)
+    let dx = tx - scx
+    let dy = y - scy
     let len = calc.sqrt(dx * dx + dy * dy)
     let ux = dx / len
     let uy = dy / len
-    line(
-      (hx + ux * (hub-r + 0.005), hy + uy * (hub-r + 0.005)),
-      (p.at(0) - ux * (leaf-r + 0.005), p.at(1) - uy * (leaf-r + 0.005)),
-      stroke: s-edge,
-    )
+    let x0-edge = scx + sR + 0.015
+    let t0-len = (x0-edge - scx) / ux
+    let x0 = scx + ux * t0-len
+    let y0 = scy + uy * t0-len
+    // end: just outside target shape
+    let x1 = tx - ux * (r + 0.025)
+    let y1 = y  - uy * (r + 0.025)
+    line((x0, y0), (x1, y1),
+      stroke: s-arr,
+      mark: (end: "straight", scale: 0.30, fill: p3-stroke))
   }
-  // leaves
-  for p in leaves {
-    circle(p, radius: leaf-r, stroke: s-leaf, fill: p3-fill)
-  }
-  // hub (filled — the source)
-  circle((hx, hy), radius: hub-r,
-    stroke: (paint: p3-stroke, thickness: 0.7pt), fill: col-p3)
+
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
