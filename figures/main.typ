@@ -932,7 +932,7 @@
     box(width: 0.8cm, height: 0.8cm,
       stroke: (thickness: 1.2pt, paint: col-p3),
       radius: 50%, fill: white,
-      align(center + horizon, text(13pt, weight: "bold", fill: col-p3, [3]))),
+      align(center + horizon, text(11pt, weight: "bold", fill: col-p3, [(c)]))),
     text(11pt, weight: "bold", fill: col-p3.darken(10%),
       [A reduction graph built at scale]),
   )
