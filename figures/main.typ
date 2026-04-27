@@ -520,36 +520,33 @@
       )
     }
 
-    // Ordinary nodes
+    // Ordinary nodes — uniform color
     for n in data.nodes {
       if is-hub(n.name) { continue }
-      let col = category-color(n.category)
       circle(
         name-to-pos.at(n.name),
         radius: r-node,
-        fill: col.lighten(35%),
-        stroke: (thickness: 0.25pt, paint: col.darken(15%)),
+        fill: col-node.lighten(35%),
+        stroke: (thickness: 0.25pt, paint: col-node.darken(15%)),
       )
     }
 
-    // Hubs — slightly bigger filled disk + label OUTSIDE.
+    // Hubs — bigger filled disk with label INSIDE.
     for n in data.nodes {
       if not is-hub(n.name) { continue }
-      let col = category-color(n.category)
+      let col = hub-color(n.name)
       let label = if n.name == "KSatisfiability" { [3-SAT] } else { [ILP] }
       let (cx, cy) = name-to-pos.at(n.name)
       circle(
         (cx, cy),
         radius: r-hub,
         fill: col.darken(5%),
-        stroke: (thickness: 0.4pt, paint: col.darken(20%)),
+        stroke: (thickness: 0.5pt, paint: col.darken(25%)),
       )
-      let dy-off = if n.name == "KSatisfiability" { 0.55 } else { -0.55 }
-      let anchor = if n.name == "KSatisfiability" { "south" } else { "north" }
       content(
-        (cx, cy + dy-off),
-        anchor: anchor,
-        text(7pt, weight: "bold", fill: col.darken(25%), label),
+        (cx, cy),
+        anchor: "center",
+        text(6pt, weight: "bold", fill: white, label),
       )
     }
 
