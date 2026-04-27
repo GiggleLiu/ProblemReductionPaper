@@ -143,6 +143,18 @@
     )
   }
 
+  // "+ N leaves" annotation for hidden ILP-only leaf nodes.
+  let hidden = data.at("hidden_leaves", default: 0)
+  if hidden > 0 {
+    let (ilp-x, ilp-y, _) = name-to-pos.at("ILP")
+    content(
+      (ilp-x + 0.45, ilp-y - 1.0),
+      anchor: "west",
+      text(7pt, style: "italic", fill: col-algebraic.darken(15%),
+        [+ #hidden leaves]),
+    )
+  }
+
   // ── Compact category legend, bottom strip ──
   let entries = (
     (col-graph,     "graph"),
