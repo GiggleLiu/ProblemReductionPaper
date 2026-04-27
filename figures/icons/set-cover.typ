@@ -24,9 +24,9 @@
   circle(p-3, radius: r-set, fill: blue.lighten(80%), stroke: none)
 
   // Pass 2: strokes only — drawn on top so all three rims stay intact.
-  circle(p-1, radius: r-set, fill: none, stroke: s-thick + blue.darken(15%))
+  circle(p-1, radius: r-set, fill: none, stroke: s-thick + blue.darken(35%))
   circle(p-2, radius: r-set, fill: none, stroke: s-thick + blue)
-  circle(p-3, radius: r-set, fill: none, stroke: s-thick + blue.lighten(20%))
+  circle(p-3, radius: r-set, fill: none, stroke: s-thick + blue.lighten(35%))
 
   // Universe elements — small soft dots, placed so each sits in at
   // least one set; some are in 2- or 3-set intersections.
