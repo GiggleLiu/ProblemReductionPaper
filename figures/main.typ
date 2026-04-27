@@ -289,7 +289,7 @@
 
 // Verification harness box: 4 mini-cards in a row.
 #let verif-cell(label, icon: none) = box(
-  width: 100%, height: 1.3cm,
+  width: 100%, height: 1.6cm,
   stroke: (thickness: 0.6pt, paint: col-violet),
   radius: 3pt,
   fill: white,
