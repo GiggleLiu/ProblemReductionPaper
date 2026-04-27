@@ -132,6 +132,33 @@ def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str,
             for k, (x, y) in pos.items()
         }
 
+    # Radial-rank equalization to balance density. ILP's 114 direct
+    # neighbours otherwise crowd onto its inner radius while the
+    # periphery looks empty. Rank every node by distance from the
+    # centroid, blend the original radius with the rank-uniform radius
+    # (alpha=0.6 → 60 % toward fully equalized shells, 40 % original).
+    alpha = 0.6
+    cx = sum(p[0] for p in pos.values()) / len(pos)
+    cy = sum(p[1] for p in pos.values()) / len(pos)
+    items = list(pos.items())
+    rs = [(name, math.hypot(x - cx, y - cy)) for name, (x, y) in items]
+    rs_sorted = sorted(rs, key=lambda kv: kv[1])
+    r_max = rs_sorted[-1][1]
+    rank_of = {name: i for i, (name, _) in enumerate(rs_sorted)}
+    n = len(items)
+    new_pos: dict[str, tuple[float, float]] = {}
+    for name, (x, y) in items:
+        dx, dy = x - cx, y - cy
+        r = math.hypot(dx, dy)
+        if r < 1e-9:
+            new_pos[name] = (x, y)
+            continue
+        r_uniform = r_max * (rank_of[name] / max(n - 1, 1))
+        r_new = (1 - alpha) * r + alpha * r_uniform
+        scale = r_new / r
+        new_pos[name] = (cx + dx * scale, cy + dy * scale)
+    pos = new_pos
+
     return {k: (float(v[0]), float(v[1])) for k, v in pos.items()}
 
 
