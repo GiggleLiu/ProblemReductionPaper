@@ -916,7 +916,7 @@
 })
 
 #let panel3(h: auto) = box(
-  width: 9.5cm,
+  width: 8.3cm,
   height: h,
   stroke: panel-stroke,
   radius: panel-radius,
@@ -949,15 +949,15 @@
       rows: (auto,) * 6,
       gutter: 4pt,
       stat-tile([190], [problem types],          icon: icon-problem-types),
-      stat-tile([220], [variants (concrete type of problems)], icon: icon-variants),
+      stat-tile([220], [concrete type of problems(variants)], icon: icon-variants),
       stat-tile([265], [reduction rules],        icon: icon-reduction),
       stat-tile([129], [reducible to ILP],       icon: icon-ilp),
-      stat-tile([78],  [reachable from 3-SAT],   icon: icon-reach),
+      stat-tile([78],  [reachable from\ 3-SAT],   icon: icon-reach),
       stat-tile([\~170k], [lines of Rust code],  icon: icon-code),
     ),
   )
 
-  // #v(45pt)
+  #v(10pt)
 
   // Growth curve panel
   #box(
