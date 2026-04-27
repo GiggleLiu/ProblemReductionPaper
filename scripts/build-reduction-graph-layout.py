@@ -105,24 +105,25 @@ def compute_layout(nodes: list[dict], edges: list[tuple[str, str]]) -> dict[str,
         seed=7,
     )
 
-    # Re-anchor so 3-SAT sits on the left and ILP on the right of the
-    # final figure, regardless of how ForceAtlas2 oriented the embedding.
+    # Re-anchor so 3-SAT sits at the TOP and ILP at the BOTTOM of the
+    # final figure (the paper figure is portrait-oriented). ForceAtlas2
+    # picks an arbitrary global orientation, so rotate so SAT→ILP is
+    # along the −y axis (top-down).
+    import math
     if all(h in pos for h in HUB_ANCHORS):
-        import math
         sat = pos["KSatisfiability"]
         ilp = pos["ILP"]
-        dx = ilp[0] - sat[0]
-        dy = ilp[1] - sat[1]
-        theta = math.atan2(dy, dx)  # current SAT→ILP angle
-        c, s = math.cos(-theta), math.sin(-theta)
-        # Center on midpoint, rotate so SAT→ILP is along +x.
+        theta = math.atan2(ilp[1] - sat[1], ilp[0] - sat[0])
+        # Want SAT→ILP along +x then we'll relabel +x → −y when
+        # rendering; equivalently rotate by (−theta − π/2) so SAT→ILP is +y.
+        rot = -theta - math.pi / 2
+        c, s = math.cos(rot), math.sin(rot)
         cx = (sat[0] + ilp[0]) / 2
         cy = (sat[1] + ilp[1]) / 2
-        rotated = {}
-        for k, (x, y) in pos.items():
-            x0, y0 = x - cx, y - cy
-            rotated[k] = (c * x0 - s * y0, s * x0 + c * y0)
-        pos = rotated
+        pos = {
+            k: (c * (x - cx) - s * (y - cy), s * (x - cx) + c * (y - cy))
+            for k, (x, y) in pos.items()
+        }
 
     return {k: (float(v[0]), float(v[1])) for k, v in pos.items()}
 
