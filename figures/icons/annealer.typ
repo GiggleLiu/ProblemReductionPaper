@@ -42,7 +42,7 @@
 
   // Downward "minimize" arrow above the global min (drawn before the dot).
   line((gmin.at(0), 0.85), (gmin.at(0), gmin.at(1) + 0.28),
-    stroke: (paint: rgb("#59a14f").darken(20%), thickness: 1.2pt),
+    stroke: (paint: rgb("#5a6878").darken(15%).darken(20%), thickness: 1.2pt),
     mark: (end: "straight", scale: 0.6))
 
   // Local minima — small gray dots.
@@ -53,6 +53,6 @@
 
   // Global minimum — bright green dot.
   circle(gmin, radius: 0.12cm,
-    fill: rgb("#59a14f"),
+    fill: rgb("#5a6878").darken(15%),
     stroke: 0.5pt + black.lighten(10%))
 })
