@@ -42,21 +42,26 @@
 #let data = json("../data/reduction-graph-layout.json")
 #let hubs = ("KSatisfiability", "ILP")
 
-// Compute data bounds for normalization.
-#let xs = data.nodes.map(n => n.x)
-#let ys = data.nodes.map(n => n.y)
-#let x-min = calc.min(..xs)
-#let x-max = calc.max(..xs)
-#let y-min = calc.min(..ys)
-#let y-max = calc.max(..ys)
-#let pad   = 0.06   // 6 % padding so nodes don't touch the edge
+// Use percentile-based bounds (clip outliers) so the bulk of nodes fills
+// the canvas instead of getting compressed into the centre by a few far-
+// flung points. Then clamp the projected coordinates so outliers still
+// render — just at the edge.
+#let xs-sorted = data.nodes.map(n => n.x).sorted()
+#let ys-sorted = data.nodes.map(n => n.y).sorted()
+#let pct(arr, p) = arr.at(calc.min(arr.len() - 1, calc.max(0, int(p * arr.len()))))
+#let x-min = pct(xs-sorted, 0.02)
+#let x-max = pct(xs-sorted, 0.98)
+#let y-min = pct(ys-sorted, 0.02)
+#let y-max = pct(ys-sorted, 0.98)
+#let pad   = 0.04   // 4 % padding
 
+#let clamp(v, lo, hi) = calc.max(lo, calc.min(hi, v))
 #let nx(x) = {
-  let t = (x - x-min) / (x-max - x-min)
+  let t = clamp((x - x-min) / (x-max - x-min), 0.0, 1.0)
   pad * plot-w + t * (1 - 2 * pad) * plot-w
 }
 #let ny(y) = {
-  let t = (y - y-min) / (y-max - y-min)
+  let t = clamp((y - y-min) / (y-max - y-min), 0.0, 1.0)
   pad * plot-h + t * (1 - 2 * pad) * plot-h
 }
 
