@@ -91,10 +91,7 @@
     columns: (0.9cm, 1fr),
     gutter: 6pt,
     align: (center + horizon, left + horizon),
-    box(width: 0.8cm, height: 0.8cm,
-      stroke: (thickness: 1.2pt, paint: col-p1),
-      radius: 50%, fill: white,
-      align(center + horizon, text(11pt, weight: "bold", fill: col-p1, [(a)]))),
+    align(center + horizon, text(13pt, weight: "bold", fill: col-p1, [(a)])),
     text(11pt, weight: "bold", fill: col-p1.darken(10%),
       [Many hard problems,\ many solvers]),
   )
