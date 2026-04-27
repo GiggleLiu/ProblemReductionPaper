@@ -78,7 +78,7 @@
 // Panel 1: Many hard problems, many solver formats
 // ─────────────────────────────────────────────────────────────
 #let panel1(h: auto) = box(
-  width: 6.3cm,
+  width: 6.5cm,
   height: h,
   stroke: panel-stroke,
   radius: panel-radius,
