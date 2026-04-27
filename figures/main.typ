@@ -328,16 +328,14 @@
 
   // Implementation agent
   #agent-card(col-p1, [Implementation Agent],
-    [Plan #sym.arrow Encode #sym.arrow Generate code \
-     Propose reduction rule],
+    [Picks an issue, implements, submits a PR],
     icon: image("icons/agent-impl.svg", width: 1cm))
 
   #flow-arrow()
 
   // Review agent
   #agent-card(col-p3, [Review Agent],
-    [Static analysis #sym.arrow Semantics check \
-     Approve or request changes],
+    [Dispatches parallel review sub-agents, posts verdict],
     icon: image("icons/agent-review.svg", width: 1cm))
 
   #v(6pt)
