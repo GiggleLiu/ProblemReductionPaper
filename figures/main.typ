@@ -721,7 +721,7 @@
     columns: (1fr, 2.9cm),
     gutter: 8pt,
     align: (center + horizon, left + top),
-    reduction-graph-sketch,
+    reduction-graph-real,
     std.grid(
       columns: 1,
       rows: (auto,) * 6,
