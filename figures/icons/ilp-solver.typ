@@ -30,8 +30,8 @@
     ( 0.35, -0.80),
   )
   merge-path(close: true,
-    fill: rgb("#f28e2b").lighten(80%),
-    stroke: (paint: rgb("#f28e2b").darken(5%), thickness: 1.2pt),
+    fill: rgb("#5a6878").lighten(80%),
+    stroke: (paint: rgb("#5a6878").darken(5%), thickness: 1.2pt),
     {
       for i in range(poly.len()) {
         let a = poly.at(i)
