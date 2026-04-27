@@ -949,7 +949,7 @@
       rows: (auto,) * 6,
       gutter: 4pt,
       stat-tile([190], [problem types],          icon: icon-problem-types),
-      stat-tile([220], [variants],               icon: icon-variants),
+      stat-tile([220], [variants (concrete type of problems)], icon: icon-variants),
       stat-tile([265], [reduction rules],        icon: icon-reduction),
       stat-tile([129], [reducible to ILP],       icon: icon-ilp),
       stat-tile([78],  [reachable from 3-SAT],   icon: icon-reach),
