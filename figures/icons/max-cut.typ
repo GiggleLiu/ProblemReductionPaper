@@ -37,7 +37,7 @@
 
   // Vertices.
   for p in (r1, r2, r3) {
-    circle(p, radius: 0.14, fill: blue,       stroke: 0.6pt + blue.darken(25%))
+    circle(p, radius: 0.14, fill: blue-dark,  stroke: 0.6pt + blue-dark.darken(15%))
   }
   for p in (b1, b2, b3) {
     circle(p, radius: 0.14, fill: blue-light, stroke: 0.6pt + blue.darken(15%))
