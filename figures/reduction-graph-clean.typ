@@ -32,8 +32,8 @@
 // ── Geometry — portrait, tight ──
 #let plot-w = 11.0
 #let plot-h = 16.0
-#let r-node = 0.13       // ordinary-node radius — small, dot-like
-#let r-hub  = 0.55       // hub-node radius
+#let r-node = 0.16       // ordinary-node radius
+#let r-hub  = 0.26       // hub radius — only modestly bigger than regular
 #let edge-paint  = rgb(120, 120, 130, 70)   // 70/255 alpha — quiet
 #let edge-stroke = (thickness: 0.22pt, paint: edge-paint)
 #let edge-curve  = 0.18  // perpendicular offset of bezier control point
