@@ -686,8 +686,8 @@
   let col-node = col-p1   // uniform color for every non-hub problem
   let hub-color(name) = if name == "KSatisfiability" { col-p3 } else { col-violet }
 
-  let plot-w = 9.6
-  let plot-h = 14.0
+  let plot-w = 8.6
+  let plot-h = 16.0
   let r-node = 0.20
   let r-hub  = 0.60       // hub radius — large enough to hold a label inside
   let edge-stroke = (thickness: 0.22pt, paint: rgb(95, 95, 105, 150))
