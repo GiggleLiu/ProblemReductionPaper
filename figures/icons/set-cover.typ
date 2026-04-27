@@ -3,7 +3,7 @@
 #set page(width: auto, height: auto, margin: 1pt, fill: none)
 #set text(size: 7.5pt, weight: "bold", font: "Helvetica")
 
-#let text-size = 5pt
+#let text-size = 9pt
 #let text-purple(body, size: text-size) = text(size, fill: rgb("#83379d"), body)
 #let text-orange(body, size: text-size) = text(size, fill: rgb("#f28e2b"), body)
 #let text-blue(body, size: text-size) = text(size, fill: blue, body)
