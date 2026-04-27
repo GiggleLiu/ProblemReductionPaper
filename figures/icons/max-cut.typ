@@ -36,10 +36,10 @@
 
   // Vertices.
   for p in (r1, r2, r3) {
-    circle(p, radius: 0.14, fill: blue,   stroke: 0.6pt + blue.darken(25%))
+    circle(p, radius: 0.14, fill: blue,       stroke: 0.6pt + blue.darken(25%))
   }
   for p in (b1, b2, b3) {
-    circle(p, radius: 0.14, fill: orange, stroke: 0.6pt + orange.darken(25%))
+    circle(p, radius: 0.14, fill: blue-light, stroke: 0.6pt + blue.darken(15%))
   }
 
   // Cut curve — a smooth dashed wave running top-to-bottom through the
