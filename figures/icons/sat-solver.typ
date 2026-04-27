@@ -42,7 +42,7 @@
   let l4 = (0.78, -0.70)
 
   // Highlighted successful path: root -> il -> l2.
-  let path-stroke = (paint: rgb("#4e79a7"), thickness: 1.4pt)
+  let path-stroke = (paint: rgb("#5a6878").darken(15%), thickness: 1.4pt)
 
   // Edges first (so nodes draw on top).
   line(root, il, stroke: path-stroke)
