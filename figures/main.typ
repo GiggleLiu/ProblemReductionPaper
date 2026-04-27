@@ -388,8 +388,8 @@
     [
       #image("icons/person-at-laptop.svg", width: 1.5cm)
       #v(3pt)
-      #text(5.5pt, style: "italic", fill: col-p3.darken(10%),
-        align(center, [no-code\ contribution]))
+      #text(7pt, style: "normal", fill: col-p3.darken(10%),
+        align(center, [*no-code\ contribution*]))
     ],
     github-card,
   )
@@ -417,7 +417,7 @@
       [
         #text(8.5pt, weight: "bold", fill: col-p3.darken(15%),
           [Validated Reduction Code]) \
-        #text(6.3pt, fill: fg-light, [Merged into the reduction library])
+        #text(6.3pt, fill: fg-light, [Human-reviewed, merged into the codebase])
       ],
     )
   ]
