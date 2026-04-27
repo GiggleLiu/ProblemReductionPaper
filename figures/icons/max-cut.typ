@@ -7,8 +7,8 @@
 
   circle((0, 0), radius: 1.4cm, fill: white, stroke: 2pt + rgb("#AAC4E9"))
 
-  let blue   = rgb("#4e79a7")
-  let orange = rgb("#f28e2b")
+  let blue       = rgb("#4e79a7")
+  let blue-light = blue.lighten(45%)
   let edge-stroke = (paint: black.lighten(20%), thickness: 0.9pt, cap: "round")
   let cut-curve-stroke = (paint: luma(80),
                           thickness: 1.1pt, cap: "round",
