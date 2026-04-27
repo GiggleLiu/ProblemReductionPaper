@@ -146,19 +146,19 @@
 // Panel 2: Harness-engineered agentic integration
 // ─────────────────────────────────────────────────────────────
 
-// Rounded card: title line, multi-line body, accent bar on left.
+// Rounded card: title line, single-line body, accent bar on left.
 #let agent-card(col, title, body, icon: none) = box(
   width: 100%,
   stroke: (thickness: 0.9pt, paint: col),
   radius: 5pt,
   fill: white,
-  inset: 6pt,
+  inset: (x: 6pt, y: 3pt),
 )[
   #std.grid(
-    columns: (0.9cm, 1fr),
+    columns: (0.85cm, 1fr),
     gutter: 5pt,
     align: (center + horizon, left + horizon),
-    if icon == none { icon-slot(w: 0.8cm, h: 0.8cm, label: [bot]) } else { icon },
+    if icon == none { icon-slot(w: 0.7cm, h: 0.7cm, label: [bot]) } else { icon },
     [
       #text(8pt, weight: "bold", fill: col.darken(10%), title) \
       #text(6.3pt, fill: fg-light, body)
