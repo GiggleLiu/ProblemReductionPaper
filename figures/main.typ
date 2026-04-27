@@ -456,18 +456,13 @@
   let data = json("../data/reduction-graph-layout.json")
   let hubs = ("KSatisfiability", "ILP")
 
-  let category-color(c) = {
-    if c == "graph" { col-p1 }
-    else if c == "formula" { col-p3 }
-    else if c == "set" { col-red }
-    else if c == "algebraic" { col-violet }
-    else { col-teal }
-  }
+  let col-node = col-p1   // uniform color for every non-hub problem
+  let hub-color(name) = if name == "KSatisfiability" { col-p3 } else { col-violet }
 
   let plot-w = 11.0
   let plot-h = 16.0
   let r-node = 0.20
-  let r-hub  = 0.32
+  let r-hub  = 0.60       // hub radius — large enough to hold a label inside
   let edge-stroke = (thickness: 0.22pt, paint: rgb(120, 120, 130, 70))
   let edge-curve = 0.18
 
