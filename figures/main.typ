@@ -448,137 +448,115 @@
   )
 ]
 
-// Reduction graph sketch. Not the final 190-node graph — a stylized stand-in
-// with ILP as a large central hub and 3-SAT highlighted on the upper-left.
-#let reduction-graph-sketch = canvas(length: 0.32cm, {
-  import draw: *
+// Real reduction graph: 155 problem types + 241 reduction edges from
+// data/reduction-graph-layout.json (built by Graphviz `sfdp` with prism
+// overlap-removal in scripts/build-reduction-graph-layout.py). Only the
+// two hubs — 3-SAT and ILP — carry text labels.
+#let reduction-graph-real = {
+  let data = json("../data/reduction-graph-layout.json")
+  let hubs = ("KSatisfiability", "ILP")
 
-  let palette = (
-    col-p1, col-p3, col-red, col-violet, col-teal,
-    rgb("#edc949"), rgb("#ff9da7"), rgb("#9c755f"),
-  )
-  // Deterministic pseudo-random using a small LCG.
-  let seed = 17
-  let rand(state) = {
-    let s = calc.rem(state * 1103515245 + 12345, 2147483648)
-    (s, s / 2147483648)
+  let category-color(c) = {
+    if c == "graph" { col-p1 }
+    else if c == "formula" { col-p3 }
+    else if c == "set" { col-red }
+    else if c == "algebraic" { col-violet }
+    else { col-teal }
   }
 
-  // Hub positions.
-  let sat-x = 1.5
-  let sat-y = 11.5
-  let sat-r = 0.95
-  let ilp-x = 9.5
-  let ilp-y = 6.0
-  let ilp-r = 1.5
+  let plot-w = 11.0
+  let plot-h = 16.0
+  let r-node = 0.16
+  let r-hub  = 0.26
+  let edge-stroke = (thickness: 0.22pt, paint: rgb(120, 120, 130, 70))
+  let edge-curve = 0.18
 
-  // Generated small nodes on a jittered grid, skipping the hub zones.
-  let smalls = ()
-  let state = seed
-  let rows = 7
-  let cols = 7
-  let x0 = 1.3
-  let y0 = 1.3
-  let dx = 2.35
-  let dy = 1.9
-  for r in range(rows) {
-    for c in range(cols) {
-      let (s1, jx) = rand(state)
-      state = s1
-      let (s2, jy) = rand(state)
-      state = s2
-      let (s3, jc) = rand(state)
-      state = s3
-      let x = x0 + c * dx + (jx - 0.5) * 1.0
-      let y = y0 + r * dy + (jy - 0.5) * 0.9
-      // Skip points inside either hub zone (with buffer).
-      let near-ilp = calc.pow(x - ilp-x, 2) + calc.pow(y - ilp-y, 2) < 6.5
-      let near-sat = calc.pow(x - sat-x, 2) + calc.pow(y - sat-y, 2) < 3.2
-      if not near-ilp and not near-sat {
-        let cidx = calc.rem(int(jc * 1000), palette.len())
-        smalls.push((x, y, 0.38, cidx))
-      }
-    }
+  // Percentile-based bounds (clip outliers) so the bulk of the graph
+  // fills the canvas instead of being compressed by a few far points.
+  let xs-sorted = data.nodes.map(n => n.x).sorted()
+  let ys-sorted = data.nodes.map(n => n.y).sorted()
+  let pct(arr, p) = arr.at(
+    calc.min(arr.len() - 1, calc.max(0, int(p * arr.len()))))
+  let x-min = pct(xs-sorted, 0.02)
+  let x-max = pct(xs-sorted, 0.98)
+  let y-min = pct(ys-sorted, 0.02)
+  let y-max = pct(ys-sorted, 0.98)
+  let pad = 0.04
+  let clamp-v(v, lo, hi) = calc.max(lo, calc.min(hi, v))
+  let nx-pos(x) = pad * plot-w
+    + clamp-v((x - x-min) / (x-max - x-min), 0.0, 1.0) * (1 - 2 * pad) * plot-w
+  let ny-pos(y) = pad * plot-h
+    + clamp-v((y - y-min) / (y-max - y-min), 0.0, 1.0) * (1 - 2 * pad) * plot-h
+
+  let name-to-pos = (:)
+  for n in data.nodes {
+    name-to-pos.insert(n.name, (nx-pos(n.x), ny-pos(n.y)))
   }
+  let is-hub(name) = name in hubs
 
-  // Build edge list: connect each small node to its 2 nearest neighbors.
-  let dist2(a, b) = {
-    let ax = a.at(0)
-    let ay = a.at(1)
-    let bx = b.at(0)
-    let by = b.at(1)
-    (ax - bx) * (ax - bx) + (ay - by) * (ay - by)
-  }
+  canvas(length: 0.36cm, {
+    import draw: *
 
-  // Merge hub points for neighbor search.
-  let all = smalls
-  all.push((sat-x, sat-y, sat-r, 0))   // sat
-  all.push((ilp-x, ilp-y, ilp-r, 5))   // ilp
-
-  // Draw edges (behind nodes).
-  for (i, p) in smalls.enumerate() {
-    // Find 2 closest peers in `all` (excluding self).
-    let best1 = -1
-    let d1 = 1e9
-    let best2 = -1
-    let d2 = 1e9
-    for (j, q) in all.enumerate() {
-      if j == i { continue }
-      let d = dist2(p, q)
-      if d < d1 {
-        d2 = d1
-        best2 = best1
-        d1 = d
-        best1 = j
-      } else if d < d2 {
-        d2 = d
-        best2 = j
-      }
-    }
-    for b in (best1, best2) {
-      if b < 0 { continue }
-      let q = all.at(b)
-      let px = p.at(0)
-      let py = p.at(1)
-      let qx = q.at(0)
-      let qy = q.at(1)
-      let len = calc.sqrt((qx - px) * (qx - px) + (qy - py) * (qy - py))
+    // Edges (back layer) — quadratic bezier with slight perpendicular bow.
+    for e in data.edges {
+      let (px, py) = name-to-pos.at(e.source)
+      let (qx, qy) = name-to-pos.at(e.target)
+      let dx = qx - px
+      let dy = qy - py
+      let len = calc.sqrt(dx * dx + dy * dy)
       if len < 0.01 { continue }
-      let ux = (qx - px) / len
-      let uy = (qy - py) / len
-      let pr = p.at(2)
-      let qr = q.at(2)
-      line(
-        (px + ux * pr, py + uy * pr),
-        (qx - ux * qr, qy - uy * qr),
-        stroke: (thickness: 0.35pt, paint: luma(120)),
-        mark: (end: "straight", scale: 0.18),
+      let ux = dx / len
+      let uy = dy / len
+      let r-src = if is-hub(e.source) { r-hub } else { r-node }
+      let r-tgt = if is-hub(e.target) { r-hub } else { r-node }
+      let sx = px + ux * r-src
+      let sy = py + uy * r-src
+      let tx = qx - ux * r-tgt
+      let ty = qy - uy * r-tgt
+      let mx = (sx + tx) / 2
+      let my = (sy + ty) / 2
+      let bow = edge-curve * len * 0.5
+      bezier(
+        (sx, sy), (tx, ty),
+        (mx + (-uy) * bow, my + ux * bow),
+        stroke: edge-stroke,
       )
     }
-  }
 
-  // Draw small nodes on top.
-  for p in smalls {
-    let (x, y, r, cidx) = p
-    let col = palette.at(cidx)
-    circle((x, y), radius: r,
-      fill: col.lighten(85%),
-      stroke: (thickness: 0.5pt, paint: col.darken(5%)))
-  }
+    // Ordinary nodes
+    for n in data.nodes {
+      if is-hub(n.name) { continue }
+      let col = category-color(n.category)
+      circle(
+        name-to-pos.at(n.name),
+        radius: r-node,
+        fill: col.lighten(35%),
+        stroke: (thickness: 0.25pt, paint: col.darken(15%)),
+      )
+    }
 
-  // Hubs — larger, labeled.
-  circle((sat-x, sat-y), radius: sat-r,
-    fill: col-p1.lighten(80%),
-    stroke: (thickness: 1.1pt, paint: col-p1),
-    name: "sat")
-  content("sat", text(7pt, weight: "bold", fill: col-p1.darken(20%), [3-SAT]))
-
-  circle((ilp-x, ilp-y), radius: ilp-r,
-    fill: rgb("#edc949").lighten(60%),
-    stroke: (thickness: 1.2pt, paint: rgb("#edc949").darken(20%)),
-    name: "ilp")
-  content("ilp", text(9pt, weight: "bold", fill: fg, [ILP]))
-})
+    // Hubs — slightly bigger filled disk + label OUTSIDE.
+    for n in data.nodes {
+      if not is-hub(n.name) { continue }
+      let col = category-color(n.category)
+      let label = if n.name == "KSatisfiability" { [3-SAT] } else { [ILP] }
+      let (cx, cy) = name-to-pos.at(n.name)
+      circle(
+        (cx, cy),
+        radius: r-hub,
+        fill: col.darken(5%),
+        stroke: (thickness: 0.4pt, paint: col.darken(20%)),
+      )
+      let dy-off = if n.name == "KSatisfiability" { 0.55 } else { -0.55 }
+      let anchor = if n.name == "KSatisfiability" { "south" } else { "north" }
+      content(
+        (cx, cy + dy-off),
+        anchor: anchor,
+        text(7pt, weight: "bold", fill: col.darken(25%), label),
+      )
+    }
+  })
+}
 
 // Mini growth-over-time curve — same schematic style as the original mockup,
 // now driven by the project's real weekly counts (problem types vs reduction
