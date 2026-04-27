@@ -429,7 +429,9 @@
 // ─────────────────────────────────────────────────────────────
 
 // Small statistic tile for the right rail.
-#let stat-tile(value, label, icon-label: [ ]) = box(
+// Pass `icon:` for a real (canvas-drawn) icon; falls back to the dashed
+// placeholder when only `icon-label` is given.
+#let stat-tile(value, label, icon: none, icon-label: [ ]) = box(
   width: 100%,
   stroke: (thickness: 0.6pt, paint: luma(180)),
   radius: 4pt,
@@ -440,13 +442,158 @@
     columns: (0.7cm, 1fr),
     gutter: 5pt,
     align: (center + horizon, left + horizon),
-    icon-slot(w: 0.6cm, h: 0.6cm, label: icon-label),
+    if icon == none {
+      icon-slot(w: 0.6cm, h: 0.6cm, label: icon-label)
+    } else {
+      box(width: 0.7cm, height: 0.6cm, align(center + horizon, icon))
+    },
     [
       #text(10pt, weight: "bold", fill: fg, value) \
       #text(6pt, fill: fg-light, label)
     ],
   )
 ]
+
+// ── Icons for Panel 3 statistic tiles ────────────────────────────
+// All icons share Panel 3's green palette and ~0.55cm visual size.
+#let p3-stroke = col-p3.darken(8%)
+#let p3-fill   = col-p3.lighten(82%)
+
+// Icon: problem types — four distinct shapes (square, triangle, circle,
+// diamond) in a 2×2 grid, evoking a catalog of problem categories.
+#let icon-problem-types = canvas(length: 0.55cm, {
+  import draw: *
+  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
+  let f = p3-fill
+  let r = 0.13
+  // top-left: square
+  rect((-0.25 - r, 0.22 - r), (-0.25 + r, 0.22 + r),
+    radius: 0.02, stroke: s, fill: f)
+  // top-right: triangle
+  let tx = 0.25
+  let ty = 0.22
+  line((tx, ty + r),
+       (tx - r * 1.0, ty - r * 0.85),
+       (tx + r * 1.0, ty - r * 0.85),
+       close: true, stroke: s, fill: f)
+  // bottom-left: circle
+  circle((-0.25, -0.22), radius: r, stroke: s, fill: f)
+  // bottom-right: diamond
+  let dx = 0.25
+  let dy = -0.22
+  line((dx, dy + r), (dx + r, dy),
+       (dx, dy - r), (dx - r, dy),
+       close: true, stroke: s, fill: f)
+  hide(rect((-0.50, -0.50), (0.50, 0.50)))
+})
+
+// Icon: reduction rules — two rounded nodes connected by an arrow (A → B).
+#let icon-reduction = canvas(length: 0.55cm, {
+  import draw: *
+  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
+  let f = p3-fill
+  let r = 0.16
+  // left node
+  rect((-0.45 - 0.02, -0.18), (-0.45 + 2 * r - 0.02, -0.18 + 2 * r),
+    radius: 0.04, stroke: s, fill: f)
+  // right node
+  rect((0.45 - 2 * r + 0.02, -0.18), (0.45 + 0.02, -0.18 + 2 * r),
+    radius: 0.04, stroke: s, fill: f)
+  // arrow between
+  line((-0.13, 0.18 - r), (0.13, 0.18 - r),
+    stroke: (paint: p3-stroke, thickness: 0.9pt, cap: "round"),
+    mark: (end: "straight", scale: 0.4))
+  hide(rect((-0.50, -0.50), (0.50, 0.50)))
+})
+
+// Icon: reducible to ILP — three vertical bars under a rule (bar chart),
+// suggesting integer linear constraints / variable assignments.
+#let icon-ilp = canvas(length: 0.55cm, {
+  import draw: *
+  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
+  let base = -0.32
+  // baseline
+  line((-0.42, base), (0.42, base),
+    stroke: (paint: p3-stroke, thickness: 0.7pt, cap: "round"))
+  // bars
+  let bw = 0.10
+  let xs = (-0.30, -0.05, 0.20)
+  let hs = (0.32, 0.55, 0.42)
+  for i in range(3) {
+    let x = xs.at(i)
+    let h = hs.at(i)
+    rect((x - bw, base), (x + bw, base + h),
+      stroke: s, fill: p3-fill, radius: 0.02)
+  }
+  hide(rect((-0.50, -0.50), (0.50, 0.50)))
+})
+
+// Icon: reachable from 3-SAT — central hub node with five spokes radiating
+// outward to small leaf dots.
+#let icon-reach = canvas(length: 0.55cm, {
+  import draw: *
+  let s-line = (paint: p3-stroke, thickness: 0.55pt, cap: "round")
+  let s-leaf = (paint: p3-stroke, thickness: 0.6pt)
+  // 5 leaves at angles
+  let angles = (90, 162, 234, 306, 18)
+  let R = 0.40
+  for a in angles {
+    let rad = a * 1deg
+    let x = R * calc.cos(rad)
+    let y = R * calc.sin(rad)
+    line((0, 0), (x * 0.78, y * 0.78), stroke: s-line)
+    circle((x, y), radius: 0.07, stroke: s-leaf, fill: p3-fill)
+  }
+  // hub
+  circle((0, 0), radius: 0.11, stroke: s-leaf, fill: col-p3)
+  hide(rect((-0.50, -0.50), (0.50, 0.50)))
+})
+
+// Icon: lines of Rust — angle brackets `< >` with three short code lines
+// between them.
+#let icon-code = canvas(length: 0.55cm, {
+  import draw: *
+  let s = (paint: p3-stroke, thickness: 1.0pt, cap: "round", join: "round")
+  let s-line = (paint: p3-stroke.lighten(15%), thickness: 0.8pt, cap: "round")
+  // left bracket  <
+  line((-0.15, 0.30), (-0.40, 0.00), (-0.15, -0.30), stroke: s)
+  // right bracket >
+  line(( 0.15, 0.30), ( 0.40, 0.00), ( 0.15, -0.30), stroke: s)
+  // 3 code lines (varying width, stacked)
+  line((-0.10, 0.18), ( 0.08, 0.18), stroke: s-line)
+  line((-0.10, 0.00), ( 0.10, 0.00), stroke: s-line)
+  line((-0.10, -0.18), ( 0.05, -0.18), stroke: s-line)
+  hide(rect((-0.50, -0.50), (0.50, 0.50)))
+})
+
+// Icon: ~3 months — calendar page (header bar + 3×3 grid of dots,
+// one highlighted).
+#let icon-months = canvas(length: 0.55cm, {
+  import draw: *
+  let s = (paint: p3-stroke, thickness: 0.7pt, cap: "round", join: "round")
+  // page outline
+  rect((-0.36, -0.40), (0.36, 0.36), radius: 0.04, stroke: s, fill: white)
+  // header strip
+  rect((-0.36, 0.18), (0.36, 0.36),
+    stroke: none, fill: col-p3)
+  // re-stroke top so the corner stays rounded
+  rect((-0.36, -0.40), (0.36, 0.36), radius: 0.04, stroke: s, fill: none)
+  // small binder rings
+  line((-0.20, 0.36), (-0.20, 0.44), stroke: s)
+  line(( 0.20, 0.36), ( 0.20, 0.44), stroke: s)
+  // 3×3 dot grid below header
+  let xs = (-0.22, 0.00, 0.22)
+  let ys = (0.04, -0.14, -0.32)
+  for (i, y) in ys.enumerate() {
+    for (j, x) in xs.enumerate() {
+      let highlighted = (i == 1 and j == 1)
+      circle((x, y), radius: 0.045,
+        stroke: none,
+        fill: if highlighted { col-p3 } else { p3-stroke.lighten(40%) })
+    }
+  }
+  hide(rect((-0.50, -0.50), (0.50, 0.50)))
+})
 
 // Real reduction graph: 155 problem types + 241 reduction edges from
 // data/reduction-graph-layout.json (built by Graphviz `sfdp` with prism
