@@ -1,32 +1,46 @@
 #import "@preview/cetz:0.4.2": *
 
 #set page(width: auto, height: auto, margin: 1pt, fill: none)
-#set text(size: 7.5pt, font: "DejaVu Sans Mono")
+
 #canvas({
   import draw: *
-  let red-circle(position, name: none) = circle(position, radius: 0.1cm, fill: rgb("#e42f29"), stroke: 0.5pt, name: name)
-  let blue-circle(position, name: none) = circle(position, radius: 0.1cm, fill: rgb("#4e79a7"), stroke: 0.5pt, name: name)
 
   circle((0, 0), radius: 1.4cm, fill: white, stroke: 2pt + rgb("#AAC4E9"))
-  red-circle((-0.4, 0.9), name: "r1")
-  red-circle((-0.9, 0.4), name: "r2")
-  red-circle((-0.5, -0.1), name: "r3")
-  red-circle((-0.7, -0.6), name: "r4")
-  blue-circle((0.6, 0.5), name: "b1")
-  blue-circle((0.85, -0.1), name: "b2")
-  blue-circle((0.5, -0.7), name: "b3")
 
-  line("r1", "b1", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
-  line("r1", "b2", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
-  line("r2", "b2", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
-  line("r3", "b1", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
-  line("r4", "b2", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
-  line("r4", "b3", stroke: (paint: black.lighten(20%), thickness: 0.8pt, dash: "densely-dashed"))
+  let red    = rgb("#e42f29")
+  let blue   = rgb("#4e79a7")
+  let cut-col = rgb("#f28e2b")
 
-  line("r1", "r2", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
-  line("r3", "r2", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
-  line("r3", "r4", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
+  let intra-stroke = (paint: luma(180), thickness: 0.6pt, dash: "dotted")
+  let cut-stroke   = (paint: cut-col.darken(5%), thickness: 1.5pt, cap: "round")
 
-  line("b1", "b2", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
-  line("b2", "b3", stroke: (paint: black.lighten(20%), thickness: 0.8pt))
+  // Two clusters of vertices. Position separation makes the partition
+  // self-evident; no explicit dividing line needed.
+  let r1 = (-0.55,  0.65)
+  let r2 = (-0.90,  0.05)
+  let r3 = (-0.45, -0.55)
+  let b1 = ( 0.50,  0.70)
+  let b2 = ( 0.85,  0.00)
+  let b3 = ( 0.55, -0.55)
+
+  // Intra-cluster edges — faint dotted, *not* part of the cut.
+  line(r1, r2, stroke: intra-stroke)
+  line(r2, r3, stroke: intra-stroke)
+  line(b1, b2, stroke: intra-stroke)
+  line(b2, b3, stroke: intra-stroke)
+
+  // Cut edges — bold orange. These are what Max-Cut maximises.
+  line(r1, b1, stroke: cut-stroke)
+  line(r1, b2, stroke: cut-stroke)
+  line(r2, b2, stroke: cut-stroke)
+  line(r3, b3, stroke: cut-stroke)
+  line(r3, b2, stroke: cut-stroke)
+
+  // Vertices (drawn on top so edges meet the rim cleanly).
+  for p in (r1, r2, r3) {
+    circle(p, radius: 0.14, fill: red,  stroke: 0.6pt + red.darken(25%))
+  }
+  for p in (b1, b2, b3) {
+    circle(p, radius: 0.14, fill: blue, stroke: 0.6pt + blue.darken(25%))
+  }
 })
