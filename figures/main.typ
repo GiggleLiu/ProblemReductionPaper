@@ -335,7 +335,7 @@
 
   // Review agent
   #agent-card(col-p3, [Review Agent],
-    [Dispatches parallel review sub-agents, posts verdict],
+    [Reviews PR via parallel sub-agents],
     icon: image("icons/agent-review.svg", width: 1cm))
 
   #v(6pt)
