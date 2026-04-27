@@ -35,7 +35,7 @@
     pts.push((x, energy(x)))
   }
   line(..pts,
-    stroke: (paint: rgb("#f28e2b").darken(5%), thickness: 1.4pt))
+    stroke: (paint: rgb("#5a6878").darken(5%), thickness: 1.4pt))
 
   // Global-minimum target.
   let gmin = (0.05, energy(0.05))
