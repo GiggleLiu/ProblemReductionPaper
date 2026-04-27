@@ -126,7 +126,7 @@
     [Each backend takes its own format;\ problems must be encoded to fit.]))
   #v(3pt)
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
-  #panel-section([Solver formats / backends], col-p2)
+  #panel-section([Solver formats / backends], col-slate)
   #v(4pt)
 
   // 2×2 grid: (SAT, ILP) ; (Annealer, …).
@@ -134,9 +134,9 @@
     columns: (1fr, 1fr),
     rows: (auto, auto),
     gutter: 5pt,
-    solver-box([SAT], [CNF formula], icon: image("icons/sat-solver.svg", width: 0.85cm), col: col-p2, w: 100%),
-    solver-box([ILP], [$A x ≤ b, x in ZZ^n$], icon: image("icons/ilp-solver.svg", width: 0.85cm), col: col-p2, w: 100%),
-    solver-box([Annealer], [QUBO / Ising], icon: image("icons/annealer.svg", width: 0.85cm), col: col-p2, w: 100%),
+    solver-box([SAT], [CNF formula], icon: image("icons/sat-solver.svg", width: 0.85cm), col: col-slate, w: 100%),
+    solver-box([ILP], [$A x ≤ b, x in ZZ^n$], icon: image("icons/ilp-solver.svg", width: 0.85cm), col: col-slate, w: 100%),
+    solver-box([Annealer], [QUBO / Ising], icon: image("icons/annealer.svg", width: 0.85cm), col: col-slate, w: 100%),
     align(center + horizon, text(14pt, fill: fg-light, [$dots$])),
   )
 
