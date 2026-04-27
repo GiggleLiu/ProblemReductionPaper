@@ -649,22 +649,9 @@
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: lines of Rust — curly braces `{ }` (Rust/C-family signature) framing
-// three rounded code "pills" of varying width.
-#let icon-code = canvas(length: 0.55cm, {
-  import draw: *
-  let s-pill = (paint: p3-stroke.lighten(8%), thickness: 1.5pt, cap: "round")
-  // Curly braces drawn as text content (typst handles the curl shape best).
-  content((-0.32, 0.00),
-    text(size: 11pt, weight: "bold", fill: p3-stroke, "{"))
-  content(( 0.32, 0.00),
-    text(size: 11pt, weight: "bold", fill: p3-stroke, "}"))
-  // 3 code pills (varying widths, evenly stacked)
-  line((-0.16, 0.18), ( 0.10, 0.18), stroke: s-pill)
-  line((-0.16, 0.00), ( 0.04, 0.00), stroke: s-pill)
-  line((-0.16, -0.18), ( 0.13, -0.18), stroke: s-pill)
-  hide(rect((-0.50, -0.50), (0.50, 0.50)))
-})
+// Icon: lines of Rust — official Rust gear-and-R logo, recoloured to the
+// panel-3 green palette so it sits with the other stat-tile icons.
+#let icon-code = image("icons/Rust.svg", width: 0.55cm, height: 0.55cm)
 
 // Icon: ~3 months — single calendar page with a green header strip, two
 // binder rings, and a clean 3×3 dot grid in the body.
