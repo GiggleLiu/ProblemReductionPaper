@@ -8,8 +8,8 @@
   circle((0, 0), radius: 1.4cm, fill: white, stroke: 2pt + rgb("#AAC4E9"))
 
   let blue       = rgb("#4e79a7")
-  let blue-dark  = blue.darken(15%)
-  let blue-light = blue.lighten(45%)
+  let blue-dark  = blue.darken(35%)
+  let blue-light = blue.lighten(55%)
 
   let gate-stroke = (paint: luma(30), thickness: 1.6pt, cap: "round", join: "round")
   let wire-stroke = (paint: luma(70), thickness: 1.1pt, cap: "round")
