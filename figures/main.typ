@@ -666,40 +666,31 @@
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: ~3 months — calendar page with a green header strip, two binder
-// rings, and a 3×3 dot grid; the centre column of three dots is
-// highlighted to read as "three months".
+// Icon: ~3 months — three calendar-page tiles in a row, each with a green
+// header strip and a single date dot; reads directly as "three months".
 #let icon-months = canvas(length: 0.55cm, {
   import draw: *
-  let s = (paint: p3-stroke, thickness: 0.65pt, cap: "round", join: "round")
-  let xL = -0.34
-  let xR =  0.34
-  let yT =  0.30
-  let yB = -0.40
-  let header-h = 0.12
-  // body fill
-  rect((xL, yB), (xR, yT), radius: 0.045, stroke: none, fill: white)
-  // header strip — slightly inset so rounded corners stay clean
-  rect((xL + 0.005, yT - header-h), (xR - 0.005, yT - 0.005),
-    stroke: none, fill: col-p3)
-  // page outline (drawn last so corners look crisp)
-  rect((xL, yB), (xR, yT), radius: 0.045, stroke: s, fill: none)
-  // binder rings (small circles straddling top edge)
-  let ring-y = yT + 0.04
-  circle((-0.16, ring-y), radius: 0.055,
-    stroke: s, fill: white)
-  circle(( 0.16, ring-y), radius: 0.055,
-    stroke: s, fill: white)
-  // 3×3 dot grid below header
-  let xs = (-0.20, 0.00, 0.20)
-  let ys = (0.02, -0.14, -0.30)
-  for (i, y) in ys.enumerate() {
-    for (j, x) in xs.enumerate() {
-      let hl = (j == 1)  // highlight centre column = 3 months
-      circle((x, y), radius: 0.042,
-        stroke: none,
-        fill: if hl { col-p3 } else { p3-stroke.lighten(45%) })
-    }
+  let s = (paint: p3-stroke, thickness: 0.6pt, cap: "round", join: "round")
+  let pw = 0.24
+  let ph = 0.62
+  let header-h = 0.16
+  let gap = 0.05
+  let xs = (-pw - gap, 0.0, pw + gap)
+  let yT =  ph / 2
+  let yB = -ph / 2
+  for x in xs {
+    // body
+    rect((x - pw / 2, yB), (x + pw / 2, yT),
+      radius: 0.035, stroke: none, fill: white)
+    // header strip (slightly inset so corner curve stays clean)
+    rect((x - pw / 2 + 0.005, yT - header-h), (x + pw / 2 - 0.005, yT - 0.005),
+      stroke: none, fill: col-p3)
+    // page outline (last, so corners are crisp)
+    rect((x - pw / 2, yB), (x + pw / 2, yT),
+      radius: 0.035, stroke: s, fill: none)
+    // single date dot in the body
+    circle((x, -0.08), radius: 0.045,
+      stroke: none, fill: p3-stroke.lighten(40%))
   }
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
