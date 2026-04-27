@@ -44,16 +44,26 @@
     }
   }
 
+  // Items use a single blue palette in different shades — heights still
+  // encode sizes; the shade variation just separates adjacent items.
+  let blue = rgb("#4e79a7")
+  let item-shades = (
+    blue.darken(10%),
+    blue.lighten(20%),
+    blue.lighten(50%),
+    blue.lighten(35%),
+  )
+
   // Bin 1 (left): exactly full — two items (5 + 3 = 8).
-  bin(-0.78, ((rgb("#e42f29"), 5), (rgb("#59a14f"), 3)))
+  bin(-0.78, ((item-shades.at(0), 5), (item-shades.at(2), 3)))
 
   // Bin 2 (middle): exactly full — three items (4 + 3 + 1 = 8).
   bin( 0.00, (
-    (rgb("#4e79a7"), 4),
-    (rgb("#f1c40f"), 3),
-    (rgb("#9b59b6"), 1),
+    (item-shades.at(1), 4),
+    (item-shades.at(3), 3),
+    (item-shades.at(0), 1),
   ))
 
   // Bin 3 (right): partially full — two items (3 + 2 = 5/8).
-  bin( 0.78, ((rgb("#f28e2b"), 3), (rgb("#4ab39c"), 2)))
+  bin( 0.78, ((item-shades.at(0), 3), (item-shades.at(2), 2)))
 })
