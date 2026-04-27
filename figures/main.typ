@@ -649,19 +649,20 @@
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
-// Icon: lines of Rust — angle brackets ⟨ ⟩ wrapping three rounded code
-// "pills" of varying width.
+// Icon: lines of Rust — curly braces `{ }` (Rust/C-family signature) framing
+// three rounded code "pills" of varying width.
 #let icon-code = canvas(length: 0.55cm, {
   import draw: *
-  let s-bracket = (paint: p3-stroke, thickness: 1.0pt, cap: "round", join: "round")
-  let s-pill    = (paint: p3-stroke.lighten(8%), thickness: 1.5pt, cap: "round")
-  // Brackets  <  >
-  line((-0.13, 0.30), (-0.40, 0.00), (-0.13, -0.30), stroke: s-bracket)
-  line(( 0.13, 0.30), ( 0.40, 0.00), ( 0.13, -0.30), stroke: s-bracket)
+  let s-pill = (paint: p3-stroke.lighten(8%), thickness: 1.5pt, cap: "round")
+  // Curly braces drawn as text content (typst handles the curl shape best).
+  content((-0.32, 0.00),
+    text(size: 11pt, weight: "bold", fill: p3-stroke, "{"))
+  content(( 0.32, 0.00),
+    text(size: 11pt, weight: "bold", fill: p3-stroke, "}"))
   // 3 code pills (varying widths, evenly stacked)
-  line((-0.07, 0.19), ( 0.10, 0.19), stroke: s-pill)
-  line((-0.07, 0.00), ( 0.05, 0.00), stroke: s-pill)
-  line((-0.07, -0.19), ( 0.08, -0.19), stroke: s-pill)
+  line((-0.16, 0.18), ( 0.10, 0.18), stroke: s-pill)
+  line((-0.16, 0.00), ( 0.04, 0.00), stroke: s-pill)
+  line((-0.16, -0.18), ( 0.13, -0.18), stroke: s-pill)
   hide(rect((-0.50, -0.50), (0.50, 0.50)))
 })
 
