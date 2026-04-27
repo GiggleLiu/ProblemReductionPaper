@@ -413,7 +413,7 @@
       columns: (auto, 1fr),
       gutter: 6pt,
       align: (center + horizon, left + horizon),
-      icon-slot(w: 0.55cm, h: 0.55cm, label: [`</>`]),
+      image("icons/merged-validated.svg", width: 0.6cm),
       [
         #text(8.5pt, weight: "bold", fill: col-p3.darken(15%),
           [Validated Reduction Code]) \
