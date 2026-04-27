@@ -11,25 +11,25 @@
 
   let edge-stroke = (paint: black.lighten(20%), thickness: 0.7pt)
 
-  // Internal node (small white circle).
+  // Internal node (white circle).
   let internal(p) = circle(
-    p, radius: 0.10cm,
+    p, radius: 0.15cm,
     fill: white,
-    stroke: 0.6pt + black.lighten(10%),
+    stroke: 0.7pt + black.lighten(10%),
   )
   // Leaf node: ✓ (sat) or ✗ (conflict). SAT is solid slate; conflicts
   // are drawn lighter so the satisfying branch reads as the "answer".
   let leaf-sat(p) = {
-    circle(p, radius: 0.16cm,
+    circle(p, radius: 0.22cm,
       fill: rgb("#5a6878"),
-      stroke: 0.5pt + black.lighten(10%))
-    content(p, text(7pt, weight: "bold", fill: white, [#sym.checkmark]))
+      stroke: 0.6pt + black.lighten(10%))
+    content(p, text(10pt, weight: "bold", fill: white, [#sym.checkmark]))
   }
   let leaf-bad(p) = {
-    circle(p, radius: 0.16cm,
+    circle(p, radius: 0.22cm,
       fill: rgb("#5a6878").lighten(50%),
-      stroke: 0.5pt + black.lighten(10%))
-    content(p, text(7pt, weight: "bold", fill: white, [#sym.crossmark]))
+      stroke: 0.6pt + black.lighten(10%))
+    content(p, text(10pt, weight: "bold", fill: white, [#sym.crossmark]))
   }
 
   // Tree positions.
