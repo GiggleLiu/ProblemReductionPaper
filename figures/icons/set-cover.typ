@@ -10,31 +10,36 @@
   let blue   = rgb("#4e79a7")
   let green  = rgb("#59a14f")
   let orange = rgb("#f28e2b")
-  let purple = rgb("#83379d")
 
-  // Three overlapping translucent discs = three "sets". Together they
-  // cover all the universe dots drawn on top.
-  circle((-0.55, 0.30), radius: 0.62,
-    fill: blue.lighten(75%),
-    stroke: 1pt + blue.darken(5%))
-  circle(( 0.40, 0.45), radius: 0.62,
-    fill: green.lighten(75%),
-    stroke: 1pt + green.darken(5%))
-  circle(( 0.10, -0.55), radius: 0.62,
-    fill: orange.lighten(70%),
-    stroke: 1pt + orange.darken(5%))
+  // Three overlapping sets in a Venn-style triangular arrangement.
+  // Light pastel fills + solid coloured outlines keep the boundaries
+  // legible even when colours overlay.
+  let r-set = 0.58
+  let s-thick = 1.2pt
+  let p-blue   = (-0.40,  0.22)
+  let p-green  = ( 0.40,  0.22)
+  let p-orange = ( 0.00, -0.45)
 
-  // Universe dots — every dot is enclosed in at least one coloured set.
+  circle(p-blue,   radius: r-set,
+    fill: blue.lighten(82%),   stroke: s-thick + blue.darken(0%))
+  circle(p-green,  radius: r-set,
+    fill: green.lighten(82%),  stroke: s-thick + green.darken(0%))
+  circle(p-orange, radius: r-set,
+    fill: orange.lighten(78%), stroke: s-thick + orange.darken(0%))
+
+  // Universe elements — placed so each dot is enclosed in at least one
+  // coloured set; some sit in 2- or 3-set intersections.
   let dots = (
-    (-0.78, 0.45),
-    (-0.30, 0.55),
-    ( 0.20, 0.65),
-    ( 0.55, 0.30),
-    (-0.20, 0.10),
-    (-0.30, -0.40),
-    ( 0.45, -0.55),
+    (-0.78,  0.35),   // blue only
+    (-0.30,  0.55),   // blue ∩ green
+    ( 0.78,  0.35),   // green only
+    (-0.40, -0.20),   // blue ∩ orange
+    ( 0.00,  0.05),   // all three
+    ( 0.40, -0.20),   // green ∩ orange
+    (-0.20, -0.65),   // orange only
+    ( 0.30, -0.70),   // orange only
   )
   for d in dots {
-    circle(d, radius: 0.10, fill: black.lighten(15%), stroke: none)
+    circle(d, radius: 0.10, fill: black.lighten(10%), stroke: none)
   }
 })
