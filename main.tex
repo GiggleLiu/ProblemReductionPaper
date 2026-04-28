@@ -416,8 +416,9 @@ Each column is a state; progress flows left to right.
 If any stage fails, the item moves to \col{OnHold} for human triage.
 Four roles drive the flow: a domain expert files issues, a maintainer triages and merges, and two agents---one for implementation, one for review---handle the routine work in between.
 
-\begin{figure}[t]
+\begin{figure*}[t]
   \centering
+  \begin{minipage}[t]{0.48\textwidth}
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
     title={\textbf{\texttt{propose}} --- advisor skill (excerpts)},
@@ -458,12 +459,56 @@ cargo run --example detect_unreachable_from_3sat
   \end{tabular}\\[2pt]
   Only issues passing all four checks are filed.
   \end{tcolorbox}
-  \caption{Excerpts from the \texttt{propose} skill.
+  \subcaption{Excerpts from the \texttt{propose} skill.
     The hard gate enforces no-code contribution.
     Topology analysis guides experts toward strategic reduction-graph gaps.
     Pre-validation checks four quality dimensions before the issue enters the pipeline.}
   \label{fig:skill-propose}
-\end{figure}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+  \begin{tcolorbox}[
+    colback=gray!5, colframe=gray!80,
+    title={\textbf{\texttt{add-rule}} --- automation skill (excerpts)},
+    fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+  ]
+  \footnotesize
+  \begin{lstlisting}[basicstyle=\ttfamily\footnotesize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
+---
+name: add-rule
+description: Adding a new reduction rule to the
+  codebase, either from an issue or interactively
+---
+  \end{lstlisting}
+  \vspace{-4pt}
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Required Information Checklist}
+  \begin{enumerate}
+    \item \textbf{Reduction algorithm} --- how to transform source instance to target, with BibTeX reference.
+    \item \textbf{Size overhead} --- how target size relates to source size, used for estimating the overhead of the reduction.
+    \item \textbf{Concrete example} --- a small worked-out instance, used for testing and documentation.
+    \item $\ldots$
+  \end{enumerate}
+  Do NOT proceed until the checklist is complete.\\[3pt]
+  %
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Reference Implementations} --- Read these first:\\
+  {\ttfamily src/rules/minimumvertexcover\_\\maximumindependentset.rs}\\
+  {\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
+  %
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Step 5: Document in paper.}
+  Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
+  Run \texttt{make paper} --- must compile without errors.
+  \end{tcolorbox}
+  \subcaption{Excerpts from the \texttt{add-rule} skill.
+    The checklist encodes the mathematical knowledge every reduction requires.
+    Reference implementations prevent convention drift.
+    The paper entry ensures visual verifiability by human reviewers.}
+  \label{fig:skill-addrule}
+  \end{minipage}
+  \caption{Two skills that bookend the contribution pipeline: \texttt{propose} (left) gates issue creation by domain experts, and \texttt{add-rule} (right) drives implementation from a validated issue.}
+  \label{fig:skills}
+\end{figure*}
 
 
 \textbf{Stage~1: Propose} ( $\to$ \col{Backlog}).
@@ -612,29 +657,29 @@ In our practice, agentic feature tests caught most CLI command bugs, and some us
 
 \subsection{Library Status}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth,trim={10cm 45cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
-  \vspace{-4pt}
-  \small
-  \begin{tabular}{@{}lr@{}}
-  \toprule
-  Metric & Count \\
-  \midrule
-  Lines of Rust code & 170k+ \\
-  Problem types (unique names) & 190 \\
-  Registered variants & 220 \\
-  Reduction rules & 265 \\
-  Reachable from 3-SAT & 78 \\
-  Reducible to ILP & 129 (68\%) \\
-  \bottomrule
-  \end{tabular}
-  \caption{The reduction graph as of April 2026.
-    ILP (center node) is the most connected node: 129 of 190~problem types (68\%) have a reduction path to it, granting solver access via HiGHS.
-    3-SAT anchors the other direction: 78~types are reachable from it, providing tested NP-hardness arguments.
-    Only the 148~connected nodes are shown; 42~isolated types awaiting their first reduction are omitted.}
-  \label{fig:reduction-graph}
-\end{figure}
+% \begin{figure}[t]
+%   \centering
+%   \includegraphics[width=\columnwidth,trim={10cm 45cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
+%   \vspace{-4pt}
+%   \small
+%   \begin{tabular}{@{}lr@{}}
+%   \toprule
+%   Metric & Count \\
+%   \midrule
+%   Lines of Rust code & 170k+ \\
+%   Problem types (unique names) & 190 \\
+%   Registered variants & 220 \\
+%   Reduction rules & 265 \\
+%   Reachable from 3-SAT & 78 \\
+%   Reducible to ILP & 129 (68\%) \\
+%   \bottomrule
+%   \end{tabular}
+%   \caption{The reduction graph as of April 2026.
+%     ILP (center node) is the most connected node: 129 of 190~problem types (68\%) have a reduction path to it, granting solver access via HiGHS.
+%     3-SAT anchors the other direction: 78~types are reachable from it, providing tested NP-hardness arguments.
+%     Only the 148~connected nodes are shown; 42~isolated types awaiting their first reduction are omitted.}
+%   \label{fig:reduction-graph}
+% \end{figure}
 
 In~\Cref{fig:reduction-graph}, we summarize the current library status.
 The current library version is v0.5.0, which contains 190~problem types (220 variants) and 265~reduction rules.
@@ -646,16 +691,16 @@ We believe this solver-access coverage alone is a practical contribution to the 
 
 \subsection{Development Phases}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/growth-curve.pdf}
-  \caption{Growth of problem types and reduction rules over time, mined from git history.
-    Dashed lines mark phase transitions.
-    Phase~1 (weeks~0--7): manual development, porting rules from existing packages.
-    Phase~2 (weeks~7--8.5): basic skills introduced.
-    Phase~3 (weeks~8.5--13): full pipeline operational; both curves accelerate sharply.}
-  \label{fig:growth-curve}
-\end{figure}
+% \begin{figure}[t]
+%   \centering
+%   \includegraphics[width=\columnwidth]{figures/growth-curve.pdf}
+%   \caption{Growth of problem types and reduction rules over time, mined from git history.
+%     Dashed lines mark phase transitions.
+%     Phase~1 (weeks~0--7): manual development, porting rules from existing packages.
+%     Phase~2 (weeks~7--8.5): basic skills introduced.
+%     Phase~3 (weeks~8.5--13): full pipeline operational; both curves accelerate sharply.}
+%   \label{fig:growth-curve}
+% \end{figure}
 
 In Phase~1 (weeks~0--7; \Cref{fig:growth-curve}), the team and AI agents ported reduction rules from existing packages (ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping,pan2025encodingcomputationallyhardproblems}, and qubogen~\cite{Tamura2020qubogen}) and from Garey and Johnson's catalogue~\cite{garey1979}.
 Growth was steady but slow: roughly 20~problem types and 55~rules by week~7.
