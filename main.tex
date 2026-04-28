@@ -444,7 +444,7 @@ description: Guides domain experts through brainstorming and files a GitHub issu
   %
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Run topology analysis first} to identify the most impactful missing reductions [\ldots]\\
-  \begin{lstlisting}[basicstyle=\ttfamily\footnotesize, numbers=none, frame=none, aboveskip=-5pt, belowskip=2pt, xleftmargin=4pt]
+  \begin{lstlisting}[basicstyle=\ttfamily\footnotesize, numbers=none, frame=none, aboveskip=-5pt, belowskip=2pt, xleftmargin=4pt, breaklines=true, breakindent=2em, postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space}]
 cargo run --example detect_isolated_problems
 cargo run --example detect_unreachable_from_3sat
   \end{lstlisting}
