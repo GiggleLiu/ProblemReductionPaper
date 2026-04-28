@@ -448,8 +448,10 @@ description:
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Run topology analysis first} to identify the most impactful missing reductions [\ldots]\\
   \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=-5pt, belowskip=2pt, xleftmargin=4pt]
-cargo run --example detect_isolated_problems
-cargo run --example detect_unreachable_from_3sat
+cargo run --example \
+    detect_isolated_problems
+cargo run --example \
+    detect_unreachable_from_3sat
   \end{lstlisting}
   \vspace{-2pt}
   \rule{\linewidth}{0.3pt}\\[3pt]
