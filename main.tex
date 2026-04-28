@@ -526,49 +526,6 @@ Only issues passing all four checks move to \col{Ready}.
 \textbf{Stage~3: Implement} (\col{Ready} $\to$ \col{Review Pool}).
 An implementation agent reads the \texttt{run-pipeline} skill, picks an issue automatically from \col{Ready} column, implements it\footnote{The engineering workflow builds on Superpowers~\cite{Obra2025Superpowers}}, submits a pull request (PR) and moves the issue to \col{Review Pool}---all in headless mode, no human in the loop.
 
-\begin{figure}[t]
-  \centering
-  \begin{tcolorbox}[
-    colback=gray!5, colframe=gray!80,
-    title={\textbf{\texttt{add-rule}} --- automation skill (excerpts)},
-    fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
-  ]
-  \footnotesize
-  \begin{lstlisting}[basicstyle=\ttfamily\footnotesize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
----
-name: add-rule
-description: Adding a new reduction rule to the
-  codebase, either from an issue or interactively
----
-  \end{lstlisting}
-  \vspace{-4pt}
-  \rule{\linewidth}{0.3pt}\\[3pt]
-  \textbf{Required Information Checklist}
-  \begin{enumerate}
-    \item \textbf{Reduction algorithm} --- how to transform source instance to target, with BibTeX reference.
-    \item \textbf{Size overhead} --- how target size relates to source size, used for estimating the overhead of the reduction.
-    \item \textbf{Concrete example} --- a small worked-out instance, used for testing and documentation.
-    \item $\ldots$
-  \end{enumerate}
-  Do NOT proceed until the checklist is complete.\\[3pt]
-  %
-  \rule{\linewidth}{0.3pt}\\[3pt]
-  \textbf{Reference Implementations} --- Read these first:\\
-  {\ttfamily src/rules/minimumvertexcover\_\\maximumindependentset.rs}\\
-  {\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
-  %
-  \rule{\linewidth}{0.3pt}\\[3pt]
-  \textbf{Step 5: Document in paper.}
-  Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
-  Run \texttt{make paper} --- must compile without errors.
-  \end{tcolorbox}
-  \caption{Excerpts from the \texttt{add-rule} skill.
-    The checklist encodes the mathematical knowledge every reduction requires.
-    Reference implementations prevent convention drift.
-    The paper entry ensures visual verifiability by human reviewers.}
-  \label{fig:skill-addrule}
-\end{figure}
-
 \textbf{Stage~4: Review} (\col{Review Pool} $\to$ \col{Final Review}).
 Similarly, a review agent reads the \texttt{review-pipeline} skill, claims an issue from \col{Review Pool}, moves it to \col{Under Review}, dispatches three read-only sub-agents: structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification}), and posts a review report on the PR and moves the issue to \col{Final Review}---all in headless mode.
 
