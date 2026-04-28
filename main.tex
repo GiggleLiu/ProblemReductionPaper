@@ -419,7 +419,7 @@ Four roles drive the flow: a domain expert files issues, a maintainer triages an
 
 \begin{figure*}[t]
   \centering
-  \begin{minipage}[t]{0.52\textwidth}
+  \begin{minipage}[t]{0.545\textwidth}
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
     title={\textbf{\texttt{propose}} --- advisor skill (excerpts)},
@@ -430,9 +430,8 @@ Four roles drive the flow: a domain expert files issues, a maintainer triages an
 ---
 name: propose
 description:
-  Guides domain experts through
-  brainstorming and files a GitHub
-  issue
+  Guides domain experts through brainstorm-
+  ing and files a GitHub issue
 ---
   \end{lstlisting}
   \vspace{-4pt}
@@ -477,8 +476,8 @@ cargo run --example \
 ---
 name: add-rule
 description: Adding a new reduction 
-  rule to the codebase, either from an 
-  issue or interactively
+  rule to the codebase, either from 
+  an issue or interactively
 ---
   \end{lstlisting}
   \vspace{-4pt}
@@ -499,8 +498,8 @@ description: Adding a new reduction
   %
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Reference Implementations} --- Read these first:\\
-  {\ttfamily src/rules/minimumvertexcover\_\\maximumindependentset.rs}\\
-  {\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
+  {\ttfamily src/rules/mvc\_mis.rs} [\ldots{}]\\[3pt]
+  % {\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
   %
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Step 5: Document in paper.}
