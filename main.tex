@@ -497,13 +497,11 @@ description: Adding a new reduction rule to the
   Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
   Run \texttt{make paper} --- must compile without errors.
   \end{tcolorbox}
-  \subcaption{Excerpts from the \texttt{add-rule} skill.
-    The checklist encodes the mathematical knowledge every reduction requires.
-    Reference implementations prevent convention drift.
-    The paper entry ensures visual verifiability by human reviewers.}
   \label{fig:skill-addrule}
   \end{minipage}
-  \caption{Two skills that bookend the contribution pipeline: \texttt{propose} (left) gates issue creation by domain experts, and \texttt{add-rule} (right) drives implementation from a validated issue.}
+  \caption{Two skills that bookend the contribution pipeline.
+    \textbf{\texttt{propose}} (left) gates issue creation by domain experts: the hard gate enforces no-code contribution, topology analysis guides experts toward strategic reduction-graph gaps, and pre-validation checks four quality dimensions before the issue enters the pipeline.
+    \textbf{\texttt{add-rule}} (right) drives implementation from a validated issue: the checklist encodes the mathematical knowledge every reduction requires, reference implementations prevent convention drift, and the paper entry ensures visual verifiability by human reviewers.}
   \label{fig:skills}
 \end{figure*}
 
