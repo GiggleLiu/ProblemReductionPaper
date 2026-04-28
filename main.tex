@@ -476,20 +476,25 @@ cargo run --example \
   \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
 ---
 name: add-rule
-description: Adding a new reduction rule to
-  the codebase, either from an issue or
-  interactively
+description: Adding a new reduction 
+  rule to the codebase, either from an 
+  issue or interactively
 ---
   \end{lstlisting}
   \vspace{-4pt}
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Required Information Checklist}
+  \begingroup
+  \setlength{\leftmargini}{1.4em}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
   \begin{enumerate}
     \item \textbf{Reduction algorithm} --- how to transform source instance to target, with BibTeX reference.
     \item \textbf{Size overhead} --- how target size relates to source size, used for estimating the overhead of the reduction.
     \item \textbf{Concrete example} --- a small worked-out instance, used for testing and documentation.
     \item $\ldots$
   \end{enumerate}
+  \endgroup
   Do NOT proceed until the checklist is complete.\\[3pt]
   %
   \rule{\linewidth}{0.3pt}\\[3pt]
