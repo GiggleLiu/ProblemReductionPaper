@@ -167,11 +167,11 @@
       ]))
   }
   layer-label(y1-top, int-acc, [1], [Interface Layer],
-    [How users talk to the library.])
+    [Entry points for users and tools.])
   layer-label(y2-top, lib-acc, [2], [Library Layer],
-    [What the library knows.])
+    [Problem definitions, reductions, and canonical examples.])
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
-    [How the library computes.])
+    [Generic solving and overhead reasoning.])
 
   // Box helper (uses inline header instead of grid)
   let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name) = {
