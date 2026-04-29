@@ -166,11 +166,11 @@
         #text(6.8pt, fill: luma(70), desc)
       ]))
   }
-  layer-label(y1-top, int-acc, [1], [Interface Layer],
+  layer-label(y1-top, int-acc, [1], [Interface\ Layer],
     [User-facing entry points for interacting with the reduction library.])
-  layer-label(y2-top, lib-acc, [2], [Library Layer],
+  layer-label(y2-top, lib-acc, [2], [Library\ Layer],
     [Problem-specific knowledge base: definitions, reductions, and canonical examples.])
-  layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
+  layer-label(y3-top, inf-acc, [3], [Infrastructure\ Layer],
     [Problem-agnostic services that provide solving power, symbolic reasoning, and graph management.])
 
   // Box helper (uses inline header instead of grid)
