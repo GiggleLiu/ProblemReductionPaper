@@ -177,8 +177,8 @@
   let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name) = {
     rect((x, y-bot), (x + w, y-bot + h),
       fill: white, stroke: 0.9pt + border, radius: 4pt, name: name)
-    content((x + 0.18, y-bot + h - 0.13), anchor: "north-west",
-      box(width: (w - 0.4) * 1cm, [
+    content((x + 0.15, y-bot + h - 0.13), anchor: "north-west",
+      box(width: (w - 0.32) * 1cm, [
         #header(icon, title, accent)
         #v(2.5pt)
         #set text(6.5pt, fill: body-c)
