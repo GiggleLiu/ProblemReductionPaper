@@ -194,15 +194,15 @@
   let int-y = y1-bot + pad
   mkbox(label-w + 0.1, int-y, int-w, bx-h, int-acc, int-bd,
     icon-term, [`pred` CLI],
-    ([`create` / `reduce` / `solve`],
-     [`list`, `show`, `path`],
-     [`evaluate` candidate solutions]),
+    ([create a problem instance],
+     [reduce to another problem],
+     [solve and evaluate]),
     "predcli")
   mkbox(W - 0.1 - int-w, int-y, int-w, bx-h, int-acc, int-bd,
     icon-doc, [PDF Manual],
-    ([formal problem definitions],
-     [proof sketches per reduction],
-     [worked canonical examples]),
+    ([problem definitions],
+     [reduction proofs],
+     [worked examples]),
     "pdfmanual")
 
   // Library row
