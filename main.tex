@@ -1,7 +1,7 @@
 \documentclass{article}
 
 % if you need to pass options to natbib, use, e.g.:
-%     \PassOptionsToPackage{numbers, compress}{natbib}
+\PassOptionsToPackage{numbers, compress}{natbib}
 % before loading neurips_2026
 
 % The authors should use one of these tracks.
@@ -124,7 +124,7 @@
   Building such a library at scale, however, has remained out of reach.
   We show that \emph{harness engineering}, the practice of designing constraints, verification systems, and feedback loops that channel AI coding agents, can overcome this barrier.
   Our harness combines a no-code contribution route for domain experts, a multilayer verification stack ranging from type-level checks to agentic feature tests (AI agents role-playing as end users), and a fully automated implementation-review-integration pipeline.
-  In about three months, we built a command-line tool backed by a library of 100+ problem types and 200+~reduction rules in over 170k lines of Rust.
+  In about three months, we built a command-line tool backed by a library of 100+ problem types and 200+ reduction rules in over 170k lines of Rust.
   The result suggests that a well-engineered harness lets agents build well-tested software at a scale and pace beyond prior reduction-library efforts.
   Because the reduction graph composes transitively, a new solver registered for any single problem type instantly becomes available to every problem connected by a reduction path.
 \end{abstract}
@@ -345,25 +345,25 @@ A \emph{harness system} constrains agent behavior through five components: a pro
 
 The five components address successive needs in an agent session: what conventions to follow, what actions to take, what domain knowledge to consult, and how to orchestrate these into workflows.
 
-\emph{Project specification} files at the repository root (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) encode how to find the remaining four components and what conventions to follow.
+\textbf{Project specification} files at the repository root (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) encode how to find the remaining four components and what conventions to follow.
 Every agent session loads these files automatically on startup, ensuring that a new agent inherits the same conventions as every prior session, without human briefing.
 
-\emph{Tools} include command-line interfaces (CLI), model context providers (MCP), and external search services.
+\textbf{Tools} include command-line interfaces (CLI), model context providers (MCP), and external search services.
 The CLI and the language's built-in test harness are the agent's hands.
 In this project, the \texttt{pred} CLI lets agents create problem instances, run reductions, invoke solvers, and inspect topological connectivity in the reduction graph.
 ArXiv MCP and web search retrieve references, and Typst compiles the PDF manual and its documentation artifacts.
 
-\emph{Knowledge base.}
+\textbf{Knowledge base.}
 Domain knowledge includes Garey and Johnson's catalogue~\cite{garey1979}, reference papers converted to Markdown for agent consumption, and reference implementations already in the codebase.
 This body of material is too large to fit in a single agent context window.
 The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents discover relevant files through search and read full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
 
-\emph{Automation skills} are plain-Markdown documents that orchestrate multi-step pipelines---connecting specification, tools, and knowledge into repeatable workflows.
+\textbf{Automation skills} are plain-Markdown documents that orchestrate multi-step pipelines---connecting specification, tools, and knowledge into repeatable workflows.
 Unlike traditional automation (Makefiles, shell scripts), which chains deterministic commands, skills can include \emph{abstract} steps: ``implement the reduction algorithm''(\texttt{run-pipeline} skill in~\Cref{fig:skill-architecture}), ``review the pull request for correctness''(\texttt{review-pipeline} skill), ``fact check with web search for issues''(\texttt{fact-check} skill) and ``make a new release''(\texttt{release} skill).
 These steps require judgment and are interpreted by the agent using its own capabilities.
 Unlike bare prompts, skills break a complex task into concrete, ordered steps small enough for an agent to execute faithfully, preventing the drift and omissions that occur when agents plan from scratch.
 
-\emph{Advisor skills} more actively involve humans, for two purposes: \emph{training} humans to use the library or contribute to it, and \emph{utilizing} humans for tasks agents cannot reliably perform, such as critical decisions, hard mathematical reasoning, and creative work like designing canonical examples.
+\textbf{Advisor skills} more actively involve humans, for two purposes: \emph{training} humans to use the library or contribute to it, and \emph{utilizing} humans for tasks agents cannot reliably perform, such as critical decisions, hard mathematical reasoning, and creative work like designing canonical examples.
 For end users, agents use \texttt{find-solver} skill in~\Cref{fig:skill-architecture} to guide a user from a real-world problem to a concrete solving strategy by exploring the reduction graph.
 \texttt{find-problem} skill does the reverse: given a solver, it discovers what other problems it can handle via incoming reductions.
 For contributors, they can invoke the \texttt{propose} skill to conduct a structured brainstorming session to elicit a new problem or reduction in mathematical language, then file a well-formed GitHub issue, with no programming required.
@@ -504,7 +504,7 @@ description: Adding a new reduction
   % {\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
   %
   \rule{\linewidth}{0.3pt}\\[3pt]
-  \textbf{Step 5: Document in paper.}
+  \textbf{Document in paper.}
   Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
   Run \texttt{make paper} --- must compile without errors.
   \end{tcolorbox}
@@ -665,13 +665,50 @@ We believe this solver-access coverage alone is a practical contribution to the 
 %   \label{fig:growth-curve}
 % \end{figure}
 
-In Phase~1 (weeks~0--7; \Cref{fig:growth-curve}), the team and AI agents ported reduction rules from existing packages (ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping,pan2025encodingcomputationallyhardproblems}, and qubogen~\cite{Tamura2020qubogen}) and from Garey and Johnson's catalogue~\cite{garey1979}.
+In Phase~1 (weeks~0--7), the team and AI agents ported reduction rules from existing packages (ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping,pan2025encodingcomputationallyhardproblems}, and qubogen~\cite{Tamura2020qubogen}) and from Garey and Johnson's catalogue~\cite{garey1979}.
 Growth was steady but slow: roughly 20~problem types and 55~rules by week~7.
 Through this process, the skill-based automation pipeline was established and iteratively refined.
 In Phase~2 (weeks~7--8.5), basic skills were introduced, but the pipeline was not yet end-to-end automated.
 In Phase~3 (weeks~8.5--13), the full pipeline became operational.
 Both curves accelerate sharply: problem types grew from 23 to 187, and reduction rules from 52 to 239, in under five weeks.
 External domain experts began contributing through the \texttt{propose} skill, filed structured issues in mathematical language while agents handled implementation.
+
+\subsection{Solver Coverage: QUBO}\label{sec:qubo-coverage}
+
+Specialized hardware for combinatorial optimization is one of the fastest-growing frontiers of AI infrastructure.
+Ising machines, quantum annealers~\cite{glover2019}, and physics-inspired neural solvers~\cite{Schuetz2022PhysicsGNN} all promise substantial speedups over conventional CPU solvers, and the field has converged on a single input format: QUBO.
+The catch is that the speedup is only available \emph{after} the user has hand-translated their problem into QUBO, a step that has historically required a domain expert per problem and a fresh paper per reduction.
+This is exactly where the reduction graph pays off.
+
+Treating QUBO as one registered solver target, \texttt{pred to QUBO -{}-hops 3} reports 138~problem variants that route to it with witness recovery in the current library.
+\Cref{tab:qubo-coverage} samples ten and lists the composed overhead $r_{\text{QUBO} \leftarrow A}$, the polynomial mapping source size to QUBO variable count.
+All ten share one invocation, \texttt{pred reduce - -{}-to QUBO}, and only the input changes.
+By contrast, solver-specific compilers such as PyQUBO~\cite{Zaman2021PyQUBO} and qubovert~\cite{Iosue2022qubovert} accept QUBO input but provide no inter-problem reductions, leaving the translation step to the user.
+
+\begin{table}[t]
+\caption{Ten problems reaching QUBO within three hops, sampled from 138~reachable variants. A QUBO-capable solver inherits all of them via one command.}
+\label{tab:qubo-coverage}
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Problem & Hops & $r_{\text{QUBO} \leftarrow A}$ & Application \\
+\midrule
+GraphPartitioning           & 1 & $O(V)$              & VLSI partitioning \\
+3-Satisfiability            & 1 & $O(C + V)$          & Verification, planning \\
+Knapsack                    & 1 & $O(n + b)$          & Resource allocation \\
+TravelingSalesman           & 1 & $O(V^2)$            & Logistics, PCB drilling \\
+KColoring                   & 1 & $O(V^2)$            & Register allocation \\
+Partition                   & 2 & $O(n + b)$          & Load balancing \\
+MaximumClique               & 2 & $O(V^3)$            & Bioinformatics \\
+BinPacking                  & 2 & $O(n^3)$            & VM/container packing \\
+MultiprocessorScheduling    & 2 & $O(P T^2 + P^2 T)$  & Cloud scheduling \\
+MaximumIndependentSet       & 3 & $O(V^3)$            & Wireless scheduling \\
+\bottomrule
+\end{tabular}
+\\[2pt]
+{\footnotesize $V$: vertices; $C$: clauses; $n$: items; $b$: encoding/slack bits; $P, T$: processors, tasks.}
+\end{table}
 
 %======================================================================
 %  SECTION: RELATED WORK

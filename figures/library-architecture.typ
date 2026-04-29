@@ -1,55 +1,296 @@
+// Library architecture: 3-layer block diagram (Interface / Library / Infrastructure).
+// Width = NeurIPS textwidth (5.5 in ≈ 14 cm).
+
 #import "lib.typ": *
+#import "@preview/cetz:0.4.2": canvas, draw
 
-#set page(..fig-page)
-#set text(..fig-text)
+#set page(width: 14cm, height: auto, margin: 6pt)
+#set text(font: "Helvetica", size: 8pt)
 
-#canvas(length: 0.48cm, {
+// Per-layer accents
+#let int-acc = rgb("#34568b")
+#let int-bd  = rgb("#a8bedf")
+#let int-bg  = rgb("#eef2f8")
+
+#let lib-acc = rgb("#3d6b3a")
+#let lib-bd  = rgb("#9ec38a")
+#let lib-bg  = rgb("#ecf2e6")
+
+#let inf-acc = rgb("#5b3f8a")
+#let inf-bd  = rgb("#b39fc8")
+#let inf-bg  = rgb("#efeaf4")
+
+#let body-c  = luma(50)
+#let arrow-c = rgb("#4f4080")
+
+// ── Icons (small cetz canvases, ~14pt × 14pt) ──
+#let _ic(body) = canvas(length: 1pt, body)
+
+#let icon-term = _ic({
+  import draw: *
+  rect((0, 0), (14, 14), fill: rgb("#1c2840"), stroke: none, radius: 1.8)
+  content((7, 8), text(6.5pt, font: "Courier", fill: white, weight: "bold", [>\_]))
+})
+
+#let icon-doc = _ic({
+  import draw: *
+  let pc = int-acc
+  // page with folded corner
+  line((2, 1), (2, 13), (10, 13), (12, 11), (12, 1), close: true,
+    stroke: 1pt + pc, fill: white)
+  line((10, 13), (10, 11), stroke: 0.8pt + pc)
+  line((10, 11), (12, 11), stroke: 0.8pt + pc)
+  // text lines
+  line((4, 10), (10, 10), stroke: 0.7pt + pc)
+  line((4, 8), (10, 8), stroke: 0.7pt + pc)
+  line((4, 6), (10, 6), stroke: 0.7pt + pc)
+  line((4, 4), (8, 4), stroke: 0.7pt + pc)
+})
+
+#let icon-share = _ic({
+  import draw: *
+  let c = lib-acc
+  line((4, 11), (10.5, 11), stroke: 1pt + c)
+  line((4, 11), (7, 4), stroke: 1pt + c)
+  circle((4, 11), radius: 1.9, fill: c.lighten(40%), stroke: 0.7pt + c)
+  circle((10.5, 11), radius: 1.9, fill: c.lighten(70%), stroke: 0.7pt + c)
+  circle((7, 4), radius: 1.9, fill: c, stroke: 0.7pt + c)
+})
+
+#let icon-arrows = _ic({
+  import draw: *
+  let c = lib-acc
+  line((1, 10), (12, 10), stroke: 1.8pt + c, mark: (end: "straight", scale: 0.4))
+  line((1, 4.5), (12, 4.5),
+    stroke: (paint: c, thickness: 1.4pt, dash: "dashed"),
+    mark: (end: "straight", scale: 0.4))
+})
+
+#let icon-db = _ic({
+  import draw: *
+  let c = lib-acc
+  let cx = 7
+  let rx = 4.5
+  let ry = 1.3
+  // body
+  rect((cx - rx, 3), (cx + rx, 11), fill: c.lighten(55%), stroke: none)
+  // bottom curve
+  arc((cx - rx, 3), start: 180deg, stop: 360deg, radius: (rx, ry),
+    stroke: 0.8pt + c, fill: c.lighten(55%))
+  // mid disk lines
+  arc((cx - rx, 7), start: 180deg, stop: 360deg, radius: (rx, ry),
+    stroke: 0.7pt + c)
+  // top disk
+  circle((cx, 11), radius: (rx, ry), fill: c.lighten(75%), stroke: 0.8pt + c)
+  // sides
+  line((cx - rx, 11), (cx - rx, 3), stroke: 0.8pt + c)
+  line((cx + rx, 11), (cx + rx, 3), stroke: 0.8pt + c)
+})
+
+#let icon-cpu = _ic({
+  import draw: *
+  let c = inf-acc
+  rect((3, 3), (11, 11), fill: c.lighten(60%), stroke: 1pt + c, radius: 0.8)
+  rect((5.5, 5.5), (8.5, 8.5), fill: c, stroke: none, radius: 0.4)
+  for i in range(3) {
+    let p = 4 + i * 1.5 + 0.5
+    line((p, 11), (p, 13), stroke: 0.7pt + c)
+    line((p, 1), (p, 3), stroke: 0.7pt + c)
+    line((11, p), (13, p), stroke: 0.7pt + c)
+    line((1, p), (3, p), stroke: 0.7pt + c)
+  }
+})
+
+#let icon-fx = box(width: 14pt, height: 14pt, baseline: 3pt,
+  align(horizon + center, text(10pt, fill: inf-acc, style: "italic", $f(x)$)))
+
+#let icon-graph = _ic({
+  import draw: *
+  let c = inf-acc
+  let r = 1.7
+  let p-top   = (7, 12.5)
+  let p-left  = (2, 7)
+  let p-right = (12, 7)
+  let p-bot   = (7, 1.5)
+  line(p-top, p-left, stroke: 0.8pt + c)
+  line(p-top, p-right, stroke: 0.8pt + c)
+  line(p-left, p-bot, stroke: 0.8pt + c)
+  line(p-right, p-bot, stroke: 0.8pt + c)
+  circle(p-top,   radius: r, fill: c, stroke: 0.5pt + c)
+  circle(p-left,  radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
+  circle(p-right, radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
+  circle(p-bot,   radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
+})
+
+// ── Main canvas ──
+#canvas(length: 1cm, {
   import draw: *
 
-  // Use lib.typ palette only: accent shades + greys
-  let col-top  = accent                    // interfaces
-  let col-mid  = accent.desaturate(40%)    // core — muted accent
-  let col-bot  = luma(120)                 // infrastructure — grey
+  let W = 14.0
+  let label-w = 3.2
+  let pad = 0.2
+  let band-h = 2.7
+  let gap-h = 0.85
+  let col-w = 3.2
+  let col-gap = 0.18
+  let col-x = (
+    label-w + 0.1,
+    label-w + 0.1 + col-w + col-gap,
+    label-w + 0.1 + 2 * (col-w + col-gap),
+  )
 
-  // ── Layout ──
-  let bw = 6.2
-  let bh = 1.5
-  let gx = 0.6
-  let gy = 0.6
+  // y-positions (origin bottom-left, y increases upward)
+  let y3-bot = 0
+  let y3-top = band-h
+  let y2-bot = band-h + gap-h
+  let y2-top = 2 * band-h + gap-h
+  let y1-bot = 2 * band-h + 2 * gap-h
+  let y1-top = 3 * band-h + 2 * gap-h
 
-  let row(y, col, labels) = {
-    for (i, label) in labels.enumerate() {
-      let x = i * (bw + gx)
-      rect(
-        (x, y), (x + bw, y - bh),
-        radius: 3pt,
-        fill: col.lighten(82%),
-        stroke: (thickness: 0.8pt, paint: col.darken(10%)),
-        name: "r" + str(calc.round(y)) + "-" + str(i),
-      )
-      content(
-        "r" + str(calc.round(y)) + "-" + str(i), anchor: "center",
-        text(8pt, weight: "bold", fill: fg, label),
-      )
-    }
+  // Background bands
+  rect((0, y3-bot), (W, y3-top), fill: inf-bg, stroke: none, radius: 4pt)
+  rect((0, y2-bot), (W, y2-top), fill: lib-bg, stroke: none, radius: 4pt)
+  rect((0, y1-bot), (W, y1-top), fill: int-bg, stroke: none, radius: 4pt)
+
+  // Layer titles + descriptions (left column)
+  let layer-label(yt, accent, num, title, desc) = {
+    content((0.3, yt - 0.25), anchor: "north-west",
+      box(width: (label-w - 0.5) * 1cm, [
+        #text(11pt, weight: "bold", fill: accent, [#num. #title])
+        #v(2pt)
+        #text(7pt, fill: luma(70), desc)
+      ]))
+  }
+  layer-label(y1-top, int-acc, [1], [Interface Layer],
+    [User-facing entry points for interacting with the reduction library.])
+  layer-label(y2-top, lib-acc, [2], [Library Layer],
+    [Problem-specific knowledge base: definitions, reductions, and canonical examples.])
+  layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
+    [Problem-agnostic services that provide solving power, symbolic reasoning, and graph management.])
+
+  // Box helper
+  let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name) = {
+    rect((x, y-bot), (x + w, y-bot + h),
+      fill: white, stroke: 0.9pt + border, radius: 4pt, name: name)
+    content((x + 0.18, y-bot + h - 0.13), anchor: "north-west",
+      box(width: (w - 0.34) * 1cm, [
+        #grid(columns: (auto, 1fr), column-gutter: 5pt, align: horizon + left,
+          icon,
+          text(9pt, weight: "bold", fill: accent, title))
+        #v(2pt)
+        #set text(6.5pt, fill: body-c)
+        #set par(leading: 3pt)
+        #items.map(it => [• #it]).join([\ ])
+      ]))
   }
 
-  let lx = -0.5
+  let bx-h = band-h - 2 * pad
 
-  // Top row: Interfaces
-  let y0 = 0
-  row(y0, col-top, ([`pred` CLI], [PDF Manual]))
-  content((lx, y0 - bh/2), anchor: "east",
-    text(10pt, fill: col-top.darken(20%), weight: "bold", [Interfaces]))
+  // Interface row: 2 wider boxes
+  let int-w = 4.65
+  let int-y = y1-bot + pad
+  mkbox(label-w + 0.1, int-y, int-w, bx-h, int-acc, int-bd,
+    icon-term, [`pred` CLI],
+    ([create / register problems and rules],
+     [reduce along a path],
+     [solve via connected solvers],
+     [query graph and metadata]),
+    "predcli")
+  mkbox(W - 0.1 - int-w, int-y, int-w, bx-h, int-acc, int-bd,
+    icon-doc, [PDF Manual],
+    ([problem definitions],
+     [reduction rules and overheads],
+     [proof sketches],
+     [worked examples]),
+    "pdfmanual")
 
-  // Infrastructure rows
-  let y1 = y0 - bh - gy
-  row(y1, col-bot, ([Problem Types], [Reduction Rules], [Example Database]))
+  // Library row
+  let y2 = y2-bot + pad
+  mkbox(col-x.at(0), y2, col-w, bx-h, lib-acc, lib-bd,
+    icon-share, [Problem Types],
+    ([definitions \& variants],
+     [variables \& constraints],
+     [size measures],
+     [metadata]),
+    "ptypes")
+  mkbox(col-x.at(1), y2, col-w, bx-h, lib-acc, lib-bd,
+    icon-arrows, [Reduction Rules],
+    ([forward mapping],
+     [inverse mapping],
+     [overhead (polynomial)],
+     [conditions \& proofs]),
+    "rrules")
+  mkbox(col-x.at(2), y2, col-w, bx-h, lib-acc, lib-bd,
+    icon-db, [Example Database],
+    ([canonical instances],
+     [solutions],
+     [regression fixtures],
+     [benchmarks]),
+    "exdb")
 
-  let y2 = y1 - bh - gy
-  row(y2, col-bot, ([Solvers], [Symbolic Engine]))
+  // Infrastructure row
+  let y3 = y3-bot + pad
+  mkbox(col-x.at(0), y3, col-w, bx-h, inf-acc, inf-bd,
+    icon-cpu, [Solvers],
+    ([exact solvers (e.g., ILP, SAT)],
+     [specialized backends (QUBO, SDP, …)],
+     [brute force / fallback]),
+    "solvers")
+  mkbox(col-x.at(1), y3, col-w, bx-h, inf-acc, inf-bd,
+    icon-fx, [Symbolic Engine],
+    ([polynomial representation],
+     [composition of overheads],
+     [comparison \& simplification],
+     [evaluation on sizes]),
+    "symeng")
+  mkbox(col-x.at(2), y3, col-w, bx-h, inf-acc, inf-bd,
+    icon-graph, [Graph / Registry Engine],
+    ([problem \& rule registry],
+     [reduction graph storage],
+     [path search \& enumeration],
+     [type checking \& dispatch]),
+    "graphreg")
 
-  // Single label centered between the two infrastructure rows
-  content((lx, (y1 + y2 - bh) / 2), anchor: "east",
-    text(10pt, fill: col-bot.darken(20%), weight: "bold", [Infrastructure]))
+  // ── Intra-layer (bidirectional) arrows ──
+  let bidir(c) = (
+    stroke: (paint: c, thickness: 1pt),
+    mark: (start: "straight", end: "straight", scale: 0.4),
+  )
+  line("ptypes.east",  "rrules.west",   ..bidir(lib-acc))
+  line("rrules.east",  "exdb.west",     ..bidir(lib-acc))
+  line("solvers.east", "symeng.west",   ..bidir(inf-acc))
+  line("symeng.east",  "graphreg.west", ..bidir(inf-acc))
+
+  // ── Inter-layer arrows with labels ──
+  let inter-stroke = (paint: arrow-c, thickness: 0.9pt)
+  let inter-mark   = (end: "straight", scale: 0.4)
+
+  let inter-label(pos, txt) = content(pos, anchor: "center",
+    text(7pt, fill: arrow-c, txt),
+    frame: "rect", fill: white, stroke: none, padding: 0.04)
+
+  // pred CLI ──uses──▶ Reduction Rules
+  line("predcli.south", "rrules.north",
+    stroke: inter-stroke, mark: inter-mark)
+  inter-label((rel: (0, 0.45), to: "rrules.north"), [uses])
+
+  // Example Database ──generated from──▶ PDF Manual
+  line("exdb.north", "pdfmanual.south",
+    stroke: inter-stroke, mark: inter-mark)
+  inter-label((rel: (0, -0.45), to: "pdfmanual.south"), [generated from])
+
+  // Problem Types ──registered in──▶ Solvers
+  line("ptypes.south", "solvers.north",
+    stroke: inter-stroke, mark: inter-mark)
+  inter-label((rel: (0, 0.45), to: "solvers.north"), [registered in])
+
+  // Reduction Rules ──composed via──▶ Symbolic Engine
+  line("rrules.south", "symeng.north",
+    stroke: inter-stroke, mark: inter-mark)
+  inter-label((rel: (0, 0.45), to: "symeng.north"), [composed via])
+
+  // Example Database ──used for testing & docs──▶ Graph / Registry
+  line("exdb.south", "graphreg.north",
+    stroke: inter-stroke, mark: inter-mark)
+  inter-label((rel: (0, 0.45), to: "graphreg.north"), [used for testing \& docs])
 })
