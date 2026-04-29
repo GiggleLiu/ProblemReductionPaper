@@ -4,7 +4,7 @@
 #import "lib.typ": *
 #import "@preview/cetz:0.4.2": canvas, draw
 
-#set page(width: 14cm, height: auto, margin: 6pt)
+#set page(width: auto, height: auto, margin: 2pt)
 #set text(font: "Helvetica", size: 8pt)
 
 // Per-layer accents
