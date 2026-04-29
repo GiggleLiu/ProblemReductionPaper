@@ -132,7 +132,7 @@
   import draw: *
 
   let W = 14.0
-  let label-w = 2.7
+  let label-w = 3.0
   let pad = 0.2
   let band-h = 3.1
   let gap-h = 0.9
