@@ -124,7 +124,7 @@
 #let header(icon, title, accent) = {
   box(baseline: 1.5pt, icon)
   h(4pt)
-  text(8.5pt, weight: "bold", fill: accent, title)
+  text(8pt, weight: "bold", fill: accent, title)
 }
 
 // ── Main canvas ──
