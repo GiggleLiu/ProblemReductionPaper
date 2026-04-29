@@ -209,24 +209,21 @@
   let y2 = y2-bot + pad
   mkbox(col-x.at(0), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-share, [Problem Types],
-    ([definitions \& variants],
-     [variables \& constraints],
+    ([types \& variants],
      [size measures],
-     [metadata]),
+     [best-known complexity]),
     "ptypes")
   mkbox(col-x.at(1), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-arrows, [Reduction Rules],
-    ([forward mapping],
-     [inverse mapping],
-     [overhead (polynomial)],
-     [conditions \& proofs]),
+    ([forward map (source $\to$ target)],
+     [inverse map (target $\to$ source)],
+     [overhead polynomial]),
     "rrules")
   mkbox(col-x.at(2), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-db, [Example Database],
     ([canonical instances],
-     [solutions],
-     [regression fixtures],
-     [benchmarks]),
+     [ground-truth solutions],
+     [feeds round-trip tests, manual]),
     "exdb")
 
   // Infrastructure row
