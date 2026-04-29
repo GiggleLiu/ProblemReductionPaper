@@ -161,17 +161,17 @@
   let layer-label(yt, accent, num, title, desc) = {
     content((0.3, yt - 0.25), anchor: "north-west",
       box(width: (label-w - 0.4) * 1cm, [
-        #text(9.5pt, weight: "bold", fill: accent, [#num. #title])
+        #text(8.5pt, weight: "bold", fill: accent, [#num. #title])
         #v(2pt)
-        #text(6.8pt, fill: luma(70), desc)
+        #text(6.5pt, fill: luma(70), desc)
       ]))
   }
   layer-label(y1-top, int-acc, [1], [Interface Layer],
-    [User-facing entry points for interacting with the reduction library.])
+    [How users talk to the library.])
   layer-label(y2-top, lib-acc, [2], [Library Layer],
-    [Problem-specific knowledge base: definitions, reductions, and canonical examples.])
+    [What the library knows.])
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
-    [Problem-agnostic services for solving, symbolic reasoning, and graph management.])
+    [How the library computes.])
 
   // Box helper (uses inline header instead of grid)
   let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name) = {
