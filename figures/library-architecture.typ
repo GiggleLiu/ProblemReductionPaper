@@ -133,9 +133,9 @@
 
   let W = 14.0
   let label-w = 3.0
-  let pad = 0.2
-  let band-h = 3.1
-  let gap-h = 0.9
+  let pad = 0.15
+  let band-h = 2.35
+  let gap-h = 0.75
   let col-gap = 0.2
   let col-w = (W - label-w - 0.1 - 0.1 - 2 * col-gap) / 3
   let col-x = (
