@@ -240,12 +240,6 @@
      [compose along a path],
      [compare and evaluate]),
     "symeng")
-  mkbox(col-x.at(2), y3, col-w, bx-h, inf-acc, inf-bd,
-    icon-graph, [Reduction Graph],
-    ([all problems and rules],
-     [find the shortest path],
-     [look up by name]),
-    "graphreg")
 
   // ── Intra-layer (bidirectional) arrows ──
   let bidir(c) = (
