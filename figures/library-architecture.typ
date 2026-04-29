@@ -269,14 +269,16 @@
     stroke: inter-stroke, mark: inter-mark)
   inter-label((rel: (0, -0.45), to: "pdfmanual.south"), [generated from])
 
-  // Problem Types ──registered in──▶ Solvers
-  line("ptypes.south", "solvers.north",
+  // Problem Types ──registered in──▶ Solvers (vertical drop into wide box)
+  let solvers-top = ("ptypes.south", "|-", "solvers.north")
+  line("ptypes.south", solvers-top,
     stroke: inter-stroke, mark: inter-mark)
-  inter-label((rel: (0, 0.45), to: "solvers.north"), [registered in])
+  inter-label(("ptypes.south", 50%, solvers-top), [registered in])
 
-  // Reduction Rules ──composed via──▶ Symbolic Engine
-  line("rrules.south", "symeng.north",
+  // Reduction Rules ──composed via──▶ Symbolic Engine (vertical drop)
+  let symeng-top = ("rrules.south", "|-", "symeng.north")
+  line("rrules.south", symeng-top,
     stroke: inter-stroke, mark: inter-mark)
-  inter-label((rel: (0, 0.45), to: "symeng.north"), [composed via])
+  inter-label(("rrules.south", 50%, symeng-top), [composed via])
 
 })
