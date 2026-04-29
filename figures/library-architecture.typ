@@ -278,8 +278,4 @@
     stroke: inter-stroke, mark: inter-mark)
   inter-label((rel: (0, 0.45), to: "symeng.north"), [composed via])
 
-  // Example Database ──used for testing & docs──▶ Graph / Registry
-  line("exdb.south", "graphreg.north",
-    stroke: inter-stroke, mark: inter-mark)
-  inter-label((rel: (0, 0.45), to: "graphreg.north"), [used for testing \& docs])
 })
