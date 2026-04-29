@@ -215,9 +215,9 @@
     "ptypes")
   mkbox(col-x.at(1), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-arrows, [Reduction Rules],
-    ([forward map],
-     [inverse map],
-     [overhead polynomial]),
+    ([`reduce_to`: build target],
+     [`extract_solution`: target $arrow$ source],
+     [`#[reduction(overhead)]`]),
     "rrules")
   mkbox(col-x.at(2), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-db, [Example Database],
