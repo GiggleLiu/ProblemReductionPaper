@@ -230,23 +230,22 @@
   let y3 = y3-bot + pad
   mkbox(col-x.at(0), y3, col-w, bx-h, inf-acc, inf-bd,
     icon-cpu, [Solvers],
-    ([exact solvers (e.g., ILP, SAT)],
-     [specialized backends (QUBO, SDP, …)],
-     [brute force / fallback]),
+    ([ILP via HiGHS (default)],
+     [structure-exploiting solvers],
+     [brute-force fallback]),
     "solvers")
   mkbox(col-x.at(1), y3, col-w, bx-h, inf-acc, inf-bd,
     icon-fx, [Symbolic Engine],
-    ([polynomial representation],
-     [composition of overheads],
-     [comparison \& simplification],
-     [evaluation on sizes]),
+    ([polynomial expressions],
+     [composition along paths],
+     [asymptotic comparison],
+     [numeric evaluation]),
     "symeng")
   mkbox(col-x.at(2), y3, col-w, bx-h, inf-acc, inf-bd,
-    icon-graph, [Graph / Registry Engine],
+    icon-graph, [Reduction Graph],
     ([problem \& rule registry],
-     [reduction graph storage],
-     [path search \& enumeration],
-     [type checking \& dispatch]),
+     [shortest-path queries],
+     [type lookup \& dispatch]),
     "graphreg")
 
   // ── Intra-layer (bidirectional) arrows ──
