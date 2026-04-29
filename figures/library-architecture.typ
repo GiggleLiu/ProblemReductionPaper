@@ -215,15 +215,15 @@
     "ptypes")
   mkbox(col-x.at(1), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-arrows, [Reduction Rules],
-    ([forward map (source $\to$ target)],
-     [inverse map (target $\to$ source)],
+    ([forward map],
+     [inverse map],
      [overhead polynomial]),
     "rrules")
   mkbox(col-x.at(2), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-db, [Example Database],
     ([canonical instances],
      [ground-truth solutions],
-     [feeds round-trip tests, manual]),
+     [round-trip test fixtures]),
     "exdb")
 
   // Infrastructure row
