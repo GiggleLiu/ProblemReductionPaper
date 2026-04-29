@@ -220,7 +220,7 @@
      [how size grows]),
     "rrules")
   mkbox(col-x.at(2), y2, col-w, bx-h, lib-acc, lib-bd,
-    icon-db, [Example~Database],
+    icon-db, [Example Database],
     ([one instance per problem],
      [with a known solution],
      [shared by tests and docs]),
