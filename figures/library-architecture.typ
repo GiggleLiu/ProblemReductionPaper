@@ -180,9 +180,9 @@
     content((x + 0.18, y-bot + h - 0.13), anchor: "north-west",
       box(width: (w - 0.34) * 1cm, [
         #header(icon, title, accent)
-        #v(3pt)
+        #v(2.5pt)
         #set text(6.5pt, fill: body-c)
-        #set par(leading: 3pt)
+        #set par(leading: 2.5pt)
         #items.map(it => [• #it]).join([\ ])
       ]))
   }
