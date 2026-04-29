@@ -160,10 +160,10 @@
   // Layer titles + descriptions (left column)
   let layer-label(yt, accent, num, title, desc) = {
     content((0.3, yt - 0.25), anchor: "north-west",
-      box(width: (label-w - 0.5) * 1cm, [
-        #text(11pt, weight: "bold", fill: accent, [#num. #title])
+      box(width: (label-w - 0.4) * 1cm, [
+        #text(10pt, weight: "bold", fill: accent, [#num. #title])
         #v(2pt)
-        #text(7pt, fill: luma(70), desc)
+        #text(6.8pt, fill: luma(70), desc)
       ]))
   }
   layer-label(y1-top, int-acc, [1], [Interface Layer],
