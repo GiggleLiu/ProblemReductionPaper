@@ -238,8 +238,7 @@
     icon-fx, [Symbolic Engine],
     ([polynomial expressions],
      [composition along paths],
-     [asymptotic comparison],
-     [numeric evaluation]),
+     [comparison \& evaluation]),
     "symeng")
   mkbox(col-x.at(2), y3, col-w, bx-h, inf-acc, inf-bd,
     icon-graph, [Reduction Graph],
