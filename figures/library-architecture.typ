@@ -178,7 +178,7 @@
     rect((x, y-bot), (x + w, y-bot + h),
       fill: white, stroke: 0.9pt + border, radius: 4pt, name: name)
     content((x + 0.18, y-bot + h - 0.13), anchor: "north-west",
-      box(width: (w - 0.34) * 1cm, [
+      box(width: (w - 0.4) * 1cm, [
         #header(icon, title, accent)
         #v(2.5pt)
         #set text(6.5pt, fill: body-c)
@@ -220,7 +220,7 @@
      [how size grows]),
     "rrules")
   mkbox(col-x.at(2), y2, col-w, bx-h, lib-acc, lib-bd,
-    icon-db, [Example Database],
+    icon-db, [Example~Database],
     ([one instance per problem],
      [with a known solution],
      [shared by tests and docs]),
