@@ -209,21 +209,21 @@
   let y2 = y2-bot + pad
   mkbox(col-x.at(0), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-share, [Problem Types],
-    ([types \& variants],
+    ([mathematical definition],
      [size measures],
      [best-known complexity]),
     "ptypes")
   mkbox(col-x.at(1), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-arrows, [Reduction Rules],
-    ([`reduce_to`: build target],
-     [`extract_solution`: target $arrow$ source],
-     [`#[reduction(overhead)]`]),
+    ([source $arrow$ target instance],
+     [recover source solution],
+     [how size grows]),
     "rrules")
   mkbox(col-x.at(2), y2, col-w, bx-h, lib-acc, lib-bd,
     icon-db, [Example Database],
-    ([canonical instances],
-     [ground-truth solutions],
-     [round-trip test fixtures]),
+    ([one instance per problem],
+     [with a known solution],
+     [shared by tests and docs]),
     "exdb")
 
   // Infrastructure row
