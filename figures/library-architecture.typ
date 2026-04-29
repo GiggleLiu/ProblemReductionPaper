@@ -249,7 +249,6 @@
   )
   line("ptypes.east",  "rrules.west",   ..bidir(lib-acc))
   line("rrules.east",  "exdb.west",     ..bidir(lib-acc))
-  line("solvers.east", "symeng.west",   ..bidir(inf-acc))
 
   // ── Inter-layer arrows with labels ──
   let inter-stroke = (paint: arrow-c, thickness: 0.9pt)
