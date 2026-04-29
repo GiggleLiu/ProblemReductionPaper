@@ -226,15 +226,16 @@
      [shared by tests and docs]),
     "exdb")
 
-  // Infrastructure row
+  // Infrastructure row: 2 wider boxes (mirroring Interface row)
   let y3 = y3-bot + pad
-  mkbox(col-x.at(0), y3, col-w, bx-h, inf-acc, inf-bd,
+  let inf-w = int-w
+  mkbox(label-w + 0.1, y3, inf-w, bx-h, inf-acc, inf-bd,
     icon-cpu, [Solvers],
     ([ILP (default)],
      [problem-specific],
      [brute force]),
     "solvers")
-  mkbox(col-x.at(1), y3, col-w, bx-h, inf-acc, inf-bd,
+  mkbox(W - 0.1 - inf-w, y3, inf-w, bx-h, inf-acc, inf-bd,
     icon-fx, [Symbolic Engine],
     ([polynomial expressions],
      [compose along a path],
