@@ -23,104 +23,109 @@
 #let body-c  = luma(50)
 #let arrow-c = rgb("#4f4080")
 
-// ── Icons (small cetz canvases, ~14pt × 14pt) ──
-#let _ic(body) = canvas(length: 1pt, body)
+// ── Icons (typst content; ~14pt × 14pt boxes) ──
 
-#let icon-term = _ic({
-  import draw: *
-  rect((0, 0), (14, 14), fill: rgb("#1c2840"), stroke: none, radius: 1.8)
-  content((7, 8), text(6.5pt, font: "Courier", fill: white, weight: "bold", [>\_]))
+#let icon-term = box(
+  width: 14pt, height: 14pt, baseline: 2pt,
+  fill: rgb("#1c2840"), radius: 1.5pt, inset: 1pt,
+  align(horizon + center,
+    text(6.5pt, font: "Courier", fill: white, weight: "bold", [>\_])))
+
+#let icon-doc = box(width: 14pt, height: 14pt, baseline: 2pt, {
+  place(top + left, dx: 2pt, dy: 0.5pt,
+    rect(width: 10pt, height: 13pt,
+      stroke: 0.8pt + int-acc, fill: white, radius: 0.5pt))
+  place(top + left, dx: 3.5pt, dy: 4pt,
+    rect(width: 7pt, height: 0.6pt, fill: int-acc, stroke: none))
+  place(top + left, dx: 3.5pt, dy: 6pt,
+    rect(width: 7pt, height: 0.6pt, fill: int-acc, stroke: none))
+  place(top + left, dx: 3.5pt, dy: 8pt,
+    rect(width: 7pt, height: 0.6pt, fill: int-acc, stroke: none))
+  place(top + left, dx: 3.5pt, dy: 10pt,
+    rect(width: 5pt, height: 0.6pt, fill: int-acc, stroke: none))
 })
 
-#let icon-doc = _ic({
-  import draw: *
-  let pc = int-acc
-  // page with folded corner
-  line((2, 1), (2, 13), (10, 13), (12, 11), (12, 1), close: true,
-    stroke: 1pt + pc, fill: white)
-  line((10, 13), (10, 11), stroke: 0.8pt + pc)
-  line((10, 11), (12, 11), stroke: 0.8pt + pc)
-  // text lines
-  line((4, 10), (10, 10), stroke: 0.7pt + pc)
-  line((4, 8), (10, 8), stroke: 0.7pt + pc)
-  line((4, 6), (10, 6), stroke: 0.7pt + pc)
-  line((4, 4), (8, 4), stroke: 0.7pt + pc)
-})
+#let icon-share = box(width: 14pt, height: 14pt, baseline: 2pt,
+  canvas(length: 1pt, {
+    import draw: *
+    let c = lib-acc
+    line((4, 11), (10.5, 11), stroke: 1pt + c)
+    line((4, 11), (7, 4), stroke: 1pt + c)
+    circle((4, 11), radius: 1.9, fill: c.lighten(40%), stroke: 0.7pt + c)
+    circle((10.5, 11), radius: 1.9, fill: c.lighten(70%), stroke: 0.7pt + c)
+    circle((7, 4), radius: 1.9, fill: c, stroke: 0.7pt + c)
+  }))
 
-#let icon-share = _ic({
-  import draw: *
-  let c = lib-acc
-  line((4, 11), (10.5, 11), stroke: 1pt + c)
-  line((4, 11), (7, 4), stroke: 1pt + c)
-  circle((4, 11), radius: 1.9, fill: c.lighten(40%), stroke: 0.7pt + c)
-  circle((10.5, 11), radius: 1.9, fill: c.lighten(70%), stroke: 0.7pt + c)
-  circle((7, 4), radius: 1.9, fill: c, stroke: 0.7pt + c)
-})
+#let icon-arrows = box(width: 14pt, height: 14pt, baseline: 2pt,
+  canvas(length: 1pt, {
+    import draw: *
+    let c = lib-acc
+    line((1, 10), (12, 10), stroke: 1.8pt + c, mark: (end: "straight", scale: 0.4))
+    line((1, 4.5), (12, 4.5),
+      stroke: (paint: c, thickness: 1.4pt, dash: "dashed"),
+      mark: (end: "straight", scale: 0.4))
+  }))
 
-#let icon-arrows = _ic({
-  import draw: *
-  let c = lib-acc
-  line((1, 10), (12, 10), stroke: 1.8pt + c, mark: (end: "straight", scale: 0.4))
-  line((1, 4.5), (12, 4.5),
-    stroke: (paint: c, thickness: 1.4pt, dash: "dashed"),
-    mark: (end: "straight", scale: 0.4))
-})
+#let icon-db = box(width: 14pt, height: 14pt, baseline: 2pt,
+  canvas(length: 1pt, {
+    import draw: *
+    let c = lib-acc
+    let cx = 7
+    let rx = 4.5
+    let ry = 1.3
+    rect((cx - rx, 3), (cx + rx, 11), fill: c.lighten(55%), stroke: none)
+    arc((cx - rx, 3), start: 180deg, stop: 360deg, radius: (rx, ry),
+      stroke: 0.8pt + c, fill: c.lighten(55%))
+    arc((cx - rx, 7), start: 180deg, stop: 360deg, radius: (rx, ry),
+      stroke: 0.7pt + c)
+    circle((cx, 11), radius: (rx, ry), fill: c.lighten(75%), stroke: 0.8pt + c)
+    line((cx - rx, 11), (cx - rx, 3), stroke: 0.8pt + c)
+    line((cx + rx, 11), (cx + rx, 3), stroke: 0.8pt + c)
+  }))
 
-#let icon-db = _ic({
-  import draw: *
-  let c = lib-acc
-  let cx = 7
-  let rx = 4.5
-  let ry = 1.3
-  // body
-  rect((cx - rx, 3), (cx + rx, 11), fill: c.lighten(55%), stroke: none)
-  // bottom curve
-  arc((cx - rx, 3), start: 180deg, stop: 360deg, radius: (rx, ry),
-    stroke: 0.8pt + c, fill: c.lighten(55%))
-  // mid disk lines
-  arc((cx - rx, 7), start: 180deg, stop: 360deg, radius: (rx, ry),
-    stroke: 0.7pt + c)
-  // top disk
-  circle((cx, 11), radius: (rx, ry), fill: c.lighten(75%), stroke: 0.8pt + c)
-  // sides
-  line((cx - rx, 11), (cx - rx, 3), stroke: 0.8pt + c)
-  line((cx + rx, 11), (cx + rx, 3), stroke: 0.8pt + c)
-})
+#let icon-cpu = box(width: 14pt, height: 14pt, baseline: 2pt,
+  canvas(length: 1pt, {
+    import draw: *
+    let c = inf-acc
+    rect((3, 3), (11, 11), fill: c.lighten(60%), stroke: 1pt + c, radius: 0.8)
+    rect((5.5, 5.5), (8.5, 8.5), fill: c, stroke: none, radius: 0.4)
+    for i in range(3) {
+      let p = 4.5 + i * 1.5
+      line((p, 11), (p, 13), stroke: 0.7pt + c)
+      line((p, 1), (p, 3), stroke: 0.7pt + c)
+      line((11, p), (13, p), stroke: 0.7pt + c)
+      line((1, p), (3, p), stroke: 0.7pt + c)
+    }
+  }))
 
-#let icon-cpu = _ic({
-  import draw: *
-  let c = inf-acc
-  rect((3, 3), (11, 11), fill: c.lighten(60%), stroke: 1pt + c, radius: 0.8)
-  rect((5.5, 5.5), (8.5, 8.5), fill: c, stroke: none, radius: 0.4)
-  for i in range(3) {
-    let p = 4 + i * 1.5 + 0.5
-    line((p, 11), (p, 13), stroke: 0.7pt + c)
-    line((p, 1), (p, 3), stroke: 0.7pt + c)
-    line((11, p), (13, p), stroke: 0.7pt + c)
-    line((1, p), (3, p), stroke: 0.7pt + c)
-  }
-})
-
-#let icon-fx = box(width: 14pt, height: 14pt, baseline: 3pt,
+#let icon-fx = box(width: 14pt, height: 14pt, baseline: 2pt,
   align(horizon + center, text(10pt, fill: inf-acc, style: "italic", $f(x)$)))
 
-#let icon-graph = _ic({
-  import draw: *
-  let c = inf-acc
-  let r = 1.7
-  let p-top   = (7, 12.5)
-  let p-left  = (2, 7)
-  let p-right = (12, 7)
-  let p-bot   = (7, 1.5)
-  line(p-top, p-left, stroke: 0.8pt + c)
-  line(p-top, p-right, stroke: 0.8pt + c)
-  line(p-left, p-bot, stroke: 0.8pt + c)
-  line(p-right, p-bot, stroke: 0.8pt + c)
-  circle(p-top,   radius: r, fill: c, stroke: 0.5pt + c)
-  circle(p-left,  radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
-  circle(p-right, radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
-  circle(p-bot,   radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
-})
+#let icon-graph = box(width: 14pt, height: 14pt, baseline: 2pt,
+  canvas(length: 1pt, {
+    import draw: *
+    let c = inf-acc
+    let r = 1.7
+    let p-top   = (7, 12.5)
+    let p-left  = (2, 7)
+    let p-right = (12, 7)
+    let p-bot   = (7, 1.5)
+    line(p-top, p-left, stroke: 0.8pt + c)
+    line(p-top, p-right, stroke: 0.8pt + c)
+    line(p-left, p-bot, stroke: 0.8pt + c)
+    line(p-right, p-bot, stroke: 0.8pt + c)
+    circle(p-top,   radius: r, fill: c, stroke: 0.5pt + c)
+    circle(p-left,  radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
+    circle(p-right, radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
+    circle(p-bot,   radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
+  }))
+
+// ── Header (icon + title) helper ──
+#let header(icon, title, accent) = {
+  box(baseline: 2pt, icon)
+  h(5pt)
+  text(9pt, weight: "bold", fill: accent, title)
+}
 
 // ── Main canvas ──
 #canvas(length: 1cm, {
@@ -168,16 +173,14 @@
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
     [Problem-agnostic services that provide solving power, symbolic reasoning, and graph management.])
 
-  // Box helper
+  // Box helper (uses inline header instead of grid)
   let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name) = {
     rect((x, y-bot), (x + w, y-bot + h),
       fill: white, stroke: 0.9pt + border, radius: 4pt, name: name)
     content((x + 0.18, y-bot + h - 0.13), anchor: "north-west",
       box(width: (w - 0.34) * 1cm, [
-        #grid(columns: (auto, 1fr), column-gutter: 5pt, align: horizon + left,
-          icon,
-          text(9pt, weight: "bold", fill: accent, title))
-        #v(2pt)
+        #header(icon, title, accent)
+        #v(3pt)
         #set text(6.5pt, fill: body-c)
         #set par(leading: 3pt)
         #items.map(it => [• #it]).join([\ ])
