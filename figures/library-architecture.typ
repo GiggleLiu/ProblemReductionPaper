@@ -132,12 +132,12 @@
   import draw: *
 
   let W = 14.0
-  let label-w = 3.2
+  let label-w = 2.7
   let pad = 0.2
-  let band-h = 2.7
-  let gap-h = 0.85
-  let col-w = 3.2
-  let col-gap = 0.18
+  let band-h = 3.1
+  let gap-h = 0.9
+  let col-gap = 0.2
+  let col-w = (W - label-w - 0.1 - 0.1 - 2 * col-gap) / 3
   let col-x = (
     label-w + 0.1,
     label-w + 0.1 + col-w + col-gap,
