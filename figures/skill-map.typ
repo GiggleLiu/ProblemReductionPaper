@@ -50,15 +50,11 @@
     // Row sub-title above
     if accent-side {
       content((1.6, y + 1.05),
-        text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill]
-          + h(0.3em)
-          + text(5.5pt, fill: fg-light)[(human-in-loop)],
+        text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill],
         anchor: "west")
     } else {
       content((1.6, y + 1.05),
-        text(7.5pt, weight: "bold", fill: fg)[automation skill]
-          + h(0.3em)
-          + text(5.5pt, fill: fg-light)[(autonomous)],
+        text(7.5pt, weight: "bold", fill: fg)[automation skill],
         anchor: "west")
     }
 
@@ -89,9 +85,9 @@
     let cx = 9.85
     let cp-r = 0.85
     circle((cx, y), radius: cp-r, fill: cp-fill, stroke: cp-stroke, name: kind + "-cp")
-    content((cx, y), text(6.5pt, weight: "bold", fill: fg)[#cp-name])
+    content((cx, y), text(6pt, weight: "bold", fill: fg)[#cp-name])
     // Sub-label below counterpart
-    content((cx, y - 1.25), text(4.8pt, fill: fg-light)[#cp-sub])
+    content((cx, y - 1.5), text(4.8pt, fill: fg-light)[#cp-sub])
 
     // Connectors
     line(kind + "-skill.east", kind + "-agent.west",
@@ -103,8 +99,8 @@
     content((cx + 1.85, y), text(5.5pt, fill: fg)[#outcome], anchor: "west")
   }
 
-  exec-row(9.7, "advisor", accent-side: true)
-  exec-row(5.0, "automation")
+  exec-row(9.9, "advisor", accent-side: true)
+  exec-row(6, "automation")
 
   // ============================================================
   // Panel (b) — Skills indexed by invoker (right, x ≈ 15..30)
