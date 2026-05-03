@@ -10,7 +10,7 @@
   // Panel (a) — Skill execution model (left, x ≈ 0..13)
   // ============================================================
 
-  let pa-header-y = 13.0
+  let pa-header-y = 12.5
   content((-0.1, pa-header-y),
     text(8pt, weight: "bold", fill: fg)[(a)], anchor: "west")
 
@@ -221,4 +221,21 @@
   skill((c4x, s0),         "check-issue",     "a1")
   skill((c4x, s0 - sp),    "run-pipeline",    "a2")
   skill((c4x, s0 - sp*2),  "review-pipeline", "a3")
+
+  // Legend below panel (b)
+  let legend-y = s0 - sp * 3 - 0.85
+  let lg1-x = 18.0
+  let lg2-x = 23.5
+  // Advisor swatch
+  rect((lg1-x, legend-y - 0.22), (lg1-x + 0.5, legend-y + 0.22),
+    radius: 2pt, fill: fill-accent, stroke: (paint: accent, thickness: 0.7pt))
+  content((lg1-x + 0.7, legend-y),
+    text(6.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill],
+    anchor: "west")
+  // Automation swatch
+  rect((lg2-x, legend-y - 0.22), (lg2-x + 0.5, legend-y + 0.22),
+    radius: 2pt, fill: white, stroke: (paint: border, thickness: 0.5pt))
+  content((lg2-x + 0.7, legend-y),
+    text(6.5pt, weight: "bold", fill: fg)[automation skill],
+    anchor: "west")
 })
