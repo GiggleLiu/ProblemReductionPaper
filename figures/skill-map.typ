@@ -36,13 +36,13 @@
 
     // Row sub-title above
     if accent-side {
-      content((0.2, y + 1.05),
+      content((1.6, y + 1.05),
         text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor]
           + h(0.3em)
           + text(5.5pt, fill: fg-light)[(human-in-loop)],
         anchor: "west")
     } else {
-      content((0.2, y + 1.05),
+      content((1.6, y + 1.05),
         text(7.5pt, weight: "bold", fill: fg)[automation]
           + h(0.3em)
           + text(5.5pt, fill: fg-light)[(autonomous)],
@@ -50,7 +50,7 @@
     }
 
     // SKILL.md box
-    let sx = 2.3
+    let sx = 3.7
     rect((sx - 1.4, y - 0.45), (sx + 1.4, y + 0.45),
       radius: 3pt, fill: fill-light, stroke: stroke-edge, name: kind + "-skill")
     content((sx, y + 0.18), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
