@@ -127,10 +127,10 @@
     if accent-side {
       let dx = 0.2
       // human → agent (down, left side)
-      line((hx - dx, hy - hr), (ax - dx, y + agent-r),
+      line((hx - dx, hy - hh), (ax - dx, y + agent-r),
         stroke: human-arrow-stroke, mark: big-mark-end)
       // agent → human (up, right side)
-      line((ax + dx, y + agent-r), (hx + dx, hy - hr),
+      line((ax + dx, y + agent-r), (hx + dx, hy - hh),
         stroke: human-arrow-stroke, mark: big-mark-end)
     } else {
       line(kind + "-human.south", kind + "-agent.north",
