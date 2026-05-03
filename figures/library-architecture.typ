@@ -148,8 +148,8 @@
 
   // y-positions (origin bottom-left, y increases upward)
   let y3-bot = 0
-  let y3-top = band-h
-  let y2-bot = band-h + gap-h
+  let y3-top = inf-band-h
+  let y2-bot = y3-top + gap-h
   let y2-top = y2-bot + lib-band-h
   let y1-bot = y2-top + gap-h
   let y1-top = y1-bot + band-h
