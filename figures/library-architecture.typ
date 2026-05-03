@@ -228,7 +228,7 @@
   let exdb-x = lib-x0 + (2 * lib-col-w + col-gap - exdb-w) / 2
 
   // Bottom-row boxes narrower than their slots, centered (icons + titles only fit better in a snugger box).
-  let lib-bot-w = lib-col-w * 0.65
+  let lib-bot-w = 3.5
   let ptypes-x = lib-x0 + (lib-col-w - lib-bot-w) / 2
   let rrules-x = lib-x1 + (lib-col-w - lib-bot-w) / 2
 
@@ -236,7 +236,7 @@
     icon-share, [Problem Types], (), "ptypes")
   mkbox(rrules-x, lib-bot-y, lib-bot-w, lib-sub-h, lib-acc, lib-bd,
     icon-arrows, [Reduction Rules], (), "rrules")
-  mkbox(exdb-x, lib-top-y, exdb-w, lib-sub-h, lib-acc, lib-bd,
+  mkbox(exdb-x, lib-top-y, lib-bot-w, lib-sub-h, lib-acc, lib-bd,
     icon-db, [Example Database], (), "exdb")
 
   // Infrastructure row: 2 wider boxes (mirroring Interface row)
@@ -260,10 +260,9 @@
     stroke: (paint: c, thickness: 1pt),
     mark: (start: "straight", end: "straight", scale: 0.4),
   )
-  // Triangle: bottom edge + two diagonals from Example Database's bottom-center
-  // down to the top-center of each lower box.
-  line("ptypes.east",  "rrules.west",   ..bidir(lib-acc))
-  line("exdb.south",   "ptypes.north",  ..bidir(lib-acc))
-  line("exdb.south",   "rrules.north",  ..bidir(lib-acc))
+  // Triangle: bottom edge + two diagonals corner-to-corner (short slants).
+  line("ptypes.east",       "rrules.west",        ..bidir(lib-acc))
+  line("exdb.south-west",   "ptypes.north-east",  ..bidir(lib-acc))
+  line("exdb.south-east",   "rrules.north-west",  ..bidir(lib-acc))
 
 })
