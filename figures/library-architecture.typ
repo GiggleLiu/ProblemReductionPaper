@@ -252,7 +252,7 @@
     "solvers")
   mkbox(W - 0.1 - inf-w, y3, inf-w, bx-h, inf-acc, inf-bd,
     icon-fx, [Symbolic Engine],
-    ([polynomial expressions],
+    ([symbolic expressions],
      [compose along a path],
      [compare and evaluate]),
     "symeng")
