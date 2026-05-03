@@ -178,20 +178,25 @@
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
     [Generic solving and overhead reasoning.])
 
-  // Box helper (uses inline header instead of grid)
+  // Box helper. If `items` is empty, render only the header centered vertically.
   let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name) = {
     rect((x, y-bot), (x + w, y-bot + h),
       fill: white, stroke: 0.9pt + border, radius: 4pt, name: name)
-    content((x + 0.15, y-bot + h - 0.13), anchor: "north-west",
-      box(width: (w - 0.32) * 1cm, [
-        #set block(spacing: 3pt)
-        #header(icon, title, accent)
-        #block(inset: (left: 18pt))[
-          #set text(7.5pt, fill: body-c)
-          #set par(leading: 3pt)
-          #items.map(it => [• #it]).join([\ ])
-        ]
-      ]))
+    if items.len() == 0 {
+      content((x + w / 2, y-bot + h / 2), anchor: "center",
+        box(width: (w - 0.32) * 1cm, header(icon, title, accent)))
+    } else {
+      content((x + 0.15, y-bot + h - 0.13), anchor: "north-west",
+        box(width: (w - 0.32) * 1cm, [
+          #set block(spacing: 3pt)
+          #header(icon, title, accent)
+          #block(inset: (left: 18pt))[
+            #set text(7.5pt, fill: body-c)
+            #set par(leading: 3pt)
+            #items.map(it => [• #it]).join([\ ])
+          ]
+        ]))
+    }
   }
 
   let bx-h = band-h - 2 * pad
