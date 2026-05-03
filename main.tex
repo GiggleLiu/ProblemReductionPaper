@@ -546,32 +546,21 @@ External domain experts began contributing through the \texttt{propose} skill, f
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
-The library's value to a practitioner is not the catalog of problems and reductions on its own, but whether having that catalog changes outcomes when a user---or an AI agent acting on their behalf---tackles a concrete instance.
-We test this directly with a small controlled experiment.
+A catalog of reductions matters only if it changes outcomes when an agent tackles a concrete instance.
+We test this on a dense weighted Max-Cut instance ($n{=}150$, ${\approx}5300$ signed edges) presented to a sub-agent in domain language, with no algorithmic hints.
+Four configurations vary two axes---\emph{web search} and \emph{access to \texttt{pred}}---across four random seeds (full setup in \Cref{app:end-user}).
+We separate three quantities AI-coding evaluations often conflate as ``time'': AI tokens, solver wall-time, and solution quality, with optimality claims independently graded.
 
-\textbf{Setup.}
-A dense weighted Max-Cut instance ($n=150$ vertices, ${\approx}\,5300$ signed-weight edges, density ${\approx}\,0.48$) is presented to a Claude Sonnet 4.6 sub-agent through an engineer-voice prompt: a people-ops manager dividing an organization into two product teams to maximize cross-team interaction value.
-The prompt contains no algorithm, model, or solver hints; the underlying Max-Cut structure is left for the agent to recognize.
-Four configurations form a $2{\times}2$ factorial along two axes: \emph{web search} (yes/no) and \emph{access to \texttt{pred}} (yes/no).
-Four random seeds per configuration; solver wall-time capped at 90~s per run.
-Agents with \texttt{pred} access also receive a short Markdown protocol that prescribes one extra step before writing solver code---enumerate downstream models with \texttt{pred from} and pick the one whose endpoint admits the strongest off-the-shelf solver.
-
-\textbf{Three independent axes of measurement.}
-We separate three quantities that AI-coding evaluations often blend into a single ``time'' figure:
-(i) \emph{AI cost}---tokens consumed by the agent;
-(ii) \emph{algorithm cost}---solver wall-time, reported by the agent in a structured \texttt{meta.json};
-(iii) \emph{solution quality}---feasibility, objective value, and the agent's claim of optimality, all re-checked by an independent grader.
-The grader also flags \emph{false-OPT}: a claimed-optimal answer beaten by another configuration on the same seed.
-
-\textbf{Results.}
-Configurations with \texttt{pred} access achieve zero regret on all four seeds with no false-OPT claims; configurations without it leave 0.35--9.70\% on the table and produce 1--2 false-OPT claims out of 4 runs (\Cref{tab:end-user-eval}).
-Web access alone is not merely neutral: the agent uses it to commit more confidently to a textbook ILP encoding, and the resulting CBC time-out is misreported as \texttt{OPTIMAL}, doubling the false-OPT rate and worsening mean regret to nearly $10\%$.
-With \texttt{pred}, the agent invariably reformulates Max-Cut as a spin-glass / QUBO instance solved by simulated annealing (\texttt{dwave-neal}); this reformulation also wins on solver wall-time (42.8--71.1~s versus 81.8--85.3~s).
-The catalog-aware path costs 30--40\% more AI tokens, primarily for enumerating downstream candidates; the trade is better answers and more honest optimality reporting.
+\Cref{tab:end-user-eval} summarises the outcomes.
+Agents with \texttt{pred} access achieve zero regret on every seed and never falsely claim optimality.
+Without it, agents leave 0.35--9.7\% on the table and produce 1--2 \emph{false-OPT} claims (an answer claimed optimal but beaten by another configuration on the same seed) out of four runs.
+Web access alone is worse than neutral: it sharpens the agent's confidence in a textbook ILP encoding whose CBC time-out is then misreported as \texttt{OPTIMAL}.
+With \texttt{pred}, the agent invariably reformulates Max-Cut as QUBO and solves it with simulated annealing, also winning on solver wall-time (42.8--71.1\,s vs.\ 81.8--85.3\,s).
+The catalog-aware route costs 30--40\% more AI tokens for downstream enumeration---a cost the better answers and honest optimality reporting easily justify.
 
 \begin{table}[h]
-\caption{Outcomes on a dense weighted Max-Cut instance (4~seeds per configuration; 90~s solver-wall cap; $n=150$ vertices, ${\approx}\,5300$ signed-weight edges).
-Regret~\% is the gap to the best feasible answer found across all configurations on the same seed; false-OPT counts answers claimed optimal but beaten by another configuration.}
+\caption{Outcomes on the Max-Cut instance (4~seeds per configuration; 90~s solver-wall cap).
+Regret~\% is the gap to the best feasible answer found on the same seed; false-OPT counts answers claimed optimal but beaten by another configuration.}
 \label{tab:end-user-eval}
 \centering
 \small
@@ -586,11 +575,6 @@ Bare AI + web                        & 9.70 & 2/4 & 36{,}942 & 85.3 \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\textbf{Caveats.}
-A single scenario family in which the natural ILP formulation is known to be dominated by simulated annealing on the QUBO form---a setting deliberately chosen to test whether catalog-driven reformulation pays off when it can.
-The gains may not transfer to families where the natural formulation is already strong (sparse ILP, scheduling), nor across different agent backends.
-The benchmark harness---scenario generator, grader, per-run result schema, and aggregation script---is released alongside the library to support broader replication.
 
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION
