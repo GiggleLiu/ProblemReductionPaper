@@ -255,23 +255,23 @@ The library ships with a command-line interface (CLI), \texttt{pred}, as the pri
 Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem, finding the largest set of vertices with no two adjacent.
 The conflict graph encodes spatial constraints: vertices are candidate locations, edges connect locations that are too close.
 \Cref{lst:cli-session} shows how one solves this instance with an ILP solver.
-\begin{figure}[t]
-\lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},moredelim=[is][\color{black!80}\bfseries]{@}{@},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
-\begin{lstlisting}
-# Create a conflict graph (4 locations, 3 conflicts),
-# reduce to ILP, and solve
-@$ pred create MIS --graph 0-1,1-2,2-3 \
-    | pred reduce - --to ILP \
-    | pred solve -@
-Problem: "MaximumIndependentSet"
-Solver: ilp (via ILP)
-Solution: [1, 0, 0, 1]  // locations 0 and 3
-Evaluation: "Max(2)"    // 2 non-conflicting bins
-\end{lstlisting}
-\caption{CLI using example: creating and solving a Maximum Independent Set instance via reduction to integer linear programming (ILP).
-  Commands communicate via Unix pipes (\texttt{|}), reading JSON from stdin (\texttt{-}) and writing JSON to stdout, so they compose without intermediate files.}
-\label{lst:cli-session}
-\end{figure}
+% \begin{figure}[t]
+% \lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},moredelim=[is][\color{black!80}\bfseries]{@}{@},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
+% \begin{lstlisting}
+% # Create a conflict graph (4 locations, 3 conflicts),
+% # reduce to ILP, and solve
+% @$ pred create MIS --graph 0-1,1-2,2-3 \
+%     | pred reduce - --to ILP \
+%     | pred solve -@
+% Problem: "MaximumIndependentSet"
+% Solver: ilp (via ILP)
+% Solution: [1, 0, 0, 1]  // locations 0 and 3
+% Evaluation: "Max(2)"    // 2 non-conflicting bins
+% \end{lstlisting}
+% \caption{CLI using example: creating and solving a Maximum Independent Set instance via reduction to integer linear programming (ILP).
+%   Commands communicate via Unix pipes (\texttt{|}), reading JSON from stdin (\texttt{-}) and writing JSON to stdout, so they compose without intermediate files.}
+% \label{lst:cli-session}
+% \end{figure}
 The three commands compose through Unix pipes: \texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it to a target formulation, and \texttt{solve} invokes a solver.
 
 Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types.
@@ -730,6 +730,57 @@ Quality concerns are equally sharp: AI co-authored code carries $1.7{\times}$ mo
 To tame this variance, \emph{harness engineering}~\cite{OpenAI2026HarnessEngineering,Fowler2026HarnessEngineering} shifts the engineer's role from code authorship to environment design.
 Persistent project instructions and composable skills~\cite{Claude2026AgentSkills, Obra2025Superpowers} keep agents aligned with repository conventions across sessions; verification pipelines reject incorrect output before it enters the codebase.
 Our approach instantiates this pattern for a mathematical domain, exploiting the project's uniform, verifiable structure so that each agent invocation is short, self-contained, and human-reviewable.
+
+%======================================================================
+%  SECTION: END-USER UTILITY
+%======================================================================
+\section{End-User Utility of the Reduction Graph}\label{sec:end-user-utility}
+
+The library's value to a practitioner is not the catalog of problems and reductions on its own, but whether having that catalog changes outcomes when a user---or an AI agent acting on their behalf---tackles a concrete instance.
+We test this directly with a small controlled experiment.
+
+\textbf{Setup.}
+A dense weighted Max-Cut instance ($n=150$ vertices, ${\approx}\,5300$ signed-weight edges, density ${\approx}\,0.48$) is presented to a Claude Sonnet 4.6 sub-agent through an engineer-voice prompt: a people-ops manager dividing an organization into two product teams to maximize cross-team interaction value.
+The prompt contains no algorithm, model, or solver hints; the underlying Max-Cut structure is left for the agent to recognize.
+Four configurations form a $2{\times}2$ factorial along two axes: \emph{web search} (yes/no) and \emph{access to \texttt{pred}} (yes/no).
+Four random seeds per configuration; solver wall-time capped at 90~s per run.
+Agents with \texttt{pred} access also receive a short Markdown protocol that prescribes one extra step before writing solver code---enumerate downstream models with \texttt{pred from} and pick the one whose endpoint admits the strongest off-the-shelf solver.
+
+\textbf{Three independent axes of measurement.}
+We separate three quantities that AI-coding evaluations often blend into a single ``time'' figure:
+(i) \emph{AI cost}---tokens consumed by the agent;
+(ii) \emph{algorithm cost}---solver wall-time, reported by the agent in a structured \texttt{meta.json};
+(iii) \emph{solution quality}---feasibility, objective value, and the agent's claim of optimality, all re-checked by an independent grader.
+The grader also flags \emph{false-OPT}: a claimed-optimal answer beaten by another configuration on the same seed.
+
+\textbf{Results.}
+Configurations with \texttt{pred} access achieve zero regret on all four seeds with no false-OPT claims; configurations without it leave 0.35--9.70\% on the table and produce 1--2 false-OPT claims out of 4 runs (\Cref{tab:end-user-eval}).
+Web access alone is not merely neutral: the agent uses it to commit more confidently to a textbook ILP encoding, and the resulting CBC time-out is misreported as \texttt{OPTIMAL}, doubling the false-OPT rate and worsening mean regret to nearly $10\%$.
+With \texttt{pred}, the agent invariably reformulates Max-Cut as a spin-glass / QUBO instance solved by simulated annealing (\texttt{dwave-neal}); this reformulation also wins on solver wall-time (42.8--71.1~s versus 81.8--85.3~s).
+The catalog-aware path costs 30--40\% more AI tokens, primarily for enumerating downstream candidates; the trade is better answers and more honest optimality reporting.
+
+\begin{table}[h]
+\caption{Outcomes on a dense weighted Max-Cut instance (4~seeds per configuration; 90~s solver-wall cap; $n=150$ vertices, ${\approx}\,5300$ signed-weight edges).
+Regret~\% is the gap to the best feasible answer found across all configurations on the same seed; false-OPT counts answers claimed optimal but beaten by another configuration.}
+\label{tab:end-user-eval}
+\centering
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Configuration & Mean regret \% & False-OPT & Mean AI tokens & Mean solver s \\
+\midrule
+Bare AI                              & 0.35 & 1/4 & 39{,}941 & 81.8 \\
+Bare AI + web                        & 9.70 & 2/4 & 36{,}942 & 85.3 \\
++ \texttt{pred}                      & 0.00 & 0/4 & 55{,}332 & 71.1 \\
++ \texttt{pred} + web                & 0.00 & 0/4 & 51{,}109 & 42.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Caveats.}
+A single scenario family in which the natural ILP formulation is known to be dominated by simulated annealing on the QUBO form---a setting deliberately chosen to test whether catalog-driven reformulation pays off when it can.
+The gains may not transfer to families where the natural formulation is already strong (sparse ILP, scheduling), nor across different agent backends.
+The benchmark harness---scenario generator, grader, per-run result schema, and aggregation script---is released alongside the library to support broader replication.
 
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION

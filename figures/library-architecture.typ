@@ -137,20 +137,21 @@
   let band-h = 2.35
   let gap-h = 0.75
   let col-gap = 0.2
-  let col-w = (W - label-w - 0.1 - 0.1 - 2 * col-gap) / 3
-  let col-x = (
-    label-w + 0.1,
-    label-w + 0.1 + col-w + col-gap,
-    label-w + 0.1 + 2 * (col-w + col-gap),
-  )
+
+  // Library has two sub-rows (Example DB on top, Problem Types + Reduction Rules below)
+  let lib-sub-h = 1.55
+  let lib-sub-gap = 0.25
+  let lib-band-h = 2 * lib-sub-h + lib-sub-gap + 2 * pad
+
+  let lib-col-w = (W - label-w - 0.1 - 0.1 - col-gap) / 2
 
   // y-positions (origin bottom-left, y increases upward)
   let y3-bot = 0
   let y3-top = band-h
   let y2-bot = band-h + gap-h
-  let y2-top = 2 * band-h + gap-h
-  let y1-bot = 2 * band-h + 2 * gap-h
-  let y1-top = 3 * band-h + 2 * gap-h
+  let y2-top = y2-bot + lib-band-h
+  let y1-bot = y2-top + gap-h
+  let y1-top = y1-bot + band-h
 
   // Background bands
   rect((0, y3-bot), (W, y3-top), fill: inf-bg, stroke: none, radius: 4pt)
