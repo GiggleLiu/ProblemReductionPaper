@@ -318,7 +318,7 @@
     gutter: 5pt,
     align: (center + horizon, left + horizon),
     image("icons/loop.svg", width: 0.5cm),
-    text(8.5pt, weight: "bold", fill: col-violet.darken(15%),
+    text(9pt, weight: "bold", fill: col-violet.darken(15%),
       [Agents under harness (skill-based)]),
   )
 
@@ -411,7 +411,7 @@
       align: (center + horizon, left + horizon),
       image("icons/merged-validated.svg", width: 0.6cm),
       [
-        #text(8.5pt, weight: "bold", fill: col-p3.darken(15%),
+        #text(9pt, weight: "bold", fill: col-p3.darken(15%),
           [Validated Reduction Code]) \
         #text(6.3pt, fill: fg-light, [Human reviewed finally, merged into the codebase])
       ],
