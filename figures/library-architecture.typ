@@ -224,11 +224,9 @@
   let lib-top-y = lib-bot-y + lib-sub-h + lib-sub-gap
   let lib-x0 = label-w + 0.1
   let lib-x1 = lib-x0 + lib-col-w + col-gap
-  let exdb-w = lib-col-w
-  let exdb-x = lib-x0 + (2 * lib-col-w + col-gap - exdb-w) / 2
-
-  // Bottom-row boxes narrower than their slots, centered (icons + titles only fit better in a snugger box).
+  // All three Library boxes share the same narrow width.
   let lib-bot-w = 3.5
+  let exdb-x = lib-x0 + (2 * lib-col-w + col-gap - lib-bot-w) / 2
   let ptypes-x = lib-x0 + (lib-col-w - lib-bot-w) / 2
   let rrules-x = lib-x1 + (lib-col-w - lib-bot-w) / 2
 
