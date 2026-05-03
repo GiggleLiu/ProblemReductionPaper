@@ -79,19 +79,19 @@
     )
     content((sx - 0.1, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
 
-    // Agent circle (the actor — emphasised)
+    // Agent circle (same actor in both rows — small, neutral)
     let ax = 7.0
-    let agent-r = 0.85
+    let agent-r = 0.65
     circle((ax, y), radius: agent-r, fill: agent-fill, stroke: agent-stroke, name: kind + "-agent")
-    content((ax, y), text(6.5pt, weight: "bold", fill: fg)[agent])
+    content((ax, y), text(5.8pt, fill: fg)[agent])
 
-    // Counterpart circle (collaborator/resource — de-emphasised)
-    let cx = 9.7
-    let cp-r = 0.65
+    // Counterpart circle (the differentiator — large, emphasised)
+    let cx = 9.85
+    let cp-r = 0.85
     circle((cx, y), radius: cp-r, fill: cp-fill, stroke: cp-stroke, name: kind + "-cp")
-    content((cx, y), text(5.8pt, fill: fg)[#cp-name])
+    content((cx, y), text(6.5pt, weight: "bold", fill: fg)[#cp-name])
     // Sub-label below counterpart
-    content((cx, y - 1.05), text(4.8pt, fill: fg-light)[#cp-sub])
+    content((cx, y - 1.25), text(4.8pt, fill: fg-light)[#cp-sub])
 
     // Connectors
     line(kind + "-skill.east", kind + "-agent.west",
