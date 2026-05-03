@@ -61,14 +61,14 @@
     )
     content((sx - 0.1, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
 
-    // Row title to the LEFT of SKILL.md
+    // Row title to the LEFT of SKILL.md (each line centered)
     if accent-side {
       content((sx - sw - 0.3, y),
-        text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor\ skill],
+        align(center, text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor\ skill]),
         anchor: "east")
     } else {
       content((sx - sw - 0.3, y),
-        text(7.5pt, weight: "bold", fill: fg)[automation\ skill],
+        align(center, text(7.5pt, weight: "bold", fill: fg)[automation\ skill]),
         anchor: "east")
     }
 
