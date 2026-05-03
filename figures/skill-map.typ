@@ -62,7 +62,7 @@
     content((ax, y), text(6pt, weight: "bold", fill: fg)[agent])
 
     // Counterpart circle
-    let cx = 8.3
+    let cx = 9.7
     circle((cx, y), radius: 0.7, fill: white, stroke: node-stroke, name: kind + "-cp")
     content((cx, y), text(6pt, weight: "bold", fill: fg)[#cp-name])
     // Sub-label below counterpart
