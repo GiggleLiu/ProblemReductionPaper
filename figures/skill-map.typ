@@ -222,8 +222,8 @@
   skill((c4x, s0 - sp),    "run-pipeline",    "a2")
   skill((c4x, s0 - sp*2),  "review-pipeline", "a3")
 
-  // Legend below panel (b)
-  let legend-y = s0 - sp * 3 - 0.85
+  // Legend below panel (b) (fixed position, independent of root shift)
+  let legend-y = 4.67
   let lg1-x = 18.0
   let lg2-x = 23.5
   // Advisor swatch
