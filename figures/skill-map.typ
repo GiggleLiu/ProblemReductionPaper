@@ -89,7 +89,7 @@
     let hr = 0.75
     circle((hx, hy), radius: hr, fill: human-fill, stroke: human-stroke, name: kind + "-human")
     let cp-label = if accent-side { [human] } else { [invoker] }
-    content((hx, hy), text(5.5pt, weight: "bold", fill: fg, cp-label))
+    content((hx, hy), text(5pt, weight: "bold", fill: fg, cp-label))
     // Sub-label to the right of the human circle
     let cp-sub-text = if accent-side {
       [domain expert,\ user, reviewer]
