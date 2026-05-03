@@ -3,7 +3,7 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-#let unit = 0.36cm
+#let unit = 0.34cm
 
 #canvas(length: unit, {
   import draw: *
@@ -14,12 +14,13 @@
   let col-artifact = rgb("#e8a838")   // gold: generated artifact
   let col-verify   = rgb("#d45d5d")   // red: verification gate
 
-  // ── Box helper (constrains text width via box(width: ...)) ──
+  // ── Layout ──
   let bw = 7.0
-  let bh = 3.0
+  let bh = 5.0
   let inner-pad = 0.25cm
 
-  let rbox(cx, cy, col, name-id, title, subtitle: none) = {
+  // ── Box helper (variadic details, content auto-wraps via box(width)) ──
+  let rbox(cx, cy, col, name-id, title, ..details) = {
     rect(
       (cx - bw / 2, cy + bh / 2),
       (cx + bw / 2, cy - bh / 2),
@@ -29,10 +30,10 @@
       name: name-id,
     )
     let body = align(center, {
-      text(7pt, weight: "bold", fill: black, title)
-      if subtitle != none {
+      text(7.5pt, weight: "bold", fill: black, title)
+      for d in details.pos() {
         linebreak()
-        text(5pt, fill: luma(80), subtitle)
+        text(6pt, fill: black, d)
       }
     })
     content(
@@ -47,48 +48,50 @@
   let s   = (thickness: 0.9pt, paint: luma(40))
   let sh  = (start: 0.08, end: 0.08)
 
-  // ── Layout (5 columns × 3 rows) ──
+  // ── Column / row coordinates ──
   let y-mid =  0.0
-  let y-top =  3.5
-  let y-bot = -3.5
+  let y-top =  5.0
+  let y-bot = -5.0
 
-  let cx1 =  3.6   // GitHub Issue
-  let cx2 = 11.5   // Example Database
-  let cx3 = 19.4   // JSON / CLI
-  let cx4 = 27.3   // PDF Manual
-  let cx5 = 35.2   // Verification
+  let cx1 =  3.6
+  let cx2 = 11.5
+  let cx3 = 19.4
+  let cx4 = 27.3
+  let cx5 = 35.2
 
-  // ── Middle spine: input → core → check ──
+  // ── Middle spine ──
   rbox(cx1, y-mid, col-input, "issue",
     [GitHub Issue],
-    subtitle: [Definition · Example · Solution])
+    [Formal definition · Example],
+    [Ground-truth solution])
 
   rbox(cx2, y-mid, col-core, "exdb",
     [Example Database],
-    subtitle: [Canonical builders])
+    [Canonical builder functions],
+    [Single source of truth])
 
   rbox(cx5, y-mid, col-verify, "verify",
     [Verification],
-    subtitle: [Stage 6 contributor review])
+    [Compare to the original issue])
 
-  // ── Top branch: JSON → PDF Manual ──
+  // ── Top branch ──
   rbox(cx3, y-top, col-artifact, "json",
     [JSON Fixtures],
-    subtitle: [Source · Target · Solutions])
+    [Source · Target · Solutions])
 
   rbox(cx4, y-top, col-artifact, "manual",
     [Typst PDF Manual],
-    subtitle: [Visual diagrams · Proofs])
+    [Visual diagrams · Proof sketches])
 
-  // ── Bottom branch: CLI ──
+  // ── Bottom branch ──
   rbox(cx3, y-bot, col-artifact, "cli",
-    [`pred create` \ `--example`],
-    subtitle: [Interactive exploration])
+    [`pred create --example`],
+    [Interactive exploration])
 
   // ── Arrows ──
   line("issue.east", "exdb.west", stroke: s, mark: arr, shorten: sh, name: "e-ext")
   content((rel: (0, 0.45), to: "e-ext.mid"), anchor: "south",
-    text(5pt, fill: luma(40))[extract])
+    text(5.5pt, fill: luma(40))[extract])
 
   // Fork from Example DB (orthogonal routing)
   let fork-x = (cx2 + cx3) / 2
@@ -97,10 +100,10 @@
   line("exdb.east", (fork-x, y-mid), (fork-x, y-bot), "cli.west",
     stroke: s, mark: arr, shorten: sh)
 
-  // Top branch: JSON → PDF Manual (horizontal)
+  // Top branch: JSON → PDF Manual
   line("json.east", "manual.west", stroke: s, mark: arr, shorten: sh, name: "e-render")
   content((rel: (0, 0.45), to: "e-render.mid"), anchor: "south",
-    text(5pt, fill: luma(40))[render])
+    text(5.5pt, fill: luma(40))[render])
 
   // Merge into Verification (both at x = merge-x, between PDF and Verify)
   let merge-x = (cx4 + cx5) / 2
