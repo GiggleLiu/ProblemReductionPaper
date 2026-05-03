@@ -174,7 +174,7 @@
   layer-label(y1-top, int-acc, [1], [Interface Layer],
     [Entry points for users and tools.])
   layer-label(y2-top, lib-acc, [2], [Library Layer],
-    [Problem definitions, reductions, and canonical examples.])
+    [Problems as nodes, reductions as edges.])
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
     [Generic solving and overhead reasoning.])
 
