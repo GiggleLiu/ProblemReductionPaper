@@ -19,22 +19,23 @@
   // Advisor:    human ⇄ agent (bidirectional)  — stays in loop
   // Automation: human → agent (one-way down)   — only triggers
   let exec-row(y, kind, accent-side: false) = {
-    // Agent: same neutral style in both rows
+    // Stroke widths: 0.8pt for light, 1.2pt for emphasis (nodes); 0.8pt / 1.0pt (arrows)
+    // Agent: same neutral style in both rows (de-emphasised)
     let agent-fill = luma(245)
-    let agent-stroke = (paint: edge-col, thickness: 0.55pt)
-    // Tools: same in both rows (agent ⇄ tools loop is identical)
+    let agent-stroke = (paint: edge-col, thickness: 0.8pt)
+    // Tools: emphasised (the right-side counterpart, same in both rows)
     let tools-fill = luma(240)
     let tools-stroke = (paint: luma(60), thickness: 1.2pt)
     let tools-loop-stroke = (paint: luma(70), thickness: 1.0pt)
-    // Human: emphasised in advisor (the defining loop), muted in automation (just trigger)
+    // Human: emphasised in advisor (the defining loop), de-emphasised in automation
     let human-fill = if accent-side { fill-accent } else { white }
     let human-stroke = if accent-side {
-      (paint: accent, thickness: 1.3pt)
+      (paint: accent, thickness: 1.2pt)
     } else {
-      (paint: edge-col, thickness: 0.7pt)
+      (paint: edge-col, thickness: 0.8pt)
     }
     let human-arrow-stroke = if accent-side {
-      (paint: accent, thickness: 1.1pt)
+      (paint: accent, thickness: 1.0pt)
     } else {
       (paint: luma(80), thickness: 0.8pt)
     }
@@ -74,7 +75,7 @@
     let ax = 8.0
     let agent-r = 0.65
     circle((ax, y), radius: agent-r, fill: agent-fill, stroke: agent-stroke, name: kind + "-agent")
-    content((ax, y), text(5.8pt, fill: fg)[agent])
+    content((ax, y), text(6pt, fill: fg)[agent])
 
     // Tools: gear shape (polygon with alternating inner / outer radius)
     let cx = 12.0
@@ -96,7 +97,7 @@
     circle((cx, y), radius: r-outer, fill: none, stroke: none, name: kind + "-tools")
     // Visible gear shape on top
     line(..gear-pts, close: true, fill: tools-fill, stroke: tools-stroke)
-    content((cx, y), text(6pt, weight: "bold", fill: fg)[tools])
+    content((cx, y), text(6pt, fill: fg)[tools])
 
     // Human circle (above agent, present in both rows; arrow style differs)
     let hx = ax
@@ -104,15 +105,15 @@
     let hr = 0.8
     circle((hx, hy), radius: hr, fill: human-fill, stroke: human-stroke, name: kind + "-human")
     let cp-label = if accent-side { [human] } else { [invoker] }
-    content((hx, hy), text(5pt, weight: "bold", fill: fg, cp-label))
+    content((hx, hy), text(5.5pt, weight: "bold", fill: fg, cp-label))
     // Sub-label to the right of the human circle
     let cp-sub-text = if accent-side {
       [domain expert,\ user, reviewer]
     } else {
-      [human or\ other agents]
+      [human or other agents]
     }
     content((hx + hr + 0.15, hy),
-      text(4.8pt, fill: fg-light, cp-sub-text),
+      text(6pt, fill: fg-light, cp-sub-text),
       anchor: "west")
 
     // Connectors
@@ -136,8 +137,8 @@
     // Arrow label
     let arrow-label = if accent-side { [stays in loop] } else { [only triggers] }
     let arrow-label-color = if accent-side { accent.darken(15%) } else { fg-light }
-    content((hx + 0.25, (hy + y) / 2),
-      text(5.2pt, style: "italic", fill: arrow-label-color, arrow-label),
+    content((hx + 0.45, (hy + y) / 2),
+      text(5.5pt, style: "italic", fill: arrow-label-color, arrow-label),
       anchor: "west")
   }
 
