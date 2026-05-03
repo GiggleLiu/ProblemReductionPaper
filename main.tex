@@ -359,7 +359,7 @@ This body of material is too large to fit in a single agent context window.
 The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents discover relevant files through search and read full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
 
 \textbf{Automation skills} are plain-Markdown documents that orchestrate multi-step pipelines---connecting specification, tools, and knowledge into repeatable workflows.
-Unlike traditional automation (Makefiles, shell scripts), which chains deterministic commands, skills can include \emph{abstract} steps: ``implement the reduction algorithm''(\texttt{run-pipeline} skill in~\Cref{fig:skill-architecture}), ``review the pull request for correctness''(\texttt{review-pipeline} skill), ``fact check with web search for issues''(\texttt{fact-check} skill) and ``make a new release''(\texttt{release} skill).
+Unlike traditional automation (Makefiles, shell scripts), which chains deterministic commands, skills can include \emph{abstract} steps: ``implement the reduction algorithm''(\texttt{run-pipeline} skill in~\Cref{fig:skill-architecture}), ``review the pull request for correctness''(\texttt{review-pipeline} skill)  and ``make a new release''(\texttt{release} skill).
 These steps require judgment and are interpreted by the agent using its own capabilities.
 Unlike bare prompts, skills break a complex task into concrete, ordered steps small enough for an agent to execute faithfully, preventing the drift and omissions that occur when agents plan from scratch.
 
@@ -401,7 +401,7 @@ Authorizing merges is security critical; a human with long-term memory must be r
 
 \subsection{Automation Pipeline}\label{sec:pipeline-overview}
 
-\begin{figure*}[t]
+\begin{figure*}[htbp]
   \centering
   \includegraphics[width=\textwidth]{figures/pipeline.pdf}
   \caption{Contribution pipeline as a state machine on the GitHub project board.

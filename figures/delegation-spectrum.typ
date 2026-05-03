@@ -9,10 +9,10 @@
 
   let human-color = rgb("#d45d5d")
   let agent-color = accent
-  let bar-w = 0.28
-  let row-h = 0.4
+  let bar-w = 0.32
+  let row-h = 0.42
   let bar-x = 0.0
-  let bw = 1.0
+  let bw = 1.4
 
   let items = (
     ("Harness engineering", 1.0),
@@ -28,7 +28,34 @@
   let n = items.len()
   let total-h = (n - 1) * row-h
 
-  // ── Gradient arrow (single path) ──
+  let pct(frac) = str(calc.round(frac * 100)) + "%"
+
+  // ── Top scale ──
+  let scale-y = 0.50
+  line(
+    (bar-x, scale-y),
+    (bar-x + bw, scale-y),
+    stroke: (paint: luma(160), thickness: 0.4pt),
+  )
+  for t in (0.0, 0.5, 1.0) {
+    line(
+      (bar-x + bw * t, scale-y - 0.04),
+      (bar-x + bw * t, scale-y + 0.04),
+      stroke: (paint: luma(160), thickness: 0.4pt),
+    )
+    content(
+      (bar-x + bw * t, scale-y + 0.08),
+      text(size: 5pt, fill: fg-light)[#pct(t)],
+      anchor: "south",
+    )
+  }
+  content(
+    (bar-x + bw / 2, scale-y + 0.36),
+    text(size: 5.8pt, fill: fg, weight: "bold")[Human share],
+    anchor: "south",
+  )
+
+  // ── Gradient arrow ──
   let arrow-x = -1.0
   let arrow-top = 0.0
   let arrow-bot = -total-h
@@ -37,21 +64,19 @@
   let head-h = 0.40
   let shaft-bot = arrow-bot + head-h
 
-  // One closed path: right side down, tip, left side up
   line(
-    (arrow-x - shaft-w, arrow-top),   // top-left
-    (arrow-x + shaft-w, arrow-top),   // top-right
-    (arrow-x + shaft-w, shaft-bot),   // shaft bottom-right
-    (arrow-x + head-w, shaft-bot),    // head right wing
-    (arrow-x, arrow-bot),             // tip
-    (arrow-x - head-w, shaft-bot),    // head left wing
-    (arrow-x - shaft-w, shaft-bot),   // shaft bottom-left
+    (arrow-x - shaft-w, arrow-top),
+    (arrow-x + shaft-w, arrow-top),
+    (arrow-x + shaft-w, shaft-bot),
+    (arrow-x + head-w, shaft-bot),
+    (arrow-x, arrow-bot),
+    (arrow-x - head-w, shaft-bot),
+    (arrow-x - shaft-w, shaft-bot),
     close: true,
     fill: gradient.linear(human-color, agent-color, angle: 90deg),
     stroke: none,
   )
 
-  // Labels
   content(
     (arrow-x, arrow-top + 0.30),
     text(size: 6.5pt, fill: human-color, weight: "bold")[Human],
@@ -67,11 +92,19 @@
   for (i, (label, frac)) in items.enumerate() {
     let y = -i * row-h
 
-    // Dotted connector from arrow to bar
+    // Connector from arrow to bar
     line(
       (arrow-x + shaft-w + 0.04, y),
       (bar-x - 0.04, y),
       stroke: (paint: luma(200), thickness: 0.3pt, dash: "dotted"),
+    )
+
+    // Full-range frame (100% reference)
+    rect(
+      (bar-x, y - bar-w / 2),
+      (bar-x + bw, y + bar-w / 2),
+      fill: none,
+      stroke: (paint: luma(225), thickness: 0.3pt),
     )
 
     // Human portion
@@ -79,7 +112,7 @@
       rect(
         (bar-x, y - bar-w / 2),
         (bar-x + bw * frac, y + bar-w / 2),
-        fill: human-color.lighten(35%),
+        fill: human-color.lighten(25%),
         stroke: none,
       )
     }
@@ -88,14 +121,21 @@
       rect(
         (bar-x + bw * frac, y - bar-w / 2),
         (bar-x + bw, y + bar-w / 2),
-        fill: agent-color.lighten(35%),
+        fill: agent-color.lighten(25%),
         stroke: none,
       )
     }
 
-    // Label
+    // Percentage at end of bar
     content(
-      (bar-x + bw + 0.15, y),
+      (bar-x + bw + 0.08, y),
+      text(size: 5.8pt, fill: fg-light)[#pct(frac)],
+      anchor: "west",
+    )
+
+    // Category label
+    content(
+      (bar-x + bw + 0.55, y),
       text(size: 6.5pt, fill: fg)[#label],
       anchor: "west",
     )
@@ -103,8 +143,18 @@
 
   // ── Legend ──
   let ly = -total-h - 0.55
-  rect((bar-x, ly - 0.09), (bar-x + 0.22, ly + 0.09), fill: human-color.lighten(35%), stroke: none)
-  content((bar-x + 0.30, ly), text(size: 5.5pt, fill: fg)[Human], anchor: "west")
-  rect((bar-x + 1.1, ly - 0.09), (bar-x + 1.32, ly + 0.09), fill: agent-color.lighten(35%), stroke: none)
-  content((bar-x + 1.40, ly), text(size: 5.5pt, fill: fg)[Agent], anchor: "west")
+  rect(
+    (bar-x, ly - 0.09),
+    (bar-x + 0.22, ly + 0.09),
+    fill: human-color.lighten(25%),
+    stroke: none,
+  )
+  content((bar-x + 0.28, ly), text(size: 5.5pt, fill: fg)[Human], anchor: "west")
+  rect(
+    (bar-x + 0.78, ly - 0.09),
+    (bar-x + 1.00, ly + 0.09),
+    fill: agent-color.lighten(25%),
+    stroke: none,
+  )
+  content((bar-x + 1.06, ly), text(size: 5.5pt, fill: fg)[Agent], anchor: "west")
 })
