@@ -78,8 +78,8 @@
     content((cx + 1.05, y), text(5.5pt, fill: fg)[#outcome], anchor: "west")
   }
 
-  exec-row(7.6, "advisor", accent-side: true)
-  exec-row(2.6, "automation")
+  exec-row(9.7, "advisor", accent-side: true)
+  exec-row(5.0, "automation")
 
   // ============================================================
   // Panel (b) — Skills indexed by invoker (right, x ≈ 15..30)
@@ -112,10 +112,10 @@
   // Root spec node
   let rx = (c1x + c4x) / 2
   let ry = pa-header-y - 1.0
-  rect((rx - 3.0, ry - 0.55), (rx + 3.0, ry + 0.55),
+  rect((rx - 4.0, ry - 0.55), (rx + 4.0, ry + 0.55),
     radius: 5pt, fill: fill-light, stroke: stroke-edge, name: "root")
-  content((rx, ry + 0.2), text(7.5pt, weight: "bold", raw("CLAUDE.md / AGENTS.md")))
-  content((rx, ry - 0.22), text(5pt, fill: fg-light)[project specification])
+  content((rx, ry), text(7.5pt, weight: "bold", raw("CLAUDE.md / AGENTS.md")))
+  // content((rx, ry - 0.22), text(5pt, fill: fg-light)[project specification])
 
   // Trunk + bar + ticks
   let bar-y = ry - 1.55
