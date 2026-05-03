@@ -23,102 +23,102 @@
 #let body-c  = luma(50)
 #let arrow-c = rgb("#4f4080")
 
-// ── Icons (typst content; ~14pt × 14pt boxes) ──
+// ── Icons (typst content; 14pt × 14pt boxes) ──
+// All icons live in a 14×14pt canvas so they line up with the title at 8pt.
 
+// 1. Terminal (pred CLI): dark rounded square, green prompt, white cursor underline.
 #let icon-term = box(
   width: 14pt, height: 14pt, baseline: 2pt,
-  fill: rgb("#1c2840"), radius: 1.5pt, inset: 1pt,
-  align(horizon + center,
-    text(6.5pt, font: "Courier", fill: white, weight: "bold", [>\_])))
+  fill: rgb("#1c2840"), radius: 2pt, inset: 0pt,
+  {
+    place(top + left, dx: 2.2pt, dy: 2.4pt,
+      text(7pt, font: "Courier", fill: rgb("#7ed6a0"), weight: "bold", [>]))
+    place(top + left, dx: 6.5pt, dy: 8pt,
+      rect(width: 4.5pt, height: 1pt, fill: white, stroke: none))
+  }
+)
 
-#let icon-doc = box(width: 14pt, height: 14pt, baseline: 2pt, {
-  place(top + left, dx: 2pt, dy: 0.5pt,
-    rect(width: 10pt, height: 13pt,
-      stroke: 0.8pt + int-acc, fill: white, radius: 0.5pt))
-  place(top + left, dx: 3.5pt, dy: 4pt,
-    rect(width: 7pt, height: 0.6pt, fill: int-acc, stroke: none))
-  place(top + left, dx: 3.5pt, dy: 6pt,
-    rect(width: 7pt, height: 0.6pt, fill: int-acc, stroke: none))
-  place(top + left, dx: 3.5pt, dy: 8pt,
-    rect(width: 7pt, height: 0.6pt, fill: int-acc, stroke: none))
-  place(top + left, dx: 3.5pt, dy: 10pt,
-    rect(width: 5pt, height: 0.6pt, fill: int-acc, stroke: none))
-})
+// 2. Document (PDF Manual): page with folded top-right corner + 4 text lines.
+#let icon-doc = box(width: 14pt, height: 14pt, baseline: 2pt,
+  canvas(length: 1pt, {
+    import draw: *
+    let c = int-acc
+    // Page outline (notched at top-right for the fold).
+    line((2, 13), (10, 13), (12, 11), (12, 1), (2, 1), close: true,
+      stroke: 0.8pt + c, fill: white)
+    // Folded corner triangle (lighter fill to imply a flap).
+    line((10, 13), (10, 11), (12, 11), close: true,
+      stroke: 0.6pt + c, fill: c.lighten(75%))
+    // Text lines.
+    for (y, len) in ((10, 6.5), (8.5, 6.5), (7, 6.5), (5.5, 4)) {
+      line((3.5, y), (3.5 + len, y), stroke: 0.6pt + c)
+    }
+  }))
 
-#let icon-share = box(width: 14pt, height: 14pt, baseline: 2pt,
+// 3. Types (Problem Types): three different shapes — square, circle, triangle.
+#let icon-types = box(width: 14pt, height: 14pt, baseline: 2pt,
   canvas(length: 1pt, {
     import draw: *
     let c = lib-acc
-    line((4, 11), (10.5, 11), stroke: 1pt + c)
-    line((4, 11), (7, 4), stroke: 1pt + c)
-    circle((4, 11), radius: 1.9, fill: c.lighten(40%), stroke: 0.7pt + c)
-    circle((10.5, 11), radius: 1.9, fill: c.lighten(70%), stroke: 0.7pt + c)
-    circle((7, 4), radius: 1.9, fill: c, stroke: 0.7pt + c)
+    rect((1.5, 8), (5.5, 12), stroke: 0.9pt + c, fill: c.lighten(60%))
+    circle((10, 10), radius: 2.4, stroke: 0.9pt + c, fill: c.lighten(40%))
+    line((4, 1.5), (10, 1.5), (7, 6), close: true,
+      stroke: 0.9pt + c, fill: c.lighten(75%))
   }))
 
-#let icon-arrows = box(width: 14pt, height: 14pt, baseline: 2pt,
+// 4. Rule (Reduction Rules): source shape ─▶ target shape (concrete A → B transform).
+#let icon-rule = box(width: 14pt, height: 14pt, baseline: 2pt,
   canvas(length: 1pt, {
     import draw: *
     let c = lib-acc
-    line((1, 10), (12, 10), stroke: 1.8pt + c, mark: (end: "straight", scale: 0.4))
-    line((1, 4.5), (12, 4.5),
-      stroke: (paint: c, thickness: 1.4pt, dash: "dashed"),
-      mark: (end: "straight", scale: 0.4))
+    circle((3, 7), radius: 2.4, stroke: 0.9pt + c, fill: c.lighten(45%))
+    line((5.7, 7), (8.5, 7), stroke: 1pt + c, mark: (end: "straight", scale: 0.5))
+    rect((8.7, 4.6), (13.5, 9.4), stroke: 0.9pt + c, fill: c.lighten(45%))
   }))
 
+// 5. Database (Example Database): cylinder with one disk separator.
 #let icon-db = box(width: 14pt, height: 14pt, baseline: 2pt,
   canvas(length: 1pt, {
     import draw: *
     let c = lib-acc
     let cx = 7
     let rx = 4.5
-    let ry = 1.3
-    rect((cx - rx, 3), (cx + rx, 11), fill: c.lighten(55%), stroke: none)
-    arc((cx - rx, 3), start: 180deg, stop: 360deg, radius: (rx, ry),
-      stroke: 0.8pt + c, fill: c.lighten(55%))
+    let ry = 1.4
+    rect((cx - rx, 2.5), (cx + rx, 11.5), fill: c.lighten(65%), stroke: none)
+    arc((cx - rx, 2.5), start: 180deg, stop: 360deg, radius: (rx, ry),
+      stroke: 0.9pt + c, fill: c.lighten(65%))
     arc((cx - rx, 7), start: 180deg, stop: 360deg, radius: (rx, ry),
       stroke: 0.7pt + c)
-    circle((cx, 11), radius: (rx, ry), fill: c.lighten(75%), stroke: 0.8pt + c)
-    line((cx - rx, 11), (cx - rx, 3), stroke: 0.8pt + c)
-    line((cx + rx, 11), (cx + rx, 3), stroke: 0.8pt + c)
+    circle((cx, 11.5), radius: (rx, ry), fill: c.lighten(85%), stroke: 0.9pt + c)
+    line((cx - rx, 11.5), (cx - rx, 2.5), stroke: 0.9pt + c)
+    line((cx + rx, 11.5), (cx + rx, 2.5), stroke: 0.9pt + c)
   }))
 
-#let icon-cpu = box(width: 14pt, height: 14pt, baseline: 2pt,
+// 6. Gear (Solvers): cog wheel — 8 teeth around a filled disc with a center hole.
+#let icon-gear = box(width: 14pt, height: 14pt, baseline: 2pt,
   canvas(length: 1pt, {
     import draw: *
     let c = inf-acc
-    rect((3, 3), (11, 11), fill: c.lighten(60%), stroke: 1pt + c, radius: 0.8)
-    rect((5.5, 5.5), (8.5, 8.5), fill: c, stroke: none, radius: 0.4)
-    for i in range(3) {
-      let p = 4.5 + i * 1.5
-      line((p, 11), (p, 13), stroke: 0.7pt + c)
-      line((p, 1), (p, 3), stroke: 0.7pt + c)
-      line((11, p), (13, p), stroke: 0.7pt + c)
-      line((1, p), (3, p), stroke: 0.7pt + c)
+    let cx = 7.0
+    let cy = 7.0
+    let r-in = 4.5
+    let r-out = 6.4
+    for i in range(8) {
+      let theta = i * 45deg
+      let x1 = cx + r-in * calc.cos(theta)
+      let y1 = cy + r-in * calc.sin(theta)
+      let x2 = cx + r-out * calc.cos(theta)
+      let y2 = cy + r-out * calc.sin(theta)
+      line((x1, y1), (x2, y2), stroke: 2pt + c)
     }
+    circle((cx, cy), radius: 4.7, stroke: 1pt + c, fill: c.lighten(55%))
+    circle((cx, cy), radius: 1.6, stroke: 0.8pt + c, fill: white)
   }))
 
+// 7. Math expression (Symbolic Engine): bold italic f(x).
 #let icon-fx = box(width: 14pt, height: 14pt, baseline: 2pt,
-  align(horizon + center, text(10pt, fill: inf-acc, style: "italic", $f(x)$)))
-
-#let icon-graph = box(width: 14pt, height: 14pt, baseline: 2pt,
-  canvas(length: 1pt, {
-    import draw: *
-    let c = inf-acc
-    let r = 1.7
-    let p-top   = (7, 12.5)
-    let p-left  = (2, 7)
-    let p-right = (12, 7)
-    let p-bot   = (7, 1.5)
-    line(p-top, p-left, stroke: 0.8pt + c)
-    line(p-top, p-right, stroke: 0.8pt + c)
-    line(p-left, p-bot, stroke: 0.8pt + c)
-    line(p-right, p-bot, stroke: 0.8pt + c)
-    circle(p-top,   radius: r, fill: c, stroke: 0.5pt + c)
-    circle(p-left,  radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
-    circle(p-right, radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
-    circle(p-bot,   radius: r, fill: c.lighten(55%), stroke: 0.5pt + c)
-  }))
+  align(horizon + center,
+    text(10.5pt, fill: inf-acc, weight: "bold", style: "italic", $f(x)$)))
 
 // ── Header (icon + title) helper ──
 // Use grid with horizon alignment so the icon vertically centers with the title text
@@ -138,7 +138,7 @@
   let W = 12.0
   let label-w = 3.1
   let pad = 0.15
-  let band-h = 2.4
+  let band-h = 2
   let gap-h = 0.3
   let col-gap = 0.2
 
@@ -178,12 +178,11 @@
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
     [Backends that serve each problem and rule.])
 
-  // Box helper. With no items and no subtitle, header is centered vertically.
-  // Optional `subtitle` shows a one-line purpose statement under the header.
-  let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name, subtitle: none) = {
+  // Box helper. If `items` is empty, render only the header centered vertically.
+  let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name) = {
     rect((x, y-bot), (x + w, y-bot + h),
       fill: white, stroke: 0.9pt + border, radius: 4pt, name: name)
-    if items.len() == 0 and subtitle == none {
+    if items.len() == 0 {
       content((x + w / 2, y-bot + h / 2), anchor: "center",
         box(width: (w - 0.32) * 1cm, header(icon, title, accent)))
     } else {
@@ -191,17 +190,10 @@
         box(width: (w - 0.32) * 1cm, [
           #set block(spacing: 3pt)
           #header(icon, title, accent)
-          #if subtitle != none [
-            #block(inset: (left: 18pt), spacing: 2pt)[
-              #text(6.5pt, fill: luma(95), style: "italic", subtitle)
-            ]
-          ]
-          #if items.len() > 0 [
-            #block(inset: (left: 18pt))[
-              #set text(7.5pt, fill: body-c)
-              #set par(leading: 3pt)
-              #items.map(it => [• #it]).join([\ ])
-            ]
+          #block(inset: (left: 18pt))[
+            #set text(7.5pt, fill: body-c)
+            #set par(leading: 3pt)
+            #items.map(it => [• #it]).join([\ ])
           ]
         ]))
     }
@@ -250,14 +242,14 @@
   let inf-w = int-w
   mkbox(label-w + 0.1, y3, inf-w, bx-h, inf-acc, inf-bd,
     icon-cpu, [Solvers],
-    ([ILP (default)],
-     [problem-specific],
-     [brute force]),
-    "solvers",
-    subtitle: [minimal: for round-trip testing])
+    ([for round-trip testing],
+     [ILP or brute-force]),
+    "solvers")
   mkbox(W - 0.1 - inf-w, y3, inf-w, bx-h, inf-acc, inf-bd,
-    icon-fx, [Symbolic Engine], (), "symeng",
-    subtitle: [for cheapest-path search])
+    icon-fx, [Symbolic Engine],
+    ([reduction overheads],
+     [algorithm complexities]),
+    "symeng")
 
   // ── Intra-layer (bidirectional) arrows ──
   let bidir(c) = (
