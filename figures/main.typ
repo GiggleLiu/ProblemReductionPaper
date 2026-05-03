@@ -169,7 +169,7 @@
   fill: col,
   radius: 6pt,
   inset: (x: 1pt, y: 2pt),
-  text(5.8pt, weight: "bold", fill: white, label),
+  text(6pt, weight: "bold", fill: white, label),
 )
 
 // Tag chip (GitHub-style label).
@@ -232,7 +232,7 @@
     #v(2pt)
 
     // Meta line: author + opened time
-    // #text(5.8pt, fill: fg-light)[
+    // #text(6pt, fill: fg-light)[
     //   #box(
     //     width: 0.34cm, height: 0.34cm,
     //     radius: 50%,
