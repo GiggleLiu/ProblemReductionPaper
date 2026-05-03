@@ -37,13 +37,13 @@
     // Row sub-title above
     if accent-side {
       content((1.6, y + 1.05),
-        text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor]
+        text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill]
           + h(0.3em)
           + text(5.5pt, fill: fg-light)[(human-in-loop)],
         anchor: "west")
     } else {
       content((1.6, y + 1.05),
-        text(7.5pt, weight: "bold", fill: fg)[automation]
+        text(7.5pt, weight: "bold", fill: fg)[automation skill]
           + h(0.3em)
           + text(5.5pt, fill: fg-light)[(autonomous)],
         anchor: "west")
@@ -53,8 +53,7 @@
     let sx = 3.7
     rect((sx - 1.4, y - 0.45), (sx + 1.4, y + 0.45),
       radius: 3pt, fill: fill-light, stroke: stroke-edge, name: kind + "-skill")
-    content((sx, y + 0.18), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
-    content((sx, y - 0.22), text(4.8pt, fill: fg-light)[abstract steps])
+    content((sx, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
 
     // Agent circle
     let ax = 7.0
@@ -73,9 +72,9 @@
       stroke: stroke-edge, mark: arrow-end)
     line(kind + "-agent.east", kind + "-cp.west",
       stroke: stroke-edge, mark: arrow-both)
-    line(kind + "-cp.east", (cx + 0.95, y),
+    line(kind + "-cp.east", (cx + 1.7, y),
       stroke: stroke-edge, mark: arrow-end)
-    content((cx + 1.05, y), text(5.5pt, fill: fg)[#outcome], anchor: "west")
+    content((cx + 1.85, y), text(5.5pt, fill: fg)[#outcome], anchor: "west")
   }
 
   exec-row(9.7, "advisor", accent-side: true)
