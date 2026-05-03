@@ -217,7 +217,7 @@
   //   top:    Example Database (full width)
   //   bottom: Problem Types | Reduction Rules
   let lib-bot-y = y2-bot + pad
-  let lib-top-y = lib-bot-y + lib-sub-h + lib-sub-gap
+  let lib-top-y = lib-bot-y + lib-bot-h + lib-sub-gap
   let lib-x0 = label-w + 0.1
   let lib-x1 = lib-x0 + lib-col-w + col-gap
   // All three Library boxes share the same narrow width.
