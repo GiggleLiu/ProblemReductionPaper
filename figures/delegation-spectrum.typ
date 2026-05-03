@@ -151,10 +151,10 @@
   )
   content((bar-x + 0.28, ly), text(size: 5.5pt, fill: fg)[Human], anchor: "west")
   rect(
-    (bar-x + 0.78, ly - 0.09),
-    (bar-x + 1.00, ly + 0.09),
+    (bar-x + 1.10, ly - 0.09),
+    (bar-x + 1.32, ly + 0.09),
     fill: agent-color.lighten(25%),
     stroke: none,
   )
-  content((bar-x + 1.06, ly), text(size: 5.5pt, fill: fg)[Agent], anchor: "west")
+  content((bar-x + 1.38, ly), text(size: 5.5pt, fill: fg)[Agent], anchor: "west")
 })
