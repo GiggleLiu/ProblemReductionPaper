@@ -27,12 +27,24 @@
     } else {
       [code, PR,\ review verdict]
     }
-    let agent-fill = if accent-side { fill-accent } else { white }
-    let node-stroke = if accent-side {
-      (paint: accent, thickness: 0.7pt)
+    // Agent: emphasized (filled tint + thick border)
+    let agent-fill = if accent-side { fill-accent } else { luma(240) }
+    let agent-stroke = if accent-side {
+      (paint: accent, thickness: 1.3pt)
     } else {
-      (paint: border, thickness: 0.55pt)
+      (paint: luma(60), thickness: 1.2pt)
     }
+    // Counterpart: light, thin outline only
+    let cp-stroke = (paint: edge-col, thickness: 0.55pt)
+    // Loop arrow uses heavier stroke + colour to emphasise interaction
+    let loop-stroke = if accent-side {
+      (paint: accent, thickness: 1.0pt)
+    } else {
+      (paint: luma(70), thickness: 1.0pt)
+    }
+    let flow-stroke = (paint: edge-col, thickness: 0.8pt)
+    let big-mark-end  = (end: "straight", scale: 0.55)
+    let big-mark-both = (start: "straight", end: "straight", scale: 0.55)
 
     // Row sub-title above
     if accent-side {
@@ -91,7 +103,7 @@
   let c2x = c1x + gap
   let c3x = c1x + 2 * gap
 
-  content((14.5, pa-header-y),
+  content((14.9, pa-header-y),
     text(8pt, weight: "bold", fill: fg)[(b)], anchor: "west")
 
   // Skill node
