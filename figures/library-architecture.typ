@@ -190,8 +190,8 @@
 
   let bx-h = band-h - 2 * pad
 
-  // Interface row: 2 wider boxes (spanning ~1.5 library columns each)
-  let int-w = col-w * 1.5 + col-gap / 2 - 0.1
+  // Interface row: 2 boxes aligned with the Library bottom-row columns
+  let int-w = lib-col-w
   let int-y = y1-bot + pad
   mkbox(label-w + 0.1, int-y, int-w, bx-h, int-acc, int-bd,
     icon-term, [`pred` CLI],
