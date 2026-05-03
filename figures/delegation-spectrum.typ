@@ -69,7 +69,7 @@
     line(
       (arrow-x + shaft-w + 0.04, y),
       (bar-x - 0.04, y),
-      stroke: (paint: luma(200), thickness: 0.3pt, dash: "dotted"),
+      stroke: (paint: luma(140), thickness: 0.4pt, dash: "dotted"),
     )
 
     // Full-range frame (100% reference)
