@@ -135,8 +135,8 @@
 #canvas(length: 1cm, {
   import draw: *
 
-  let W = 14.0
-  let label-w = 2.7
+  let W = 11.0
+  let label-w = 2.4
   let pad = 0.15
   let band-h = 1.85
   let gap-h = 0.3
