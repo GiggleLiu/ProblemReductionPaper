@@ -864,7 +864,7 @@
     line((x0 - 0.18, ty), (x0, ty),
       stroke: (thickness: 0.5pt, paint: fg))
     content((x0 - 0.28, ty), anchor: "east",
-      text(5.5pt, fill: fg-light, str(tv)))
+      text(6pt, fill: fg-light, str(tv)))
   }
 
   // X-axis tick marks + week labels.
@@ -873,10 +873,10 @@
     line((tx, y0), (tx, y0 - 0.18),
       stroke: (thickness: 0.5pt, paint: fg))
     content((tx, y0 - 0.32), anchor: "north",
-      text(5.5pt, fill: fg-light, str(tw)))
+      text(6pt, fill: fg-light, str(tw)))
   }
   content((x0 + plot-w + 0.5, y0 - 0.32), anchor: "north",
-    text(5.5pt, fill: fg-light, [week]))
+    text(6pt, fill: fg-light, [week]))
 
   // Phase strip below the x-axis — evenly spaced like the mockup, with
   // arrows between phase names rather than tied to the (uneven) boundaries.
