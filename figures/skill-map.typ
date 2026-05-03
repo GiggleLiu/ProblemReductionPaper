@@ -30,9 +30,9 @@
     // Human: emphasised in advisor (the defining loop), de-emphasised in automation
     let human-fill = if accent-side { fill-accent } else { white }
     let human-stroke = if accent-side {
-      (paint: accent, thickness: 1.2pt, dash: "dashed")
+      (paint: accent, thickness: 1.2pt)
     } else {
-      (paint: edge-col, thickness: 0.8pt, dash: "dashed")
+      (paint: edge-col, thickness: 0.8pt)
     }
     let human-arrow-stroke = if accent-side {
       (paint: accent, thickness: 1.0pt)
