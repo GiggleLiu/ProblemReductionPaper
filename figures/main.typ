@@ -296,7 +296,7 @@
   #align(center + top)[
     #if icon == none { icon-slot(w: 0.5cm, h: 0.5cm, label: [ ]) } else { icon }
     #v(3pt)
-    #text(7pt, fill: col-violet.darken(20%), weight: "regular", align(center, label))
+    #text(7.5pt, fill: col-violet.darken(20%), weight: "regular", align(center, label))
   ]
 ]
 
@@ -384,7 +384,7 @@
     [
       #image("icons/person-at-laptop.svg", width: 1.5cm)
       #v(3pt)
-      #text(7pt, style: "normal", fill: col-p3.darken(10%),
+      #text(7.5pt, style: "normal", fill: col-p3.darken(10%),
         align(center, [*no-code\ contribution*]))
     ],
     github-card,
@@ -891,7 +891,7 @@
   // Title in upper-left, with a compact two-row legend underneath. The
   // curves are flat in the left third (week 0–8), so this region is empty.
   content((x0 + 0.3, y0 + plot-h + 0.3), anchor: "north-west",
-    text(7pt, fill: col-p3.darken(15%), [*Growth over time*]))
+    text(7.5pt, fill: col-p3.darken(15%), [*Growth over time*]))
 
   let lx = x0 + 0.4
   let ly = y0 + plot-h - 1.1
