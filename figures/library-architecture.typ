@@ -121,11 +121,15 @@
   }))
 
 // ── Header (icon + title) helper ──
-#let header(icon, title, accent) = {
-  box(baseline: 1.5pt, icon)
-  h(4pt)
-  text(8pt, weight: "bold", fill: accent, title)
-}
+// Use grid with horizon alignment so the icon vertically centers with the title text
+// regardless of each icon's intrinsic baseline.
+#let header(icon, title, accent) = grid(
+  columns: (auto, 1fr),
+  column-gutter: 4pt,
+  align: horizon + left,
+  icon,
+  text(8pt, weight: "bold", fill: accent, title),
+)
 
 // ── Main canvas ──
 #canvas(length: 1cm, {
