@@ -10,8 +10,8 @@
   // Panel (a) — Skill execution model (left, x ≈ 0..13)
   // ============================================================
 
-  let pa-header-y = 11.8
-  content((0.3, pa-header-y),
+  let pa-header-y = 13.2
+  content((1.3, pa-header-y),
     text(8pt, weight: "bold", fill: fg)[(a)], anchor: "west")
 
   // ── Helper: one row of the execution model ──
@@ -75,7 +75,7 @@
     content((sx - 0.1, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
     // Mode tag below the SKILL.md box
     let mode-tag = if accent-side { [(human-in-loop)] } else { [(autonomous)] }
-    content((sx, y - sh - 0.30), text(5.5pt, fill: fg-light, mode-tag))
+    content((sx, y - sh - 0.50), text(5.5pt, fill: fg-light, mode-tag))
 
     // Agent circle (same actor in both rows — small, neutral)
     let ax = 7.0
