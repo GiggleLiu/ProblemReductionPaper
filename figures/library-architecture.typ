@@ -135,7 +135,7 @@
   let label-w = 2.7
   let pad = 0.15
   let band-h = 2.35
-  let gap-h = 0.75
+  let gap-h = 0.3
   let col-gap = 0.2
 
   // Library has two sub-rows (Example DB on top, Problem Types + Reduction Rules below)
