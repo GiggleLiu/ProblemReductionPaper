@@ -88,7 +88,7 @@
     // Counterpart circle (collaborator/resource — de-emphasised)
     let cx = 9.7
     let cp-r = 0.65
-    circle((cx, y), radius: cp-r, fill: white, stroke: cp-stroke, name: kind + "-cp")
+    circle((cx, y), radius: cp-r, fill: cp-fill, stroke: cp-stroke, name: kind + "-cp")
     content((cx, y), text(5.8pt, fill: fg)[#cp-name])
     // Sub-label below counterpart
     content((cx, y - 1.05), text(4.8pt, fill: fg-light)[#cp-sub])
