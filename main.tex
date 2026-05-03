@@ -763,6 +763,135 @@ MaximumIndependentSet       & 3 & $O(V^3)$            & Wireless scheduling \\
 {\footnotesize $V$: vertices; $C$: clauses; $n$: items; $b$: encoding/slack bits; $P, T$: processors, tasks.}
 \end{table}
 
+\section{Skill Excerpts}\label{app:skills}
+
+\Cref{fig:skills} reproduces the two skills referenced in \Cref{sec:pipeline-overview}: \texttt{propose} (advisor skill that gates issue creation by domain experts) and \texttt{add-rule} (automation skill that drives implementation from a validated issue).
+
+\begin{figure}[h]
+  \centering
+  \begin{tcolorbox}[
+    colback=gray!5, colframe=gray!80,
+    title={\textbf{\texttt{propose}} --- advisor skill (excerpts)},
+    fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt,
+  ]
+  \footnotesize
+  \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
+---
+name: propose
+description:
+  Guides domain experts through brainstorm-
+  ing and files a GitHub issue
+---
+  \end{lstlisting}
+  \vspace{-4pt}
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{No programming knowledge required.}
+  This skill works entirely in mathematical / domain language.\\[3pt]
+  %
+  \texttt{<HARD-GATE>}\\
+  Do NOT write any code, create any files, or invoke implementation skills.
+  The ONLY output of this skill is GitHub issues filed via \texttt{gh issue create}.\\
+  \texttt{</HARD-GATE>}\\[3pt]
+  %
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Run topology analysis first} to identify the most impactful missing reductions [\ldots]\\
+  \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=-5pt, belowskip=2pt, xleftmargin=4pt]
+cargo run --example detect_isolated_problems
+cargo run --example detect_unreachable_from_3sat
+  \end{lstlisting}
+  \vspace{-2pt}
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Pre-validation} --- Run \texttt{check-issue} on draft before filing:\\[2pt]
+  \begin{tabular}{@{}r@{~}l@{}}
+    1. & \textbf{Usefulness} --- does a cheaper reduction path already exist? \\
+    2. & \textbf{Effort} --- effort to implement? \\
+    3. & \textbf{Correctness} --- do cited references support the claims? \\
+    4. & \textbf{Writing quality} --- all symbols defined, examples worked? \\
+  \end{tabular}\\[2pt]
+  Only issues passing all four checks are filed.
+  \end{tcolorbox}
+  \label{fig:skill-propose}
+
+  \vspace{6pt}
+
+  \begin{tcolorbox}[
+    colback=gray!5, colframe=gray!80,
+    title={\textbf{\texttt{add-rule}} --- automation skill (excerpts)},
+    fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt,
+  ]
+  \footnotesize
+  \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
+---
+name: add-rule
+description: Adding a new reduction rule to the
+  codebase, either from an issue or interactively
+---
+  \end{lstlisting}
+  \vspace{-4pt}
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Required Information Checklist}
+  \begingroup
+  \setlength{\leftmargini}{1.4em}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \begin{enumerate}
+    \item \textbf{Reduction algorithm} --- how to transform source instance to target, with BibTeX reference.
+    \item \textbf{Size overhead} --- how target size relates to source size, used for estimating the overhead of the reduction.
+    \item \textbf{Concrete example} --- a small worked-out instance, used for testing and documentation.
+    \item $\ldots$
+  \end{enumerate}
+  \endgroup
+  Do NOT proceed until the checklist is complete.\\[3pt]
+  %
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Reference Implementations} --- Read these first:\\
+  {\ttfamily src/rules/mvc\_mis.rs} [\ldots{}]\\[3pt]
+  %
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Document in paper.}
+  Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
+  Run \texttt{make paper} --- must compile without errors.
+  \end{tcolorbox}
+  \label{fig:skill-addrule}
+  \caption{Two skills that bookend the contribution pipeline.
+    \textbf{\texttt{propose}} (top) gates issue creation by domain experts: the hard gate enforces no-code contribution, topology analysis guides experts toward strategic reduction-graph gaps, and pre-validation checks four quality dimensions before the issue enters the pipeline.
+    \textbf{\texttt{add-rule}} (bottom) drives implementation from a validated issue: the checklist encodes the mathematical knowledge every reduction requires, reference implementations prevent convention drift, and the paper entry ensures visual verifiability by human reviewers.}
+  \label{fig:skills}
+\end{figure}
+
+\section{Agent Profile Example}\label{app:agent-profile}
+
+\Cref{fig:agent-profile} shows a representative agent profile used by the \emph{agentic feature tests} described in \Cref{sec:verification}. The persona's domain knowledge lets the sub-agent judge whether reduction outputs are plausible without access to ground-truth labels.
+
+\begin{figure}[h]
+  \centering
+  \begin{tcolorbox}[
+    colback=gray!5, colframe=gray!80,
+    title={\textbf{Agent Profile:} Dr.\ Sarah Chen --- CLI Tool (\texttt{pred})},
+    fonttitle=\small, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+  ]
+  \small
+  \textbf{Use case.}
+  An algorithm engineer reads the project documentation to learn what problems and reductions exist, then uses the \texttt{pred} CLI to model and solve their own optimization problems.
+  Each session: pick a problem from the paper, create an instance with real-world-style data, find a reduction path to a solver, solve it, and verify the result.\\[4pt]
+  %
+  \textbf{Persona.}
+  Senior algorithm engineer at a logistics company with ten years of experience in vehicle routing, scheduling, and layout optimization.
+  Knows these problems map to graph coloring, independent set, set cover, and similar NP-hard formulations because she has hand-coded reductions before.
+  Found this project's paper and wants to try the CLI instead of writing reductions herself.
+  Has never used \texttt{pred} before.\\[4pt]
+  %
+  \textbf{Behavior.}
+  Reads the paper and docs first, then picks a problem she recognizes.
+  Figures out the CLI by reading its help output.
+  After each step, compares the output against her expectation.
+  If something does not match, investigates before moving on.
+  \end{tcolorbox}
+  \caption{A representative agent profile used in agentic feature testing.
+    The persona's domain knowledge (logistics optimization) lets the agent judge whether reduction results are plausible without access to ground-truth labels.}
+  \label{fig:agent-profile}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
