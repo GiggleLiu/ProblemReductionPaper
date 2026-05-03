@@ -146,7 +146,7 @@
   }
 
   exec-row(10.0, "advisor", accent-side: true)
-  exec-row(4.5, "automation")
+  exec-row(5.6, "automation")
 
   // ============================================================
   // Panel (b) — Skills indexed by invoker (right, x ≈ 15..30)
