@@ -227,9 +227,14 @@
   let exdb-w = lib-col-w
   let exdb-x = lib-x0 + (2 * lib-col-w + col-gap - exdb-w) / 2
 
-  mkbox(lib-x0, lib-bot-y, lib-col-w, lib-sub-h, lib-acc, lib-bd,
+  // Bottom-row boxes narrower than their slots, centered (icons + titles only fit better in a snugger box).
+  let lib-bot-w = lib-col-w * 0.65
+  let ptypes-x = lib-x0 + (lib-col-w - lib-bot-w) / 2
+  let rrules-x = lib-x1 + (lib-col-w - lib-bot-w) / 2
+
+  mkbox(ptypes-x, lib-bot-y, lib-bot-w, lib-sub-h, lib-acc, lib-bd,
     icon-share, [Problem Types], (), "ptypes")
-  mkbox(lib-x1, lib-bot-y, lib-col-w, lib-sub-h, lib-acc, lib-bd,
+  mkbox(rrules-x, lib-bot-y, lib-bot-w, lib-sub-h, lib-acc, lib-bd,
     icon-arrows, [Reduction Rules], (), "rrules")
   mkbox(exdb-x, lib-top-y, exdb-w, lib-sub-h, lib-acc, lib-bd,
     icon-db, [Example Database], (), "exdb")
