@@ -6,140 +6,174 @@
 #canvas(length: 0.5cm, {
   import draw: *
 
-  // ── Skill node: name (line 1) + 1-line description (line 2) ──
-  let skill(x, y, name-id, sk-name, desc, advisor: false) = {
-    let box-w = 3.5
-    let box-h = 0.62
-    let bg = if advisor { fill-accent } else { white }
-    let sk = if advisor {
-      (thickness: 0.7pt, paint: accent)
+  // ===========================================================
+  // Panel (a) — Skill execution models
+  // ===========================================================
+  // Two side-by-side mini diagrams illustrating the two ways a
+  // skill is executed: advisor (agent ↔ human dialog) vs
+  // automation (agent ↔ tools loop).
+
+  let pa-top = 18.5
+  let A-x = 7.0   // advisor sub-panel center
+  let B-x = 21.0  // automation sub-panel center
+
+  // ── Panel header ──
+  content((1.0, pa-top + 0.5),
+    text(8pt, weight: "bold", fill: fg, raw("(a)")), anchor: "west")
+  content((3.0, pa-top + 0.5),
+    text(7.5pt, style: "italic", fill: fg)[skill execution model], anchor: "west")
+
+  // ── Helper: draw a single execution-model diagram ──
+  let exec-model(cx, kind, accent-side: false) = {
+    let cp-name = if kind == "advisor" { "human" } else { "tools" }
+    let cp-sub = if kind == "advisor" { "(domain expert,\nuser, reviewer)" } else { "(CLI, tests, web,\ncompiler)" }
+    let arrow-tag = if kind == "advisor" { "dialog" } else { "tool calls" }
+    let outcome = if kind == "advisor" {
+      "guided decision, refined intent,\nbrainstormed issue"
     } else {
-      (thickness: 0.45pt, paint: border)
+      "code, PR, review verdict,\npaper draft"
     }
-    rect(
-      (x - box-w, y - box-h),
-      (x + box-w, y + box-h),
-      radius: 3pt, fill: bg, stroke: sk, name: name-id,
-    )
-    content(
-      (x - box-w + 0.3, y + 0.2),
-      text(7.5pt, fill: fg, raw(sk-name)),
-      anchor: "west",
-    )
-    content(
-      (x - box-w + 0.3, y - 0.27),
-      text(5.5pt, fill: fg-light, desc),
-      anchor: "west",
-    )
+    let panel-stroke = if accent-side {
+      (paint: accent, thickness: 0.7pt)
+    } else {
+      (paint: border, thickness: 0.5pt)
+    }
+    let agent-fill = if accent-side { fill-accent } else { white }
+    let agent-stroke = if accent-side {
+      (paint: accent, thickness: 0.7pt)
+    } else {
+      (paint: border, thickness: 0.6pt)
+    }
+
+    // Sub-panel title
+    if accent-side {
+      content((cx, pa-top - 0.05),
+        text(8pt, weight: "bold", fill: accent.darken(15%))[advisor]
+          + h(0.3em)
+          + text(6pt, fill: fg-light)[(human-in-loop)])
+    } else {
+      content((cx, pa-top - 0.05),
+        text(8pt, weight: "bold", fill: fg)[automation]
+          + h(0.3em)
+          + text(6pt, fill: fg-light)[(autonomous)])
+    }
+
+    // SKILL.md node
+    let sky = pa-top - 1.1
+    rect((cx - 1.7, sky - 0.45), (cx + 1.7, sky + 0.45),
+      radius: 3pt, fill: fill-light, stroke: stroke-edge, name: kind + "-skill")
+    content((cx, sky + 0.18), text(7pt, weight: "bold", fill: fg, raw("SKILL.md")))
+    content((cx, sky - 0.22), text(5.5pt, fill: fg-light)[abstract steps + intent])
+
+    // Agent and counterpart
+    let ay = pa-top - 3.1
+    let agent-pos = (cx - 1.6, ay)
+    let cp-pos = (cx + 1.6, ay)
+    circle(agent-pos, radius: 0.75, fill: agent-fill, stroke: agent-stroke, name: kind + "-agent")
+    content(agent-pos, text(6.5pt, weight: "bold", fill: fg)[agent])
+    circle(cp-pos, radius: 0.75, fill: white, stroke: agent-stroke, name: kind + "-cp")
+    content(cp-pos, text(6.5pt, weight: "bold", fill: fg)[#cp-name])
+
+    // Skill → agent
+    line(kind + "-skill.south", kind + "-agent.north",
+      stroke: stroke-edge, mark: arrow-end)
+    // Agent ⇄ counterpart
+    line(kind + "-agent.east", kind + "-cp.west",
+      stroke: stroke-edge, mark: arrow-both)
+    content((cx, ay + 0.32), text(5.5pt, style: "italic", fill: fg-light)[#arrow-tag])
+
+    // Counterpart sub-label
+    content((cx + 1.6, ay - 1.1), text(5pt, fill: fg-light)[#cp-sub])
+
+    // Agent → outcome
+    let oy = pa-top - 5.4
+    line(kind + "-agent.south", (cx - 1.6, oy + 0.45),
+      stroke: stroke-edge, mark: arrow-end)
+    content((cx, oy), text(6.2pt, fill: fg)[#outcome])
   }
 
-  // ── Sub-group label (small italic header above a stack of skills) ──
-  let group-label(x, y, label) = {
-    content(
-      (x, y),
-      text(7pt, weight: "bold", style: "italic", fill: fg-light, raw(label)),
-    )
+  exec-model(A-x, "advisor", accent-side: true)
+  exec-model(B-x, "automation")
+
+  // Faint vertical separator between (a) sub-panels
+  line((14.0, pa-top + 0.2), (14.0, pa-top - 5.8),
+    stroke: (paint: luma(225), thickness: 0.4pt, dash: "dotted"))
+
+  // ===========================================================
+  // Panel (b) — Skills indexed by invoker (original layout)
+  // ===========================================================
+
+  // Skill node; advisor skills get accent tint
+  let skill(pos, label, name-id, mentor: false) = {
+    let (x, y) = pos
+    let bg = if mentor { fill-accent } else { white }
+    let sk = if mentor {
+      (thickness: 0.8pt, paint: accent)
+    } else {
+      (thickness: 0.5pt, paint: border)
+    }
+    rect((x - 2.6, y - 0.36), (x + 2.6, y + 0.36),
+      radius: 3pt, fill: bg, stroke: sk, name: name-id)
+    content(name-id, text(7pt, fill: fg, raw(label)))
   }
 
-  // ── Geometry ──
-  let advisor-x = 4.0
-  let auto-mid-x = 16.0
-  let auto-x1 = 12.0
-  let auto-x2 = 20.0
-  let fig-mid = (advisor-x + auto-x2) / 2  // 12.0
-  let row-h = 1.45  // vertical spacing between adjacent skill rows
+  let sp = 0.95
 
-  // ── Spec root ──
-  let spec-y = 22.0
-  rect(
-    (fig-mid - 4.6, spec-y - 0.6),
-    (fig-mid + 4.6, spec-y + 0.6),
-    radius: 5pt, fill: fill-light, stroke: stroke-edge, name: "root",
-  )
-  content(
-    (fig-mid, spec-y + 0.2),
-    text(8.5pt, weight: "bold", fill: fg, raw("CLAUDE.md / AGENTS.md")),
-  )
-  content(
-    (fig-mid, spec-y - 0.28),
-    text(5.8pt, fill: fg-light)[project specification],
-  )
+  // Column x-positions (4 columns spanning the same width as panel (a))
+  let c1x = 3.0
+  let c2x = 10.0
+  let c3x = 17.0
+  let c4x = 24.0
 
-  // ── Trunk + top-level fork (advisor / automation) ──
-  let bar-y = 19.8
-  line("root.south", (fig-mid, bar-y), stroke: stroke-edge)
-  line((advisor-x, bar-y), (auto-mid-x, bar-y), stroke: stroke-edge)
-  line((advisor-x, bar-y), (advisor-x, bar-y - 0.45), stroke: stroke-edge)
-  line((auto-mid-x, bar-y), (auto-mid-x, bar-y - 0.45), stroke: stroke-edge)
+  // Panel header
+  let pb-top = 11.6
+  content((1.0, pb-top + 0.5),
+    text(8pt, weight: "bold", fill: fg, raw("(b)")), anchor: "west")
+  content((3.0, pb-top + 0.5),
+    text(7.5pt, style: "italic", fill: fg)[skills indexed by invoker], anchor: "west")
 
-  // Pane labels
-  let pane-y = bar-y - 0.85
-  content(
-    (advisor-x, pane-y),
-    text(8.5pt, weight: "bold", fill: accent.darken(15%))[advisor]
-      + h(0.35em)
-      + text(5.8pt, fill: fg-light)[(human-in-loop)],
-  )
-  content(
-    (auto-mid-x, pane-y),
-    text(8.5pt, weight: "bold", fill: fg)[automation]
-      + h(0.35em)
-      + text(5.8pt, fill: fg-light)[(autonomous)],
-  )
+  // Root
+  let rx = (c1x + c4x) / 2
+  let ry = pb-top
+  rect((rx - 3.0, ry - 0.55), (rx + 3.0, ry + 0.55),
+    radius: 5pt, fill: fill-light, stroke: stroke-edge, name: "root")
+  content((rx, ry + 0.15), text(8.5pt, weight: "bold", raw("CLAUDE.md / AGENTS.md")))
+  content((rx, ry - 0.25), text(5.5pt, fill: fg-light)[project specification])
 
-  // Automation pane fans into two sub-columns
-  let fan-y = pane-y - 0.55
-  line((auto-mid-x, pane-y - 0.25), (auto-mid-x, fan-y), stroke: stroke-edge)
-  line((auto-x1, fan-y), (auto-x2, fan-y), stroke: stroke-edge)
-  line((auto-x1, fan-y), (auto-x1, fan-y - 0.40), stroke: stroke-edge)
-  line((auto-x2, fan-y), (auto-x2, fan-y - 0.40), stroke: stroke-edge)
-  // Advisor pane drops straight to its first sub-group
-  line((advisor-x, pane-y - 0.25), (advisor-x, pane-y - 0.95), stroke: stroke-edge)
+  // Trunk + horizontal bar + ticks
+  let bar-y = pb-top - 1.6
+  let tick-len = 0.55
+  line("root.south", (rx, bar-y), stroke: stroke-edge)
+  line((c1x, bar-y), (c4x, bar-y), stroke: stroke-edge)
+  for x in (c1x, c2x, c3x, c4x) {
+    line((x, bar-y), (x, bar-y - tick-len), stroke: stroke-edge)
+  }
 
-  // ── Skill rows ──
-  let row0 = pane-y - 1.35  // y-position of first sub-group label
+  // Column headers
+  let hdr-y = bar-y - tick-len - 0.35
+  content((c1x, hdr-y), text(8pt, weight: "bold", fill: fg)[user])
+  content((c2x, hdr-y), text(8pt, weight: "bold", fill: fg)[contributor])
+  content((c3x, hdr-y), text(8pt, weight: "bold", fill: fg)[maintainer])
+  content((c4x, hdr-y), text(8pt, weight: "bold", fill: fg)[agent])
 
-  // ===== ADVISOR pane: user / contributor / maintainer =====
-  group-label(advisor-x, row0, "user")
-  skill(advisor-x, row0 - 0.7,                    "u1", "find-solver",  "real problem → solver path",        advisor: true)
-  skill(advisor-x, row0 - 0.7 - row-h,            "u2", "find-problem", "solver → reachable problems",       advisor: true)
-  skill(advisor-x, row0 - 0.7 - row-h * 2,        "u3", "tutorial",     "guided pred CLI walkthrough",       advisor: true)
+  // Skill rows
+  let s0 = hdr-y - 0.95
 
-  let row1 = row0 - 0.7 - row-h * 2 - 0.85
-  group-label(advisor-x, row1, "contributor")
-  skill(advisor-x, row1 - 0.7,                    "c1", "propose",      "brainstorm + file new issue",       advisor: true)
+  // user (advisor)
+  skill((c1x, s0),         "find-solver",   "u1", mentor: true)
+  skill((c1x, s0 - sp),    "find-problem",  "u2", mentor: true)
 
-  let row2 = row1 - 0.7 - 0.85
-  group-label(advisor-x, row2, "maintainer")
-  skill(advisor-x, row2 - 0.7,                    "m1", "check-issue",  "review issue quality",              advisor: true)
-  skill(advisor-x, row2 - 0.7 - row-h,            "m2", "fix-issue",    "address quality gaps",              advisor: true)
-  skill(advisor-x, row2 - 0.7 - row-h * 2,        "m3", "final-review", "pre-merge human review",            advisor: true)
-  skill(advisor-x, row2 - 0.7 - row-h * 3,        "m4", "dev-setup",    "install dev tools",                 advisor: true)
+  // contributor (advisor)
+  skill((c2x, s0),         "propose",       "c1", mentor: true)
 
-  // ===== AUTOMATION pane: 2 sub-columns =====
-  // Sub-column 1: build / maintenance
-  group-label(auto-x1, row0, "build")
-  skill(auto-x1, row0 - 0.7,                      "b1", "run-pipeline", "drive Ready issues forward")
-  skill(auto-x1, row0 - 0.7 - row-h,              "b2", "issue-to-pr",  "issue → PR with plan")
-  skill(auto-x1, row0 - 0.7 - row-h * 2,          "b3", "add-model",    "implement a problem model")
-  skill(auto-x1, row0 - 0.7 - row-h * 3,          "b4", "add-rule",     "implement a reduction rule")
-  skill(auto-x1, row0 - 0.7 - row-h * 4,          "b5", "fix-pr",       "address review + CI")
+  // maintainer: advisor on top, automation below
+  skill((c3x, s0),         "fix-issue",     "m1", mentor: true)
+  skill((c3x, s0 - sp),    "final-review",  "m2", mentor: true)
+  skill((c3x, s0 - sp*2),  "dev-setup",     "m3")
+  skill((c3x, s0 - sp*3),  "release",       "m4")
 
-  let rowm = row0 - 0.7 - row-h * 4 - 0.85
-  group-label(auto-x1, rowm, "maintenance")
-  skill(auto-x1, rowm - 0.7,                      "n1", "release",       "bump version, tag")
-  skill(auto-x1, rowm - 0.7 - row-h,              "n2", "update-papers", "refresh reference lib")
-
-  // Sub-column 2: review / write
-  group-label(auto-x2, row0, "review")
-  skill(auto-x2, row0 - 0.7,                      "r1", "review-pipeline",       "orchestrate sub-reviews")
-  skill(auto-x2, row0 - 0.7 - row-h,              "r2", "review-structural",     "structural checklist")
-  skill(auto-x2, row0 - 0.7 - row-h * 2,          "r3", "review-quality",        "DRY / KISS / coverage")
-  skill(auto-x2, row0 - 0.7 - row-h * 3,          "r4", "verify-reduction",      "proof + 10k random checks")
-  skill(auto-x2, row0 - 0.7 - row-h * 4,          "r5", "topology-sanity-check", "graph topology audit")
-
-  let roww = row0 - 0.7 - row-h * 4 - 0.85
-  group-label(auto-x2, roww, "write")
-  skill(auto-x2, roww - 0.7,                      "w1", "write-model-in-paper", "paper entry for model")
-  skill(auto-x2, roww - 0.7 - row-h,              "w2", "write-rule-in-paper",  "paper entry for rule")
+  // agent (automation)
+  skill((c4x, s0),         "check-issue",     "a1")
+  skill((c4x, s0 - sp),    "run-pipeline",    "a2")
+  skill((c4x, s0 - sp*2),  "review-pipeline", "a3")
 })
