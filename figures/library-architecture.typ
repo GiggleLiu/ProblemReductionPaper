@@ -66,16 +66,16 @@
       stroke: 0.9pt + c, fill: c.lighten(75%))
   }))
 
-// 4. Rule (Reduction Rules): source shape ─▶ target shape with a prominent arrow.
+// 4. Rule (Reduction Rules): source shape ─▶ target shape, long visible arrow shaft.
 #let icon-rule = box(width: 14pt, height: 14pt, baseline: 2pt,
   canvas(length: 1pt, {
     import draw: *
     let c = lib-acc
-    // Smaller shapes leave room for a thicker, clearly visible arrow.
-    circle((2.5, 7), radius: 2.0, stroke: 1pt + c, fill: c.lighten(45%))
-    line((4.8, 7), (9.4, 7),
-      stroke: 1.6pt + c, mark: (end: "stealth", scale: 0.8))
-    rect((9.5, 5), (13.5, 9), stroke: 1pt + c, fill: c.lighten(45%))
+    // Small shapes pushed to the edges so the arrow shaft is clearly visible.
+    circle((1.8, 7), radius: 1.5, stroke: 1pt + c, fill: c.lighten(45%))
+    line((3.5, 7), (10.6, 7),
+      stroke: 1.2pt + c, mark: (end: "straight", scale: 0.5))
+    rect((10.8, 5.5), (13.7, 8.5), stroke: 1pt + c, fill: c.lighten(45%))
   }))
 
 // 5. Database (Example Database): cylinder with one disk separator.
@@ -113,7 +113,7 @@
 // 7. Math expression (Symbolic Engine): bold italic f(x).
 #let icon-fx = box(width: 14pt, height: 14pt, baseline: 2pt,
   align(horizon + center,
-    text(6.5pt, fill: inf-acc, weight: "bold", style: "italic", $f(x)$)))
+    text(8.5pt, fill: inf-acc, weight: "bold", style: "italic", $f(x)$)))
 
 // ── Header (icon + title) helper ──
 // Use grid with horizon alignment so the icon vertically centers with the title text
