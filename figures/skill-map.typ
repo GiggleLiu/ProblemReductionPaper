@@ -10,8 +10,8 @@
   // Panel (a) — Skill execution model (left, x ≈ 0..13)
   // ============================================================
 
-  let pa-header-y = 14.0
-  content((1.3, pa-header-y),
+  let pa-header-y = 13.0
+  content((-0.1, pa-header-y),
     text(8pt, weight: "bold", fill: fg)[(a)], anchor: "west")
 
   // ── Helper: one row of the execution model ──
@@ -41,8 +41,6 @@
     let flow-stroke = (paint: edge-col, thickness: 0.8pt)
     let big-mark-end  = (end: "straight", scale: 0.55)
     let big-mark-both = (start: "straight", end: "straight", scale: 0.55)
-    // Bidirectional for advisor; one-way (down to agent) for automation
-    let human-arrow-mark = if accent-side { big-mark-both } else { big-mark-end }
 
     // SKILL.md "document" box (rounded rect + folded corner)
     let sx = 5.0
@@ -64,7 +62,7 @@
     // Row title to the LEFT of SKILL.md (each line centered)
     if accent-side {
       content((sx - sw - 0.3, y),
-        align(center, text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor\ skill]),
+        align(center, text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill]),
         anchor: "east")
     } else {
       content((sx - sw - 0.3, y),
