@@ -864,7 +864,7 @@
     line((x0 - 0.18, ty), (x0, ty),
       stroke: (thickness: 0.5pt, paint: fg))
     content((x0 - 0.28, ty), anchor: "east",
-      text(6pt, fill: fg-light, str(tv)))
+      text(6.5pt, fill: fg-light, str(tv)))
   }
 
   // X-axis tick marks + week labels.
