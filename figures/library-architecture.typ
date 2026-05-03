@@ -228,7 +228,7 @@
      [recover source solution],
      [how size grows]),
     "rrules")
-  mkbox(lib-x0, lib-top-y, exdb-w, lib-sub-h, lib-acc, lib-bd,
+  mkbox(exdb-x, lib-top-y, exdb-w, lib-sub-h, lib-acc, lib-bd,
     icon-db, [Example Database],
     ([one instance per problem],
      [with a known solution],
