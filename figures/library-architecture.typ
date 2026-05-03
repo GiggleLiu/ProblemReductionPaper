@@ -178,12 +178,12 @@
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
     [Backends that serve each problem and rule.])
 
-  // Box helper. If `items` is empty, render only the header centered vertically.
+  // Box helper. With no items and no subtitle, header is centered vertically.
   // Optional `subtitle` shows a one-line purpose statement under the header.
   let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name, subtitle: none) = {
     rect((x, y-bot), (x + w, y-bot + h),
       fill: white, stroke: 0.9pt + border, radius: 4pt, name: name)
-    if items.len() == 0 {
+    if items.len() == 0 and subtitle == none {
       content((x + w / 2, y-bot + h / 2), anchor: "center",
         box(width: (w - 0.32) * 1cm, header(icon, title, accent)))
     } else {
@@ -196,10 +196,12 @@
               #text(6.5pt, fill: luma(95), style: "italic", subtitle)
             ]
           ]
-          #block(inset: (left: 18pt))[
-            #set text(7.5pt, fill: body-c)
-            #set par(leading: 3pt)
-            #items.map(it => [• #it]).join([\ ])
+          #if items.len() > 0 [
+            #block(inset: (left: 18pt))[
+              #set text(7.5pt, fill: body-c)
+              #set par(leading: 3pt)
+              #items.map(it => [• #it]).join([\ ])
+            ]
           ]
         ]))
     }
