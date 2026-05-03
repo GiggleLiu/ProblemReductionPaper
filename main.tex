@@ -875,6 +875,29 @@ description: Adding a new reduction rule to the
   \label{fig:agent-profile}
 \end{figure}
 
+\section{End-User Utility Experiment Details}\label{app:end-user}
+
+This appendix expands on the controlled experiment summarised in \Cref{sec:end-user-utility}.
+
+\paragraph{Setup.}
+A dense weighted Max-Cut instance ($n=150$ vertices, ${\approx}\,5300$ signed-weight edges, density ${\approx}\,0.48$) is presented to a Claude Sonnet 4.6 sub-agent through an engineer-voice prompt: a people-ops manager dividing an organization into two product teams to maximize cross-team interaction value.
+The prompt contains no algorithm, model, or solver hints; the underlying Max-Cut structure is left for the agent to recognize.
+Four configurations form a $2{\times}2$ factorial along two axes: \emph{web search} (yes/no) and \emph{access to \texttt{pred}} (yes/no).
+Four random seeds per configuration; solver wall-time capped at 90~s per run.
+Agents with \texttt{pred} access also receive a short Markdown protocol that prescribes one extra step before writing solver code---enumerate downstream models with \texttt{pred from} and pick the one whose endpoint admits the strongest off-the-shelf solver.
+
+\paragraph{Three independent axes of measurement.}
+We separate three quantities that AI-coding evaluations often blend into a single ``time'' figure:
+(i) \emph{AI cost}---tokens consumed by the agent;
+(ii) \emph{algorithm cost}---solver wall-time, reported by the agent in a structured \texttt{meta.json};
+(iii) \emph{solution quality}---feasibility, objective value, and the agent's claim of optimality, all re-checked by an independent grader.
+The grader also flags \emph{false-OPT}: a claimed-optimal answer beaten by another configuration on the same seed.
+
+\paragraph{Caveats.}
+A single scenario family in which the natural ILP formulation is known to be dominated by simulated annealing on the QUBO form---a setting deliberately chosen to test whether catalog-driven reformulation pays off when it can.
+The gains may not transfer to families where the natural formulation is already strong (sparse ILP, scheduling), nor across different agent backends.
+The benchmark harness---scenario generator, grader, per-run result schema, and aggregation script---is released alongside the library to support broader replication.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
