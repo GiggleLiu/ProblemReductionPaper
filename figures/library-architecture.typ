@@ -180,11 +180,13 @@
       fill: white, stroke: 0.9pt + border, radius: 4pt, name: name)
     content((x + 0.15, y-bot + h - 0.13), anchor: "north-west",
       box(width: (w - 0.32) * 1cm, [
+        #set block(spacing: 3pt)
         #header(icon, title, accent)
-        #v(2.5pt)
-        #set text(6.5pt, fill: body-c)
-        #set par(leading: 2.5pt)
-        #items.map(it => [• #it]).join([\ ])
+        #pad(left: 18pt)[
+          #set text(6.5pt, fill: body-c)
+          #set par(leading: 2.5pt)
+          #items.map(it => [• #it]).join([\ ])
+        ]
       ]))
   }
 
