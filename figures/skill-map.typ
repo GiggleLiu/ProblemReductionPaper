@@ -12,9 +12,7 @@
 
   let pa-header-y = 11.2
   content((0.0, pa-header-y),
-    text(8pt, weight: "bold", fill: fg, raw("(a)")), anchor: "west")
-  content((1.6, pa-header-y),
-    text(7.5pt, style: "italic", fill: fg)[skill execution model], anchor: "west")
+    text(8pt, weight: "bold", fill: fg)[(a)], anchor: "west")
 
   // ── Helper: one row of the execution model ──
   let exec-row(y, kind, accent-side: false) = {
