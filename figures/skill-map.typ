@@ -178,7 +178,7 @@
 
   // Root spec node
   let rx = (c1x + c4x) / 2
-  let ry = pa-header-y - 1.0
+  let ry = pa-header-y - 0.4
   rect((rx - 4.0, ry - 0.55), (rx + 4.0, ry + 0.55),
     radius: 5pt, fill: fill-light, stroke: stroke-edge, name: "root")
   content((rx, ry), text(7.5pt, weight: "bold", raw("CLAUDE.md / AGENTS.md")))
