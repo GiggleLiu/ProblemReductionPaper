@@ -19,11 +19,6 @@
   // Advisor:    human ⇄ agent (bidirectional)  — stays in loop
   // Automation: human → agent (one-way down)   — only triggers
   let exec-row(y, kind, accent-side: false) = {
-    let outcome = if accent-side {
-      [guided decision,\ refined intent]
-    } else {
-      [code, PR,\ review verdict]
-    }
     // Agent: same neutral style in both rows
     let agent-fill = luma(245)
     let agent-stroke = (paint: edge-col, thickness: 0.55pt)
