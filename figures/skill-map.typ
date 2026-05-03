@@ -79,7 +79,7 @@
     content((ax, y), text(5.8pt, fill: fg)[agent])
 
     // Tools: gear shape (polygon with alternating inner / outer radius)
-    let cx = 9.85
+    let cx = 11.0
     let tools-r = 0.85
     let n-teeth = 8
     let r-inner = tools-r
