@@ -87,7 +87,6 @@
     let tools-r = 0.85
     circle((cx, y), radius: tools-r, fill: tools-fill, stroke: tools-stroke, name: kind + "-tools")
     content((cx, y), text(6pt, weight: "bold", fill: fg)[tools])
-    content((cx, y - 1.5), text(4.8pt, fill: fg-light)[CLI, tests, web,\ compiler])
 
     // Human circle (above agent, present in both rows; arrow style differs)
     let hx = ax
