@@ -104,18 +104,19 @@
     let hy = y + 2.2
     let hw = 0.85  // half-width
     let hh = 0.45  // half-height
-    rect((hx - hw, hy - hh), (hx + hw, hy + hh),
+    rect((hx - hw - 0.1, hy - hh), (hx + hw + 0.1, hy + hh),
       radius: 2pt, fill: human-fill, stroke: human-stroke, name: kind + "-human")
     let cp-label = if accent-side { [human] } else { [invoker] }
     content((hx, hy), text(6pt, weight: "bold", fill: fg, cp-label))
     // Sub-label to the right of the human circle
     let cp-sub-text = if accent-side {
-      [domain expert,\ user, reviewer]
+      [*domain expert,\ user, reviewer*]
     } else {
-      [human or other agents]
+      [*human or other\ agents*]
     }
-    content((hx + hw + 0.15, hy),
-      text(6pt, fill: fg-light, cp-sub-text),
+    let cp-sub-color = if accent-side { accent.darken(15%) } else { fg-light }
+    content((hx + hw + 0.35, hy),
+      text(6pt, fill: cp-sub-color, cp-sub-text),
       anchor: "west")
 
     // Connectors
@@ -139,8 +140,8 @@
     // Arrow label
     let arrow-label = if accent-side { [stays in loop] } else { [only triggers] }
     let arrow-label-color = if accent-side { accent.darken(15%) } else { fg-light }
-    content((hx + 0.45, (hy + y) / 2),
-      text(5.5pt, style: "italic", fill: arrow-label-color, arrow-label),
+    content((hx - 3.05, (hy + y) / 2),
+      text(6pt, style: "italic", fill: arrow-label-color, arrow-label),
       anchor: "west")
   }
 
