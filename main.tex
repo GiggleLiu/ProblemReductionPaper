@@ -381,6 +381,17 @@ These skills lower the usage barrier from ``knows the library'' to ``knows the p
 \end{figure}
 
 \subsection{What Cannot Be Delegated}\label{sec:human-responsibilities}
+
+\begin{wrapfigure}{r}{0.45\textwidth}
+  \vspace{-\intextsep}
+  \centering
+  \includegraphics[width=\linewidth]{figures/delegation-spectrum.pdf}
+  \caption{Delegation spectrum, sorted from fully human (top) to fully automated (bottom).
+    Bars show the human--agent split for each work type.
+    Harness engineering (skills, specs, tools), strategic planning (priorities, roadmap), and merge authorization (security, final approval) remain fully human; mathematical verification (correctness, proofs) and canonical examples (ground truth instances) are human-led with agent drafting; code review (structure, correctness, feature tests), implementation (code, tests, documentation), and convention enforcement (naming, layout, checks) are delegated to agents.}
+  \label{fig:delegation-spectrum}
+\end{wrapfigure}
+
 Four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
 Selecting which rules to pursue requires understanding the needs of the community; the human is the information source.
 Verifying the algorithm's correctness requires deep reasoning.
@@ -389,16 +400,6 @@ Constructing canonical examples requires creative work; the human is the end use
 Authorizing merges is security critical; a human with long-term memory must be responsible.
 
 \Cref{fig:delegation-spectrum} summarizes the division of labor, sorted by how replaceable each task is by agents.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/delegation-spectrum.pdf}
-  \caption{Delegation spectrum.
-    Tasks are sorted from fully human (top) to fully automated (bottom).
-    The gradient arrow and horizontal bars show the human--agent split for each work type.
-    Harness engineering, strategic planning, and merge authorization remain fully human; mathematical verification and canonical examples are human-led with agent drafting; implementation, code review, and convention enforcement are delegated to agents.}
-  \label{fig:delegation-spectrum}
-\end{figure}
 
 \subsection{Automation Pipeline}\label{sec:pipeline-overview}
 
