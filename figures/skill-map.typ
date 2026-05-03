@@ -120,9 +120,19 @@
       stroke: flow-stroke, mark: big-mark-end)
     line(kind + "-agent.east", kind + "-tools.west",
       stroke: tools-loop-stroke, mark: big-mark-both)
-    // Human ⇄ agent (advisor) OR human → agent (automation)
-    line(kind + "-human.south", kind + "-agent.north",
-      stroke: human-arrow-stroke, mark: human-arrow-mark)
+    // Human ⇄ agent (advisor: two parallel arrows) OR human → agent (automation: one)
+    if accent-side {
+      let dx = 0.2
+      // human → agent (down, left side)
+      line((hx - dx, hy - hr), (ax - dx, y + agent-r),
+        stroke: human-arrow-stroke, mark: big-mark-end)
+      // agent → human (up, right side)
+      line((ax + dx, y + agent-r), (hx + dx, hy - hr),
+        stroke: human-arrow-stroke, mark: big-mark-end)
+    } else {
+      line(kind + "-human.south", kind + "-agent.north",
+        stroke: human-arrow-stroke, mark: big-mark-end)
+    }
     // Arrow label
     let arrow-label = if accent-side { [stays in loop] } else { [only triggers] }
     let arrow-label-color = if accent-side { accent.darken(15%) } else { fg-light }
