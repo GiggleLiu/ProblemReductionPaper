@@ -417,22 +417,22 @@ Each column is a state; progress flows left to right.
 If any stage fails, the item moves to \col{OnHold} for human triage.
 Four roles drive the flow: a domain expert files issues, a maintainer triages and merges, and two agents---one for implementation, one for review---handle the routine work in between.
 
-\begin{figure*}[t]
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \vspace{-\intextsep}
   \centering
-  \begin{minipage}[t]{0.525\textwidth}
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
     title={\textbf{\texttt{propose}} --- advisor skill (excerpts)},
     fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt,
-    equal height group=skillbox,
+    width=\linewidth,
   ]
   \footnotesize
   \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
 ---
 name: propose
 description:
-  Guides domain experts through brainstorm-
-  ing and files a GitHub issue
+  Guides domain experts through brain-
+  storming and files a GitHub issue
 ---
   \end{lstlisting}
   \vspace{-4pt}
@@ -465,20 +465,19 @@ cargo run --example \
   Only issues passing all four checks are filed.
   \end{tcolorbox}
   \label{fig:skill-propose}
-  \end{minipage}\hspace{4pt}%
-  \begin{minipage}[t]{0.445\textwidth}
+  \\[4pt]
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
     title={\textbf{\texttt{add-rule}} --- automation skill (excerpts)},
     fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt,
-    equal height group=skillbox,
+    width=\linewidth,
   ]
   \footnotesize
   \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
 ---
 name: add-rule
-description: Adding a new reduction 
-  rule to the codebase, either from 
+description: Adding a new reduction
+  rule to the codebase, either from
   an issue or interactively
 ---
   \end{lstlisting}
@@ -509,12 +508,11 @@ description: Adding a new reduction
   Run \texttt{make paper} --- must compile without errors.
   \end{tcolorbox}
   \label{fig:skill-addrule}
-  \end{minipage}
   \caption{Two skills that bookend the contribution pipeline.
-    \textbf{\texttt{propose}} (left) gates issue creation by domain experts: the hard gate enforces no-code contribution, topology analysis guides experts toward strategic reduction-graph gaps, and pre-validation checks four quality dimensions before the issue enters the pipeline.
-    \textbf{\texttt{add-rule}} (right) drives implementation from a validated issue: the checklist encodes the mathematical knowledge every reduction requires, reference implementations prevent convention drift, and the paper entry ensures visual verifiability by human reviewers.}
+    \textbf{\texttt{propose}} (top) gates issue creation by domain experts: the hard gate enforces no-code contribution, topology analysis guides experts toward strategic reduction-graph gaps, and pre-validation checks four quality dimensions before the issue enters the pipeline.
+    \textbf{\texttt{add-rule}} (bottom) drives implementation from a validated issue: the checklist encodes the mathematical knowledge every reduction requires, reference implementations prevent convention drift, and the paper entry ensures visual verifiability by human reviewers.}
   \label{fig:skills}
-\end{figure*}
+\end{wrapfigure}
 
 
 \textbf{Stage~1: Propose} ( $\to$ \col{Backlog}).
