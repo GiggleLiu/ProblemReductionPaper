@@ -234,15 +234,16 @@
   mkbox(exdb-x, lib-top-y, lib-bot-w, lib-sub-h, lib-acc, lib-bd,
     icon-db, [Example Database], (), "exdb")
 
-  // Infrastructure row: 2 wider boxes (mirroring Interface row)
+  // Infrastructure row: 2 boxes mirroring Interface row, but shorter.
   let y3 = y3-bot + pad
+  let inf-bx-h = inf-band-h - 2 * pad
   let inf-w = int-w
-  mkbox(label-w + 0.1, y3, inf-w, bx-h, inf-acc, inf-bd,
+  mkbox(label-w + 0.1, y3, inf-w, inf-bx-h, inf-acc, inf-bd,
     icon-gear, [Solvers],
     ([for round-trip testing],
      [ILP or brute-force]),
     "solvers")
-  mkbox(W - 0.1 - inf-w, y3, inf-w, bx-h, inf-acc, inf-bd,
+  mkbox(W - 0.1 - inf-w, y3, inf-w, inf-bx-h, inf-acc, inf-bd,
     icon-fx, [Symbolic Engine],
     ([reduction overheads],
      [algorithm complexities]),
