@@ -228,23 +228,11 @@
   let exdb-x = lib-x0 + (2 * lib-col-w + col-gap - exdb-w) / 2
 
   mkbox(lib-x0, lib-bot-y, lib-col-w, lib-sub-h, lib-acc, lib-bd,
-    icon-share, [Problem Types],
-    ([mathematical definition],
-     [size measures],
-     [best-known complexity per variant]),
-    "ptypes")
+    icon-share, [Problem Types], (), "ptypes")
   mkbox(lib-x1, lib-bot-y, lib-col-w, lib-sub-h, lib-acc, lib-bd,
-    icon-arrows, [Reduction Rules],
-    ([source $arrow$ target instance],
-     [recover source solution],
-     [how size grows]),
-    "rrules")
+    icon-arrows, [Reduction Rules], (), "rrules")
   mkbox(exdb-x, lib-top-y, exdb-w, lib-sub-h, lib-acc, lib-bd,
-    icon-db, [Example Database],
-    ([canonical instance per problem],
-     [single source of truth],
-     [shared by tests, manual, CLI]),
-    "exdb")
+    icon-db, [Example Database], (), "exdb")
 
   // Infrastructure row: 2 wider boxes (mirroring Interface row)
   let y3 = y3-bot + pad
