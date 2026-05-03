@@ -182,7 +182,7 @@
       box(width: (w - 0.32) * 1cm, [
         #set block(spacing: 3pt)
         #header(icon, title, accent)
-        #pad(left: 18pt)[
+        #block(inset: (left: 18pt))[
           #set text(6.5pt, fill: body-c)
           #set par(leading: 2.5pt)
           #items.map(it => [• #it]).join([\ ])
