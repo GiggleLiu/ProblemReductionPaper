@@ -909,7 +909,7 @@
   circle((lx + 0.275, ly - row-gap), radius: 0.11, fill: white,
     stroke: (thickness: 0.5pt, paint: col-red.darken(5%)))
   content((lx + 0.7, ly - row-gap), anchor: "west",
-    text(6pt, fill: fg, [\# reduction rules]))
+    text(6.5pt, fill: fg, [\# reduction rules]))
 })
 
 #let panel3(h: auto) = box(
