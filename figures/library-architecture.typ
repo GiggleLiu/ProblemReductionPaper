@@ -260,34 +260,4 @@
   )
   line("ptypes.east",  "rrules.west",   ..bidir(lib-acc))
 
-  // ── Inter-layer arrows with labels ──
-  let inter-stroke = (paint: arrow-c, thickness: 0.9pt)
-  let inter-mark   = (end: "straight", scale: 0.4)
-
-  let inter-label(pos, txt) = content(pos, anchor: "center",
-    text(7pt, fill: arrow-c, txt),
-    frame: "rect", fill: white, stroke: none, padding: 0.04)
-
-  // pred CLI ──uses──▶ Example Database
-  line("predcli.south", "exdb.north-west",
-    stroke: inter-stroke, mark: inter-mark)
-  inter-label(("predcli.south", 50%, "exdb.north-west"), [uses])
-
-  // Example Database ──exported to──▶ PDF Manual
-  line("exdb.north-east", "pdfmanual.south",
-    stroke: inter-stroke, mark: inter-mark)
-  inter-label(("exdb.north-east", 50%, "pdfmanual.south"), [exported to])
-
-  // Problem Types ──registered in──▶ Solvers (vertical drop into wide box)
-  let solvers-top = ("ptypes.south", "|-", "solvers.north")
-  line("ptypes.south", solvers-top,
-    stroke: inter-stroke, mark: inter-mark)
-  inter-label(("ptypes.south", 50%, solvers-top), [registered in])
-
-  // Reduction Rules ──composed via──▶ Symbolic Engine (vertical drop)
-  let symeng-top = ("rrules.south", "|-", "symeng.north")
-  line("rrules.south", symeng-top,
-    stroke: inter-stroke, mark: inter-mark)
-  inter-label(("rrules.south", 50%, symeng-top), [composed via])
-
 })
