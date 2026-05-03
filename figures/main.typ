@@ -876,7 +876,7 @@
       text(6.5pt, fill: fg-light, str(tw)))
   }
   content((x0 + plot-w + 0.5, y0 - 0.32), anchor: "north",
-    text(6pt, fill: fg-light, [week]))
+    text(6.5pt, fill: fg-light, [week]))
 
   // Phase strip below the x-axis — evenly spaced like the mockup, with
   // arrows between phase names rather than tied to the (uneven) boundaries.
