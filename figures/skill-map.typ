@@ -93,9 +93,7 @@
   let c3x = c1x + 2 * gap
 
   content((15.2, pa-header-y),
-    text(8pt, weight: "bold", fill: fg, raw("(b)")), anchor: "west")
-  content((16.8, pa-header-y),
-    text(7.5pt, style: "italic", fill: fg)[skills indexed by invoker], anchor: "west")
+    text(8pt, weight: "bold", fill: fg)[(b)], anchor: "west")
 
   // Skill node
   let skill(pos, label, name-id, mentor: false) = {
