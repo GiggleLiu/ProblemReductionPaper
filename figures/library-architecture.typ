@@ -187,8 +187,8 @@
         #set block(spacing: 3pt)
         #header(icon, title, accent)
         #block(inset: (left: 18pt))[
-          #set text(6.5pt, fill: body-c)
-          #set par(leading: 2.5pt)
+          #set text(7.5pt, fill: body-c)
+          #set par(leading: 3pt)
           #items.map(it => [• #it]).join([\ ])
         ]
       ]))
