@@ -172,9 +172,9 @@
       ]))
   }
   layer-label(y1-top, int-acc, [1], [Interface Layer],
-    [Entry points for users and tools.])
+    [Entry points for human users and AI agents.])
   layer-label(y2-top, lib-acc, [2], [Library Layer],
-    [A reusable catalog of problems and reductions to compose.])
+    [Registered problem types and the reductions between them.])
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
     [Generic solving and overhead reasoning.])
 
