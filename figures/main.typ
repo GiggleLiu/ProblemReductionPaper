@@ -206,7 +206,7 @@
       text(7pt, fill: fg-light)[
         problem-reductions
       ],
-      text(6.2pt, fill: fg-light, [#sym.dot.c #sym.dot.c #sym.dot.c]),
+      text(6.8pt, fill: fg-light, [#sym.dot.c #sym.dot.c #sym.dot.c]),
     )
   ]
 
@@ -257,14 +257,14 @@
       column-gutter: 10pt,
       row-gutter: 4pt,
       align: (left + top, left + top),
-      text(6.2pt, fill: fg-light, [Algorithm]),
+      text(6.8pt, fill: fg-light, [Algorithm]),
         text(6.8pt, fill: fg,
           [$x_(v,c) in {0,1}$; one-hot per $v$; $x_(u,c) + x_(v,c) <= 1$ on edges]),
-      text(6.2pt, fill: fg-light, [Overhead]),
+      text(6.8pt, fill: fg-light, [Overhead]),
         text(6.8pt, fill: fg, [variables $|V| dot k$,\ constraints $|E| dot k + |V|$]),
-        text(6.2pt, fill: fg-light, [Reference]),
+        text(6.8pt, fill: fg-light, [Reference]),
       text(6.8pt, fill: fg, [Mehrotra & Trick, 1996]),
-       text(6.2pt, fill: fg-light, [Example]),
+       text(6.8pt, fill: fg-light, [Example]),
         text(6.8pt, fill: fg, [
           ...
         ]),
