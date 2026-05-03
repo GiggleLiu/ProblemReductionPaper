@@ -2,7 +2,7 @@
 #import "@preview/pixel-family:0.2.0": bob, grace, crank, sentinel
 
 #set page(width: auto, height: auto, margin: 6pt)
-#set text(size: 7.5pt, font: "Helvetica")
+#set text(size: 8pt, font: "Helvetica")
 
 // ── Panel-specific palette ──
 #let col-p1   = rgb("#4e79a7")   // blue
