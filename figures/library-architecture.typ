@@ -236,9 +236,9 @@
     "rrules")
   mkbox(exdb-x, lib-top-y, exdb-w, lib-sub-h, lib-acc, lib-bd,
     icon-db, [Example Database],
-    ([one instance per problem],
-     [with a known solution],
-     [shared by tests and docs]),
+    ([canonical instance per problem],
+     [single source of truth],
+     [shared by tests, manual, CLI]),
     "exdb")
 
   // Infrastructure row: 2 wider boxes (mirroring Interface row)
