@@ -120,7 +120,7 @@
   #v(6pt)
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   // #v(3pt)
-  #align(center, text(7pt, fill: fg-light,
+  #align(center, text(7.5pt, fill: fg-light,
     [Each backend takes its own format;\ problems must be encoded to fit.]))
   // #v(3pt)
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
