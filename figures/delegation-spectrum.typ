@@ -126,16 +126,16 @@
       )
     }
 
-    // Percentage at end of bar
+    // Percentage at end of bar (right-aligned for visual lineup)
     content(
-      (bar-x + bw + 0.08, y),
+      (bar-x + bw + 0.55, y),
       text(size: 5.8pt, fill: fg-light)[#pct(frac)],
-      anchor: "west",
+      anchor: "east",
     )
 
     // Category label
     content(
-      (bar-x + bw + 0.55, y),
+      (bar-x + bw + 0.65, y),
       text(size: 6.5pt, fill: fg)[#label],
       anchor: "west",
     )
