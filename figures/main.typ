@@ -873,7 +873,7 @@
     line((tx, y0), (tx, y0 - 0.18),
       stroke: (thickness: 0.5pt, paint: fg))
     content((tx, y0 - 0.32), anchor: "north",
-      text(6pt, fill: fg-light, str(tw)))
+      text(6.5pt, fill: fg-light, str(tw)))
   }
   content((x0 + plot-w + 0.5, y0 - 0.32), anchor: "north",
     text(6pt, fill: fg-light, [week]))
