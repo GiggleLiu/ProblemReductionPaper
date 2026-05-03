@@ -159,7 +159,7 @@
     if icon == none { icon-slot(w: 0.7cm, h: 0.7cm, label: [bot]) } else { icon },
     [
       #text(8.5pt, weight: "bold", fill: col.darken(10%), title) \
-      #text(6.3pt, fill: fg-light, body)
+      #text(6.8pt, fill: fg-light, body)
     ],
   )
 ]
@@ -413,7 +413,7 @@
       [
         #text(9pt, weight: "bold", fill: col-p3.darken(15%),
           [Validated Reduction Code]) \
-        #text(6.3pt, fill: fg-light, [Human reviewed finally, merged into the codebase])
+        #text(6.8pt, fill: fg-light, [Human reviewed finally, merged into the codebase])
       ],
     )
   ]
