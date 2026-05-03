@@ -251,13 +251,15 @@
     ([ILP (default)],
      [problem-specific],
      [brute force]),
-    "solvers")
+    "solvers",
+    subtitle: [minimal: for round-trip testing])
   mkbox(W - 0.1 - inf-w, y3, inf-w, bx-h, inf-acc, inf-bd,
     icon-fx, [Symbolic Engine],
-    ([],
+    ([symbolic expressions],
      [compose along a path],
      [compare and evaluate]),
-    "symeng")
+    "symeng",
+    subtitle: [for cheapest-path search])
 
   // ── Intra-layer (bidirectional) arrows ──
   let bidir(c) = (
