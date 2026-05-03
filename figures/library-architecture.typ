@@ -176,10 +176,11 @@
   layer-label(y2-top, lib-acc, [2], [Library Layer],
     [Registered problem types and the reductions between them.])
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
-    [Backends that solve any problem and find cheapest reduction paths.])
+    [Backends that serve each problem and rule.])
 
   // Box helper. If `items` is empty, render only the header centered vertically.
-  let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name) = {
+  // Optional `subtitle` shows a one-line purpose statement under the header.
+  let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name, subtitle: none) = {
     rect((x, y-bot), (x + w, y-bot + h),
       fill: white, stroke: 0.9pt + border, radius: 4pt, name: name)
     if items.len() == 0 {
@@ -190,6 +191,11 @@
         box(width: (w - 0.32) * 1cm, [
           #set block(spacing: 3pt)
           #header(icon, title, accent)
+          #if subtitle != none [
+            #block(inset: (left: 18pt), spacing: 2pt)[
+              #text(6.5pt, fill: luma(95), style: "italic", subtitle)
+            ]
+          ]
           #block(inset: (left: 18pt))[
             #set text(7.5pt, fill: body-c)
             #set par(leading: 3pt)
@@ -248,7 +254,7 @@
     "solvers")
   mkbox(W - 0.1 - inf-w, y3, inf-w, bx-h, inf-acc, inf-bd,
     icon-fx, [Symbolic Engine],
-    ([symbolic expressions],
+    ([],
      [compose along a path],
      [compare and evaluate]),
     "symeng")
