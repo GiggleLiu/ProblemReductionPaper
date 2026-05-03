@@ -262,11 +262,9 @@
     stroke: (paint: c, thickness: 1pt),
     mark: (start: "straight", end: "straight", scale: 0.4),
   )
-  line("ptypes.east",  "rrules.west",   ..bidir(lib-acc))
-  // Vertical arrows between Example Database (top) and the two boxes below.
-  let p-exdb-ptypes = ("exdb.south-west", "|-", "ptypes.north")
-  line("exdb.south-west", p-exdb-ptypes, ..bidir(lib-acc))
-  let p-exdb-rrules = ("exdb.south-east", "|-", "rrules.north")
-  line("exdb.south-east", p-exdb-rrules, ..bidir(lib-acc))
+  // Triangle: bottom edge + two diagonals up to Example Database (apex).
+  line("ptypes.east",        "rrules.west",       ..bidir(lib-acc))
+  line("ptypes.north-east",  "exdb.south-west",   ..bidir(lib-acc))
+  line("rrules.north-west",  "exdb.south-east",   ..bidir(lib-acc))
 
 })
