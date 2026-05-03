@@ -98,10 +98,12 @@
     let hr = 0.75
     circle((hx, hy), radius: hr, fill: human-fill, stroke: human-stroke, name: kind + "-human")
     content((hx, hy), text(5.5pt, weight: "bold", fill: fg)[human])
-    // Sub-label to the right of the human circle
-    content((hx + hr + 0.15, hy),
-      text(4.8pt, fill: fg-light)[domain expert,\ user, reviewer],
-      anchor: "west")
+    // Sub-label to the right of the human circle (advisor only)
+    if accent-side {
+      content((hx + hr + 0.15, hy),
+        text(4.8pt, fill: fg-light)[domain expert,\ user, reviewer],
+        anchor: "west")
+    }
 
     // Connectors
     line(kind + "-skill.east", kind + "-agent.west",
