@@ -222,10 +222,10 @@
       align: (left + top, left + top),
       issue-pill([Open], rgb("#2da44e")),
       [
-        #text(8.2pt, weight: "bold", fill: fg,
+        #text(8.5pt, weight: "bold", fill: fg,
           [[Rule] K-Coloring #sym.arrow ILP])
         // #h(3pt)
-        // #text(8.2pt, fill: fg-light, [#024])
+        // #text(8.5pt, fill: fg-light, [#024])
       ],
     )
 
