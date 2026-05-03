@@ -75,9 +75,6 @@
       stroke: (paint: edge-col, thickness: 0.5pt),
     )
     content((sx - 0.1, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
-    // Mode tag below SKILL.md (the arrow itself signals the difference; tag just labels it)
-    let mode-tag = if accent-side { [(stays in loop)] } else { [(only triggers)] }
-    content((sx, y - sh - 0.45), text(5.5pt, fill: fg-light, mode-tag))
 
     // Agent circle (small, neutral — same actor in both rows)
     let ax = 7.0
