@@ -267,16 +267,14 @@
     frame: "rect", fill: white, stroke: none, padding: 0.04)
 
   // pred CLI ──uses──▶ Example Database
-  let p-cli-exdb = ("predcli.south", "|-", "exdb.north")
-  line("predcli.south", p-cli-exdb,
+  line("predcli.south", "exdb.north-west",
     stroke: inter-stroke, mark: inter-mark)
-  inter-label(("predcli.south", 50%, p-cli-exdb), [uses])
+  inter-label(("predcli.south", 50%, "exdb.north-west"), [uses])
 
   // Example Database ──exported to──▶ PDF Manual
-  let p-exdb-pdf = ("pdfmanual.south", "|-", "exdb.north")
-  line(p-exdb-pdf, "pdfmanual.south",
+  line("exdb.north-east", "pdfmanual.south",
     stroke: inter-stroke, mark: inter-mark)
-  inter-label((p-exdb-pdf, 50%, "pdfmanual.south"), [exported to])
+  inter-label(("exdb.north-east", 50%, "pdfmanual.south"), [exported to])
 
   // Problem Types ──registered in──▶ Solvers (vertical drop into wide box)
   let solvers-top = ("ptypes.south", "|-", "solvers.north")
