@@ -266,15 +266,17 @@
     text(7pt, fill: arrow-c, txt),
     frame: "rect", fill: white, stroke: none, padding: 0.04)
 
-  // pred CLI ──uses──▶ Reduction Rules
-  line("predcli.south", "rrules.north",
+  // pred CLI ──uses──▶ Example Database
+  let p-cli-exdb = ("predcli.south", "|-", "exdb.north")
+  line("predcli.south", p-cli-exdb,
     stroke: inter-stroke, mark: inter-mark)
-  inter-label((rel: (0, 0.45), to: "rrules.north"), [uses])
+  inter-label(("predcli.south", 50%, p-cli-exdb), [uses])
 
-  // Example Database ──generated from──▶ PDF Manual
-  line("exdb.north", "pdfmanual.south",
+  // Example Database ──exported to──▶ PDF Manual
+  let p-exdb-pdf = ("pdfmanual.south", "|-", "exdb.north")
+  line(p-exdb-pdf, "pdfmanual.south",
     stroke: inter-stroke, mark: inter-mark)
-  inter-label((rel: (0, -0.45), to: "pdfmanual.south"), [generated from])
+  inter-label((p-exdb-pdf, 50%, "pdfmanual.south"), [exported to])
 
   // Problem Types ──registered in──▶ Solvers (vertical drop into wide box)
   let solvers-top = ("ptypes.south", "|-", "solvers.north")
