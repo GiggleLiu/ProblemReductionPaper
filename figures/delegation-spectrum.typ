@@ -15,14 +15,14 @@
   let bw = 1.0
 
   let items = (
-    ("Harness engineering (skills, specs, tools)", 1.0),
-    ("Strategic planning (priorities, roadmap)", 1.0),
-    ("Merge authorization (security, final approval)", 1.0),
-    ("Canonical examples (ground truth instances)", 0.85),
-    ("Mathematical verification (correctness, proofs)", 0.8),
-    ("Code review (structure, correctness, feature tests)", 0.15),
-    ("Implementation (code, tests, documentation)", 0.05),
-    ("Convention enforcement (naming, layout, checks)", 0.0),
+    ("Harness engineering", 1.0),
+    ("Strategic planning", 1.0),
+    ("Merge authorization", 1.0),
+    ("Canonical examples", 0.85),
+    ("Mathematical verification", 0.8),
+    ("Code review", 0.15),
+    ("Implementation", 0.05),
+    ("Convention enforcement", 0.0),
   )
 
   let n = items.len()
