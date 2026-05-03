@@ -135,10 +135,10 @@
 #canvas(length: 1cm, {
   import draw: *
 
-  let W = 11.0
+  let W = 12.0
   let label-w = 2.4
   let pad = 0.15
-  let band-h = 1.85
+  let band-h = 2
   let gap-h = 0.3
   let col-gap = 0.2
 
@@ -226,7 +226,7 @@
     icon-share, [Problem Types],
     ([mathematical definition],
      [size measures],
-     [best-known complexity]),
+     [best-known complexity per variant]),
     "ptypes")
   mkbox(lib-x1, lib-bot-y, lib-col-w, lib-sub-h, lib-acc, lib-bd,
     icon-arrows, [Reduction Rules],
