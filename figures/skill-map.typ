@@ -93,7 +93,10 @@
       gear-pts.push((cx + r-outer * calc.cos(c + tooth-w / 2), y + r-outer * calc.sin(c + tooth-w / 2)))
       gear-pts.push((cx + r-inner * calc.cos(c + tooth-w / 2), y + r-inner * calc.sin(c + tooth-w / 2)))
     }
-    line(..gear-pts, close: true, fill: tools-fill, stroke: tools-stroke, name: kind + "-tools")
+    // Invisible circle for directional anchors (.east, .west)
+    circle((cx, y), radius: r-outer, fill: none, stroke: none, name: kind + "-tools")
+    // Visible gear shape on top
+    line(..gear-pts, close: true, fill: tools-fill, stroke: tools-stroke)
     content((cx, y), text(6pt, weight: "bold", fill: fg)[tools])
 
     // Human circle (above agent, present in both rows; arrow style differs)
