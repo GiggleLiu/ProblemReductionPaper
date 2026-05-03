@@ -72,8 +72,12 @@
       stroke: (paint: edge-col, thickness: 0.5pt),
     )
     content((sx - 0.1, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
-    // Mode tag below the SKILL.md box
-    let mode-tag = if accent-side { [(human-in-loop)] } else { [(autonomous)] }
+    // Mode tag below the SKILL.md box (describes what happens during execution)
+    let mode-tag = if accent-side {
+      [(human stays in loop)]
+    } else {
+      [(human only triggers)]
+    }
     content((sx, y - sh - 0.45), text(5.5pt, fill: fg-light, mode-tag))
     // For advisor, note that tools are still used (just not the defining feature)
     if accent-side {
