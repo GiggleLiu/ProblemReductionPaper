@@ -77,10 +77,23 @@
     circle((ax, y), radius: agent-r, fill: agent-fill, stroke: agent-stroke, name: kind + "-agent")
     content((ax, y), text(5.8pt, fill: fg)[agent])
 
-    // Tools circle (right of agent, same in both rows)
+    // Tools: gear shape (polygon with alternating inner / outer radius)
     let cx = 9.85
     let tools-r = 0.85
-    circle((cx, y), radius: tools-r, fill: tools-fill, stroke: tools-stroke, name: kind + "-tools")
+    let n-teeth = 8
+    let r-inner = tools-r
+    let r-outer = tools-r + 0.18
+    let tooth-w = 360deg / n-teeth * 0.5
+    let seg = 360deg / n-teeth
+    let gear-pts = ()
+    for i in range(n-teeth) {
+      let c = i * seg
+      gear-pts.push((cx + r-inner * calc.cos(c - tooth-w / 2), y + r-inner * calc.sin(c - tooth-w / 2)))
+      gear-pts.push((cx + r-outer * calc.cos(c - tooth-w / 2), y + r-outer * calc.sin(c - tooth-w / 2)))
+      gear-pts.push((cx + r-outer * calc.cos(c + tooth-w / 2), y + r-outer * calc.sin(c + tooth-w / 2)))
+      gear-pts.push((cx + r-inner * calc.cos(c + tooth-w / 2), y + r-inner * calc.sin(c + tooth-w / 2)))
+    }
+    line(..gear-pts, close: true, fill: tools-fill, stroke: tools-stroke, name: kind + "-tools")
     content((cx, y), text(6pt, weight: "bold", fill: fg)[tools])
 
     // Human circle (above agent, present in both rows; arrow style differs)
