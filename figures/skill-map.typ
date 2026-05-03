@@ -113,6 +113,12 @@
     // Human ⇄ agent (advisor) OR human → agent (automation)
     line(kind + "-human.south", kind + "-agent.north",
       stroke: human-arrow-stroke, mark: human-arrow-mark)
+    // Arrow label
+    let arrow-label = if accent-side { [stays in loop] } else { [only triggers] }
+    let arrow-label-color = if accent-side { accent.darken(15%) } else { fg-light }
+    content((hx + 0.25, (hy + y) / 2),
+      text(5.2pt, style: "italic", fill: arrow-label-color, arrow-label),
+      anchor: "west")
   }
 
   exec-row(10.0, "advisor", accent-side: true)
