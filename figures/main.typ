@@ -902,7 +902,7 @@
   circle((lx + 0.275, ly), radius: 0.11, fill: white,
     stroke: (thickness: 0.5pt, paint: col-p1.darken(5%)))
   content((lx + 0.7, ly), anchor: "west",
-    text(6pt, fill: fg, [\# problem types]))
+    text(6.5pt, fill: fg, [\# problem types]))
   // Reduction rules entry
   line((lx, ly - row-gap), (lx + 0.55, ly - row-gap),
     stroke: (thickness: 1.0pt, paint: col-red.darken(5%)))
