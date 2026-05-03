@@ -92,7 +92,7 @@
   let c2x = c1x + gap
   let c3x = c1x + 2 * gap
 
-  content((15.2, pa-header-y),
+  content((14.5, pa-header-y),
     text(8pt, weight: "bold", fill: fg)[(b)], anchor: "west")
 
   // Skill node
