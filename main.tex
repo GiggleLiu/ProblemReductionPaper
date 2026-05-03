@@ -559,7 +559,7 @@ Without it, agents leave 0.35--9.7\% on the table and produce 1--2 \emph{false-O
 Web access alone is worse than neutral: it sharpens the agent's confidence in a textbook ILP encoding whose CBC time-out is then misreported as \texttt{OPTIMAL}.
 With \texttt{pred}, the agent invariably reformulates Max-Cut as QUBO and solves it with simulated annealing, also winning on solver wall-time (42.8--71.1\,s vs.\ 81.8--85.3\,s).
 The catalog-aware route costs 30--40\% more AI tokens for downstream enumeration---a cost the better answers and honest optimality reporting easily justify.
-The library is therefore most useful where outcome quality depends more on the choice of formulation than on tuning within a fixed one.
+The library is therefore most useful where the obvious encoding is suboptimal but a stronger one exists via reduction.
 
 \begin{table}[h]
 \caption{Outcomes on the Max-Cut instance (4~seeds per configuration; 90~s solver-wall cap).
