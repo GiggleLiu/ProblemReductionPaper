@@ -178,7 +178,7 @@
   stroke: (thickness: 0.4pt, paint: col.lighten(40%)),
   radius: 8pt,
   inset: (x: 4pt, y: 1pt),
-  text(5.6pt, fill: col.darken(20%), label),
+  text(6pt, fill: col.darken(20%), label),
 )
 
 // GitHub issue card — mimics a real issue panel.
