@@ -854,6 +854,43 @@ Problem variants and reduction rules compose into the directed graph described i
 For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both reduction traits with an identity solution map.
 At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the reduction-graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 
+\section{Solver Coverage: QUBO}\label{app:qubo-coverage}
+
+Specialized hardware for combinatorial optimization is one of the fastest-growing frontiers of AI infrastructure.
+Ising machines, quantum annealers~\cite{glover2019}, and physics-inspired neural solvers~\cite{Schuetz2022PhysicsGNN} all promise substantial speedups over conventional CPU solvers, and the field has converged on a single input format: QUBO.
+The catch is that the speedup is only available \emph{after} the user has hand-translated their problem into QUBO, a step that has historically required a domain expert per problem and a fresh paper per reduction.
+This is exactly where the reduction graph pays off.
+
+Treating QUBO as one registered solver target, \texttt{pred to QUBO -{}-hops 3} reports 138~problem variants that route to it with witness recovery in the current library.
+\Cref{tab:qubo-coverage} samples ten and lists the composed overhead $r_{\text{QUBO} \leftarrow A}$, the polynomial mapping source size to QUBO variable count.
+All ten share one invocation, \texttt{pred reduce - -{}-to QUBO}, and only the input changes.
+By contrast, solver-specific compilers such as PyQUBO~\cite{Zaman2021PyQUBO} and qubovert~\cite{Iosue2022qubovert} accept QUBO input but provide no inter-problem reductions, leaving the translation step to the user.
+
+\begin{table}[t]
+\caption{Ten problems reaching QUBO within three hops, sampled from 138~reachable variants. A QUBO-capable solver inherits all of them via one command.}
+\label{tab:qubo-coverage}
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Problem & Hops & $r_{\text{QUBO} \leftarrow A}$ & Application \\
+\midrule
+GraphPartitioning           & 1 & $O(V)$              & VLSI partitioning \\
+3-Satisfiability            & 1 & $O(C + V)$          & Verification, planning \\
+Knapsack                    & 1 & $O(n + b)$          & Resource allocation \\
+TravelingSalesman           & 1 & $O(V^2)$            & Logistics, PCB drilling \\
+KColoring                   & 1 & $O(V^2)$            & Register allocation \\
+Partition                   & 2 & $O(n + b)$          & Load balancing \\
+MaximumClique               & 2 & $O(V^3)$            & Bioinformatics \\
+BinPacking                  & 2 & $O(n^3)$            & VM/container packing \\
+MultiprocessorScheduling    & 2 & $O(P T^2 + P^2 T)$  & Cloud scheduling \\
+MaximumIndependentSet       & 3 & $O(V^3)$            & Wireless scheduling \\
+\bottomrule
+\end{tabular}
+\\[2pt]
+{\footnotesize $V$: vertices; $C$: clauses; $n$: items; $b$: encoding/slack bits; $P, T$: processors, tasks.}
+\end{table}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
