@@ -49,7 +49,7 @@
     let sh = 0.45
     let fold = 0.22
     rect((sx - sw, y - sh), (sx + sw, y + sh),
-      radius: 3pt, fill: fill-light, stroke: stroke-edge, name: kind + "-skill")
+      radius: 3pt, fill: fill-light, stroke: (paint: edge-col, thickness: 0.8pt), name: kind + "-skill")
     line(
       (sx + sw - fold, y + sh),
       (sx + sw - fold, y + sh - fold),
