@@ -44,18 +44,8 @@
     // Bidirectional for advisor; one-way (down to agent) for automation
     let human-arrow-mark = if accent-side { big-mark-both } else { big-mark-end }
 
-    // Subtitle (centred over SKILL.md, lifted to clear the human node above agent)
-    let sub-title-x = 3.7
-    if accent-side {
-      content((sub-title-x, y + 3.2),
-        text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill])
-    } else {
-      content((sub-title-x, y + 3.2),
-        text(7.5pt, weight: "bold", fill: fg)[automation skill])
-    }
-
     // SKILL.md "document" box (rounded rect + folded corner)
-    let sx = 3.7
+    let sx = 5.0
     let sw = 1.4
     let sh = 0.45
     let fold = 0.22
