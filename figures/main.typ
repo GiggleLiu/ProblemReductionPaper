@@ -54,7 +54,7 @@
     if icon == none { icon-slot(w: 0.8cm, h: 0.7cm, label: [ ]) } else { icon },
     [
       #text(8.5pt, weight: "bold", fill: col.darken(10%), label) \
-      #text(6.5pt, fill: fg-light, sub)
+      #text(7pt, fill: fg-light, sub)
     ],
   )
 ]
