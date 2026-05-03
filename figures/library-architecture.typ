@@ -231,7 +231,7 @@
   let rrules-x = lib-x1 + (lib-col-w - lib-bot-w) / 2
 
   mkbox(ptypes-x, lib-bot-y, lib-bot-w, lib-sub-h, lib-acc, lib-bd,
-    icon-share, [Problem Types], (), "ptypes")
+    icon-types, [Problem Types], (), "ptypes")
   mkbox(rrules-x, lib-bot-y, lib-bot-w, lib-sub-h, lib-acc, lib-bd,
     icon-arrows, [Reduction Rules], (), "rrules")
   mkbox(exdb-x, lib-top-y, lib-bot-w, lib-sub-h, lib-acc, lib-bd,
