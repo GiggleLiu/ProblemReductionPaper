@@ -54,7 +54,7 @@
     if icon == none { icon-slot(w: 0.8cm, h: 0.7cm, label: [ ]) } else { icon },
     [
       #text(8.5pt, weight: "bold", fill: col.darken(10%), label) \
-      #text(6pt, fill: fg-light, sub)
+      #text(6.5pt, fill: fg-light, sub)
     ],
   )
 ]
@@ -444,7 +444,7 @@
     },
     [
       #text(10.5pt, weight: "bold", fill: fg, value) \
-      #text(6pt, fill: fg-light, label)
+      #text(6.5pt, fill: fg-light, label)
     ],
   )
 ]
@@ -768,7 +768,7 @@
       content(
         (cx, cy),
         anchor: "center",
-        text(6pt, weight: "bold", fill: white, label),
+        text(6.5pt, weight: "bold", fill: white, label),
       )
     }
 
@@ -882,11 +882,11 @@
   // arrows between phase names rather than tied to the (uneven) boundaries.
   // Positions are proportional to plot-w so the strip stays within the
   // plot bounds when the chart is resized.
-  content((plot-w * 0.250, -1.4), text(6pt, fill: col-p3.darken(15%), [*manual*]))
-  content((plot-w * 0.400, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
-  content((plot-w * 0.557, -1.4), text(6pt, fill: col-p3.darken(15%), [*basic skills*]))
-  content((plot-w * 0.700, -1.4), text(6pt, fill: col-p3.darken(15%), sym.arrow))
-  content((plot-w * 0.835, -1.4), text(6pt, fill: col-p3.darken(15%), [*full pipeline*]))
+  content((plot-w * 0.250, -1.4), text(6.5pt, fill: col-p3.darken(15%), [*manual*]))
+  content((plot-w * 0.400, -1.4), text(6.5pt, fill: col-p3.darken(15%), sym.arrow))
+  content((plot-w * 0.557, -1.4), text(6.5pt, fill: col-p3.darken(15%), [*basic skills*]))
+  content((plot-w * 0.700, -1.4), text(6.5pt, fill: col-p3.darken(15%), sym.arrow))
+  content((plot-w * 0.835, -1.4), text(6.5pt, fill: col-p3.darken(15%), [*full pipeline*]))
 
   // Title in upper-left, with a compact two-row legend underneath. The
   // curves are flat in the left third (week 0–8), so this region is empty.
