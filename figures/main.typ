@@ -757,7 +757,7 @@
     for n in data.nodes {
       if not is-hub(n.name) { continue }
       let col = hub-color(n.name)
-      let label = if n.name == "KSatisfiability" { [3-SAT] } else { [ILP] }
+      let label = if n.name == "KSatisfiability" { [3SAT] } else { [ILP] }
       let (cx, cy) = name-to-pos.at(n.name)
       circle(
         (cx, cy),
@@ -944,7 +944,7 @@
       rows: (auto,) * 6,
       gutter: 4pt,
       stat-tile([190], [problem types],          icon: icon-problem-types),
-      stat-tile([220], [concrete type of problems(variants)], icon: icon-variants),
+      stat-tile([220], [concrete type of problems (variants)], icon: icon-variants),
       stat-tile([265], [reduction rules],        icon: icon-reduction),
       stat-tile([129], [reducible to ILP],       icon: icon-ilp),
       stat-tile([78],  [reachable from\ 3-SAT],   icon: icon-reach),
