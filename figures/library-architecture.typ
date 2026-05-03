@@ -138,7 +138,7 @@
   let W = 12.0
   let label-w = 3.1
   let pad = 0.15
-  let band-h = 2
+  let band-h = 2.4
   let gap-h = 0.3
   let col-gap = 0.2
 
