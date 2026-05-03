@@ -206,21 +206,28 @@
      [worked examples]),
     "pdfmanual")
 
-  // Library row
-  let y2 = y2-bot + pad
-  mkbox(col-x.at(0), y2, col-w, bx-h, lib-acc, lib-bd,
+  // Library row: two sub-rows
+  //   top:    Example Database (full width)
+  //   bottom: Problem Types | Reduction Rules
+  let lib-bot-y = y2-bot + pad
+  let lib-top-y = lib-bot-y + lib-sub-h + lib-sub-gap
+  let lib-x0 = label-w + 0.1
+  let lib-x1 = lib-x0 + lib-col-w + col-gap
+  let exdb-w = 2 * lib-col-w + col-gap
+
+  mkbox(lib-x0, lib-bot-y, lib-col-w, lib-sub-h, lib-acc, lib-bd,
     icon-share, [Problem Types],
     ([mathematical definition],
      [size measures],
      [best-known complexity]),
     "ptypes")
-  mkbox(col-x.at(1), y2, col-w, bx-h, lib-acc, lib-bd,
+  mkbox(lib-x1, lib-bot-y, lib-col-w, lib-sub-h, lib-acc, lib-bd,
     icon-arrows, [Reduction Rules],
     ([source $arrow$ target instance],
      [recover source solution],
      [how size grows]),
     "rrules")
-  mkbox(col-x.at(2), y2, col-w, bx-h, lib-acc, lib-bd,
+  mkbox(lib-x0, lib-top-y, exdb-w, lib-sub-h, lib-acc, lib-bd,
     icon-db, [Example Database],
     ([one instance per problem],
      [with a known solution],
