@@ -94,10 +94,10 @@
 
     // Human circle (above agent, present in both rows; arrow style differs)
     let hx = ax
-    let hy = y + 1.55
-    let hr = 0.55
+    let hy = y + 2.0
+    let hr = 0.65
     circle((hx, hy), radius: hr, fill: human-fill, stroke: human-stroke, name: kind + "-human")
-    content((hx, hy), text(5.5pt, weight: "bold", fill: fg)[human])
+    content((hx, hy), text(5.8pt, weight: "bold", fill: fg)[human])
     // Sub-label to the right of the human circle
     content((hx + hr + 0.15, hy),
       text(4.8pt, fill: fg-light)[domain expert,\ user, reviewer],
