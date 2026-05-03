@@ -77,7 +77,7 @@
     content((sx, y - sh - 0.45), text(5.5pt, fill: fg-light, mode-tag))
     // For advisor, note that tools are still used (just not the defining feature)
     if accent-side {
-      content((sx, y - sh - 1.05), text(4.8pt, fill: fg-light)[+ tools])
+      content((sx, y - sh - 1.05), text(4.8pt, fill: fg-light)[(also uses tools)])
     }
 
     // Agent circle (same actor in both rows — small, neutral)
