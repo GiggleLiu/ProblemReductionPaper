@@ -241,7 +241,7 @@
   let y3 = y3-bot + pad
   let inf-w = int-w
   mkbox(label-w + 0.1, y3, inf-w, bx-h, inf-acc, inf-bd,
-    icon-cpu, [Solvers],
+    icon-gear, [Solvers],
     ([for round-trip testing],
      [ILP or brute-force]),
     "solvers")
