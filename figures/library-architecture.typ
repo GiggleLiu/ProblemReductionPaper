@@ -176,7 +176,7 @@
   layer-label(y2-top, lib-acc, [2], [Library Layer],
     [Registered problem types and the reductions between them.])
   layer-label(y3-top, inf-acc, [3], [Infrastructure Layer],
-    [Generic backends that serve every problem and rule.])
+    [Backends that solve any problem and find cheapest reduction paths.])
 
   // Box helper. If `items` is empty, render only the header centered vertically.
   let mkbox(x, y-bot, w, h, accent, border, icon, title, items, name) = {
