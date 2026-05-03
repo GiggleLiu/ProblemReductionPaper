@@ -130,7 +130,7 @@
 #canvas(length: 1cm, {
   import draw: *
 
-  let W = 12.0
+  let W = 12.7
   let label-w = 3.8
   let pad = 0.15
   let band-h = 2
