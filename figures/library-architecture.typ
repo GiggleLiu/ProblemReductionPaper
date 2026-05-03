@@ -96,25 +96,18 @@
     line((cx + rx, 11.5), (cx + rx, 2.5), stroke: 0.9pt + c)
   }))
 
-// 6. Gear (Solvers): cog wheel — 8 teeth around a filled disc with a center hole.
+// 6. Magnifier (Solvers): magnifying glass — searches for the answer.
 #let icon-gear = box(width: 14pt, height: 14pt, baseline: 2pt,
   canvas(length: 1pt, {
     import draw: *
     let c = inf-acc
-    let cx = 7.0
-    let cy = 7.0
-    let r-in = 4.5
-    let r-out = 6.4
-    for i in range(8) {
-      let theta = i * 45deg
-      let x1 = cx + r-in * calc.cos(theta)
-      let y1 = cy + r-in * calc.sin(theta)
-      let x2 = cx + r-out * calc.cos(theta)
-      let y2 = cy + r-out * calc.sin(theta)
-      line((x1, y1), (x2, y2), stroke: 2pt + c)
-    }
-    circle((cx, cy), radius: 4.7, stroke: 1pt + c, fill: c.lighten(55%))
-    circle((cx, cy), radius: 1.6, stroke: 0.8pt + c, fill: white)
+    // Lens
+    circle((5.6, 8.4), radius: 3.7, stroke: 1.4pt + c, fill: c.lighten(75%))
+    // Lens highlight (small inner arc)
+    arc((3.7, 9.0), start: 200deg, stop: 260deg, radius: 2.6,
+      stroke: 0.7pt + white)
+    // Handle (thick stroke from lens edge to bottom-right corner)
+    line((8.3, 5.7), (12.5, 1.5), stroke: 2.2pt + c)
   }))
 
 // 7. Math expression (Symbolic Engine): bold italic f(x).
