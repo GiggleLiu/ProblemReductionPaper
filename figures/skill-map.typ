@@ -61,8 +61,19 @@
     )
     content((sx - 0.1, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
 
+    // Row title to the LEFT of SKILL.md
+    if accent-side {
+      content((sx - sw - 0.3, y),
+        text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor\ skill],
+        anchor: "east")
+    } else {
+      content((sx - sw - 0.3, y),
+        text(7.5pt, weight: "bold", fill: fg)[automation\ skill],
+        anchor: "east")
+    }
+
     // Agent circle (small, neutral — same actor in both rows)
-    let ax = 7.0
+    let ax = 8.0
     let agent-r = 0.65
     circle((ax, y), radius: agent-r, fill: agent-fill, stroke: agent-stroke, name: kind + "-agent")
     content((ax, y), text(5.8pt, fill: fg)[agent])
