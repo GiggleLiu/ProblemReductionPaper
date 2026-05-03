@@ -36,7 +36,7 @@
     icon
   }
   #v(-5pt)
-  #text(7pt, weight: "regular", fill: fg, label)
+  #text(7.5pt, weight: "regular", fill: fg, label)
 ]
 
 // Solver-format box (icon on the left, two-line label on the right).
