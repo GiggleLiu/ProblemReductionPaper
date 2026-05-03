@@ -460,15 +460,15 @@ The issue's canonical example, a small, fully worked instance with known solutio
 This example is used to generate the JSON fixtures, the PDF manual's visual diagram, and the CLI's \texttt{pred create -{}-example} command.
 The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this.
 
-% \begin{figure}[t]
-%   \centering
-%   \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline.pdf}
-%   \caption{Canonical examples as a single source of truth.
-%     The contributor's issue contributes worked instances with known solutions, which are extracted into the example database as builder functions.
-%     Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from the same builders, so any drift from the issue surfaces as a visible mismatch.
-%     The Stage 6 verification step closes the loop: the contributor walks through the manual and CLI output and checks them against the original issue.}
-%   \label{fig:example-pipeline}
-% \end{figure}
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline.pdf}
+  \caption{Canonical examples as a single source of truth.
+    The contributor's issue contributes worked instances with known solutions, which are extracted into the example database as builder functions.
+    Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from the same builders, so any drift from the issue surfaces as a visible mismatch.
+    The Stage 6 verification step closes the loop: the contributor walks through the manual and CLI output and checks them against the original issue.}
+  \label{fig:example-pipeline}
+\end{figure}
 
 \textbf{Agentic feature tests.}
 Libraries normally stabilize through community use, but a niche library cannot wait for that community to form.
