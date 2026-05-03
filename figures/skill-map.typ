@@ -15,14 +15,11 @@
     text(8pt, weight: "bold", fill: fg)[(a)], anchor: "west")
 
   // ── Helper: one row of the execution model ──
+  // Both rows: human (above agent) + agent ⇄ tools (right) + outcome
+  // Advisor:    human ⇄ agent (bidirectional)  — stays in loop
+  // Automation: human → agent (one-way down)   — only triggers
   let exec-row(y, kind, accent-side: false) = {
-    let cp-name = if kind == "advisor" { "human" } else { "tools" }
-    let cp-sub = if kind == "advisor" {
-      [domain expert,\ user, reviewer]
-    } else {
-      [CLI, tests, web,\ compiler]
-    }
-    let outcome = if kind == "advisor" {
+    let outcome = if accent-side {
       [guided decision,\ refined intent]
     } else {
       [code, PR,\ review verdict]
@@ -30,29 +27,35 @@
     // Agent: same neutral style in both rows
     let agent-fill = luma(245)
     let agent-stroke = (paint: edge-col, thickness: 0.55pt)
-    // Counterpart: emphasised (this is what differs between rows)
-    let cp-fill = if accent-side { fill-accent } else { luma(240) }
-    let cp-stroke = if accent-side {
+    // Tools: same in both rows (agent ⇄ tools loop is identical)
+    let tools-fill = luma(240)
+    let tools-stroke = (paint: luma(60), thickness: 1.2pt)
+    let tools-loop-stroke = (paint: luma(70), thickness: 1.0pt)
+    // Human: emphasised in advisor (the defining loop), muted in automation (just trigger)
+    let human-fill = if accent-side { fill-accent } else { white }
+    let human-stroke = if accent-side {
       (paint: accent, thickness: 1.3pt)
     } else {
-      (paint: luma(60), thickness: 1.2pt)
+      (paint: edge-col, thickness: 0.7pt)
     }
-    let loop-stroke = if accent-side {
-      (paint: accent, thickness: 1.0pt)
+    let human-arrow-stroke = if accent-side {
+      (paint: accent, thickness: 1.1pt)
     } else {
-      (paint: luma(70), thickness: 1.0pt)
+      (paint: luma(80), thickness: 0.8pt)
     }
     let flow-stroke = (paint: edge-col, thickness: 0.8pt)
     let big-mark-end  = (end: "straight", scale: 0.55)
     let big-mark-both = (start: "straight", end: "straight", scale: 0.55)
+    // Bidirectional for advisor; one-way (down to agent) for automation
+    let human-arrow-mark = if accent-side { big-mark-both } else { big-mark-end }
 
-    // Subtitle centered above the SKILL.md box
+    // Subtitle (centred over SKILL.md, lifted to clear the human node above agent)
     let sub-title-x = 3.7
     if accent-side {
-      content((sub-title-x, y + 1.05),
+      content((sub-title-x, y + 2.55),
         text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill])
     } else {
-      content((sub-title-x, y + 1.05),
+      content((sub-title-x, y + 2.55),
         text(7.5pt, weight: "bold", fill: fg)[automation skill])
     }
 
@@ -72,43 +75,49 @@
       stroke: (paint: edge-col, thickness: 0.5pt),
     )
     content((sx - 0.1, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
-    // Mode tag below the SKILL.md box (describes what happens during execution)
-    let mode-tag = if accent-side {
-      [(human stays in loop)]
-    } else {
-      [(human only triggers)]
-    }
+    // Mode tag below SKILL.md (the arrow itself signals the difference; tag just labels it)
+    let mode-tag = if accent-side { [(stays in loop)] } else { [(only triggers)] }
     content((sx, y - sh - 0.45), text(5.5pt, fill: fg-light, mode-tag))
-    // For advisor, note that tools are still used (just not the defining feature)
-    if accent-side {
-      content((sx, y - sh - 1.05), text(4.8pt, fill: fg-light)[(also uses tools)])
-    }
 
-    // Agent circle (same actor in both rows — small, neutral)
+    // Agent circle (small, neutral — same actor in both rows)
     let ax = 7.0
     let agent-r = 0.65
     circle((ax, y), radius: agent-r, fill: agent-fill, stroke: agent-stroke, name: kind + "-agent")
     content((ax, y), text(5.8pt, fill: fg)[agent])
 
-    // Counterpart circle (the differentiator — large, emphasised)
+    // Tools circle (right of agent, same in both rows)
     let cx = 9.85
-    let cp-r = 0.85
-    circle((cx, y), radius: cp-r, fill: cp-fill, stroke: cp-stroke, name: kind + "-cp")
-    content((cx, y), text(6pt, weight: "bold", fill: fg)[#cp-name])
-    content((cx, y - 1.5), text(4.8pt, fill: fg-light)[#cp-sub])
+    let tools-r = 0.85
+    circle((cx, y), radius: tools-r, fill: tools-fill, stroke: tools-stroke, name: kind + "-tools")
+    content((cx, y), text(6pt, weight: "bold", fill: fg)[tools])
+    content((cx, y - 1.5), text(4.8pt, fill: fg-light)[CLI, tests, web,\ compiler])
 
-    // Connectors: skill → agent ⇄ counterpart → outcome
+    // Human circle (above agent, present in both rows; arrow style differs)
+    let hx = ax
+    let hy = y + 1.55
+    let hr = 0.55
+    circle((hx, hy), radius: hr, fill: human-fill, stroke: human-stroke, name: kind + "-human")
+    content((hx, hy), text(5.5pt, weight: "bold", fill: fg)[human])
+    // Sub-label to the right of the human circle
+    content((hx + hr + 0.15, hy),
+      text(4.8pt, fill: fg-light)[domain expert,\ user, reviewer],
+      anchor: "west")
+
+    // Connectors
     line(kind + "-skill.east", kind + "-agent.west",
       stroke: flow-stroke, mark: big-mark-end)
-    line(kind + "-agent.east", kind + "-cp.west",
-      stroke: loop-stroke, mark: big-mark-both)
-    line(kind + "-cp.east", (cx + 1.7, y),
+    line(kind + "-agent.east", kind + "-tools.west",
+      stroke: tools-loop-stroke, mark: big-mark-both)
+    line(kind + "-tools.east", (cx + 1.7, y),
       stroke: flow-stroke, mark: big-mark-end)
     content((cx + 1.85, y), text(5.5pt, fill: fg)[#outcome], anchor: "west")
+    // Human ⇄ agent (advisor) OR human → agent (automation)
+    line(kind + "-human.south", kind + "-agent.north",
+      stroke: human-arrow-stroke, mark: human-arrow-mark)
   }
 
-  exec-row(9.9, "advisor", accent-side: true)
-  exec-row(6.0, "automation")
+  exec-row(10.0, "advisor", accent-side: true)
+  exec-row(5.0, "automation")
 
   // ============================================================
   // Panel (b) — Skills indexed by invoker (right, x ≈ 15..30)
