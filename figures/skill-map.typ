@@ -101,9 +101,6 @@
       stroke: flow-stroke, mark: big-mark-end)
     line(kind + "-agent.east", kind + "-tools.west",
       stroke: tools-loop-stroke, mark: big-mark-both)
-    line(kind + "-tools.east", (cx + 1.7, y),
-      stroke: flow-stroke, mark: big-mark-end)
-    content((cx + 1.85, y), text(5.5pt, fill: fg)[#outcome], anchor: "west")
     // Human ⇄ agent (advisor) OR human → agent (automation)
     line(kind + "-human.south", kind + "-agent.north",
       stroke: human-arrow-stroke, mark: human-arrow-mark)
