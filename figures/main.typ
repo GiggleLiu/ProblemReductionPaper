@@ -444,7 +444,7 @@
     },
     [
       #text(10.5pt, weight: "bold", fill: fg, value) \
-      #text(6.5pt, fill: fg-light, label)
+      #text(7pt, fill: fg-light, label)
     ],
   )
 ]
