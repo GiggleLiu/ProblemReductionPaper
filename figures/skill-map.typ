@@ -171,7 +171,7 @@
     } else {
       (thickness: 0.45pt, paint: border)
     }
-    rect((x - 1.7, y - 0.34), (x + 1.7, y + 0.34),
+    rect((x - 1.8, y - 0.34), (x + 1.8, y + 0.34),
       radius: 3pt, fill: bg, stroke: sk, name: name-id)
     content(name-id, text(6pt, fill: fg, raw(label)))
   }
