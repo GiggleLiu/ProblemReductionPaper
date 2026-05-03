@@ -53,7 +53,7 @@
     align: (center + horizon, left + horizon),
     if icon == none { icon-slot(w: 0.8cm, h: 0.7cm, label: [ ]) } else { icon },
     [
-      #text(8pt, weight: "bold", fill: col.darken(10%), label) \
+      #text(8.5pt, weight: "bold", fill: col.darken(10%), label) \
       #text(6pt, fill: fg-light, sub)
     ],
   )
@@ -61,7 +61,7 @@
 
 // Section header inside a panel: thin divider + centered caption.
 #let panel-section(label, col) = align(center)[
-  #text(8pt, weight: "bold", fill: col.darken(10%), label)
+  #text(8.5pt, weight: "bold", fill: col.darken(10%), label)
 ]
 
 // Vertical flow connector — longer shaft, smaller head than the text glyph.
@@ -158,7 +158,7 @@
     align: (center + horizon, left + horizon),
     if icon == none { icon-slot(w: 0.7cm, h: 0.7cm, label: [bot]) } else { icon },
     [
-      #text(8pt, weight: "bold", fill: col.darken(10%), title) \
+      #text(8.5pt, weight: "bold", fill: col.darken(10%), title) \
       #text(6.3pt, fill: fg-light, body)
     ],
   )
