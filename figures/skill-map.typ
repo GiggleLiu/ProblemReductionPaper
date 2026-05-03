@@ -86,7 +86,7 @@
     // Human circle (above agent, present in both rows; arrow style differs)
     let hx = ax
     let hy = y + 2.2
-    let hr = 0.75
+    let hr = 0.8
     circle((hx, hy), radius: hr, fill: human-fill, stroke: human-stroke, name: kind + "-human")
     let cp-label = if accent-side { [human] } else { [invoker] }
     content((hx, hy), text(5pt, weight: "bold", fill: fg, cp-label))
