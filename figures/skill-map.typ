@@ -61,31 +61,44 @@
         anchor: "west")
     }
 
-    // SKILL.md box
+    // SKILL.md "document" box (rounded rect + folded corner)
     let sx = 3.7
-    rect((sx - 1.4, y - 0.45), (sx + 1.4, y + 0.45),
+    let sw = 1.4
+    let sh = 0.45
+    let fold = 0.22
+    rect((sx - sw, y - sh), (sx + sw, y + sh),
       radius: 3pt, fill: fill-light, stroke: stroke-edge, name: kind + "-skill")
-    content((sx, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
+    line(
+      (sx + sw - fold, y + sh),
+      (sx + sw - fold, y + sh - fold),
+      (sx + sw, y + sh - fold),
+      close: true,
+      fill: white,
+      stroke: (paint: edge-col, thickness: 0.5pt),
+    )
+    content((sx - 0.1, y), text(6.5pt, weight: "bold", fill: fg, raw("SKILL.md")))
 
-    // Agent circle
+    // Agent circle (the actor — emphasised)
     let ax = 7.0
-    circle((ax, y), radius: 0.7, fill: agent-fill, stroke: node-stroke, name: kind + "-agent")
-    content((ax, y), text(6pt, weight: "bold", fill: fg)[agent])
+    let agent-r = 0.85
+    circle((ax, y), radius: agent-r, fill: agent-fill, stroke: agent-stroke, name: kind + "-agent")
+    content((ax, y), text(6.5pt, weight: "bold", fill: fg)[agent])
 
-    // Counterpart circle
+    // Counterpart circle (collaborator/resource — de-emphasised)
     let cx = 9.7
-    circle((cx, y), radius: 0.7, fill: white, stroke: node-stroke, name: kind + "-cp")
-    content((cx, y), text(6pt, weight: "bold", fill: fg)[#cp-name])
+    let cp-r = 0.65
+    circle((cx, y), radius: cp-r, fill: white, stroke: cp-stroke, name: kind + "-cp")
+    content((cx, y), text(5.8pt, fill: fg)[#cp-name])
     // Sub-label below counterpart
     content((cx, y - 1.05), text(4.8pt, fill: fg-light)[#cp-sub])
 
     // Connectors
     line(kind + "-skill.east", kind + "-agent.west",
-      stroke: stroke-edge, mark: arrow-end)
+      stroke: flow-stroke, mark: big-mark-end)
     line(kind + "-agent.east", kind + "-cp.west",
-      stroke: stroke-edge, mark: arrow-both)
+      stroke: loop-stroke, mark: big-mark-both)
     line(kind + "-cp.east", (cx + 1.7, y),
-      stroke: stroke-edge, mark: arrow-end)
+      stroke: flow-stroke, mark: big-mark-end)
     content((cx + 1.85, y), text(5.5pt, fill: fg)[#outcome], anchor: "west")
   }
 
