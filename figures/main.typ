@@ -36,7 +36,7 @@
     icon
   }
   #v(-5pt)
-  #text(6.5pt, weight: "regular", fill: fg, label)
+  #text(7pt, weight: "regular", fill: fg, label)
 ]
 
 // Solver-format box (icon on the left, two-line label on the right).
@@ -120,7 +120,7 @@
   #v(6pt)
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
   // #v(3pt)
-  #align(center, text(6.5pt, fill: fg-light,
+  #align(center, text(7pt, fill: fg-light,
     [Each backend takes its own format;\ problems must be encoded to fit.]))
   // #v(3pt)
   #line(length: 100%, stroke: (thickness: 0.4pt, paint: luma(200), dash: "dashed"))
@@ -203,7 +203,7 @@
       gutter: 4pt,
       align: horizon,
       image("icons/github.svg", width: 0.42cm),
-      text(6.5pt, fill: fg-light)[
+      text(7pt, fill: fg-light)[
         problem-reductions
       ],
       text(6.2pt, fill: fg-light, [#sym.dot.c #sym.dot.c #sym.dot.c]),
