@@ -143,7 +143,7 @@
   let col-gap = 0.2
 
   // Library has two sub-rows (Example DB on top, Problem Types + Reduction Rules below)
-  let lib-sub-h = 1.7
+  let lib-sub-h = 0.7
   let lib-sub-gap = 0.25
   let lib-band-h = 2 * lib-sub-h + lib-sub-gap + 2 * pad
 
