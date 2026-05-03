@@ -99,13 +99,15 @@
     line(..gear-pts, close: true, fill: tools-fill, stroke: tools-stroke)
     content((cx, y), text(6pt, fill: fg)[tools])
 
-    // Human circle (above agent, present in both rows; arrow style differs)
+    // Human rect (above agent, present in both rows; arrow style differs)
     let hx = ax
     let hy = y + 2.2
-    let hr = 0.8
-    circle((hx, hy), radius: hr, fill: human-fill, stroke: human-stroke, name: kind + "-human")
+    let hw = 0.85  // half-width
+    let hh = 0.45  // half-height
+    rect((hx - hw, hy - hh), (hx + hw, hy + hh),
+      radius: 2pt, fill: human-fill, stroke: human-stroke, name: kind + "-human")
     let cp-label = if accent-side { [human] } else { [invoker] }
-    content((hx, hy), text(5.5pt, weight: "bold", fill: fg, cp-label))
+    content((hx, hy), text(6pt, weight: "bold", fill: fg, cp-label))
     // Sub-label to the right of the human circle
     let cp-sub-text = if accent-side {
       [domain expert,\ user, reviewer]
