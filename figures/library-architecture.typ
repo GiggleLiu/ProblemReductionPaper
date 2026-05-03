@@ -258,9 +258,10 @@
     stroke: (paint: c, thickness: 1pt),
     mark: (start: "straight", end: "straight", scale: 0.4),
   )
-  // Triangle: bottom edge + two diagonals corner-to-corner (short slants).
+  // Triangle outline: bottom edge + two outer slants from Example Database
+  // down to the outer corners of the boxes below.
   line("ptypes.east",       "rrules.west",        ..bidir(lib-acc))
-  line("exdb.south-west",   "ptypes.north-east",  ..bidir(lib-acc))
-  line("exdb.south-east",   "rrules.north-west",  ..bidir(lib-acc))
+  line("exdb.south-west",   "ptypes.north-west",  ..bidir(lib-acc))
+  line("exdb.south-east",   "rrules.north-east",  ..bidir(lib-acc))
 
 })
