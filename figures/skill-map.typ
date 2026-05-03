@@ -11,7 +11,7 @@
   // ============================================================
 
   let pa-header-y = 11.2
-  content((0.0, pa-header-y),
+  content((1.4, pa-header-y),
     text(8pt, weight: "bold", fill: fg)[(a)], anchor: "west")
 
   // ── Helper: one row of the execution model ──
