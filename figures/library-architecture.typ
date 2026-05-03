@@ -213,7 +213,8 @@
   let lib-top-y = lib-bot-y + lib-sub-h + lib-sub-gap
   let lib-x0 = label-w + 0.1
   let lib-x1 = lib-x0 + lib-col-w + col-gap
-  let exdb-w = 2 * lib-col-w + col-gap
+  let exdb-w = lib-col-w
+  let exdb-x = lib-x0 + (2 * lib-col-w + col-gap - exdb-w) / 2
 
   mkbox(lib-x0, lib-bot-y, lib-col-w, lib-sub-h, lib-acc, lib-bd,
     icon-share, [Problem Types],
