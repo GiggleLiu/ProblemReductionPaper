@@ -93,7 +93,7 @@
     align: (center + horizon, left + horizon),
     box(width: 0.8cm, height: 0.8cm,
       align(center + horizon, text(13pt, weight: "bold", fill: col-p1, [(a)]))),
-    text(11pt, weight: "bold", fill: col-p1.darken(10%),
+    text(11.5pt, weight: "bold", fill: col-p1.darken(10%),
       [Many hard problems,\ many solvers]),
   )
 
@@ -370,7 +370,7 @@
     align: (center + horizon, left + horizon),
     box(width: 0.8cm, height: 0.8cm,
       align(center + horizon, text(13pt, weight: "bold", fill: col-p2, [(b)]))),
-    text(11pt, weight: "bold", fill: col-p2.darken(10%),
+    text(11.5pt, weight: "bold", fill: col-p2.darken(10%),
       [Harness-engineered\ agentic workflow]),
   )
 
@@ -927,7 +927,7 @@
     align: (center + horizon, left + horizon),
     box(width: 0.8cm, height: 0.8cm,
       align(center + horizon, text(13pt, weight: "bold", fill: col-p3, [(c)]))),
-    text(11pt, weight: "bold", fill: col-p3.darken(10%),
+    text(11.5pt, weight: "bold", fill: col-p3.darken(10%),
       [A reduction graph built at scale]),
   )
 
