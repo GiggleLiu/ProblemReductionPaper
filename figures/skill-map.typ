@@ -15,45 +15,36 @@
     text(8pt, weight: "bold", fill: fg)[(a)], anchor: "west")
 
   // ── Helper: one row of the execution model ──
+  // Both rows share the same baseline:  SKILL.md → agent ⇄ tools → outcome
+  // Advisor adds a human node above the agent, with a vertical loop.
   let exec-row(y, kind, accent-side: false) = {
-    let cp-name = if kind == "advisor" { "human" } else { "tools" }
-    let cp-sub = if kind == "advisor" {
-      [domain expert,\ user, reviewer]
-    } else {
-      [CLI, tests, web,\ compiler]
-    }
-    let outcome = if kind == "advisor" {
+    let outcome = if accent-side {
       [guided decision,\ refined intent]
     } else {
       [code, PR,\ review verdict]
     }
-    // Agent: same neutral style in both rows — same actor, smaller, lighter
+    // Agent + tools: same neutral style in both rows
+    let neutral-fill = luma(240)
+    let neutral-stroke = (paint: luma(60), thickness: 1.2pt)
     let agent-fill = luma(245)
     let agent-stroke = (paint: edge-col, thickness: 0.55pt)
-    // Counterpart: emphasised — this is what differs between rows
-    let cp-fill = if accent-side { fill-accent } else { luma(240) }
-    let cp-stroke = if accent-side {
-      (paint: accent, thickness: 1.3pt)
-    } else {
-      (paint: luma(60), thickness: 1.2pt)
-    }
-    // Loop arrow uses heavier stroke + colour to emphasise interaction
-    let loop-stroke = if accent-side {
-      (paint: accent, thickness: 1.0pt)
-    } else {
-      (paint: luma(70), thickness: 1.0pt)
-    }
+    let tools-loop-stroke = (paint: luma(70), thickness: 1.0pt)
+    // Human (advisor only): accent-emphasised
+    let human-fill = fill-accent
+    let human-stroke = (paint: accent, thickness: 1.3pt)
+    let human-loop-stroke = (paint: accent, thickness: 1.0pt)
     let flow-stroke = (paint: edge-col, thickness: 0.8pt)
     let big-mark-end  = (end: "straight", scale: 0.55)
     let big-mark-both = (start: "straight", end: "straight", scale: 0.55)
 
-    // Row sub-title above (centered over the SKILL.md box)
-    let sub-title-x = 3.7  // matches sx below
+    // Subtitle is higher for advisor (to leave room for the human node above agent)
+    let sub-y = if accent-side { y + 2.55 } else { y + 1.05 }
+    let sub-title-x = 3.7
     if accent-side {
-      content((sub-title-x, y + 1.05),
+      content((sub-title-x, sub-y),
         text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill])
     } else {
-      content((sub-title-x, y + 1.05),
+      content((sub-title-x, sub-y),
         text(7.5pt, weight: "bold", fill: fg)[automation skill])
     }
 
@@ -83,26 +74,41 @@
     circle((ax, y), radius: agent-r, fill: agent-fill, stroke: agent-stroke, name: kind + "-agent")
     content((ax, y), text(5.8pt, fill: fg)[agent])
 
-    // Counterpart circle (the differentiator — large, emphasised)
+    // Tools circle (same in both rows)
     let cx = 9.85
     let cp-r = 0.85
-    circle((cx, y), radius: cp-r, fill: cp-fill, stroke: cp-stroke, name: kind + "-cp")
-    content((cx, y), text(6pt, weight: "bold", fill: fg)[#cp-name])
-    // Sub-label below counterpart
-    content((cx, y - 1.5), text(4.8pt, fill: fg-light)[#cp-sub])
+    circle((cx, y), radius: cp-r, fill: neutral-fill, stroke: neutral-stroke, name: kind + "-tools")
+    content((cx, y), text(6pt, weight: "bold", fill: fg)[tools])
+    content((cx, y - 1.5), text(4.8pt, fill: fg-light)[CLI, tests, web,\ compiler])
 
-    // Connectors
+    // Connectors: skill → agent ⇄ tools → outcome
     line(kind + "-skill.east", kind + "-agent.west",
       stroke: flow-stroke, mark: big-mark-end)
-    line(kind + "-agent.east", kind + "-cp.west",
-      stroke: loop-stroke, mark: big-mark-both)
-    line(kind + "-cp.east", (cx + 1.7, y),
+    line(kind + "-agent.east", kind + "-tools.west",
+      stroke: tools-loop-stroke, mark: big-mark-both)
+    line(kind + "-tools.east", (cx + 1.7, y),
       stroke: flow-stroke, mark: big-mark-end)
     content((cx + 1.85, y), text(5.5pt, fill: fg)[#outcome], anchor: "west")
+
+    // ── Advisor only: human node above agent, vertical loop ──
+    if accent-side {
+      let hx = ax
+      let hy = y + 1.5
+      let hr = 0.55
+      circle((hx, hy), radius: hr, fill: human-fill, stroke: human-stroke, name: kind + "-human")
+      content((hx, hy), text(5.5pt, weight: "bold", fill: fg)[human])
+      // Sub-label to the right of the human circle
+      content((hx + hr + 0.15, hy),
+        text(4.8pt, fill: fg-light)[domain expert,\ user, reviewer],
+        anchor: "west")
+      // Vertical loop arrow human ⇄ agent
+      line(kind + "-human.south", kind + "-agent.north",
+        stroke: human-loop-stroke, mark: big-mark-both)
+    }
   }
 
-  exec-row(9.9, "advisor", accent-side: true)
-  exec-row(6, "automation")
+  exec-row(10.0, "advisor", accent-side: true)
+  exec-row(5.5, "automation")
 
   // ============================================================
   // Panel (b) — Skills indexed by invoker (right, x ≈ 15..30)
