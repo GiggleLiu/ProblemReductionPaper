@@ -134,13 +134,14 @@
   let label-w = 3.8
   let pad = 0.15
   let band-h = 2
+  let inf-band-h = 1.6
   let gap-h = 0.3
   let col-gap = 0.2
 
   // Library has two sub-rows (Example DB on top, Problem Types + Reduction Rules below)
   let lib-sub-h = 0.7
   let lib-sub-gap = 0.25
-  let lib-bot-h = 0.55
+  let lib-bot-h = 0.7
   let lib-band-h = lib-sub-h + lib-bot-h + lib-sub-gap + 2 * pad
 
   let lib-col-w = (W - label-w - 0.1 - 0.1 - col-gap) / 2
