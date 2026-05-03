@@ -443,7 +443,7 @@
       box(width: 0.7cm, height: 0.6cm, align(center + horizon, icon))
     },
     [
-      #text(10pt, weight: "bold", fill: fg, value) \
+      #text(10.5pt, weight: "bold", fill: fg, value) \
       #text(6pt, fill: fg-light, label)
     ],
   )
