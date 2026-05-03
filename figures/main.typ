@@ -768,7 +768,7 @@
       content(
         (cx, cy),
         anchor: "center",
-        text(6.5pt, weight: "bold", fill: white, label),
+        text(7pt, weight: "bold", fill: white, label),
       )
     }
 
