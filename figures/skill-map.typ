@@ -47,15 +47,14 @@
     let big-mark-end  = (end: "straight", scale: 0.55)
     let big-mark-both = (start: "straight", end: "straight", scale: 0.55)
 
-    // Row sub-title above
+    // Row sub-title above (centered over the SKILL.md box)
+    let sub-title-x = 3.7  // matches sx below
     if accent-side {
-      content((1.6, y + 1.05),
-        text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill],
-        anchor: "west")
+      content((sub-title-x, y + 1.05),
+        text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill])
     } else {
-      content((1.6, y + 1.05),
-        text(7.5pt, weight: "bold", fill: fg)[automation skill],
-        anchor: "west")
+      content((sub-title-x, y + 1.05),
+        text(7.5pt, weight: "bold", fill: fg)[automation skill])
     }
 
     // SKILL.md "document" box (rounded rect + folded corner)
