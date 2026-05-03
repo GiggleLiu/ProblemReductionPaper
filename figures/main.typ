@@ -24,7 +24,7 @@
   stroke: (thickness: 0.4pt, paint: luma(180), dash: "dashed"),
   radius: 3pt,
   inset: 2pt,
-  align(center + horizon, text(5pt, fill: luma(150),
+  align(center + horizon, text(6pt, fill: luma(150),
     if label == none { [icon] } else { label })),
 )
 
