@@ -896,9 +896,9 @@ We separate three quantities that AI-coding evaluations often blend into a singl
 (iii) \emph{solution quality}---feasibility, objective value, and the agent's claim of optimality, all re-checked by an independent grader.
 The grader also flags \emph{false-OPT}: a claimed-optimal answer beaten by another configuration on the same seed.
 
-\paragraph{Caveats.}
-A single scenario family in which the natural ILP formulation is known to be dominated by simulated annealing on the QUBO form---a setting deliberately chosen to test whether catalog-driven reformulation pays off when it can.
-The gains may not transfer to families where the natural formulation is already strong (sparse ILP, scheduling), nor across different agent backends.
+\paragraph{Scope.}
+The experiment isolates one mechanism---catalog-driven downstream reformulation---and tests it in a regime where alternative formulations are decisive.
+We do not claim the same gains transfer to families where the natural formulation is already strong (sparse ILP, scheduling) or to other agent backends.
 The benchmark harness---scenario generator, grader, per-run result schema, and aggregation script---is released alongside the library to support broader replication.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
