@@ -114,7 +114,7 @@
     } else {
       [human or other agents]
     }
-    content((hx + hr + 0.15, hy),
+    content((hx + hw + 0.15, hy),
       text(6pt, fill: fg-light, cp-sub-text),
       anchor: "west")
 
