@@ -10,7 +10,7 @@
   // Panel (a) — Skill execution model (left, x ≈ 0..13)
   // ============================================================
 
-  let pa-header-y = 10.5
+  let pa-header-y = 11.2
   content((0.0, pa-header-y),
     text(8pt, weight: "bold", fill: fg, raw("(a)")), anchor: "west")
   content((1.6, pa-header-y),
