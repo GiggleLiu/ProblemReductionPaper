@@ -52,10 +52,10 @@
     // Subtitle (centred over SKILL.md, lifted to clear the human node above agent)
     let sub-title-x = 3.7
     if accent-side {
-      content((sub-title-x, y + 2.8),
+      content((sub-title-x, y + 3.2),
         text(7.5pt, weight: "bold", fill: accent.darken(15%))[advisor skill])
     } else {
-      content((sub-title-x, y + 2.8),
+      content((sub-title-x, y + 3.2),
         text(7.5pt, weight: "bold", fill: fg)[automation skill])
     }
 
