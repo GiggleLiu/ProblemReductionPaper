@@ -153,8 +153,8 @@
   // ============================================================
 
   // Inset from edges so column boxes do not overflow
-  let c1x = 17.0
-  let c4x = 28.0
+  let c1x = 16.6
+  let c4x = 28.6
   let gap = (c4x - c1x) / 3
   let c2x = c1x + gap
   let c3x = c1x + 2 * gap
