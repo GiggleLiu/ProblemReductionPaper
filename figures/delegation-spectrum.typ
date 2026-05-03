@@ -28,33 +28,6 @@
   let n = items.len()
   let total-h = (n - 1) * row-h
 
-  let pct(frac) = str(calc.round(frac * 100)) + "%"
-
-  // ── Top scale ──
-  let scale-y = 0.50
-  line(
-    (bar-x, scale-y),
-    (bar-x + bw, scale-y),
-    stroke: (paint: luma(160), thickness: 0.4pt),
-  )
-  for t in (0.0, 0.5, 1.0) {
-    line(
-      (bar-x + bw * t, scale-y - 0.04),
-      (bar-x + bw * t, scale-y + 0.04),
-      stroke: (paint: luma(160), thickness: 0.4pt),
-    )
-    content(
-      (bar-x + bw * t, scale-y + 0.08),
-      text(size: 5pt, fill: fg-light)[#pct(t)],
-      anchor: "south",
-    )
-  }
-  content(
-    (bar-x + bw / 2, scale-y + 0.36),
-    text(size: 5.8pt, fill: fg, weight: "bold")[Human share],
-    anchor: "south",
-  )
-
   // ── Gradient arrow ──
   let arrow-x = -1.0
   let arrow-top = 0.0
