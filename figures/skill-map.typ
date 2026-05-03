@@ -27,15 +27,15 @@
     } else {
       [code, PR,\ review verdict]
     }
-    // Agent: same neutral style in both rows — agent is the same actor
-    let agent-fill = luma(240)
-    let agent-stroke = (paint: luma(60), thickness: 1.2pt)
-    // Counterpart: tinted for human (advisor), white for tools (automation)
-    let cp-fill = if accent-side { fill-accent } else { white }
+    // Agent: same neutral style in both rows — same actor, smaller, lighter
+    let agent-fill = luma(245)
+    let agent-stroke = (paint: edge-col, thickness: 0.55pt)
+    // Counterpart: emphasised — this is what differs between rows
+    let cp-fill = if accent-side { fill-accent } else { luma(240) }
     let cp-stroke = if accent-side {
-      (paint: accent, thickness: 0.9pt)
+      (paint: accent, thickness: 1.3pt)
     } else {
-      (paint: edge-col, thickness: 0.55pt)
+      (paint: luma(60), thickness: 1.2pt)
     }
     // Loop arrow uses heavier stroke + colour to emphasise interaction
     let loop-stroke = if accent-side {
