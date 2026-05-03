@@ -296,7 +296,7 @@
   #align(center + top)[
     #if icon == none { icon-slot(w: 0.5cm, h: 0.5cm, label: [ ]) } else { icon }
     #v(3pt)
-    #text(7.5pt, fill: col-violet.darken(20%), weight: "regular", align(center, label))
+    #text(7pt, fill: col-violet.darken(20%), weight: "regular", align(center, label))
   ]
 ]
 
