@@ -262,9 +262,10 @@
     stroke: (paint: c, thickness: 1pt),
     mark: (start: "straight", end: "straight", scale: 0.4),
   )
-  // Triangle: bottom edge + two diagonals up to Example Database (apex).
-  line("ptypes.east",        "rrules.west",       ..bidir(lib-acc))
-  line("ptypes.north-east",  "exdb.south-west",   ..bidir(lib-acc))
-  line("rrules.north-west",  "exdb.south-east",   ..bidir(lib-acc))
+  // Triangle: bottom edge + two diagonals from Example Database's bottom-center
+  // down to the top-center of each lower box.
+  line("ptypes.east",  "rrules.west",   ..bidir(lib-acc))
+  line("exdb.south",   "ptypes.north",  ..bidir(lib-acc))
+  line("exdb.south",   "rrules.north",  ..bidir(lib-acc))
 
 })
