@@ -547,7 +547,9 @@ External domain experts began contributing through the \texttt{propose} skill, f
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
 A catalog of reductions matters only if it changes outcomes when an agent tackles a concrete instance.
-We test this on a dense weighted Max-Cut instance ($n{=}150$, ${\approx}5300$ signed edges) presented to a sub-agent in domain language, with no algorithmic hints.
+The most direct mechanism to test is whether catalog access lets the agent pick a downstream formulation it would not otherwise reach.
+We probe this on dense weighted Max-Cut ($n{=}150$, ${\approx}5300$ signed edges), where the textbook ILP encoding is dominated by simulated annealing on QUBO: a regime in which catalog-aware reformulation has fair scope to pay off, so a null result here would refute the mechanism.
+The instance is presented to a sub-agent in domain language with no algorithmic hints.
 Four configurations vary two axes---\emph{web search} and \emph{access to \texttt{pred}}---across four random seeds (full setup in \Cref{app:end-user}).
 We separate three quantities AI-coding evaluations often conflate as ``time'': AI tokens, solver wall-time, and solution quality, with optimality claims independently graded.
 
