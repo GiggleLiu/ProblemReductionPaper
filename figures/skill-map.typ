@@ -57,7 +57,7 @@
     content((sx, y - 0.22), text(4.8pt, fill: fg-light)[abstract steps])
 
     // Agent circle
-    let ax = 5.6
+    let ax = 7.0
     circle((ax, y), radius: 0.7, fill: agent-fill, stroke: node-stroke, name: kind + "-agent")
     content((ax, y), text(6pt, weight: "bold", fill: fg)[agent])
 
