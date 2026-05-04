@@ -243,11 +243,8 @@ The harness rests on three pillars:
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.95\columnwidth]{figures/library-architecture.pdf}
-  \caption{Library architecture.
-    Three layers stack: interface (top), library (middle), and infrastructure (bottom).
-    The interface layer exposes the reduction graph through the \texttt{pred} command-line tool and a PDF manual.
-    The library layer registers problem types, reduction rules, and an example database.
-    The infrastructure layer provides solvers for round-trip testing and a symbolic engine for overhead analysis.}
+  \caption{System architecture.
+    Three layers separate concerns: the interface layer (top) is what users and agents touch, the library layer (middle) holds the reduction graph itself, and the infrastructure layer (bottom) provides the computational backends---solvers for instances and a symbolic engine for overhead and complexity.}
   \label{fig:library-architecture}
 \end{figure}
 
