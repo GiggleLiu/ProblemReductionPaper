@@ -3,14 +3,38 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-// ── Layer data: (number, name, what it rejects, novel?) ──
+// ── Layer data: (number, name, runner, what it rejects, concrete example, novel?) ──
 #let layers = (
-  (1, "Issue review",                 "vague specs, unsupported claims",        false),
-  (2, "Compile-time type checks",     "API misuse, type errors",                false),
-  (3, "Unit tests",                   "evaluation and serialization bugs",       false),
-  (4, "Round-trip tests",             "drift between contributor's intent and the artifact",  true),
-  (5, "Agentic feature tests",        "usability and semantic errors at the CLI surface",     true),
-  (6, "Manual verification",          "subtle misinterpretations of the original math",       false),
+  (1, "Issue review",
+     "LLM agent",
+     "vague specs, unsupported claims",
+     [issue uses parameter $k$ but never defines it],
+     false),
+  (2, "Compile-time type checks",
+     "Rust compiler",
+     "API misuse, type errors",
+     raw("trait Problem not satisfied for Foo"),
+     false),
+  (3, "Unit tests",
+     "CI",
+     "evaluation and serialization bugs",
+     raw("assert eval(0,1) == 2 — failed"),
+     false),
+  (4, "Round-trip tests",
+     "CI",
+     "drift between contributor's example and the artifact",
+     [JSON fixture's target $neq$ PDF manual's diagram],
+     true),
+  (5, "Agentic feature tests",
+     "LLM agent (fresh context)",
+     "usability and semantic errors at the CLI surface",
+     [persona expected `pred solve` to print the cut; CLI prints nothing],
+     true),
+  (6, "Manual verification",
+     "Contributor",
+     "subtle misinterpretations of the original math",
+     [reduction direction reversed: $A arrow.r B$ implemented as $B arrow.r A$],
+     false),
 )
 
 #canvas(length: 1cm, {
