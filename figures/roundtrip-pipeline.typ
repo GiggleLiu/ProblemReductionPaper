@@ -93,7 +93,7 @@
   ])
 
   nbox(cx-art, y-bot, sw, sh-box, "cli", [
-    #text(7.5pt, weight: "bold", font: "DejaVu Sans Mono")[pred --example] \
+    #text(7.5pt, weight: "bold")[#raw("pred --example")] \
     #v(-0.2em)
     #text(5.5pt, fill: fg-light)[interactive demo]
   ])
