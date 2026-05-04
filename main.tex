@@ -435,22 +435,20 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 
 \subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by six layers: issue review (Stage~2), compile-time type checks, unit tests, round-trip tests, agentic feature tests (Stage~4), and manual verification (Stage~6).
-Five of these follow standard practice; we restate the round-trip pattern briefly because it is the verification gate the reduction-graph design supplies for free, and then describe the only mechanism we claim as novel, agentic feature tests.
+Correctness is enforced by a four-layer wrapper around the codebase: issue review (Stage~2), compile-time type checks, unit tests, and agentic feature tests (Stage~4).
+The first three are standard practice; agentic feature tests are the only mechanism we claim as novel.
 
-\textbf{Round-trip tests.}
+For unit tests, the reduction-graph design supplies a verification gate for free.
 Every issue carries a small canonical example with a known solution, encoded in the example database as a builder function.
-For each reduction $A \to B$, an integration test exercises the registered solution lifter against this example: build $A$, reduce to $B$, solve $B$ by brute force, lift a witness back to $A$, and assert it is feasible against $A$'s own evaluator (and, when an externally computed Python fixture is available, equal to the canonical optimum).
-The same builder feeds outside the test harness as well: the JSON fixtures, the Typst PDF manual's diagrams, and the CLI's \texttt{pred create -{}-example} mode (\Cref{fig:example-pipeline}) all share this single source.
-The Stage~6 walkthrough then closes the loop on the human side, catching mismatches that the automated oracle cannot see (e.g., a builder that quietly encodes a different problem from the one in the issue).
+For each reduction $A \to B$, the unit test then exercises the registered solution lifter against this example: build $A$, reduce to $B$, brute-force the target, lift each witness back to $A$, and compare against an independent brute-force solve of $A$ itself---asserting that the lifted set is contained in $A$'s optima and that objective values agree.
+The same builder feeds outside the test harness as well: the JSON fixtures, the Typst PDF manual's diagrams, and the CLI's \texttt{pred create -{}-example} mode (\Cref{fig:example-pipeline}) all share this single source, so the contributor's mathematical intent reaches every artifact through one definition.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline.pdf}
   \caption{Canonical examples as a single source of truth.
     The contributor's issue contributes worked instances with known solutions, which are extracted into the example database as builder functions.
-    Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from the same builders, so any drift from the issue surfaces as a visible mismatch.
-    The Stage~6 walkthrough closes the loop: the contributor checks the manual and CLI output against the original issue.}
+    Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from the same builders, so any drift from the issue surfaces as a visible mismatch.}
   \label{fig:example-pipeline}
 \end{figure}
 
@@ -466,6 +464,8 @@ The main agent interviews it---what worked, what was confusing, where did the ou
 This report surfaces usability gaps, documentation omissions, and semantic errors that unit tests cannot reach.
 
 In our practice, agentic feature tests caught most CLI command bugs, and some user-experience issues, e.g.\ the mismatch between the help text and the actual command output, which are never caught by the existing unit tests.
+
+Beyond these four automated layers, the Stage~6 walkthrough by the original contributor serves as the final safety net: subtle misinterpretations of the problem statement or proof arguments---e.g., a builder that quietly encodes a different problem from the one in the issue---only surface when the contributor sees the rendered manual and CLI output side-by-side with the original issue.
 
 %======================================================================
 %  SECTION 5: EVIDENCE
