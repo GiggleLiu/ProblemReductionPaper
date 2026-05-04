@@ -3,7 +3,7 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-#canvas(length: 0.42cm, {
+#canvas(length: 0.40cm, {
   import draw: *
 
   // ── Box helpers ──────────────────────────────────────────
@@ -19,7 +19,7 @@
     content(
       name-id,
       anchor: "center",
-      box(width: w * 0.42cm - 8pt, align(center, body)),
+      box(width: w * 0.40cm - 8pt, align(center, body)),
     )
   }
 
@@ -43,26 +43,27 @@
   let arr      = (end: "straight", scale: 0.35)
   let sh       = (start: 0.06, end: 0.06)
 
-  // ── Layout ───────────────────────────────────────────────
-  let bw = 7.0
+  // ── Arrow label helper (above midpoint, with white halo) ──
+  let elabel(name-id, dy, txt) = content(
+    (rel: (0, dy), to: name-id + ".mid"), anchor: "south",
+    text(5.5pt, fill: fg-light)[#txt],
+  )
+
+  // ── Layout (5 columns × 2 rows) ─────────────────────────
+  let bw = 6.0
   let bh = 2.2
-  let sw = 6.6
+  let sw = 5.6
   let sh-box = 1.7
 
-  let cx-issue  = 0
-  let cx-core   = 10.5
-  let cx-art    = 20.0
-  let cx-verify = 29.5
+  let cx-issue  =  0.0
+  let cx-core   =  8.5
+  let cx-art    = 16.5    // JSON (top) and CLI (bot)
+  let cx-pdf    = 24.5    // PDF Manual (top only)
+  let cx-verify = 32.5
 
   let y-mid =  0.0
-  let y-top =  3.0
-  let y-bot = -3.0
-
-  // ── Stage labels (small badges above central spine) ──────
-  let stage-label(cx, cy, txt) = content(
-    (cx, cy), anchor: "center",
-    text(5.5pt, fill: fg-light, weight: "regular", upper(txt)),
-  )
+  let y-top =  2.6
+  let y-bot = -2.6
 
   // ── Boxes ────────────────────────────────────────────────
   // Input
@@ -79,23 +80,25 @@
     #text(6pt, fill: accent.darken(10%))[canonical builders]
   ])
 
-  // Three derivative artifacts
+  // JSON Fixtures (top, upstream of PDF manual)
   nbox(cx-art, y-top, sw, sh-box, "json", [
     #text(7.5pt, weight: "bold")[JSON Fixtures] \
     #v(-0.2em)
     #text(5.5pt, fill: fg-light)[ground-truth I/O]
   ])
 
-  nbox(cx-art, y-mid, sw, sh-box, "pdf", [
-    #text(7.5pt, weight: "bold")[Typst PDF Manual] \
-    #v(-0.2em)
-    #text(5.5pt, fill: fg-light)[diagrams · proofs]
-  ])
-
+  // CLI (bottom, parallel branch from DB)
   nbox(cx-art, y-bot, sw, sh-box, "cli", [
     #text(7.5pt, weight: "bold")[#raw("pred --example")] \
     #v(-0.2em)
     #text(5.5pt, fill: fg-light)[interactive demo]
+  ])
+
+  // Typst PDF Manual (rendered from JSON)
+  nbox(cx-pdf, y-top, sw, sh-box, "pdf", [
+    #text(7.5pt, weight: "bold")[Typst PDF Manual] \
+    #v(-0.2em)
+    #text(5.5pt, fill: fg-light)[diagrams · proofs]
   ])
 
   // Verification (Stage 6)
@@ -107,33 +110,34 @@
 
   // ── Forward arrows ───────────────────────────────────────
   // Issue → Core
-  line(
-    "issue.east", "core.west",
-    stroke: s-edge, mark: arr, shorten: sh, name: "e1",
-  )
-  content((rel: (0, 0.35), to: "e1.mid"), anchor: "south",
-    text(5.5pt, fill: fg-light)[extract])
+  line("issue.east", "core.west",
+    stroke: s-edge, mark: arr, shorten: sh, name: "e-extract")
+  elabel("e-extract", 0.35, [extract])
 
-  // Core → 3 artifacts (orthogonal fan-out)
+  // Core → JSON (orthogonal up)
   let fork = (cx-core + cx-art) / 2
   line("core.east", (fork, y-mid), (fork, y-top), "json.west",
-    stroke: s-edge, mark: arr, shorten: sh)
-  line("core.east", "pdf.west",
-    stroke: s-edge, mark: arr, shorten: sh)
+    stroke: s-edge, mark: arr, shorten: sh, name: "e-gen-json")
+  // Core → CLI (orthogonal down)
   line("core.east", (fork, y-mid), (fork, y-bot), "cli.west",
     stroke: s-edge, mark: arr, shorten: sh)
-  content((fork, y-top + 0.55), anchor: "south",
+  // single "generate" label sits in the fork gutter
+  content((fork, y-mid + 0.25), anchor: "south",
     text(5.5pt, fill: fg-light)[generate])
 
-  // 3 artifacts → Verification (orthogonal fan-in)
-  let merge = (cx-art + cx-verify) / 2
-  line("json.east", (merge, y-top), (merge, y-mid), "verify.west",
+  // JSON → PDF Manual (top branch, horizontal: render)
+  line("json.east", "pdf.west",
+    stroke: s-edge, mark: arr, shorten: sh, name: "e-render")
+  elabel("e-render", 0.35, [render])
+
+  // PDF → Verify (top, orthogonal down)
+  let merge = (cx-pdf + cx-verify) / 2
+  line("pdf.east", (merge, y-top), (merge, y-mid), "verify.west",
     stroke: s-edge, mark: arr, shorten: sh)
-  line("pdf.east", "verify.west",
-    stroke: s-edge, mark: arr, shorten: sh)
+  // CLI → Verify (bottom, orthogonal up)
   line("cli.east", (merge, y-bot), (merge, y-mid), "verify.west",
     stroke: s-edge, mark: arr, shorten: sh)
-  content((merge, y-top + 0.55), anchor: "south",
+  content((merge, y-mid + 0.25), anchor: "south",
     text(5.5pt, fill: fg-light)[contributor compares])
 
   // ── Closing the loop ────────────────────────────────────
