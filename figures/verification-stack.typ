@@ -284,23 +284,21 @@
   let sub-x2 = fc-x2 - 0.20
   let sub-cy = (fc-y1 + fc-y2) / 2 - 0.05
   mbox(sub-x1, sub-cy - 0.22, sub-x2, sub-cy + 0.22, "sub", true,
-    text(6.5pt, weight: "bold", fill: accent.darken(20%))[
-      sub-agent + persona
-    ])
+    text(6.5pt, weight: "bold", fill: accent.darken(20%))[sub-agent])
 
   // CLI surface (right of fresh-context, on main row)
   let cli-x1 = fc-x2 + 0.30
   let cli-x2 = sub2-x0 + sub-w - 0.20
   mbox(cli-x1, main-cy - 0.30, cli-x2, main-cy + 0.30, "cli", false,
-    text(6.5pt, weight: "bold")[CLI surface])
+    text(6.5pt, weight: "bold")[CLI])
 
   // report (bottom-center of sub-panel)
   let rep-cx = (sub2-x0 + (sub2-x0 + sub-w)) / 2
-  let rep-x1 = rep-cx - 0.85
-  let rep-x2 = rep-cx + 0.85
+  let rep-x1 = rep-cx - 0.65
+  let rep-x2 = rep-cx + 0.65
   let rep-cy = s2-cy - 0.95
   mbox(rep-x1, rep-cy - 0.27, rep-x2, rep-cy + 0.27, "rep", false,
-    text(6.5pt, weight: "bold")[report (usability + semantics)])
+    text(6.5pt, weight: "bold")[report])
 
   // arrows: main → sub (spawn) — label below the arrow
   line("main.east", "sub.west",
