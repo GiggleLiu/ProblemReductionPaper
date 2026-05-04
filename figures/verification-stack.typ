@@ -205,8 +205,9 @@
   mbox(pdf-cx - bw3 / 2, s1-cy + 0.25, pdf-cx + bw3 / 2, s1-cy + 0.85,
     "pdf", false, text(6.5pt, weight: "bold")[PDF])
 
-  // CLI demo (bottom branch, parallel to JSON)
-  let cli-cx = json-cx
+  // CLI demo (bottom branch) — aligned with PDF column to make
+  // visually clear that PDF and CLI are the two final artifacts.
+  let cli-cx = pdf-cx
   mbox(cli-cx - bw3 / 2, s1-cy - 0.85, cli-cx + bw3 / 2, s1-cy - 0.25,
     "cli", false, text(6.5pt, weight: "bold")[CLI])
 
