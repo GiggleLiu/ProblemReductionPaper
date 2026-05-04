@@ -294,8 +294,6 @@ None of the maintainers had written Rust before this project---the language was 
 \emph{Explicit, actionable error messages.}
 The Rust compiler produces diagnostics that include the error location, the conflicting types or lifetimes, and often a suggested fix.
 Agents parse these messages and resolve errors without human intervention.
-Languages with less structured diagnostics would require more agent reasoning per cycle.
-Rust's other well-known strengths also help: memory safety and Cargo's integrated toolchain further reduce the surface area of errors agents must debug.
 
 \emph{Fast feedback.}
 Incremental compilation and the built-in test harness produce results in seconds, enabling agents to iterate rapidly.
