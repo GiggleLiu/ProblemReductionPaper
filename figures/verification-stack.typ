@@ -23,7 +23,7 @@
   (4, "Round-trip tests",
      "CI",
      "drift between contributor's example and the artifact",
-     [JSON fixture's target $neq$ PDF manual's diagram],
+     [JSON fixture's target $!=$ PDF manual's diagram],
      true),
   (5, "Agentic feature tests",
      "LLM agent (fresh context)",
