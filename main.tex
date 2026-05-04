@@ -620,7 +620,7 @@ To tame this variance, \emph{harness engineering}~\cite{OpenAI2026HarnessEnginee
 Persistent project instructions and composable skills~\cite{Claude2026AgentSkills, Obra2025Superpowers} keep agents aligned with repository conventions across sessions; verification pipelines reject incorrect output before it enters the codebase.
 Our approach instantiates this pattern for a mathematical domain, exploiting the project's uniform, verifiable structure so that each agent invocation is short, self-contained, and human-reviewable.
 
-\section{System Architecture}\label{app:architecture}
+\section{Implementation Details}\label{app:architecture}
 
 The library's type system reduces the space of possible agent errors by making incorrect code fail to compile.
 This appendix describes the key design decisions: the aggregation-based problem representation, the solver priority system, and the variant registry (\Cref{fig:architecture}).
