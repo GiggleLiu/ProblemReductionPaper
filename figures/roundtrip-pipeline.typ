@@ -50,9 +50,9 @@
   let sh-box = 1.7
 
   let cx-issue  = 0
-  let cx-core   = 9.5
-  let cx-art    = 18.0
-  let cx-verify = 26.5
+  let cx-core   = 10.5
+  let cx-art    = 20.0
+  let cx-verify = 29.5
 
   let y-mid =  0.0
   let y-top =  3.0
