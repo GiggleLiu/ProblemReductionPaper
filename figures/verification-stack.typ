@@ -3,64 +3,41 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-// ── Layer data: (number, name, runner, what it rejects, concrete example, novel?) ──
+// ── Layer data: (number, name, novel?) ──
 #let layers = (
-  (1, "Issue review",
-     "LLM agent",
-     "vague specs, unsupported claims",
-     [issue uses parameter $k$ but never defines it],
-     false),
-  (2, "Compile-time type checks",
-     "Rust compiler",
-     "API misuse, type errors",
-     raw("trait Problem not satisfied for Foo"),
-     false),
-  (3, "Unit tests",
-     "CI",
-     "evaluation and serialization bugs",
-     raw("assert eval(0,1) == 2 — failed"),
-     false),
-  (4, "Round-trip tests",
-     "CI",
-     "drift between contributor's example and the artifact",
-     [JSON fixture's target $!=$ PDF manual's diagram],
-     true),
-  (5, "Agentic feature tests",
-     "LLM agent (fresh context)",
-     "usability and semantic errors at the CLI surface",
-     [persona expected `pred solve` to print the cut; CLI prints nothing],
-     true),
-  (6, "Manual verification",
-     "Contributor",
-     "subtle misinterpretations of the original math",
-     [reduction direction reversed: $A arrow.r B$ implemented as $B arrow.r A$],
-     false),
+  (1, "Issue review",                 false),
+  (2, "Compile-time type checks",     false),
+  (3, "Unit tests",                   false),
+  (4, "Round-trip tests",             true),
+  (5, "Agentic feature tests",        true),
+  (6, "Manual verification",          false),
 )
 
 #canvas(length: 1cm, {
   import draw: *
 
-  // Layout
-  let bw = 7.6       // block width (cm units, since length=1cm)
-  let bh = 1.05      // block height (taller to fit example line)
-  let gap = 0.30     // vertical gap between blocks
-  let cap-w = 5.0
-  let cap-h = 0.85
-  let rejects-x = bw / 2 + 0.4   // x for right-side "rejects: ..." labels
+  // ── Layout ────────────────────────────────────────────
+  let bw = 6.4
+  let bh = 0.86
+  let gap = 0.30
+  let cap-w = 4.6
+  let cap-h = 0.78
+
+  // x for the left "rail" (vertical guide visualising the pipeline)
+  let rail-x = -bw / 2 - 0.65
 
   let n = layers.len()
   let total-stack-h = n * bh + (n - 1) * gap
 
-  // y of the top edge of the stack
   let stack-top-y = 0
   let stack-bot-y = stack-top-y - total-stack-h
 
   // ── Top cap: input ────────────────────────────────────
-  let cap-top-y = stack-top-y + 0.7
+  let cap-top-y = stack-top-y + 0.65
   rect(
     (-cap-w / 2, cap-top-y),
     ( cap-w / 2, cap-top-y + cap-h),
-    radius: cap-h / 2,                       // pill shape
+    radius: cap-h / 2,
     fill: white,
     stroke: (thickness: 1pt, paint: fg),
     name: "input",
@@ -70,29 +47,45 @@
     text(8.5pt, weight: "bold", fill: fg)[Candidate contribution],
   )
 
-  // arrow from input cap into stack
+  // ── Left rail: thin vertical line behind the blocks ──
+  // creates a polished "pipeline track" that the blocks ride on
   line(
-    (0, cap-top-y - 0.04),
-    (0, stack-top-y - 0.04),
-    stroke: (thickness: 1pt, paint: fg),
-    mark: (end: "straight", scale: 0.4),
+    (rail-x, cap-top-y + cap-h / 2),
+    (rail-x, stack-bot-y - 0.7 - cap-h / 2),
+    stroke: (thickness: 0.8pt, paint: luma(220)),
   )
+  // small dot at top of rail
+  circle((rail-x, cap-top-y + cap-h / 2), radius: 0.06,
+    fill: fg, stroke: none)
 
-  // ── Six layer blocks ──────────────────────────────────
+  // ── Six layer blocks ─────────────────────────────────
   for i in range(n) {
-    let (num, name, runner, rejects, example, is-novel) = layers.at(i)
+    let (num, name, is-novel) = layers.at(i)
 
     let y-top = stack-top-y - i * (bh + gap)
     let y-bot = y-top - bh
     let y-mid = (y-top + y-bot) / 2
-    let y-name   = y-mid + 0.22  // upper text row inside block
-    let y-runner = y-mid - 0.27  // lower text row inside block
 
     let stroke-c = if is-novel { accent } else { border }
     let fill-c   = if is-novel { accent.lighten(92%) } else { white }
     let stroke-w = if is-novel { 1.4pt } else { 0.9pt }
     let txt-c    = if is-novel { accent.darken(20%) } else { fg }
 
+    // Connector tick from rail into block
+    line(
+      (rail-x, y-mid),
+      (-bw / 2 - 0.04, y-mid),
+      stroke: (thickness: 0.8pt, paint: if is-novel { accent } else { luma(180) }),
+    )
+    // Rail bullet (filled disc) at this layer's height
+    circle(
+      (rail-x, y-mid),
+      radius: if is-novel { 0.13 } else { 0.10 },
+      fill: if is-novel { accent } else { fg },
+      stroke: none,
+    )
+
+    // Main block
     rect(
       (-bw / 2, y-bot),
       ( bw / 2, y-top),
@@ -102,59 +95,41 @@
       name: "L" + str(i),
     )
 
-    // Layer number — left side, monospaced
+    // Numbered badge (circle) on the left inside the block
+    let badge-r = 0.26
+    let badge-x = -bw / 2 + 0.45
+    circle(
+      (badge-x, y-mid), radius: badge-r,
+      fill: if is-novel { accent } else { luma(235) },
+      stroke: (thickness: 0.8pt, paint: if is-novel { accent } else { border }),
+    )
     content(
-      (-bw / 2 + 0.4, y-mid), anchor: "west",
-      text(10pt, weight: "bold", fill: txt-c.lighten(15%),
-        font: "DejaVu Sans Mono", str(num)),
+      (badge-x, y-mid), anchor: "center",
+      text(8pt, weight: "bold",
+        fill: if is-novel { white } else { fg },
+        font: "Helvetica", str(num)),
     )
 
-    // Vertical separator after the number
-    line(
-      (-bw / 2 + 0.85, y-top - 0.18),
-      (-bw / 2 + 0.85, y-bot + 0.18),
-      stroke: (thickness: 0.5pt, paint: stroke-c.lighten(40%)),
-    )
-
-    // Layer name (upper row inside block)
+    // Layer name
     content(
-      (-bw / 2 + 1.0, y-name), anchor: "west",
-      text(9pt, weight: "bold", fill: txt-c, name),
+      (badge-x + badge-r + 0.25, y-mid), anchor: "west",
+      text(9.5pt, weight: "bold", fill: txt-c, name),
     )
 
-    // Runner tag (lower row inside block, smaller)
-    content(
-      (-bw / 2 + 1.0, y-runner), anchor: "west",
-      text(6.5pt, fill: txt-c.lighten(30%))[
-        run by · #runner
-      ],
-    )
-
-    // novel-layer badge (upper-right, inside block)
+    // Novel-layer accent stripe on the right side, inside the block
     if is-novel {
+      // thin stripe
+      rect(
+        (bw / 2 - 0.18, y-bot + 0.10),
+        (bw / 2 - 0.06, y-top - 0.10),
+        fill: accent, stroke: none,
+      )
+      // ★ glyph next to the stripe
       content(
-        (bw / 2 - 0.35, y-name), anchor: "east",
-        text(7pt, weight: "bold", fill: accent,
-          [#sym.star this work]),
+        (bw / 2 - 0.45, y-mid), anchor: "east",
+        text(8pt, weight: "bold", fill: accent, sym.star),
       )
     }
-
-    // ── Right-side annotations (outside block) ──
-    // "rejects: ..." (upper)
-    content(
-      (rejects-x, y-name), anchor: "west",
-      text(7pt, fill: fg-light)[
-        #text(weight: "bold", fill: fg)[rejects:] #rejects
-      ],
-    )
-
-    // "e.g., ..." concrete example (lower, italic monospace-ish)
-    content(
-      (rejects-x, y-runner), anchor: "west",
-      text(6.5pt, fill: fg-light, style: "italic")[
-        e.g., #example
-      ],
-    )
 
     // arrow from this block to the next
     if i < n - 1 {
@@ -162,19 +137,27 @@
       line(
         (0, y-bot - 0.04),
         (0, next-top + 0.04),
-        stroke: (thickness: 0.7pt, paint: fg-light),
+        stroke: (thickness: 0.7pt, paint: luma(170)),
         mark: (end: "straight", scale: 0.3),
       )
     }
   }
 
-  // ── Bottom cap: output ────────────────────────────────
+  // ── Arrow from input cap into stack ──────────────────
+  line(
+    (0, cap-top-y - 0.04),
+    (0, stack-top-y - 0.04),
+    stroke: (thickness: 1pt, paint: fg),
+    mark: (end: "straight", scale: 0.4),
+  )
+
+  // ── Bottom cap: output ───────────────────────────────
   let cap-bot-y = stack-bot-y - 0.7
   rect(
     (-cap-w / 2, cap-bot-y - cap-h),
     ( cap-w / 2, cap-bot-y),
     radius: cap-h / 2,
-    fill: accent.lighten(92%),
+    fill: accent.lighten(88%),
     stroke: (thickness: 1.3pt, paint: accent),
     name: "output",
   )
@@ -191,4 +174,7 @@
     mark: (end: "straight", scale: 0.4),
   )
 
+  // bottom rail bullet
+  circle((rail-x, cap-bot-y - cap-h / 2), radius: 0.08,
+    fill: accent, stroke: none)
 })
