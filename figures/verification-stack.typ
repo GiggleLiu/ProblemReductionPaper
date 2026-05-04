@@ -23,10 +23,10 @@
 
   // ════════════════ PANEL A: horizontal verification stack ════════════════
   let pa-cy = 0          // panel A row centerline
-  let bw    = 1.6
-  let bh    = 1.20
-  let gap   = 0.16
-  let cap-w = 1.55
+  let bw    = 1.70
+  let bh    = 1.30
+  let gap   = 0.13
+  let cap-w = 1.40
   let cap-h = bh
 
   let pa-x0 = 0.0
