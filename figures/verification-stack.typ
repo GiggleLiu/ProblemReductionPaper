@@ -68,26 +68,27 @@
       name: "L" + str(i),
     )
 
-    // numbered badge in upper area
-    let badge-cy = pa-cy + bh / 2 - 0.30
+    // numbered badge — top-left corner
+    let badge-r  = 0.18
+    let badge-cx = cx - bw / 2 + 0.28
+    let badge-cy = pa-cy + bh / 2 - 0.25
     circle(
-      (cx, badge-cy), radius: 0.20,
+      (badge-cx, badge-cy), radius: badge-r,
       fill: if is-novel { accent } else { luma(235) },
       stroke: (thickness: 0.7pt, paint: if is-novel { accent } else { border }),
     )
-    content((cx, badge-cy), anchor: "center",
+    content((badge-cx, badge-cy), anchor: "center",
       text(7pt, weight: "bold",
         fill: if is-novel { white } else { fg }, str(num)))
 
-    // layer name below badge (wrapped to box width)
-    content((cx, pa-cy - 0.20), anchor: "center",
-      box(width: bw * 1cm - 6pt, align(center,
-        text(7.5pt, weight: "bold", fill: txt-c, name))))
+    // layer name — centered with explicit line breaks
+    content((cx, pa-cy - 0.12), anchor: "center",
+      text(7.5pt, weight: "bold", fill: txt-c)[#name])
 
-    // ★ in top-right for novel
+    // ★ in top-right corner for novel
     if is-novel {
-      content((cx + bw / 2 - 0.18, pa-cy + bh / 2 - 0.18), anchor: "center",
-        text(7.5pt, weight: "bold", fill: accent, sym.star))
+      content((cx + bw / 2 - 0.20, pa-cy + bh / 2 - 0.22), anchor: "center",
+        text(8pt, weight: "bold", fill: accent, sym.star))
     }
 
     // arrow to next box
