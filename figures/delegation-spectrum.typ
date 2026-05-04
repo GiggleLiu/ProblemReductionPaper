@@ -7,8 +7,9 @@
 #canvas(length: 1cm, {
   import draw: *
 
+  let human-color = rgb("#f28e2b")
   let human-fill = white
-  let human-stroke = luma(150)
+  let human-stroke = human-color
   let agent-fill = fill-accent
   let agent-color = accent
   let bar-w = 0.32
@@ -30,31 +31,21 @@
   let n = items.len()
   let total-h = (n - 1) * row-h
 
-  // ── Direction arrow ──
+  // ── Direction cue, styled like the thin arrows in the pipeline diagram ──
   let arrow-x = -1.0
   let arrow-top = 0.0
   let arrow-bot = -total-h
-  let shaft-w = 0.15
-  let head-w = 0.32
-  let head-h = 0.40
-  let shaft-bot = arrow-bot + head-h
 
   line(
-    (arrow-x - shaft-w, arrow-top),
-    (arrow-x + shaft-w, arrow-top),
-    (arrow-x + shaft-w, shaft-bot),
-    (arrow-x + head-w, shaft-bot),
-    (arrow-x, arrow-bot),
-    (arrow-x - head-w, shaft-bot),
-    (arrow-x - shaft-w, shaft-bot),
-    close: true,
-    fill: fill-accent,
-    stroke: (paint: accent, thickness: 0.7pt),
+    (arrow-x, arrow-top - 0.05),
+    (arrow-x, arrow-bot + 0.05),
+    stroke: (paint: agent-color, thickness: 1.0pt),
+    mark: (end: "straight", scale: 0.38),
   )
 
   content(
     (arrow-x, arrow-top + 0.30),
-    text(size: 6.5pt, fill: fg, weight: "bold")[Human],
+    text(size: 6.5pt, fill: human-color.darken(15%), weight: "bold")[Human],
     anchor: "south",
   )
   content(
@@ -69,17 +60,18 @@
 
     // Connector from arrow to bar
     line(
-      (arrow-x + shaft-w + 0.04, y),
+      (arrow-x + 0.08, y),
       (bar-x - 0.04, y),
-      stroke: (paint: luma(140), thickness: 0.4pt, dash: "dotted"),
+      stroke: (paint: luma(145), thickness: 0.35pt, dash: "dotted"),
     )
 
     // Full-range frame (100% reference)
     rect(
       (bar-x, y - bar-w / 2),
       (bar-x + bw, y + bar-w / 2),
+      radius: 2pt,
       fill: none,
-      stroke: (paint: luma(225), thickness: 0.3pt),
+      stroke: (paint: luma(215), thickness: 0.35pt),
     )
 
     // Human portion
@@ -88,7 +80,7 @@
         (bar-x, y - bar-w / 2),
         (bar-x + bw * frac, y + bar-w / 2),
         fill: human-fill,
-        stroke: (paint: human-stroke, thickness: 0.35pt),
+        stroke: (paint: human-stroke.lighten(15%), thickness: 0.35pt),
       )
     }
     // Agent portion
@@ -115,7 +107,7 @@
     (bar-x, ly - 0.09),
     (bar-x + 0.22, ly + 0.09),
     fill: human-fill,
-    stroke: (paint: human-stroke, thickness: 0.35pt),
+    stroke: (paint: human-stroke.lighten(15%), thickness: 0.35pt),
   )
   content((bar-x + 0.28, ly), text(size: 5.5pt, fill: fg)[Human], anchor: "west")
   rect(
