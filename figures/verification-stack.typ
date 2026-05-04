@@ -3,14 +3,14 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-// ── Layer data: (number, name, novel?) ──
+// ── Layer data: (number, two-line name as content, novel?) ──
 #let layers = (
-  (1, "Issue review",                 false),
-  (2, "Compile-time type checks",     false),
-  (3, "Unit tests",                   false),
-  (4, "Round-trip tests",             true),
-  (5, "Agentic feature tests",        true),
-  (6, "Manual verification",          false),
+  (1, [Issue \ review],            false),
+  (2, [Compile-time \ type checks], false),
+  (3, [Unit \ tests],               false),
+  (4, [Round-trip \ tests],         true),
+  (5, [Agentic feature \ tests],    true),
+  (6, [Manual \ verification],      false),
 )
 
 #canvas(length: 1cm, {
