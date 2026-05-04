@@ -10,7 +10,6 @@
 \usepackage{cleveref}
 \usepackage[most]{tcolorbox}
 \usepackage{tikz}
-\usepackage{subcaption}
 
 \usepackage{amsthm}
 \newtheorem{definition}{Definition}
@@ -341,9 +340,8 @@ Each column is a state; progress flows left to right.
 If any stage fails, the item moves to \col{OnHold} for human triage.
 Four roles drive the flow: a domain expert files issues, a maintainer triages and merges, and two agents---one for implementation, one for review---handle the routine work in between.
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
-  \begin{minipage}[t]{0.48\textwidth}
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
     title={\textbf{\texttt{propose}} --- advisor skill (excerpts)},
@@ -384,13 +382,31 @@ cargo run --example detect_unreachable_from_3sat
   \end{tabular}\\[2pt]
   Only issues passing all four checks are filed.
   \end{tcolorbox}
-  \subcaption{Excerpts from the \texttt{propose} skill.
+  \caption{Excerpts from the \texttt{propose} skill.
     The hard gate enforces no-code contribution.
     Topology analysis guides experts toward strategic reduction-graph gaps.
     Pre-validation checks four quality dimensions before the issue enters the pipeline.}
   \label{fig:skill-propose}
-  \end{minipage}\hfill
-  \begin{minipage}[t]{0.48\textwidth}
+\end{figure}
+
+
+\textbf{Stage~1: Propose} ( $\to$ \col{Backlog}).
+A domain expert clones the repository and invokes the \texttt{propose} skill (\Cref{fig:skill-propose}) in Claude Code or a similar agentic coding tool.
+The skill conducts a structured brainstorming session---one question at a time---to elicit the core content of the contribution: which problem or reduction rule to add, its formal definition, etc. The expert answers in mathematical language; no programming is required.
+The agent runs a topology analysis to avoid duplicates and to identify high-value gaps in the reduction graph, then pre-validates the draft against Stage~2's quality checks.
+The output is a structured GitHub issue filed into \col{Backlog}.
+
+\textbf{Stage~2: Validate} (\col{Backlog} $\to$ \col{Ready}).
+A maintainer invokes the \texttt{fix-issue} skill to triage each issue in \col{Backlog}.
+The agent first evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
+It then auto-corrects mechanical failures (undefined symbols, missing metrics) and brainstorms substantive fixes with the maintainer interactively.
+Only issues passing all four checks move to \col{Ready}.
+
+\textbf{Stage~3: Implement} (\col{Ready} $\to$ \col{Review Pool}).
+An implementation agent reads the \texttt{run-pipeline} skill, picks an issue automatically from \col{Ready} column, implements it\footnote{The engineering workflow builds on Superpowers~\cite{Obra2025Superpowers}}, submits a pull request (PR) and moves the issue to \col{Review Pool}---all in headless mode, no human in the loop.
+
+\begin{figure}[t]
+  \centering
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
     title={\textbf{\texttt{add-rule}} --- automation skill (excerpts)},
@@ -425,29 +441,12 @@ description: Adding a new reduction rule to the
   Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
   Run \texttt{make paper} --- must compile without errors.
   \end{tcolorbox}
-  \subcaption{Excerpts from the \texttt{add-rule} skill.
+  \caption{Excerpts from the \texttt{add-rule} skill.
     The checklist encodes the mathematical knowledge every reduction requires.
     Reference implementations prevent convention drift.
     The paper entry ensures visual verifiability by human reviewers.}
   \label{fig:skill-addrule}
-  \end{minipage}
-\end{figure*}
-
-
-\textbf{Stage~1: Propose} ( $\to$ \col{Backlog}).
-A domain expert clones the repository and invokes the \texttt{propose} skill (\Cref{fig:skill-propose}) in Claude Code or a similar agentic coding tool.
-The skill conducts a structured brainstorming session---one question at a time---to elicit the core content of the contribution: which problem or reduction rule to add, its formal definition, etc. The expert answers in mathematical language; no programming is required.
-The agent runs a topology analysis to avoid duplicates and to identify high-value gaps in the reduction graph, then pre-validates the draft against Stage~2's quality checks.
-The output is a structured GitHub issue filed into \col{Backlog}.
-
-\textbf{Stage~2: Validate} (\col{Backlog} $\to$ \col{Ready}).
-A maintainer invokes the \texttt{fix-issue} skill to triage each issue in \col{Backlog}.
-The agent first evaluates the proposal along four dimensions: \emph{usefulness} (does a cheaper path already exist?), \emph{effort} (what is the effort to implement this rule?), \emph{correctness} (do cited references support the claims?), and \emph{writing quality} (are all symbols defined, all examples fully worked?).
-It then auto-corrects mechanical failures (undefined symbols, missing metrics) and brainstorms substantive fixes with the maintainer interactively.
-Only issues passing all four checks move to \col{Ready}.
-
-\textbf{Stage~3: Implement} (\col{Ready} $\to$ \col{Review Pool}).
-An implementation agent reads the \texttt{run-pipeline} skill, picks an issue automatically from \col{Ready} column, implements it\footnote{The engineering workflow builds on Superpowers~\cite{Obra2025Superpowers}}, submits a pull request (PR) and moves the issue to \col{Review Pool}---all in headless mode, no human in the loop.
+\end{figure}
 
 \textbf{Stage~4: Review} (\col{Review Pool} $\to$ \col{Final Review}).
 Similarly, a review agent reads the \texttt{review-pipeline} skill, claims an issue from \col{Review Pool}, moves it to \col{Under Review}, dispatches three read-only sub-agents: structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification}), and posts a review report on the PR and moves the issue to \col{Final Review}---all in headless mode.

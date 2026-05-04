@@ -3,109 +3,155 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-#let unit = 0.36cm
-
-#canvas(length: unit, {
+#canvas(length: 0.42cm, {
   import draw: *
 
-  // ── Role-based palette ──
-  let col-input    = rgb("#4e79a7")   // blue: contributor input
-  let col-core     = rgb("#59a14f")   // green: single source of truth
-  let col-artifact = rgb("#e8a838")   // gold: generated artifact
-  let col-verify   = rgb("#d45d5d")   // red: verification gate
-
-  // ── Box helper (constrains text width via box(width: ...)) ──
-  let bw = 7.0
-  let bh = 3.0
-  let inner-pad = 0.25cm
-
-  let rbox(cx, cy, col, name-id, title, subtitle: none) = {
+  // ── Box helpers ──────────────────────────────────────────
+  let box-base(cx, cy, w, h, name-id, fill-c, stroke-c, body) = {
     rect(
-      (cx - bw / 2, cy + bh / 2),
-      (cx + bw / 2, cy - bh / 2),
+      (cx - w / 2, cy - h / 2),
+      (cx + w / 2, cy + h / 2),
       radius: 3pt,
-      fill: col.lighten(82%),
-      stroke: (thickness: 1.0pt, paint: col.darken(15%)),
+      fill: fill-c,
+      stroke: stroke-c,
       name: name-id,
     )
-    let body = align(center, {
-      text(7pt, weight: "bold", fill: black, title)
-      if subtitle != none {
-        linebreak()
-        text(5pt, fill: luma(80), subtitle)
-      }
-    })
     content(
-      (cx, cy),
+      name-id,
       anchor: "center",
-      box(width: bw * unit - inner-pad, body),
+      box(width: w * 0.42cm - 8pt, align(center, body)),
     )
   }
 
-  // ── Stroke / arrow presets ──
-  let arr = (end: "straight", scale: 0.35)
-  let s   = (thickness: 0.9pt, paint: luma(40))
-  let sh  = (start: 0.08, end: 0.08)
+  // Neutral box (default)
+  let nbox(cx, cy, w, h, name-id, body) = box-base(
+    cx, cy, w, h, name-id,
+    fill-light, (thickness: 0.9pt, paint: border),
+    body,
+  )
 
-  // ── Layout (5 columns × 3 rows) ──
+  // Accent box: highlight the single source of truth
+  let abox(cx, cy, w, h, name-id, body) = box-base(
+    cx, cy, w, h, name-id,
+    accent.lighten(85%), (thickness: 1.3pt, paint: accent),
+    body,
+  )
+
+  // ── Arrow style ──────────────────────────────────────────
+  let s-edge   = (thickness: 0.85pt, paint: edge-col)
+  let s-loop   = (thickness: 0.85pt, paint: accent, dash: "dashed")
+  let arr      = (end: "straight", scale: 0.35)
+  let sh       = (start: 0.06, end: 0.06)
+
+  // ── Layout ───────────────────────────────────────────────
+  let bw = 7.0
+  let bh = 2.2
+  let sw = 6.6
+  let sh-box = 1.7
+
+  let cx-issue  = 0
+  let cx-core   = 9.5
+  let cx-art    = 18.0
+  let cx-verify = 26.5
+
   let y-mid =  0.0
-  let y-top =  3.5
-  let y-bot = -3.5
+  let y-top =  3.0
+  let y-bot = -3.0
 
-  let cx1 =  3.6   // GitHub Issue
-  let cx2 = 11.5   // Example Database
-  let cx3 = 19.4   // JSON / CLI
-  let cx4 = 27.3   // PDF Manual
-  let cx5 = 35.2   // Verification
+  // ── Stage labels (small badges above central spine) ──────
+  let stage-label(cx, cy, txt) = content(
+    (cx, cy), anchor: "center",
+    text(5.5pt, fill: fg-light, weight: "regular", upper(txt)),
+  )
 
-  // ── Middle spine: input → core → check ──
-  rbox(cx1, y-mid, col-input, "issue",
-    [GitHub Issue],
-    subtitle: [Definition · Example · Solution])
+  // ── Boxes ────────────────────────────────────────────────
+  // Input
+  nbox(cx-issue, y-mid, bw, bh, "issue", [
+    #text(8pt, weight: "bold")[GitHub Issue] \
+    #v(-0.2em)
+    #text(6pt, fill: fg-light)[definition · example · solution]
+  ])
 
-  rbox(cx2, y-mid, col-core, "exdb",
-    [Example Database],
-    subtitle: [Canonical builders])
+  // Single source of truth (accent)
+  abox(cx-core, y-mid, bw, bh, "core", [
+    #text(8pt, weight: "bold", fill: accent.darken(20%))[Example Database] \
+    #v(-0.2em)
+    #text(6pt, fill: accent.darken(10%))[canonical builders]
+  ])
 
-  rbox(cx5, y-mid, col-verify, "verify",
-    [Verification],
-    subtitle: [Stage 6 contributor review])
+  // Three derivative artifacts
+  nbox(cx-art, y-top, sw, sh-box, "json", [
+    #text(7.5pt, weight: "bold")[JSON Fixtures] \
+    #v(-0.2em)
+    #text(5.5pt, fill: fg-light)[ground-truth I/O]
+  ])
 
-  // ── Top branch: JSON → PDF Manual ──
-  rbox(cx3, y-top, col-artifact, "json",
-    [JSON Fixtures],
-    subtitle: [Source · Target · Solutions])
+  nbox(cx-art, y-mid, sw, sh-box, "pdf", [
+    #text(7.5pt, weight: "bold")[Typst PDF Manual] \
+    #v(-0.2em)
+    #text(5.5pt, fill: fg-light)[diagrams · proofs]
+  ])
 
-  rbox(cx4, y-top, col-artifact, "manual",
-    [Typst PDF Manual],
-    subtitle: [Visual diagrams · Proofs])
+  nbox(cx-art, y-bot, sw, sh-box, "cli", [
+    #text(7.5pt, weight: "bold", font: "DejaVu Sans Mono")[pred --example] \
+    #v(-0.2em)
+    #text(5.5pt, fill: fg-light)[interactive demo]
+  ])
 
-  // ── Bottom branch: CLI ──
-  rbox(cx3, y-bot, col-artifact, "cli",
-    [`pred create` \ `--example`],
-    subtitle: [Interactive exploration])
+  // Verification (Stage 6)
+  nbox(cx-verify, y-mid, bw, bh, "verify", [
+    #text(8pt, weight: "bold")[Verification] \
+    #v(-0.2em)
+    #text(6pt, fill: fg-light)[stage 6 · contributor review]
+  ])
 
-  // ── Arrows ──
-  line("issue.east", "exdb.west", stroke: s, mark: arr, shorten: sh, name: "e-ext")
-  content((rel: (0, 0.45), to: "e-ext.mid"), anchor: "south",
-    text(5pt, fill: luma(40))[extract])
+  // ── Forward arrows ───────────────────────────────────────
+  // Issue → Core
+  line(
+    "issue.east", "core.west",
+    stroke: s-edge, mark: arr, shorten: sh, name: "e1",
+  )
+  content((rel: (0, 0.35), to: "e1.mid"), anchor: "south",
+    text(5.5pt, fill: fg-light)[extract])
 
-  // Fork from Example DB (orthogonal routing)
-  let fork-x = (cx2 + cx3) / 2
-  line("exdb.east", (fork-x, y-mid), (fork-x, y-top), "json.west",
-    stroke: s, mark: arr, shorten: sh)
-  line("exdb.east", (fork-x, y-mid), (fork-x, y-bot), "cli.west",
-    stroke: s, mark: arr, shorten: sh)
+  // Core → 3 artifacts (orthogonal fan-out)
+  let fork = (cx-core + cx-art) / 2
+  line("core.east", (fork, y-mid), (fork, y-top), "json.west",
+    stroke: s-edge, mark: arr, shorten: sh)
+  line("core.east", "pdf.west",
+    stroke: s-edge, mark: arr, shorten: sh, name: "e-gen")
+  line("core.east", (fork, y-mid), (fork, y-bot), "cli.west",
+    stroke: s-edge, mark: arr, shorten: sh)
+  content((rel: (0, 0.35), to: "e-gen.mid"), anchor: "south",
+    text(5.5pt, fill: fg-light)[generate])
 
-  // Top branch: JSON → PDF Manual (horizontal)
-  line("json.east", "manual.west", stroke: s, mark: arr, shorten: sh, name: "e-render")
-  content((rel: (0, 0.45), to: "e-render.mid"), anchor: "south",
-    text(5pt, fill: luma(40))[render])
+  // 3 artifacts → Verification (orthogonal fan-in)
+  let merge = (cx-art + cx-verify) / 2
+  line("json.east", (merge, y-top), (merge, y-mid), "verify.west",
+    stroke: s-edge, mark: arr, shorten: sh)
+  line("pdf.east", "verify.west",
+    stroke: s-edge, mark: arr, shorten: sh, name: "e-cmp")
+  line("cli.east", (merge, y-bot), (merge, y-mid), "verify.west",
+    stroke: s-edge, mark: arr, shorten: sh)
+  content((rel: (0, 0.35), to: "e-cmp.mid"), anchor: "south",
+    text(5.5pt, fill: fg-light)[compare])
 
-  // Merge into Verification (both at x = merge-x, between PDF and Verify)
-  let merge-x = (cx4 + cx5) / 2
-  line("manual.east", (merge-x, y-top), (merge-x, y-mid), "verify.west",
-    stroke: s, mark: arr, shorten: sh)
-  line("cli.east", (merge-x, y-bot), (merge-x, y-mid), "verify.west",
-    stroke: s, mark: arr, shorten: sh)
+  // ── Closing the loop ────────────────────────────────────
+  // Dashed accent arrow from Verification back to Issue
+  let loop-y = y-bot - 1.6
+  line(
+    "verify.south",
+    (cx-verify, loop-y),
+    (cx-issue,  loop-y),
+    "issue.south",
+    stroke: s-loop,
+    mark: arr,
+  )
+  content(
+    ((cx-issue + cx-verify) / 2, loop-y - 0.35),
+    anchor: "north",
+    text(5.5pt, fill: accent.darken(10%), style: "italic")[
+      mismatch with original issue
+    ],
+  )
 })

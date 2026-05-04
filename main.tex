@@ -726,12 +726,14 @@ MaximumIndependentSet       & 3 & $O(V^3)$            & Wireless scheduling \\
 
 \Cref{fig:skills} reproduces the two skills referenced in \Cref{sec:pipeline-overview}: \texttt{propose} (advisor skill that gates issue creation by domain experts) and \texttt{add-rule} (automation skill that drives implementation from a validated issue).
 
-\begin{figure}[h]
+\begin{figure*}[htbp]
   \centering
+  \begin{minipage}[t]{0.525\textwidth}
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
     title={\textbf{\texttt{propose}} --- advisor skill (excerpts)},
     fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt,
+    equal height group=skillbox,
   ]
   \footnotesize
   \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
@@ -755,8 +757,10 @@ description:
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Run topology analysis first} to identify the most impactful missing reductions [\ldots]\\
   \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=-5pt, belowskip=2pt, xleftmargin=4pt]
-cargo run --example detect_isolated_problems
-cargo run --example detect_unreachable_from_3sat
+cargo run --example \
+    detect_isolated_problems
+cargo run --example \
+    detect_unreachable_from_3sat
   \end{lstlisting}
   \vspace{-2pt}
   \rule{\linewidth}{0.3pt}\\[3pt]
@@ -770,20 +774,21 @@ cargo run --example detect_unreachable_from_3sat
   Only issues passing all four checks are filed.
   \end{tcolorbox}
   \label{fig:skill-propose}
-
-  \vspace{6pt}
-
+  \end{minipage}\hspace{4pt}%
+  \begin{minipage}[t]{0.445\textwidth}
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
     title={\textbf{\texttt{add-rule}} --- automation skill (excerpts)},
     fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt,
+    equal height group=skillbox,
   ]
   \footnotesize
   \begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
 ---
 name: add-rule
-description: Adding a new reduction rule to the
-  codebase, either from an issue or interactively
+description: Adding a new reduction 
+  rule to the codebase, either from 
+  an issue or interactively
 ---
   \end{lstlisting}
   \vspace{-4pt}
@@ -805,6 +810,7 @@ description: Adding a new reduction rule to the
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Reference Implementations} --- Read these first:\\
   {\ttfamily src/rules/mvc\_mis.rs} [\ldots{}]\\[3pt]
+  % {\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
   %
   \rule{\linewidth}{0.3pt}\\[3pt]
   \textbf{Document in paper.}
@@ -812,11 +818,12 @@ description: Adding a new reduction rule to the
   Run \texttt{make paper} --- must compile without errors.
   \end{tcolorbox}
   \label{fig:skill-addrule}
+  \end{minipage}
   \caption{Two skills that bookend the contribution pipeline.
-    \textbf{\texttt{propose}} (top) gates issue creation by domain experts: the hard gate enforces no-code contribution, topology analysis guides experts toward strategic reduction-graph gaps, and pre-validation checks four quality dimensions before the issue enters the pipeline.
-    \textbf{\texttt{add-rule}} (bottom) drives implementation from a validated issue: the checklist encodes the mathematical knowledge every reduction requires, reference implementations prevent convention drift, and the paper entry ensures visual verifiability by human reviewers.}
+    \textbf{\texttt{propose}} (left) gates issue creation by domain experts: the hard gate enforces no-code contribution, topology analysis guides experts toward strategic reduction-graph gaps, and pre-validation checks four quality dimensions before the issue enters the pipeline.
+    \textbf{\texttt{add-rule}} (right) drives implementation from a validated issue: the checklist encodes the mathematical knowledge every reduction requires, reference implementations prevent convention drift, and the paper entry ensures visual verifiability by human reviewers.}
   \label{fig:skills}
-\end{figure}
+\end{figure*}
 
 \newpage
 \section{Agent Profile Example}\label{app:agent-profile}
