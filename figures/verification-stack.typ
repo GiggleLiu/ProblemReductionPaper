@@ -259,10 +259,10 @@
 
   // main agent (top-left of sub-panel)
   let main-x1 = sub2-x0 + 0.20
-  let main-x2 = main-x1 + 1.40
+  let main-x2 = main-x1 + 1.20
   let main-cy = s2-cy + 0.6
   mbox(main-x1, main-cy - 0.30, main-x2, main-cy + 0.30, "main", false,
-    text(6.5pt, weight: "bold")[main agent])
+    text(6.5pt, weight: "bold")[main])
 
   // fresh-context container around sub-agent
   let fc-x1 = sub2-x0 + 2.00
