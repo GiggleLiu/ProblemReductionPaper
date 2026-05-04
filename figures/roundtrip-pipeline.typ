@@ -3,7 +3,9 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-#canvas(length: 0.40cm, {
+#let unit-len = 0.36cm
+
+#canvas(length: unit-len, {
   import draw: *
 
   // ── Box helpers ──────────────────────────────────────────
@@ -19,7 +21,7 @@
     content(
       name-id,
       anchor: "center",
-      box(width: w * 0.40cm - 8pt, align(center, body)),
+      box(width: w * unit-len - 8pt, align(center, body)),
     )
   }
 
