@@ -16,49 +16,43 @@
 #canvas(length: 1cm, {
   import draw: *
 
-  // ════════════════ PANEL A: 6-layer stack ════════════════
-  let bw = 5.2
-  let bh = 0.80
-  let gap = 0.28
-  let cap-w = 4.2
-  let cap-h = 0.75
-  let pa-cx = 0       // center x of panel A
+  // Common style helpers
+  let arr-style    = (thickness: 0.7pt, paint: luma(140))
+  let arr-mark     = (end: "straight", scale: 0.30)
+  let arr-mark-bi  = (start: "straight", end: "straight", scale: 0.28)
 
-  let n = layers.len()
-  let total-stack-h = n * bh + (n - 1) * gap
-  let stack-top-y = 0
-  let stack-bot-y = stack-top-y - total-stack-h
+  // ════════════════ PANEL A: horizontal verification stack ════════════════
+  let pa-cy = 0          // panel A row centerline
+  let bw    = 1.6
+  let bh    = 1.20
+  let gap   = 0.16
+  let cap-w = 1.55
+  let cap-h = bh
 
-  // Input cap
-  let cap-top-y = stack-top-y + 0.6
+  let pa-x0 = 0.0
+
+  // (a) label
+  content((pa-x0, pa-cy + bh / 2 + 0.30), anchor: "south-west",
+    text(9pt, weight: "bold", fill: fg)[(a)#h(0.4em) Verification stack])
+
+  // input cap (pill)
+  let in-cx = pa-x0 + cap-w / 2
   rect(
-    (pa-cx - cap-w / 2, cap-top-y),
-    (pa-cx + cap-w / 2, cap-top-y + cap-h),
+    (in-cx - cap-w / 2, pa-cy - cap-h / 2),
+    (in-cx + cap-w / 2, pa-cy + cap-h / 2),
     radius: cap-h / 2,
     fill: white,
     stroke: (thickness: 1pt, paint: fg),
     name: "input",
   )
   content("input", anchor: "center",
-    text(8pt, weight: "bold", fill: fg)[Candidate contribution])
+    text(7pt, weight: "bold")[Candidate \ contribution])
 
-  line(
-    (pa-cx, cap-top-y - 0.04),
-    (pa-cx, stack-top-y - 0.04),
-    stroke: (thickness: 1pt, paint: fg),
-    mark: (end: "straight", scale: 0.4),
-  )
-
-  // Panel A label
-  content((pa-cx - bw / 2, cap-top-y + cap-h + 0.32), anchor: "south-west",
-    text(9pt, weight: "bold", fill: fg)[(a)#h(0.4em) Verification stack])
-
-  // 6 layer blocks
-  for i in range(n) {
+  // 6 layer boxes
+  let first-cx = pa-x0 + cap-w + gap + bw / 2
+  for i in range(6) {
     let (num, name, is-novel) = layers.at(i)
-    let y-top = stack-top-y - i * (bh + gap)
-    let y-bot = y-top - bh
-    let y-mid = (y-top + y-bot) / 2
+    let cx = first-cx + i * (bw + gap)
 
     let stroke-c = if is-novel { accent } else { border }
     let fill-c   = if is-novel { accent.lighten(92%) } else { white }
@@ -66,248 +60,256 @@
     let txt-c    = if is-novel { accent.darken(20%) } else { fg }
 
     rect(
-      (pa-cx - bw / 2, y-bot),
-      (pa-cx + bw / 2, y-top),
+      (cx - bw / 2, pa-cy - bh / 2),
+      (cx + bw / 2, pa-cy + bh / 2),
       radius: 4pt,
       fill: fill-c,
       stroke: (thickness: stroke-w, paint: stroke-c),
       name: "L" + str(i),
     )
 
-    // Numbered badge
-    let badge-r = 0.24
-    let badge-x = pa-cx - bw / 2 + 0.45
+    // numbered badge in upper area
+    let badge-cy = pa-cy + bh / 2 - 0.30
     circle(
-      (badge-x, y-mid), radius: badge-r,
+      (cx, badge-cy), radius: 0.20,
       fill: if is-novel { accent } else { luma(235) },
       stroke: (thickness: 0.7pt, paint: if is-novel { accent } else { border }),
     )
-    content((badge-x, y-mid), anchor: "center",
-      text(7.5pt, weight: "bold",
+    content((cx, badge-cy), anchor: "center",
+      text(7pt, weight: "bold",
         fill: if is-novel { white } else { fg }, str(num)))
 
-    // Layer name
-    content(
-      (badge-x + badge-r + 0.25, y-mid), anchor: "west",
-      text(8.5pt, weight: "bold", fill: txt-c, name),
-    )
+    // layer name below badge (wrapped to box width)
+    content((cx, pa-cy - 0.20), anchor: "center",
+      box(width: bw * 1cm - 6pt, align(center,
+        text(7.5pt, weight: "bold", fill: txt-c, name))))
 
-    // Novel-layer indicators: accent stripe + ★
+    // ★ in top-right for novel
     if is-novel {
-      rect(
-        (pa-cx + bw / 2 - 0.16, y-bot + 0.10),
-        (pa-cx + bw / 2 - 0.06, y-top - 0.10),
-        fill: accent, stroke: none,
-      )
-      content((pa-cx + bw / 2 - 0.40, y-mid), anchor: "east",
-        text(8pt, weight: "bold", fill: accent, sym.star))
+      content((cx + bw / 2 - 0.18, pa-cy + bh / 2 - 0.18), anchor: "center",
+        text(7.5pt, weight: "bold", fill: accent, sym.star))
     }
 
-    // Arrow to next block
-    if i < n - 1 {
-      let next-top = y-bot - gap
+    // arrow to next box
+    if i < 5 {
+      let next-cx = first-cx + (i + 1) * (bw + gap)
       line(
-        (pa-cx, y-bot - 0.04),
-        (pa-cx, next-top + 0.04),
-        stroke: (thickness: 0.7pt, paint: luma(170)),
-        mark: (end: "straight", scale: 0.3),
+        (cx + bw / 2 + 0.02, pa-cy),
+        (next-cx - bw / 2 - 0.02, pa-cy),
+        stroke: arr-style, mark: arr-mark,
       )
     }
   }
 
-  // Output cap
-  let cap-bot-y = stack-bot-y - 0.6
+  // arrow input → first box
+  line(
+    (in-cx + cap-w / 2 + 0.02, pa-cy),
+    (first-cx - bw / 2 - 0.02, pa-cy),
+    stroke: arr-style, mark: arr-mark,
+  )
+
+  // output cap
+  let last-cx = first-cx + 5 * (bw + gap)
+  let out-cx = last-cx + bw / 2 + gap + cap-w / 2
   rect(
-    (pa-cx - cap-w / 2, cap-bot-y - cap-h),
-    (pa-cx + cap-w / 2, cap-bot-y),
+    (out-cx - cap-w / 2, pa-cy - cap-h / 2),
+    (out-cx + cap-w / 2, pa-cy + cap-h / 2),
     radius: cap-h / 2,
     fill: accent.lighten(88%),
     stroke: (thickness: 1.3pt, paint: accent),
     name: "output",
   )
   content("output", anchor: "center",
-    text(8pt, weight: "bold", fill: accent.darken(20%))[Verified library entry])
+    text(7pt, weight: "bold", fill: accent.darken(20%))[Verified \ library entry])
+
+  // arrow last box → output cap
   line(
-    (pa-cx, stack-bot-y - 0.04),
-    (pa-cx, cap-bot-y + 0.04),
-    stroke: (thickness: 1pt, paint: accent),
-    mark: (end: "straight", scale: 0.4),
+    (last-cx + bw / 2 + 0.02, pa-cy),
+    (out-cx - cap-w / 2 - 0.02, pa-cy),
+    stroke: (thickness: 0.85pt, paint: accent),
+    mark: (end: "straight", scale: 0.32),
   )
 
-  // ════════════════ PANEL B: mechanism diagrams ════════════════
-  let pb-x0 = pa-cx + bw / 2 + 1.5     // left edge of panel B
-  let pb-cx = pb-x0 + 3.0              // center x of panel B
-  let pb-w  = 6.0                      // overall width
+  // ════════════════ PANEL B: bottom row, two sub-panels ════════════════
+  let total-w = out-cx + cap-w / 2 - pa-x0
+  let pb-top  = pa-cy - bh / 2 - 0.85   // top of panel B area
+  let sub-h   = 3.2
+  let sub-gap = 0.40
+  let sub-w   = (total-w - sub-gap) / 2
 
-  // Soft vertical divider
-  let div-x = pa-cx + bw / 2 + 0.6
+  let sub1-x0 = pa-x0
+  let sub2-x0 = pa-x0 + sub-w + sub-gap
+
+  // soft horizontal divider
   line(
-    (div-x, cap-top-y + cap-h + 0.5),
-    (div-x, cap-bot-y - cap-h - 0.4),
+    (pa-x0, pa-cy - bh / 2 - 0.45),
+    (pa-x0 + total-w, pa-cy - bh / 2 - 0.45),
     stroke: (thickness: 0.5pt, paint: luma(220), dash: "dotted"),
   )
 
-  // Panel B label (top)
-  content((pb-x0, cap-top-y + cap-h + 0.32), anchor: "south-west",
-    text(9pt, weight: "bold", fill: fg)[(b)#h(0.4em) How the novel layers act])
+  // (b) label
+  content((pa-x0, pb-top + 0.05), anchor: "south-west",
+    text(9pt, weight: "bold", fill: fg)[(b)#h(0.4em) How layers 4 and 5 act])
 
-  // Helpers for compact mechanism boxes
-  let mb-fill   = white
-  let mb-stroke = (thickness: 0.85pt, paint: border)
-  let mb-fill-a = accent.lighten(92%)
-  let mb-stroke-a = (thickness: 1.1pt, paint: accent)
+  // shared block helpers (small mechanism boxes)
+  let mb-stroke-n = (thickness: 0.85pt, paint: border)
+  let mb-stroke-a = (thickness: 1.1pt,  paint: accent)
+  let mb-fill-n   = white
+  let mb-fill-a   = accent.lighten(92%)
 
-  let mbox(cx, cy, w, h, name-id, body) = {
+  let mbox(x1, y1, x2, y2, name-id, is-accent, body) = {
     rect(
-      (cx - w / 2, cy - h / 2),
-      (cx + w / 2, cy + h / 2),
+      (x1, y1), (x2, y2),
       radius: 3pt,
-      fill: mb-fill,
-      stroke: mb-stroke,
+      fill: if is-accent { mb-fill-a } else { mb-fill-n },
+      stroke: if is-accent { mb-stroke-a } else { mb-stroke-n },
       name: name-id,
     )
     content(name-id, anchor: "center",
-      box(width: w * 1cm - 6pt, align(center, body)))
-  }
-  let mbox-a(cx, cy, w, h, name-id, body) = {
-    rect(
-      (cx - w / 2, cy - h / 2),
-      (cx + w / 2, cy + h / 2),
-      radius: 3pt,
-      fill: mb-fill-a,
-      stroke: mb-stroke-a,
-      name: name-id,
-    )
-    content(name-id, anchor: "center",
-      box(width: w * 1cm - 6pt, align(center, body)))
+      box(width: (x2 - x1) * 1cm - 5pt, align(center, body)))
   }
 
-  let arr-style = (thickness: 0.7pt, paint: luma(120))
-  let arr-mark  = (end: "straight", scale: 0.3)
+  // ─────────── (b.i) Layer 4: round-trip ───────────
+  let s1-top = pb-top - 0.65   // y just below the (b) label
+  let s1-bot = s1-top - sub-h
+  let s1-cy  = (s1-top + s1-bot) / 2 - 0.10
 
-  // ─── (b.i) Round-trip mechanism ────────────────────────
-  // Shown as: contributor's example fans out to 3 artifacts,
-  // each compared back to the original.
-  let s1-cy = stack-top-y - 1.6   // sub-panel center y
-  let s1-title-y = s1-cy + 1.55
-
-  content((pb-x0, s1-title-y + 0.30), anchor: "west",
+  // sub-panel title
+  content((sub1-x0, s1-top - 0.05), anchor: "north-west",
     text(7.5pt, weight: "bold", fill: accent.darken(20%))[
       #sym.star Layer 4 · Round-trip test
     ])
-  content((pb-x0, s1-title-y - 0.05), anchor: "west",
+  content((sub1-x0, s1-top - 0.40), anchor: "north-west",
     text(6.5pt, fill: fg-light, style: "italic")[
       acts on internal artifacts: do they all reflect the same example?
     ])
 
-  // canonical example (left, accent — it's the test's anchor)
-  mbox-a(pb-x0 + 0.85, s1-cy, 1.65, 0.75, "ex",
-    text(7pt, weight: "bold", fill: accent.darken(20%))[canonical \ example])
+  // canonical example (left, accent)
+  let ex-x1 = sub1-x0 + 0.20
+  let ex-x2 = ex-x1 + 1.55
+  let ex-y1 = s1-cy - 0.40
+  let ex-y2 = s1-cy + 0.40
+  mbox(ex-x1, ex-y1, ex-x2, ex-y2, "ex", true,
+    text(7pt, weight: "bold", fill: accent.darken(20%))[
+      canonical \ example
+    ])
 
-  // 3 derived artifacts (middle column, stacked)
-  let art-cx = pb-x0 + 3.0
+  // 3 derived artifacts in a vertical column
+  let art-x1 = sub1-x0 + 2.55
+  let art-x2 = art-x1 + 1.45
   let art-y-step = 0.65
-  mbox(art-cx, s1-cy + art-y-step, 1.45, 0.50, "art-json",
-    text(6.5pt, weight: "bold")[JSON fixture])
-  mbox(art-cx, s1-cy,                1.45, 0.50, "art-pdf",
-    text(6.5pt, weight: "bold")[PDF manual])
-  mbox(art-cx, s1-cy - art-y-step,   1.45, 0.50, "art-cli",
-    text(6.5pt, weight: "bold")[CLI demo])
+  let art-h = 0.45
 
-  // example fans out to artifacts (orthogonal)
-  let f1-x = (pb-x0 + 0.85 + 1.65 / 2 + art-cx - 1.45 / 2) / 2
-  line("ex.east", (f1-x, s1-cy), (f1-x, s1-cy + art-y-step), "art-json.west",
+  let art-labels = ("JSON fixture", "PDF manual", "CLI demo")
+  for (i, lab) in art-labels.enumerate() {
+    let cy = s1-cy + (1 - i) * art-y-step
+    mbox(art-x1, cy - art-h / 2, art-x2, cy + art-h / 2,
+      "art" + str(i), false,
+      text(6.5pt, weight: "bold")[#lab])
+  }
+
+  // verify (right, accent)
+  let ver-x1 = sub1-x0 + sub-w - 1.55
+  let ver-x2 = ver-x1 + 1.30
+  mbox(ver-x1, s1-cy - 0.40, ver-x2, s1-cy + 0.40, "ver", true,
+    text(6.5pt, weight: "bold", fill: accent.darken(20%))[
+      match the \ example?
+    ])
+
+  // example fans out
+  let f-x = (ex-x2 + art-x1) / 2
+  line("ex.east", (f-x, s1-cy), (f-x, s1-cy + art-y-step), "art0.west",
     stroke: arr-style, mark: arr-mark)
-  line("ex.east", "art-pdf.west",
-    stroke: arr-style, mark: arr-mark, name: "ef-pdf")
-  line("ex.east", (f1-x, s1-cy), (f1-x, s1-cy - art-y-step), "art-cli.west",
+  line("ex.east", "art1.west",
+    stroke: arr-style, mark: arr-mark, name: "ef")
+  line("ex.east", (f-x, s1-cy), (f-x, s1-cy - art-y-step), "art2.west",
     stroke: arr-style, mark: arr-mark)
-  content((rel: (0, 0.18), to: "ef-pdf.mid"), anchor: "south",
+  content((rel: (0, 0.16), to: "ef.mid"), anchor: "south",
     text(5.5pt, fill: fg-light)[generate])
 
-  // dashed comparison arrows from each artifact back to "ex"
-  let m1-x = pb-x0 + pb-w - 0.5
-  // verify node on the right
-  mbox-a(m1-x, s1-cy, 1.0, 0.75, "ver",
-    text(6.5pt, weight: "bold", fill: accent.darken(20%))[match \ example?])
-
-  line("art-json.east", (m1-x - 0.85, s1-cy + art-y-step), (m1-x - 0.85, s1-cy), "ver.west",
+  // artifacts converge to verify
+  let m-x = ver-x1 - 0.28
+  line("art0.east", (m-x, s1-cy + art-y-step), (m-x, s1-cy), "ver.west",
     stroke: arr-style, mark: arr-mark)
-  line("art-pdf.east", "ver.west",
+  line("art1.east", "ver.west",
     stroke: arr-style, mark: arr-mark)
-  line("art-cli.east", (m1-x - 0.85, s1-cy - art-y-step), (m1-x - 0.85, s1-cy), "ver.west",
+  line("art2.east", (m-x, s1-cy - art-y-step), (m-x, s1-cy), "ver.west",
     stroke: arr-style, mark: arr-mark)
 
-  // ─── (b.ii) Agentic feature mechanism ──────────────────
-  let s2-cy = stack-top-y - 5.5
-  let s2-title-y = s2-cy + 1.85
+  // ─────────── (b.ii) Layer 5: agentic feature ───────────
+  let s2-top = s1-top
+  let s2-bot = s1-bot
+  let s2-cy  = s1-cy
 
-  content((pb-x0, s2-title-y + 0.30), anchor: "west",
+  // sub-panel title
+  content((sub2-x0, s2-top - 0.05), anchor: "north-west",
     text(7.5pt, weight: "bold", fill: accent.darken(20%))[
       #sym.star Layer 5 · Agentic feature test
     ])
-  content((pb-x0, s2-title-y - 0.05), anchor: "west",
+  content((sub2-x0, s2-top - 0.40), anchor: "north-west",
     text(6.5pt, fill: fg-light, style: "italic")[
       acts on the CLI surface: a fresh sub-agent uses it end-to-end
     ])
 
-  // Main agent on the left
-  mbox(pb-x0 + 0.85, s2-cy + 0.6, 1.65, 0.55, "main",
+  // main agent (top-left of sub-panel)
+  let main-x1 = sub2-x0 + 0.20
+  let main-x2 = main-x1 + 1.40
+  let main-cy = s2-cy + 0.6
+  mbox(main-x1, main-cy - 0.30, main-x2, main-cy + 0.30, "main", false,
     text(6.5pt, weight: "bold")[main agent])
 
-  // Fresh-context container (dashed) holding sub-agent
-  let fc-x1 = pb-x0 + 1.95
-  let fc-x2 = pb-x0 + 4.95
-  let fc-y1 = s2-cy + 1.1
-  let fc-y2 = s2-cy - 1.0
+  // fresh-context container around sub-agent
+  let fc-x1 = sub2-x0 + 2.00
+  let fc-x2 = sub2-x0 + 4.30
+  let fc-y2 = s2-cy + 0.20
+  let fc-y1 = s2-cy + 1.00
   rect(
     (fc-x1, fc-y2), (fc-x2, fc-y1),
     radius: 4pt,
     fill: luma(248),
     stroke: (thickness: 0.7pt, paint: fg-light, dash: "dashed"),
-    name: "fc",
   )
-  content((fc-x1 + 0.12, fc-y1 - 0.15), anchor: "north-west",
+  content((fc-x1 + 0.10, fc-y1 - 0.08), anchor: "north-west",
     text(5pt, fill: fg-light, style: "italic")[fresh context])
 
-  // sub-agent inside fresh context (accent — this is the novel mechanism's heart)
-  mbox-a((fc-x1 + fc-x2) / 2, s2-cy + 0.45, 2.4, 0.55, "sub",
-    text(6.5pt, weight: "bold", fill: accent.darken(20%))[sub-agent + persona])
+  // sub-agent inside the fresh-context box
+  let sub-x1 = fc-x1 + 0.20
+  let sub-x2 = fc-x2 - 0.20
+  let sub-cy = (fc-y1 + fc-y2) / 2 - 0.05
+  mbox(sub-x1, sub-cy - 0.22, sub-x2, sub-cy + 0.22, "sub", true,
+    text(6.5pt, weight: "bold", fill: accent.darken(20%))[
+      sub-agent + persona
+    ])
 
-  // CLI inside fresh context (the surface being probed)
-  mbox((fc-x1 + fc-x2) / 2, s2-cy - 0.5, 2.4, 0.5, "cli",
+  // CLI surface (right of fresh-context, on main row)
+  let cli-x1 = fc-x2 + 0.30
+  let cli-x2 = sub2-x0 + sub-w - 0.20
+  mbox(cli-x1, main-cy - 0.30, cli-x2, main-cy + 0.30, "cli", false,
     text(6.5pt, weight: "bold")[CLI surface])
 
-  // Report on the right
-  mbox(pb-x0 + 5.7, s2-cy + 0.6, 1.4, 0.55, "rep",
-    text(6.5pt, weight: "bold")[report])
+  // report (bottom-center of sub-panel)
+  let rep-cx = (sub2-x0 + (sub2-x0 + sub-w)) / 2
+  let rep-x1 = rep-cx - 0.85
+  let rep-x2 = rep-cx + 0.85
+  let rep-cy = s2-cy - 0.95
+  mbox(rep-x1, rep-cy - 0.27, rep-x2, rep-cy + 0.27, "rep", false,
+    text(6.5pt, weight: "bold")[report (usability + semantics)])
 
-  // arrows: main → sub (spawn), sub ↔ cli (probe), sub → main (interview), main → report
+  // arrows: main → sub (spawn)
   line("main.east", "sub.west",
     stroke: arr-style, mark: arr-mark, name: "e-spawn")
-  content((rel: (0, 0.18), to: "e-spawn.mid"), anchor: "south",
+  content((rel: (0, 0.16), to: "e-spawn.mid"), anchor: "south",
     text(5.5pt, fill: fg-light)[spawn])
 
-  // sub ↔ cli: paired arrows
-  line(
-    (rel: (-0.4, 0), to: "sub.south"),
-    (rel: (-0.4, 0), to: "cli.north"),
-    stroke: arr-style, mark: arr-mark,
-  )
-  line(
-    (rel: ( 0.4, 0), to: "cli.north"),
-    (rel: ( 0.4, 0), to: "sub.south"),
-    stroke: arr-style, mark: arr-mark,
-  )
-  content(
-    ((fc-x1 + fc-x2) / 2 + 0.95, (s2-cy + 0.45 - 0.275 + s2-cy - 0.5 + 0.25) / 2),
-    anchor: "west",
-    text(5.5pt, fill: fg-light)[probe \ end-to-end],
-  )
+  // sub ↔ CLI (probe end-to-end) — bidirectional
+  line("sub.east", "cli.west",
+    stroke: arr-style, mark: arr-mark-bi, name: "e-probe")
+  content((rel: (0, 0.16), to: "e-probe.mid"), anchor: "south",
+    text(5.5pt, fill: fg-light)[probe])
 
   // sub → report (interview)
-  line("sub.east", "rep.west",
+  line("sub.south", "rep.north",
     stroke: arr-style, mark: arr-mark, name: "e-int")
-  content((rel: (0, 0.18), to: "e-int.mid"), anchor: "south",
+  content((rel: (0.14, 0), to: "e-int.mid"), anchor: "west",
     text(5.5pt, fill: fg-light)[interview])
 })
