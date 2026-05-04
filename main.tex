@@ -691,6 +691,37 @@ Problem variants and reduction rules compose into the directed graph described i
 For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both reduction traits with an identity solution map.
 At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the reduction-graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 
+\section{CLI Reference}\label{app:cli}
+
+Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem, finding the largest set of vertices with no two adjacent.
+The conflict graph encodes spatial constraints: vertices are candidate locations, edges connect locations that are too close.
+\Cref{lst:cli-session} shows how one solves this instance with an ILP solver.
+% \begin{figure}[t]
+% \lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},moredelim=[is][\color{black!80}\bfseries]{@}{@},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
+% \begin{lstlisting}
+% # Create a conflict graph (4 locations, 3 conflicts),
+% # reduce to ILP, and solve
+% @$ pred create MIS --graph 0-1,1-2,2-3 \
+%     | pred reduce - --to ILP \
+%     | pred solve -@
+% Problem: "MaximumIndependentSet"
+% Solver: ilp (via ILP)
+% Solution: [1, 0, 0, 1]  // locations 0 and 3
+% Evaluation: "Max(2)"    // 2 non-conflicting bins
+% \end{lstlisting}
+% \caption{CLI using example: creating and solving a Maximum Independent Set instance via reduction to integer linear programming (ILP).
+%   Commands communicate via Unix pipes (\texttt{|}), reading JSON from stdin (\texttt{-}) and writing JSON to stdout, so they compose without intermediate files.}
+% \label{lst:cli-session}
+% \end{figure}
+
+Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types.
+\texttt{pred show} prints a problem's definition and neighboring reductions.
+\texttt{pred list} lists all registered problem types with their complexities.
+\texttt{pred evaluate} scores a candidate configuration against any problem instance, useful for verifying solutions independently of the solver.
+
+Each PDF manual entry contains a formal definition, a proof sketch, and a worked example with visualization.
+The example is the same canonical instance that the contributor provided in the original issue.
+
 \section{Solver Coverage: QUBO}\label{app:qubo-coverage}
 
 Specialized hardware for combinatorial optimization is one of the fastest-growing frontiers of AI infrastructure.
