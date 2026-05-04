@@ -435,15 +435,14 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 
 \subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by five layers: issue review (Stage~2), compile-time type checks, unit and integration tests, agentic feature tests (Stage~4), and manual verification (Stage~6).
-The first three and the last are standard; agentic feature tests, the only mechanism we claim as novel, are described below.
+Correctness is enforced by six layers: issue review (Stage~2), compile-time type checks, unit tests, round-trip tests, agentic feature tests (Stage~4), and manual verification (Stage~6).
+Five of these follow standard practice; we restate the round-trip pattern briefly because it is the verification gate the reduction-graph design supplies for free, and then describe the only mechanism we claim as novel, agentic feature tests.
 
-\textbf{Canonical examples as the test oracle.}
-A prerequisite for the pipeline is that every issue carries a small, fully worked instance with a known solution.
-This canonical example feeds the example database as a builder function.
-For each reduction $A \to B$, an integration test then exercises the registered solution lifter using this example: build $A$, reduce to $B$, solve $B$ by brute force, lift a witness back to $A$, and assert it is feasible against $A$'s own evaluator (and, where a Python-computed fixture is available, optimal).
-The same builder also feeds the JSON fixtures, the Typst PDF manual's diagrams, and the CLI's \texttt{pred create -{}-example} mode (\Cref{fig:example-pipeline}), so the contributor's mathematical intent reaches every downstream artifact through a single source.
-The walkthrough at Stage~6 closes that loop on the human side.
+\textbf{Round-trip tests.}
+Every issue carries a small canonical example with a known solution, encoded in the example database as a builder function.
+For each reduction $A \to B$, an integration test exercises the registered solution lifter against this example: build $A$, reduce to $B$, solve $B$ by brute force, lift a witness back to $A$, and assert it is feasible against $A$'s own evaluator (and, when an externally computed Python fixture is available, equal to the canonical optimum).
+The same builder feeds outside the test harness as well: the JSON fixtures, the Typst PDF manual's diagrams, and the CLI's \texttt{pred create -{}-example} mode (\Cref{fig:example-pipeline}) all share this single source.
+The Stage~6 walkthrough then closes the loop on the human side, catching mismatches that the automated oracle cannot see (e.g., a builder that quietly encodes a different problem from the one in the issue).
 
 \begin{figure}[t]
   \centering
