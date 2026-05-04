@@ -258,16 +258,14 @@ The library implements the reduction graph as a Rust crate, organized in three l
 \subsection{Interfaces}\label{sec:user-interfaces}
 
 The library ships with a command-line interface (CLI), \texttt{pred}, as the primary entry point.
-The three commands compose through Unix pipes: \texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it to a target formulation, and \texttt{solve} invokes a solver.
+The three commands compose through Unix pipes: \texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it to a target formulation, and \texttt{solve} invokes a solver. See Appendix~\ref{app:cli} for a worked CLI session and the full subcommand list.
 
 The build system also produces a PDF manual from Typst source.
 The manual serves two audiences: domain experts reviewing the mathematical content, and agents reading it as reference material during implementation.
 
-See \Cref{app:cli} for a worked CLI session and the full subcommand list.
+\subsection{Library Layer}\label{sec:graph-structure}
 
-\subsection{Infrastructure}\label{sec:graph-structure}
-
-The infrastructure layer (\Cref{fig:library-architecture}) comprises five modules: problem types, reduction rules between them, a database of canonical instances for testing and documentation, backend solvers for exact verification, and a symbolic engine for analyzing computational complexity.
+The library layer (\Cref{fig:library-architecture}) registers the reduction graph itself: problem types, reduction rules between them, and a database of canonical instances for testing and documentation.
 
 \emph{Problem types.}
 Every problem type implements a uniform interface for problems, such as input domain, solution type and \emph{size measures}.
@@ -277,7 +275,7 @@ Each variant occupies a distinct node in the reduction graph.
 For instance, general MIS requires $O(1.1996^{|V|})$ time, whereas MIS on unit disk graphs admits a $2^{O(\sqrt{|V|})}$ algorithm, which is subexponential, unlike the general case~\cite{deBerg2020ETHTight}.
 
 \emph{Reduction rules.}
-Each rule requires two mappings, a forward map and an inverse map. The forward map converts a source problem instance to a target problem instance. 
+Each rule requires two mappings, a forward map and an inverse map. The forward map converts a source problem instance to a target problem instance.
 After solving the target problem, the inverse map extracts source solutions from target solutions.
 Each rule also carries a \emph{reduction overhead}: a set of multivariate polynomials mapping the source's size measures to the target's.
 For example, the 3-SAT $\to$ MIS reduction creates one vertex per literal occurrence in the formula, yielding $O(L)$ vertices and $O(L^2)$ edges where $L$ is the total number of literal occurrences.
@@ -286,12 +284,16 @@ For example, the 3-SAT $\to$ MIS reduction creates one vertex per literal occurr
 Canonical instances serve as the single source of truth.
 The same instance feeds round-trip tests, worked examples in the PDF manual, and the \texttt{pred create --example} command for interactive exploration.
 
+\subsection{Infrastructure Layer}\label{sec:infrastructure}
+
+The infrastructure layer provides the computational backends that the library layer builds on: backend solvers for exact verification, and a symbolic engine for analyzing computational complexity.
+
 \emph{Solvers.}
 Every problem type needs a minimal but reasonably efficient solver, because round-trip testing requires solving each problem exactly.
 Most types (e.g., Maximum Independent Set, Traveling Salesman, flow-shop scheduling) have a reduction path to ILP.
 The default validation strategy reduces the problem to ILP and solves it with HiGHS~\cite{Huangfu2018HiGHS}, an open-source solver.
 For problems without an ILP path, the library provides customized exact solvers that exploit problem structure---for example, functional-dependency closure for Minimum Cardinality Key~\cite{Lucchesi1978CandidateKeys}, and cycle enumeration with branch-and-bound for Partial Feedback Edge Set~\cite{Baharev2021FeedbackArcSet}.
-The remaining problems fall back to brute-force enumeration on small instances. 
+The remaining problems fall back to brute-force enumeration on small instances.
 
 \emph{Symbolic engine.}
 Both reduction overheads and algorithm complexities are represented as symbolic expressions.
@@ -620,6 +622,37 @@ To tame this variance, \emph{harness engineering}~\cite{OpenAI2026HarnessEnginee
 Persistent project instructions and composable skills~\cite{Claude2026AgentSkills, Obra2025Superpowers} keep agents aligned with repository conventions across sessions; verification pipelines reject incorrect output before it enters the codebase.
 Our approach instantiates this pattern for a mathematical domain, exploiting the project's uniform, verifiable structure so that each agent invocation is short, self-contained, and human-reviewable.
 
+\section{CLI Reference}\label{app:cli}
+
+Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem, finding the largest set of vertices with no two adjacent.
+The conflict graph encodes spatial constraints: vertices are candidate locations, edges connect locations that are too close.
+\Cref{lst:cli-session} shows how one solves this instance with an ILP solver.
+\begin{figure}[t]
+\lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},moredelim=[is][\color{black!80}\bfseries]{@}{@},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
+\begin{lstlisting}
+# Create a conflict graph (4 locations, 3 conflicts),
+# reduce to ILP, and solve
+@$ pred create MIS --graph 0-1,1-2,2-3 \
+    | pred reduce - --to ILP \
+    | pred solve -@
+Problem: "MaximumIndependentSet"
+Solver: ilp (via ILP)
+Solution: [1, 0, 0, 1]  // locations 0 and 3
+Evaluation: "Max(2)"    // 2 non-conflicting bins
+\end{lstlisting}
+\caption{CLI using example: creating and solving a Maximum Independent Set instance via reduction to integer linear programming (ILP).
+  Commands communicate via Unix pipes (\texttt{|}), reading JSON from stdin (\texttt{-}) and writing JSON to stdout, so they compose without intermediate files.}
+\label{lst:cli-session}
+\end{figure}
+
+Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types.
+\texttt{pred show} prints a problem's definition and neighboring reductions.
+\texttt{pred list} lists all registered problem types with their complexities.
+\texttt{pred evaluate} scores a candidate configuration against any problem instance, useful for verifying solutions independently of the solver.
+
+Each PDF manual entry contains a formal definition, a proof sketch, and a worked example with visualization.
+The example is the same canonical instance that the contributor provided in the original issue.
+
 \section{Implementation Details}\label{app:architecture}
 
 The library's type system reduces the space of possible agent errors by making incorrect code fail to compile.
@@ -690,37 +723,6 @@ Brute force remains essential for round-trip testing, where correctness matters 
 Problem variants and reduction rules compose into the directed graph described in \Cref{sec:graph-structure}.
 For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both reduction traits with an identity solution map.
 At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the reduction-graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
-
-\section{CLI Reference}\label{app:cli}
-
-Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem, finding the largest set of vertices with no two adjacent.
-The conflict graph encodes spatial constraints: vertices are candidate locations, edges connect locations that are too close.
-\Cref{lst:cli-session} shows how one solves this instance with an ILP solver.
-\begin{figure}[t]
-\lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},moredelim=[is][\color{black!80}\bfseries]{@}{@},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
-\begin{lstlisting}
-# Create a conflict graph (4 locations, 3 conflicts),
-# reduce to ILP, and solve
-@$ pred create MIS --graph 0-1,1-2,2-3 \
-    | pred reduce - --to ILP \
-    | pred solve -@
-Problem: "MaximumIndependentSet"
-Solver: ilp (via ILP)
-Solution: [1, 0, 0, 1]  // locations 0 and 3
-Evaluation: "Max(2)"    // 2 non-conflicting bins
-\end{lstlisting}
-\caption{CLI using example: creating and solving a Maximum Independent Set instance via reduction to integer linear programming (ILP).
-  Commands communicate via Unix pipes (\texttt{|}), reading JSON from stdin (\texttt{-}) and writing JSON to stdout, so they compose without intermediate files.}
-\label{lst:cli-session}
-\end{figure}
-
-Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types.
-\texttt{pred show} prints a problem's definition and neighboring reductions.
-\texttt{pred list} lists all registered problem types with their complexities.
-\texttt{pred evaluate} scores a candidate configuration against any problem instance, useful for verifying solutions independently of the solver.
-
-Each PDF manual entry contains a formal definition, a proof sketch, and a worked example with visualization.
-The example is the same canonical instance that the contributor provided in the original issue.
 
 \section{Solver Coverage: QUBO}\label{app:qubo-coverage}
 
