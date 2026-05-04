@@ -677,7 +677,7 @@ When the user invokes \texttt{pred solve}, the system selects a solver in priori
 First, if the problem has a dedicated solver that exploits its structure (currently six problem types), the system uses it.
 Second, if a witness-capable reduction path to Integer Linear Programming (ILP) exists, the system reduces along the cheapest path (by Dijkstra) and solves with HiGHS.
 Third, the brute-force enumerator is always available: it folds over all configurations using the aggregation interface.
-Brute force remains essential for round-trip testing, where correctness matters more than speed.
+\textcolor{red}{Brute force remains essential for round-trip testing, where correctness matters more than speed.}
 
 \paragraph{Reduction graph construction.}
 Problem variants and reduction rules compose into the directed graph described in \Cref{sec:graph-structure}.
