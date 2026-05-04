@@ -245,7 +245,7 @@ The harness rests on three components:
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.95\columnwidth]{figures/library-architecture.pdf}
+  \includegraphics[width=0.85\columnwidth]{figures/library-architecture.pdf}
   \caption{System architecture.
     Three layers separate concerns: the interface layer (top) is what users and agents touch, the library layer (middle) holds the reduction graph itself, and the infrastructure layer (bottom) provides the computational backends---solvers for instances and a symbolic engine for overhead and complexity.}
   \label{fig:library-architecture}
@@ -318,6 +318,16 @@ Incremental compilation and the built-in test harness produce results in seconds
 %======================================================================
 %  SECTION 4: SKILLS AND AUTOMATION
 %======================================================================
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/skill-map.pdf}
+  \caption{Skills architecture.
+    Blue boxes are \emph{advisor} skills (human in the loop); white boxes are \emph{automation} skills (fully autonomous).
+    Both are executed by agents, but humans are more involved when advisor skills are loaded.}
+  \label{fig:skill-architecture}
+  \end{figure}
+
+
 \section{Harness Design}\label{sec:method}
 
 \subsection{Anatomy of the Harness}\label{sec:skills}
@@ -354,17 +364,6 @@ For maintainers, they can invoke the \texttt{fix-issue} skill to identify potent
 They can also invoke the \texttt{final-review} skill to identify potential dangerous commits, check for correctness gap and address them interactively.
 These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.'' 
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{figures/skill-map.pdf}
-\caption{Skills architecture.
-  Blue boxes are \emph{advisor} skills (human in the loop); white boxes are \emph{automation} skills (fully autonomous).
-  Both are executed by agents, but humans are more involved when advisor skills are loaded.}
-\label{fig:skill-architecture}
-\end{figure}
-
-\subsection{What Cannot Be Delegated}\label{sec:human-responsibilities}
-
 \begin{wrapfigure}{r}{0.45\textwidth}
   \vspace{-\intextsep}
   \centering
@@ -372,6 +371,8 @@ These skills lower the usage barrier from ``knows the library'' to ``knows the p
   \caption{Delegation spectrum. Tasks sorted from fully human (top) to fully automated (bottom); bars show the human--agent split.}
   \label{fig:delegation-spectrum}
 \end{wrapfigure}
+
+\subsection{What Cannot Be Delegated}\label{sec:human-responsibilities}
 
 Four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
 Selecting which rules to pursue requires understanding the needs of the community; the human is the information source.
@@ -522,7 +523,6 @@ Bare AI + web                        & 9.70 & 2/4 & 36{,}942 & 85.3 \\
 \subsection{Conclusion}
 
 In about three months, a small team and AI agents built a verified reduction graph with 100+ problem types and 200+ reduction rules.
-The catalog itself is a practical contribution to combinatorial optimization: any of the 129~problems with an ILP path can be solved end-to-end through a single \texttt{pred} invocation.
 More than the size of the artifact, we take this as evidence that a well-designed harness system can change how scientific software is built. The \emph{scaffold} gives every
 agent session the same experimental conditions, while \emph{skills}
 turn recurring engineering work into a repeatable flow, unlocking a level of productivity that manual
