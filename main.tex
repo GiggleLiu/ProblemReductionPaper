@@ -161,7 +161,9 @@ Each verified reduction is a bridge connecting a new problem to an existing solv
   \vspace{-\baselineskip}
   \centering
   \includegraphics[width=0.4\textwidth]{figures/reduction-graph-concept.pdf}
-  \caption{The reduction graph.  Two anchor problems are highlighted: \emph{3-SAT} at the top and \emph{Integer linear programming (ILP)} at the bottom right.  Edge labels are reduction overheads $r_{\cdot \leftarrow \cdot}$; node labels like $t_S$, $t_I$ denote the time complexity of the node's best known solver.}
+  \caption{The reduction graph.
+    Nodes are problem types; edges are primitive reductions labeled by overhead.
+    Highlighted anchors show paths from 3-SAT for NP-hardness and paths to ILP for solver access.}
   \label{fig:reduction-graph-concept}
   \vspace{-\baselineskip}
 \end{wrapfigure}
@@ -228,9 +230,9 @@ Together, scaffold and skills form a domain-specific harness that addresses both
   \centering
   \includegraphics[width=\columnwidth]{figures/main.pdf}
   \caption{Overview.
-    (a) Many solvers exist, and a problem can usually reach several of them through different reductions, but this knowledge is scattered across the literature without a unified executable framework.
-    (b) A harness-engineered agentic workflow turns a structured GitHub issue into validated code through implementation and review agents under a four-layer verification stack.
-    (c) Three months of this pipeline produced a reduction graph with 190 problem types and 265 rules; the inset shows growth over time.}
+    (a) A reduction graph routes hard problems to multiple solver backends.
+    (b) A harness-engineered workflow turns structured issues into validated code.
+    (c) The resulting library grows rapidly once the automated pipeline is in place.}
   \label{fig:overview}
 \end{figure}
 
@@ -247,7 +249,7 @@ The harness rests on three components:
   \centering
   \includegraphics[width=0.85\columnwidth]{figures/library-architecture.pdf}
   \caption{System architecture.
-    Three layers separate concerns: the interface layer (top) is what users and agents touch, the library layer (middle) holds the reduction graph itself, and the infrastructure layer (bottom) provides the computational backends---solvers for instances and a symbolic engine for overhead and complexity.}
+    The interface layer exposes user and agent entry points; the library layer stores the reduction graph; the infrastructure layer supplies solvers and symbolic complexity analysis.}
   \label{fig:library-architecture}
 \end{figure}
 
@@ -389,10 +391,9 @@ Authorizing merges is security critical; a human with long-term memory must be r
 \begin{figure*}[htbp]
   \centering
   \includegraphics[width=\textwidth]{figures/pipeline.pdf}
-  \caption{Contribution pipeline as a state machine on the GitHub project board.
-    Each box is a board column (state); arrows show the single allowed transition direction.
-    Four roles drive the flow: a \emph{domain expert} files issues (orange), a \emph{maintainer} triages and merges (orange), an \emph{implementation agent} picks issues and creates PRs (blue), and a \emph{review agent} runs parallel reviews and posts verdicts (teal).
-    If any stage fails, the item moves to On~Hold (not shown) for human triage.}
+  \caption{Contribution pipeline as a GitHub project-board state machine.
+    Boxes are board columns, and arrows show the allowed transition direction.
+    Colors indicate the responsible role at each stage.}
   \label{fig:pipeline}
 \end{figure*}
 
