@@ -435,8 +435,7 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 
 \subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by four automated layers: issue review (Stage~2), compile-time type checks, unit tests, and agentic feature tests (Stage~4).
-The first three are standard; only agentic feature tests, described below, are novel to this work.
+Correctness is enforced by four automated layers: issue review (Stage~2), compile-time type checks, unit tests, and our \emph{agentic feature tests} (Stage~4)---a new layer we introduce and describe in detail below.
 
 \textbf{Agentic feature tests.}
 Libraries normally stabilize through community use, but a niche library cannot wait for that community to form.
