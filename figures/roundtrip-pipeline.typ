@@ -119,10 +119,10 @@
   line("core.east", (fork, y-mid), (fork, y-top), "json.west",
     stroke: s-edge, mark: arr, shorten: sh)
   line("core.east", "pdf.west",
-    stroke: s-edge, mark: arr, shorten: sh, name: "e-gen")
+    stroke: s-edge, mark: arr, shorten: sh)
   line("core.east", (fork, y-mid), (fork, y-bot), "cli.west",
     stroke: s-edge, mark: arr, shorten: sh)
-  content((rel: (0, 0.35), to: "e-gen.mid"), anchor: "south",
+  content((fork, y-top + 0.55), anchor: "south",
     text(5.5pt, fill: fg-light)[generate])
 
   // 3 artifacts → Verification (orthogonal fan-in)
@@ -130,11 +130,11 @@
   line("json.east", (merge, y-top), (merge, y-mid), "verify.west",
     stroke: s-edge, mark: arr, shorten: sh)
   line("pdf.east", "verify.west",
-    stroke: s-edge, mark: arr, shorten: sh, name: "e-cmp")
+    stroke: s-edge, mark: arr, shorten: sh)
   line("cli.east", (merge, y-bot), (merge, y-mid), "verify.west",
     stroke: s-edge, mark: arr, shorten: sh)
-  content((rel: (0, 0.35), to: "e-cmp.mid"), anchor: "south",
-    text(5.5pt, fill: fg-light)[compare])
+  content((merge, y-top + 0.55), anchor: "south",
+    text(5.5pt, fill: fg-light)[contributor compares])
 
   // ── Closing the loop ────────────────────────────────────
   // Dashed accent arrow from Verification back to Issue
