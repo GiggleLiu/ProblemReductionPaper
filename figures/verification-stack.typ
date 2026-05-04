@@ -297,16 +297,16 @@
   mbox(rep-x1, rep-cy - 0.27, rep-x2, rep-cy + 0.27, "rep", false,
     text(6.5pt, weight: "bold")[report (usability + semantics)])
 
-  // arrows: main → sub (spawn)
+  // arrows: main → sub (spawn) — label below the arrow
   line("main.east", "sub.west",
     stroke: arr-style, mark: arr-mark, name: "e-spawn")
-  content((rel: (0, 0.16), to: "e-spawn.mid"), anchor: "south",
+  content((rel: (0, -0.14), to: "e-spawn.mid"), anchor: "north",
     text(5.5pt, fill: fg-light)[spawn])
 
-  // sub ↔ CLI (probe end-to-end) — bidirectional
+  // sub ↔ CLI (probe end-to-end) — bidirectional, label below
   line("sub.east", "cli.west",
     stroke: arr-style, mark: arr-mark-bi, name: "e-probe")
-  content((rel: (0, 0.16), to: "e-probe.mid"), anchor: "south",
+  content((rel: (0, -0.14), to: "e-probe.mid"), anchor: "north",
     text(5.5pt, fill: fg-light)[probe])
 
   // sub → report (interview)
