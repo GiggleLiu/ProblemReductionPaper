@@ -147,29 +147,4 @@
     mark: (end: "straight", scale: 0.4),
   )
 
-  // ── Right-side category note (small, single line) ────
-  // Place near the novel-layers band, vertically aligned with their midpoint
-  let novel-y = (
-    (stack-top-y - 3 * (bh + gap)) +              // top of layer 4
-    (stack-top-y - 5 * (bh + gap) + gap)          // top of layer 6 boundary
-  ) / 2
-  // hint: small bracket spanning layers 4 & 5
-  let bracket-x = bw / 2 + 4.6
-  let novel-top = stack-top-y - 3 * (bh + gap)
-  let novel-bot = stack-top-y - 5 * (bh + gap) + gap
-  line(
-    (bracket-x - 0.18, novel-top),
-    (bracket-x,        novel-top),
-    (bracket-x,        novel-bot),
-    (bracket-x - 0.18, novel-bot),
-    stroke: (thickness: 1pt, paint: accent),
-  )
-  content(
-    (bracket-x + 0.15, (novel-top + novel-bot) / 2),
-    anchor: "west",
-    text(7pt, weight: "bold", fill: accent.darken(10%))[
-      novel — \
-      this work
-    ],
-  )
 })
