@@ -52,20 +52,20 @@
   )
 
   // ── Layout (5 columns × 2 rows) ─────────────────────────
-  let bw = 6.0
-  let bh = 2.2
-  let sw = 5.6
-  let sh-box = 1.7
+  let bw = 7.0
+  let bh = 2.4
+  let sw = 6.6
+  let sh-box = 1.8
 
   let cx-issue  =  0.0
-  let cx-core   =  8.5
-  let cx-art    = 16.5    // JSON (top) and CLI (bot)
-  let cx-pdf    = 24.5    // PDF Manual (top only)
-  let cx-verify = 32.5
+  let cx-core   =  8.6
+  let cx-art    = 17.0    // JSON (top) and CLI (bot)
+  let cx-pdf    = 25.4    // PDF Manual (top only)
+  let cx-verify = 34.0
 
   let y-mid =  0.0
-  let y-top =  2.6
-  let y-bot = -2.6
+  let y-top =  2.8
+  let y-bot = -2.8
 
   // ── Boxes ────────────────────────────────────────────────
   // Input
