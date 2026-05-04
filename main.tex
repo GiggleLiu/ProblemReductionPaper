@@ -474,42 +474,9 @@ In our practice, agentic feature tests caught most CLI command bugs, and some us
 
 \subsection{Library Status}
 
-% \begin{figure}[t]
-%   \centering
-%   \includegraphics[width=\columnwidth,trim={10cm 45cm 10cm 5cm},clip]{figures/reduction-graph-clean.pdf}
-%   \vspace{-4pt}
-%   \small
-%   \begin{tabular}{@{}lr@{}}
-%   \toprule
-%   Metric & Count \\
-%   \midrule
-%   Lines of Rust code & 170k+ \\
-%   Problem types (unique names) & 190 \\
-%   Registered variants & 220 \\
-%   Reduction rules & 265 \\
-%   Reachable from 3-SAT & 78 \\
-%   Reducible to ILP & 129 (68\%) \\
-%   \bottomrule
-%   \end{tabular}
-%   \caption{The reduction graph as of April 2026.
-%     ILP (center node) is the most connected node: 129 of 190~problem types (68\%) have a reduction path to it, granting solver access via HiGHS.
-%     3-SAT anchors the other direction: 78~types are reachable from it, providing tested NP-hardness arguments.
-%     Only the 148~connected nodes are shown; 42~isolated types awaiting their first reduction are omitted.}
-%   \label{fig:reduction-graph}
-% \end{figure}
-
-In~\Cref{fig:overview}c, we summarize the current library status.
-The current library version is v0.5.0, which contains 190~problem types (220 variants) and 265~reduction rules.
-129~problem types (68\%) have a reduction path to ILP, either directly or through intermediate types.
-%This means a practitioner facing any of these 129~problems can solve it to provable optimality on moderate-sized instances using an off-the-shelf ILP solver, without writing a single line of problem-specific solver code.
-The \texttt{pred} CLI ships with an ILP solver backend: the user supplies a problem instance, the library finds the cheapest reduction path to ILP, reduces the instance automatically, solves the resulting ILP, and maps the solution back.
-We believe this solver-access coverage alone is a practical contribution to the combinatorial optimization community.
-78~problem types are reachable from 3-SAT, providing tested NP-hardness arguments backed by executable code rather than pen-and-paper proofs.
-
-\subsection{Development Phases}
-
-\Cref{fig:overview}c shows growth in problem types and reduction rules over three months.
-Acceleration is concentrated in the final phase: when the full skill-based pipeline came online at week~8.5, problem types went from 23 to 187 and reduction rules from 52 to 239 in under five weeks.
+\Cref{fig:overview}c summarizes the library at v0.5.0: 190~problem types (220 variants), 265~reduction rules, 129~types (68\%) with a reduction path to ILP, and 78 reachable from 3-SAT.
+Each ILP path grants automatic solver access via the \texttt{pred} CLI; each 3-SAT path provides a tested NP-hardness argument backed by executable code rather than pen-and-paper proofs.
+Growth is concentrated in the final phase: once the full skill-based pipeline came online at week~8.5, problem types went from 23 to 187 and reduction rules from 52 to 239 in under five weeks.
 The phase-by-phase narrative is detailed in \Cref{app:phases}.
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
