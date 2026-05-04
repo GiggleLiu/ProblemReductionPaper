@@ -236,7 +236,7 @@ Together, scaffold and skills form a domain-specific harness that addresses both
 
 We demonstrate that a well-engineered harness lets AI coding agents build mathematical software at a scale that human teams have not achieved.
 The evidence is a command-line tool of 100+ problem types and 200+~reduction rules totaling over 170k lines of code, built in about three months by a small team and AI agents.
-The harness rests on three pillars:
+The harness rests on three components:
 \begin{enumerate}
   \item A \emph{skill-based automation pipeline} built on a set of skills that let agents autonomously code, test, and document each reduction (\Cref{sec:skills}).
   \item A \emph{no-code contribution route} that lets domain experts continuously integrate new reduction rules by filing structured issues, with no familiarity with the implementation language needed (\Cref{sec:method}).
@@ -250,6 +250,10 @@ The harness rests on three pillars:
     Three layers separate concerns: the interface layer (top) is what users and agents touch, the library layer (middle) holds the reduction graph itself, and the infrastructure layer (bottom) provides the computational backends---solvers for instances and a symbolic engine for overhead and complexity.}
   \label{fig:library-architecture}
 \end{figure}
+
+\section{System Architecture}\label{sec:architecture}
+
+The library implements the reduction graph as a Rust crate, organized in three layers (\Cref{fig:library-architecture}).
 
 \subsection{Interfaces}\label{sec:user-interfaces}
 

@@ -94,7 +94,7 @@
     box(width: 0.8cm, height: 0.8cm,
       align(center + horizon, text(13pt, weight: "bold", fill: col-p1, [(a)]))),
     text(11.5pt, weight: "bold", fill: col-p1.darken(10%),
-      [Many hard problems,\ many solvers]),
+      [Many hard problems,\ few solvers]),
   )
 
   #v(2pt)
