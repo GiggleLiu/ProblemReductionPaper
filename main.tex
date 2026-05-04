@@ -246,8 +246,7 @@ We implements the reduction graph as a Rust crate, organized in three layers (\C
 The crate ships with a command-line interface (CLI), \texttt{pred}, as the primary entry point.
 The three commands compose through Unix pipes: \texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it to a target formulation, and \texttt{solve} invokes a solver. See Appendix~\ref{app:cli} for a worked CLI session and the full subcommand list.
 
-The build system also produces a PDF manual from Typst source.
-The manual serves two audiences: domain experts reviewing the mathematical content, and agents reading it as reference material during implementation.
+The build system also produces a PDF manual from Typst source, serving both domain experts reviewing the mathematical content and agents reading it as reference material.
 
 \subsection{Library Layer}\label{sec:graph-structure}
 
