@@ -421,7 +421,15 @@ We describe the two novel mechanisms below.
 Correctness begins with the issue provided by the domain expert.
 The issue's canonical example, a small, fully worked instance with known solution, goes to the example database.
 This example is used to generate the JSON fixtures, the PDF manual's visual diagram, and the CLI's \texttt{pred create -{}-example} command.
-The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this (see \Cref{app:example-pipeline}).
+The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this (\Cref{fig:example-pipeline}).
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline-fig5-style.pdf}
+  \caption{Canonical examples as a single source of truth.
+    JSON fixtures, the PDF manual, and \texttt{pred create -{}-example} are generated from the contributor's worked instance, so any drift surfaces as a visible mismatch.}
+  \label{fig:example-pipeline}
+\end{figure}
 
 \textbf{Agentic feature tests.}
 Libraries normally stabilize through community use, but a niche library cannot wait for that community to form.
