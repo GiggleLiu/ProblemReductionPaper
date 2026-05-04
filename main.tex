@@ -339,13 +339,9 @@ Unlike traditional automation (Makefiles, shell scripts), which chains determini
 These steps require judgment and are interpreted by the agent using its own capabilities.
 Unlike bare prompts, skills break a complex task into concrete, ordered steps small enough for an agent to execute faithfully, preventing the drift and omissions that occur when agents plan from scratch.
 
-\textbf{Advisor skills} more actively involve humans, for two purposes: \emph{training} humans to use the library or contribute to it, and \emph{utilizing} humans for tasks agents cannot reliably perform, such as critical decisions, hard mathematical reasoning, and creative work like designing canonical examples.
-For end users, agents use \texttt{find-solver} skill in~\Cref{fig:skill-architecture} to guide a user from a real-world problem to a concrete solving strategy by exploring the reduction graph.
-\texttt{find-problem} skill does the reverse: given a solver, it discovers what other problems it can handle via incoming reductions.
-For contributors, they can invoke the \texttt{propose} skill to conduct a structured brainstorming session to elicit a new problem or reduction in mathematical language, then file a well-formed GitHub issue, with no programming required.
-For maintainers, they can invoke the \texttt{fix-issue} skill to identify potentially unsound proofs, low quality examples, etc. and fix or report them interactively.
-They can also invoke the \texttt{final-review} skill to identify potential dangerous commits, check for correctness gap and address them interactively.
-These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.'' 
+\textbf{Advisor skills} more actively involve humans, for two purposes: \emph{training} humans to use or contribute to the library, and \emph{utilizing} humans for tasks agents cannot reliably perform---critical decisions, hard mathematical reasoning, and creative work like designing canonical examples.
+End users invoke \texttt{find-solver} or \texttt{find-problem} (\Cref{fig:skill-architecture}) to navigate the reduction graph between problems and solvers; contributors use \texttt{propose} to elicit a new rule in mathematical language and file a well-formed issue without programming; maintainers use \texttt{fix-issue} and \texttt{final-review} to triage proofs and audit merges interactively.
+These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
 
 \newpage
 \subsection{What Cannot Be Delegated}\label{sec:human-responsibilities}
