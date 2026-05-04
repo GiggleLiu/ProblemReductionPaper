@@ -262,16 +262,17 @@
   // fresh-context container around sub-agent
   let fc-x1 = sub2-x0 + 2.00
   let fc-x2 = sub2-x0 + 4.30
-  let fc-y2 = s2-cy + 0.20
-  let fc-y1 = s2-cy + 1.00
+  let fc-y2 = s2-cy + 0.30
+  let fc-y1 = s2-cy + 0.95
   rect(
     (fc-x1, fc-y2), (fc-x2, fc-y1),
     radius: 4pt,
     fill: luma(248),
     stroke: (thickness: 0.7pt, paint: fg-light, dash: "dashed"),
   )
-  content((fc-x1 + 0.10, fc-y1 - 0.08), anchor: "north-west",
-    text(5pt, fill: fg-light, style: "italic")[fresh context])
+  // "fresh context" label sits outside, above the dashed box (centered)
+  content(((fc-x1 + fc-x2) / 2, fc-y1 + 0.04), anchor: "south",
+    text(5.5pt, fill: fg-light, style: "italic")[fresh context])
 
   // sub-agent inside the fresh-context box
   let sub-x1 = fc-x1 + 0.20
