@@ -41,12 +41,12 @@
   import draw: *
 
   // Layout
-  let bw = 7.0       // block width (cm units, since length=1cm)
-  let bh = 0.78      // block height
-  let gap = 0.32     // vertical gap between blocks
-  let cap-w = 4.6
+  let bw = 7.6       // block width (cm units, since length=1cm)
+  let bh = 1.05      // block height (taller to fit example line)
+  let gap = 0.30     // vertical gap between blocks
+  let cap-w = 5.0
   let cap-h = 0.85
-  let rejects-x = bw / 2 + 0.35  // x for right-side "rejects: ..." labels
+  let rejects-x = bw / 2 + 0.4   // x for right-side "rejects: ..." labels
 
   let n = layers.len()
   let total-stack-h = n * bh + (n - 1) * gap
