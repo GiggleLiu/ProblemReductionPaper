@@ -320,12 +320,13 @@ Incremental compilation and the built-in test harness produce results in seconds
 %======================================================================
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{figures/skill-map.pdf}
+  \includegraphics[width=0.95\columnwidth]{figures/skill-map.pdf}
   \caption{Skills architecture.
     Blue boxes are \emph{advisor} skills (human in the loop); white boxes are \emph{automation} skills (fully autonomous).
     Both are executed by agents, but humans are more involved when advisor skills are loaded.}
   \label{fig:skill-architecture}
-  \end{figure}
+\vspace{-1.2\baselineskip}
+\end{figure}
 
 
 \section{Harness Design}\label{sec:method}
@@ -364,6 +365,9 @@ For maintainers, they can invoke the \texttt{fix-issue} skill to identify potent
 They can also invoke the \texttt{final-review} skill to identify potential dangerous commits, check for correctness gap and address them interactively.
 These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.'' 
 
+\newpage
+\subsection{What Cannot Be Delegated}\label{sec:human-responsibilities}
+
 \begin{wrapfigure}{r}{0.45\textwidth}
   \vspace{-\intextsep}
   \centering
@@ -371,8 +375,6 @@ These skills lower the usage barrier from ``knows the library'' to ``knows the p
   \caption{Delegation spectrum. Tasks sorted from fully human (top) to fully automated (bottom); bars show the human--agent split.}
   \label{fig:delegation-spectrum}
 \end{wrapfigure}
-
-\subsection{What Cannot Be Delegated}\label{sec:human-responsibilities}
 
 Four responsibilities must remain with humans: \emph{selecting} which reduction to pursue, \emph{verifying} the algorithm's correctness, \emph{constructing} canonical examples, and \emph{authorizing} merges.
 Selecting which rules to pursue requires understanding the needs of the community; the human is the information source.
@@ -386,6 +388,7 @@ Authorizing merges is security critical; a human with long-term memory must be r
 \subsection{Automation Pipeline}\label{sec:pipeline-overview}
 
 \begin{figure*}[htbp]
+  \vspace{-0.8\baselineskip}
   \centering
   \includegraphics[width=\textwidth]{figures/pipeline.pdf}
   \caption{Contribution pipeline as a state machine on the GitHub project board.
@@ -393,6 +396,7 @@ Authorizing merges is security critical; a human with long-term memory must be r
     Four roles drive the flow: a \emph{domain expert} files issues (orange), a \emph{maintainer} triages and merges (orange), an \emph{implementation agent} picks issues and creates PRs (blue), and a \emph{review agent} runs parallel reviews and posts verdicts (teal).
     If any stage fails, the item moves to On~Hold (not shown) for human triage.}
   \label{fig:pipeline}
+\vspace{-0.8\baselineskip}
 \end{figure*}
 
 Adding a reduction to the graph involves six stages, mirrored as columns on a GitHub project board (\Cref{fig:pipeline}).
