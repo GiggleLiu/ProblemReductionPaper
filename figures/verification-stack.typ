@@ -171,71 +171,80 @@
   }
 
   // ─────────── (b.i) Layer 4: round-trip ───────────
-  let s1-top = pb-top - 0.65   // y just below the (b) label
+  // Pipeline: example → builder → JSON → PDF; builder → CLI;
+  // round-trip test = each artifact must agree with the example.
+  let s1-top = pb-top - 0.65
   let s1-bot = s1-top - sub-h
   let s1-cy  = (s1-top + s1-bot) / 2 - 0.10
 
-  // sub-panel title
   content((sub1-x0, s1-top - 0.05), anchor: "north-west",
     text(7.5pt, weight: "bold", fill: accent.darken(20%))[
       #sym.star Layer 4 · Round-trip test
     ])
-  content((sub1-x0, s1-top - 0.40), anchor: "north-west",
-    text(6.5pt, fill: fg-light, style: "italic")[
-      acts on internal artifacts: do they all reflect the same example?
-    ])
 
   // canonical example (left, accent)
-  let ex-x1 = sub1-x0 + 0.20
-  let ex-x2 = ex-x1 + 1.55
-  let ex-y1 = s1-cy - 0.40
-  let ex-y2 = s1-cy + 0.40
-  mbox(ex-x1, ex-y1, ex-x2, ex-y2, "ex", true,
-    text(7pt, weight: "bold", fill: accent.darken(20%))[
-      canonical \ example
-    ])
+  let ex-x1 = sub1-x0 + 0.10
+  let ex-x2 = ex-x1 + 1.30
+  mbox(ex-x1, s1-cy - 0.35, ex-x2, s1-cy + 0.35, "ex", true,
+    text(7pt, weight: "bold", fill: accent.darken(20%))[example])
 
-  // 3 derived artifacts in a vertical column
-  let art-x1 = sub1-x0 + 2.55
-  let art-x2 = art-x1 + 1.45
-  let art-y-step = 0.65
-  let art-h = 0.45
+  // builder
+  let bd-x1 = sub1-x0 + 1.85
+  let bd-x2 = bd-x1 + 1.10
+  mbox(bd-x1, s1-cy - 0.30, bd-x2, s1-cy + 0.30, "bd", false,
+    text(6.5pt, weight: "bold")[builder])
 
-  let art-labels = ("JSON fixture", "PDF manual", "CLI demo")
-  for (i, lab) in art-labels.enumerate() {
-    let cy = s1-cy + (1 - i) * art-y-step
-    mbox(art-x1, cy - art-h / 2, art-x2, cy + art-h / 2,
-      "art" + str(i), false,
-      text(6.5pt, weight: "bold")[#lab])
-  }
+  // JSON fixture (top branch)
+  let bw3 = 0.95
+  let json-cx = sub1-x0 + 3.55
+  mbox(json-cx - bw3 / 2, s1-cy + 0.25, json-cx + bw3 / 2, s1-cy + 0.85,
+    "json", false, text(6.5pt, weight: "bold")[JSON])
 
-  // verify (right, accent)
-  let ver-x1 = sub1-x0 + sub-w - 1.55
-  let ver-x2 = ver-x1 + 1.30
-  mbox(ver-x1, s1-cy - 0.40, ver-x2, s1-cy + 0.40, "ver", true,
-    text(6.5pt, weight: "bold", fill: accent.darken(20%))[
-      match the \ example?
-    ])
+  // PDF manual (downstream of JSON)
+  let pdf-cx = sub1-x0 + 4.85
+  mbox(pdf-cx - bw3 / 2, s1-cy + 0.25, pdf-cx + bw3 / 2, s1-cy + 0.85,
+    "pdf", false, text(6.5pt, weight: "bold")[PDF])
 
-  // example fans out
-  let f-x = (ex-x2 + art-x1) / 2
-  line("ex.east", (f-x, s1-cy), (f-x, s1-cy + art-y-step), "art0.west",
-    stroke: arr-style, mark: arr-mark)
-  line("ex.east", "art1.west",
-    stroke: arr-style, mark: arr-mark, name: "ef")
-  line("ex.east", (f-x, s1-cy), (f-x, s1-cy - art-y-step), "art2.west",
-    stroke: arr-style, mark: arr-mark)
-  content((rel: (0, 0.16), to: "ef.mid"), anchor: "south",
-    text(5.5pt, fill: fg-light)[generate])
+  // CLI demo (bottom branch, parallel to JSON)
+  let cli-cx = json-cx
+  mbox(cli-cx - bw3 / 2, s1-cy - 0.85, cli-cx + bw3 / 2, s1-cy - 0.25,
+    "cli", false, text(6.5pt, weight: "bold")[CLI])
 
-  // artifacts converge to verify
-  let m-x = ver-x1 - 0.28
-  line("art0.east", (m-x, s1-cy + art-y-step), (m-x, s1-cy), "ver.west",
+  // Forward chain
+  line("ex.east",  "bd.west",  stroke: arr-style, mark: arr-mark)
+  // builder fans up to JSON, down to CLI
+  let f-x = (bd-x2 + json-cx - bw3 / 2) / 2
+  line("bd.east", (f-x, s1-cy), (f-x, s1-cy + 0.55), "json.west",
     stroke: arr-style, mark: arr-mark)
-  line("art1.east", "ver.west",
+  line("bd.east", (f-x, s1-cy), (f-x, s1-cy - 0.55), "cli.west",
     stroke: arr-style, mark: arr-mark)
-  line("art2.east", (m-x, s1-cy - art-y-step), (m-x, s1-cy), "ver.west",
-    stroke: arr-style, mark: arr-mark)
+  // JSON renders to PDF
+  line("json.east", "pdf.west", stroke: arr-style, mark: arr-mark)
+
+  // Round-trip back: every artifact must agree with example
+  // dashed accent arrows from PDF and CLI back toward the example
+  let loop-y-up = s1-cy + 1.15
+  let loop-y-dn = s1-cy - 1.15
+  let s-loop = (thickness: 0.85pt, paint: accent, dash: "dashed")
+  // PDF → loop up → back to example
+  line("pdf.north",
+       (pdf-cx, loop-y-up),
+       (ex-x1 + (ex-x2 - ex-x1) / 2, loop-y-up),
+       (ex-x1 + (ex-x2 - ex-x1) / 2, s1-cy + 0.36),
+       stroke: s-loop, mark: arr-mark)
+  // CLI → loop down → back to example
+  line("cli.south",
+       (cli-cx, loop-y-dn),
+       (ex-x1 + (ex-x2 - ex-x1) / 2, loop-y-dn),
+       (ex-x1 + (ex-x2 - ex-x1) / 2, s1-cy - 0.36),
+       stroke: s-loop, mark: arr-mark)
+  // small annotation on the dashed loop
+  content(
+    ((ex-x1 + ex-x2) / 2 + 1.5, loop-y-up + 0.05), anchor: "south",
+    text(5.5pt, fill: accent.darken(10%), style: "italic")[
+      every artifact must match the example
+    ],
+  )
 
   // ─────────── (b.ii) Layer 5: agentic feature ───────────
   let s2-top = s1-top
