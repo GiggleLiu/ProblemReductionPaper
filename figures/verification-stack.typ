@@ -96,12 +96,12 @@
       text(9pt, weight: "bold", fill: txt-c, name),
     )
 
-    // ★ ours badge on the right (inside the block)
+    // novel-layer badge on the right (inside the block)
     if is-novel {
       content(
         (bw / 2 - 0.35, y-mid), anchor: "east",
         text(7pt, weight: "bold", fill: accent,
-          [#sym.star ours]),
+          [#sym.star this work]),
       )
     }
 
