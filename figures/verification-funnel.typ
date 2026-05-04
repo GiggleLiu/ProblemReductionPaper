@@ -3,34 +3,63 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-// Same two-color scheme as pipeline figure
-#let col-human = rgb("#f28e2b")
-#let col-agent = accent
-#let col-bg-agent = accent-light
-#let col-bg-human = col-human.lighten(85%)
+// ── Category palette ──────────────────────────────────────
+#let col-std    = luma(60)         // standard: neutral gray
+#let col-novel  = accent            // novel: steel blue
+#let col-human  = rgb("#f28e2b")    // human-in-the-loop: orange
 
-// Four-layer verification funnel: (name, description, is-human)
+#let bg-std    = fill-light
+#let bg-novel  = accent.lighten(85%)
+#let bg-human  = col-human.lighten(85%)
+
+// ── Layer data: (name, what it rejects, category, badge) ──
+// Categories: "std", "novel", "human"
+// Order is the order a contribution traverses (top = entry, bot = ship).
 #let layers = (
-  ("Issue check", "rejects invalid proposals", false),
-  ("Unit & round-trip tests", "rejects implementation errors", false),
-  ("Agentic feature tests", "rejects behavioral issues", false),
-  ("Contributor verification", "rejects quality gaps", true),
+  ("Issue review (Stage 2)",
+   "vague specs, undefined symbols, unsupported claims",
+   "std", none),
+  ("Compile-time type checks",
+   "API misuse, type errors (Rust compiler)",
+   "std", none),
+  ("Unit tests (CI)",
+   "evaluation and serialization bugs",
+   "std", none),
+  ("Round-trip tests",
+   "drift between contributor's example and generated artifact",
+   "novel", "novel"),
+  ("Agentic feature tests (Stage 4)",
+   "usability gaps and semantic errors at the CLI surface",
+   "novel", "novel"),
+  ("Manual verification (Stage 6)",
+   "subtle misinterpretations of the original math",
+   "human", none),
 )
 
 #canvas(length: 0.55cm, {
   import draw: *
 
-  let n = 4
-  let layer-h = 1.2
-  let gap = 0.25
-  let max-w = 12.0
-  let min-w = 5.0
+  let n = layers.len()
+  let layer-h = 1.05
+  let gap = 0.18
+  let max-w = 13.0
+  let min-w = 6.5
   let cx = 0
-  let cap-h = 1.1
+  let cap-h = 1.0
 
+  let cat-fill(c) = {
+    if c == "std"   { bg-std }
+    else if c == "novel" { bg-novel }
+    else { bg-human }
+  }
+  let cat-stroke(c) = {
+    if c == "std"   { col-std }
+    else if c == "novel" { col-novel }
+    else { col-human }
+  }
+
+  // ── Top cap: "Candidate contributions" ─────────────────
   let funnel-top = cap-h + 0.5
-
-  // --- Top cap: "Candidate contributions" ---
   let top-y = funnel-top + cap-h
   let top-w = max-w + 1.0
 
@@ -47,15 +76,17 @@
     },
   )
   content(
-    (cx, (top-y + funnel-top) / 2 + 0.1),
-    text(7.5pt, weight: "bold", fill: fg, [Candidate contributions]),
+    (cx, (top-y + funnel-top) / 2 + 0.18),
+    text(8pt, weight: "bold", fill: fg)[Candidate contributions],
   )
   content(
-    (cx, (top-y + funnel-top) / 2 - 0.35),
-    text(6pt, fill: fg-light, style: "italic", [proposals, implementations, reviews]),
+    (cx, (top-y + funnel-top) / 2 - 0.32),
+    text(6pt, fill: fg-light, style: "italic")[
+      proposed problems, reduction rules, PRs
+    ],
   )
 
-  // --- Filter layers ---
+  // ── Filter layers ───────────────────────────────────────
   for i in range(n) {
     let t-top = i / n
     let t-bot = (i + 1) / n
@@ -67,15 +98,16 @@
     let t-mid = (i + 0.5) / n
     let w-mid = max-w - (max-w - min-w) * t-mid
 
-    let (name, desc, is-human) = layers.at(i)
-    let bg = if is-human { col-bg-human } else { col-bg-agent }
-    let stroke-col = if is-human { col-human } else { col-agent }
-    let text-col = stroke-col.darken(15%)
+    let (name, rejects, cat, badge) = layers.at(i)
+    let bg-c = cat-fill(cat)
+    let st-c = cat-stroke(cat)
+    let txt-c = st-c.darken(15%)
 
     // Trapezoid
     merge-path(
-      close: true, fill: bg,
-      stroke: (thickness: 1pt, paint: stroke-col),
+      close: true, fill: bg-c,
+      stroke: (thickness: if cat == "novel" { 1.3pt } else { 1pt }, paint: st-c),
+      name: "L" + str(i),
       {
         line(
           (cx - w-top / 2, y-top),
@@ -86,37 +118,57 @@
       },
     )
 
-    // Layer name + description
+    // Layer name (bold)
     content(
-      (cx, y-mid + 0.15),
-      text(7.5pt, weight: "bold", fill: text-col, name),
-    )
-    content(
-      (cx, y-mid - 0.3),
-      text(6pt, fill: stroke-col, style: "italic", desc),
+      (cx, y-mid + 0.18),
+      text(7.5pt, weight: "bold", fill: txt-c, name),
     )
 
-    // Right-side: subtle rejection indicator
-    let edge-x = cx + w-mid / 2
-    line(
-      (edge-x + 0.05, y-mid), (edge-x + 1.2, y-mid),
-      stroke: (thickness: 0.5pt, paint: stroke-col.lighten(50%), dash: "dotted"),
-    )
+    // Subtle badge for novel layers
+    if badge == "novel" {
+      content(
+        (cx + w-mid / 2 - 1.2, y-mid + 0.18), anchor: "east",
+        text(5.5pt, weight: "bold", fill: col-novel,
+          [#sym.star this work]),
+      )
+    }
+
+    // "rejects: …" inside the trapezoid
     content(
-      (edge-x + 1.35, y-mid), anchor: "west",
-      text(5.5pt, fill: stroke-col.lighten(30%), [rejected]),
+      (cx, y-mid - 0.28),
+      text(5.5pt, fill: txt-c.lighten(15%), style: "italic",
+        [rejects: #rejects]),
+    )
+
+    // Right-side: dashed reject arrow + bin label
+    let edge-x = cx + w-mid / 2
+    let bin-x = max-w / 2 + 1.0
+    line(
+      (edge-x + 0.05, y-mid), (bin-x - 0.05, y-mid),
+      stroke: (thickness: 0.5pt, paint: st-c.lighten(35%), dash: "dotted"),
+      mark: (end: "straight", scale: 0.3),
     )
   }
 
-  // --- Bottom cap: "Verified code" ---
+  // Discard label on the right (single label spans whole funnel)
+  let discard-y-top = funnel-top - 0.2
+  let discard-y-bot = funnel-top - n * (layer-h + gap)
+  let bin-x = max-w / 2 + 1.0
+  content(
+    (bin-x + 0.1, (discard-y-top + discard-y-bot) / 2 + 0.5),
+    anchor: "west", angle: 0deg,
+    text(6.5pt, weight: "bold", fill: fg-light)[Rejected /\ sent back],
+  )
+
+  // ── Bottom cap: "Verified code" ────────────────────────
   let last-y-bot = funnel-top - (n - 1) * (layer-h + gap) - layer-h
-  let bot-y = last-y-bot - 0.3
+  let bot-y = last-y-bot - 0.25
   let bot-cap-y = bot-y - cap-h
   let bot-w = min-w
 
   merge-path(
-    close: true, fill: fill-light,
-    stroke: (thickness: 1pt, paint: border),
+    close: true, fill: accent.lighten(90%),
+    stroke: (thickness: 1.2pt, paint: accent.darken(5%)),
     {
       line(
         (cx - bot-w / 2, bot-y),
@@ -127,63 +179,67 @@
     },
   )
   content(
-    (cx, (bot-y + bot-cap-y) / 2 + 0.1),
-    text(7.5pt, weight: "bold", fill: fg, [Verified code]),
+    (cx, (bot-y + bot-cap-y) / 2 + 0.15),
+    text(8pt, weight: "bold", fill: accent.darken(20%))[Verified contribution],
   )
   content(
-    (cx, (bot-y + bot-cap-y) / 2 - 0.35),
-    text(6pt, fill: fg-light, style: "italic", [merged to main]),
+    (cx, (bot-y + bot-cap-y) / 2 - 0.32),
+    text(6pt, fill: accent.darken(10%), style: "italic")[
+      merged into the library
+    ],
   )
 
-  // --- Left side: "Contributor ground truth" vertical arrow ---
-  let gt-x = cx - max-w / 2 - 1.8
-  let gt-top = funnel-top + cap-h * 0.5
-  let gt-bot = bot-cap-y + 0.3
+  // ── Left side: category brackets ───────────────────────
+  let bx-left = cx - max-w / 2 - 0.5
 
-  line(
-    (gt-x, gt-top), (gt-x, gt-bot),
-    stroke: (thickness: 1.2pt, paint: col-agent),
-    mark: (end: "straight", scale: 0.45),
-  )
-  content(
-    (gt-x - 0.2, (gt-top + gt-bot) / 2),
-    anchor: "east", angle: 90deg,
-    text(6.5pt, weight: "bold", fill: col-agent.darken(10%),
-      [Contributor ground truth]),
-  )
+  // Compute spans for each category
+  let cat-of(i) = layers.at(i).at(2)
+  let std-indices = range(n).filter(i => cat-of(i) == "std")
+  let novel-indices = range(n).filter(i => cat-of(i) == "novel")
+  let human-indices = range(n).filter(i => cat-of(i) == "human")
 
-  // Dashed arrows from ground truth into each layer
-  for i in range(n) {
-    let t-mid = (i + 0.5) / n
-    let w-mid = max-w - (max-w - min-w) * t-mid
-    let y-top = funnel-top - i * (layer-h + gap)
-    let y-bot = y-top - layer-h
-    let y-mid = (y-top + y-bot) / 2
-    let target-x = cx - w-mid / 2
+  let span-y(indices) = {
+    let i-top = indices.first()
+    let i-bot = indices.last()
+    let y-top = funnel-top - i-top * (layer-h + gap)
+    let y-bot = funnel-top - (i-bot + 1) * (layer-h + gap) + gap
+    (y-top, y-bot)
+  }
 
-    let (_, _, is-human) = layers.at(i)
-    let dash-col = if is-human { col-human.lighten(40%) } else { col-agent.lighten(40%) }
-
+  let draw-bracket(indices, label-text, col) = {
+    let (y-t, y-b) = span-y(indices)
+    let xL = bx-left
+    let xR = bx-left + 0.28
     line(
-      (gt-x + 0.1, y-mid), (target-x - 0.1, y-mid),
-      stroke: (thickness: 0.6pt, paint: dash-col, dash: "dashed"),
-      mark: (end: "straight", scale: 0.3),
+      (xR, y-t), (xL, y-t), (xL, y-b), (xR, y-b),
+      stroke: (thickness: 1pt, paint: col),
+    )
+    content(
+      (xL - 0.18, (y-t + y-b) / 2),
+      anchor: "east", angle: 90deg,
+      text(7pt, weight: "bold", fill: col, label-text),
     )
   }
 
-  // Connect ground truth to bottom cap
-  line(
-    (gt-x + 0.1, (bot-y + bot-cap-y) / 2),
-    (cx - bot-w / 2 + 0.3, (bot-y + bot-cap-y) / 2),
-    stroke: (thickness: 0.6pt, paint: col-agent.lighten(40%), dash: "dashed"),
-    mark: (end: "straight", scale: 0.3),
-  )
+  draw-bracket(std-indices,   [Standard checks],            col-std)
+  draw-bracket(novel-indices, [Novel — this work],          col-novel)
+  draw-bracket(human-indices, [Human-in-the-loop],          col-human)
 
-  // --- Legend at bottom (matching pipeline style) ---
+  // ── Legend (bottom) ────────────────────────────────────
   let ly = bot-cap-y - 0.7
-  let lx = cx - 3.0
-  line((lx, ly), (lx + 0.5, ly), stroke: 1pt + col-agent)
-  content((lx + 0.65, ly), anchor: "west", text(6pt, [Agent verification]))
-  line((lx + 3.5, ly), (lx + 4.0, ly), stroke: 1pt + col-human)
-  content((lx + 4.15, ly), anchor: "west", text(6pt, [Human verification]))
+  let lx0 = cx - max-w / 2 + 0.5
+
+  let chip(x, col, txt) = {
+    rect(
+      (x, ly - 0.18), (x + 0.45, ly + 0.18),
+      fill: col.lighten(85%),
+      stroke: (thickness: 0.8pt, paint: col),
+    )
+    content((x + 0.55, ly), anchor: "west",
+      text(6pt, fill: fg, txt))
+  }
+
+  chip(lx0, col-std, [standard])
+  chip(lx0 + 3.2, col-novel, [novel — this work])
+  chip(lx0 + 7.0, col-human, [human review])
 })
