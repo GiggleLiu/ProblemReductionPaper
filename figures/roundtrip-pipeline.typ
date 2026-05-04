@@ -151,7 +151,7 @@
     ((cx-issue + cx-verify) / 2, loop-y - 0.35),
     anchor: "north",
     text(5.5pt, fill: accent.darken(10%), style: "italic")[
-      mismatch with original issue
+      Stage 6: any drift from the original issue surfaces here
     ],
   )
 })
