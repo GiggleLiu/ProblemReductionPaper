@@ -80,11 +80,13 @@
 
   // ── Six layer blocks ──────────────────────────────────
   for i in range(n) {
-    let (num, name, rejects, is-novel) = layers.at(i)
+    let (num, name, runner, rejects, example, is-novel) = layers.at(i)
 
     let y-top = stack-top-y - i * (bh + gap)
     let y-bot = y-top - bh
     let y-mid = (y-top + y-bot) / 2
+    let y-name   = y-mid + 0.22  // upper text row inside block
+    let y-runner = y-mid - 0.27  // lower text row inside block
 
     let stroke-c = if is-novel { accent } else { border }
     let fill-c   = if is-novel { accent.lighten(92%) } else { white }
@@ -103,40 +105,58 @@
     // Layer number — left side, monospaced
     content(
       (-bw / 2 + 0.4, y-mid), anchor: "west",
-      text(8pt, weight: "bold", fill: txt-c.lighten(20%),
+      text(10pt, weight: "bold", fill: txt-c.lighten(15%),
         font: "DejaVu Sans Mono", str(num)),
     )
 
     // Vertical separator after the number
     line(
-      (-bw / 2 + 0.75, y-top - 0.12),
-      (-bw / 2 + 0.75, y-bot + 0.12),
+      (-bw / 2 + 0.85, y-top - 0.18),
+      (-bw / 2 + 0.85, y-bot + 0.18),
       stroke: (thickness: 0.5pt, paint: stroke-c.lighten(40%)),
     )
 
-    // Layer name — left-anchored after the separator
+    // Layer name (upper row inside block)
     content(
-      (-bw / 2 + 0.95, y-mid), anchor: "west",
+      (-bw / 2 + 1.0, y-name), anchor: "west",
       text(9pt, weight: "bold", fill: txt-c, name),
     )
 
-    // novel-layer badge on the right (inside the block)
+    // Runner tag (lower row inside block, smaller)
+    content(
+      (-bw / 2 + 1.0, y-runner), anchor: "west",
+      text(6.5pt, fill: txt-c.lighten(30%))[
+        run by · #runner
+      ],
+    )
+
+    // novel-layer badge (upper-right, inside block)
     if is-novel {
       content(
-        (bw / 2 - 0.35, y-mid), anchor: "east",
+        (bw / 2 - 0.35, y-name), anchor: "east",
         text(7pt, weight: "bold", fill: accent,
           [#sym.star this work]),
       )
     }
 
-    // "rejects:" annotation outside, to the right
+    // ── Right-side annotations (outside block) ──
+    // "rejects: ..." (upper)
     content(
-      (rejects-x, y-mid), anchor: "west",
-      text(7pt, fill: fg-light, style: "italic",
-        [rejects #rejects]),
+      (rejects-x, y-name), anchor: "west",
+      text(7pt, fill: fg-light)[
+        #text(weight: "bold", fill: fg)[rejects:] #rejects
+      ],
     )
 
-    // arrow from this block to the next (or to output cap)
+    // "e.g., ..." concrete example (lower, italic monospace-ish)
+    content(
+      (rejects-x, y-runner), anchor: "west",
+      text(6.5pt, fill: fg-light, style: "italic")[
+        e.g., #example
+      ],
+    )
+
+    // arrow from this block to the next
     if i < n - 1 {
       let next-top = y-bot - gap
       line(
