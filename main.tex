@@ -253,11 +253,11 @@ The harness rests on three components:
 
 \section{System Architecture}\label{sec:architecture}
 
-The library implements the reduction graph as a Rust crate, organized in three layers (\Cref{fig:library-architecture}).
+We implements the reduction graph as a Rust crate, organized in three layers (\Cref{fig:library-architecture}).
 
 \subsection{Interfaces}\label{sec:user-interfaces}
 
-The library ships with a command-line interface (CLI), \texttt{pred}, as the primary entry point.
+The crate ships with a command-line interface (CLI), \texttt{pred}, as the primary entry point.
 The three commands compose through Unix pipes: \texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it to a target formulation, and \texttt{solve} invokes a solver. See Appendix~\ref{app:cli} for a worked CLI session and the full subcommand list.
 
 The build system also produces a PDF manual from Typst source.
@@ -845,7 +845,6 @@ description: Adding a new reduction rule to the
   \label{fig:agent-profile}
 \end{figure}
 
-\newpage
 \section{Development Phases}\label{app:phases}
 
 In Phase~1 (weeks~0--7), the team and AI agents ported reduction rules from existing packages (ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping,pan2025encodingcomputationallyhardproblems}, and qubogen~\cite{Tamura2020qubogen}) and from Garey and Johnson's catalogue~\cite{garey1979}.
