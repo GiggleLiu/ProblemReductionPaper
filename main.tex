@@ -878,6 +878,16 @@ description: Adding a new reduction rule to the
 \end{figure}
 
 \newpage
+\section{Development Phases}\label{app:phases}
+
+In Phase~1 (weeks~0--7), the team and AI agents ported reduction rules from existing packages (ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping,pan2025encodingcomputationallyhardproblems}, and qubogen~\cite{Tamura2020qubogen}) and from Garey and Johnson's catalogue~\cite{garey1979}.
+Growth was steady but slow: roughly 20~problem types and 55~rules by week~7.
+Through this process, the skill-based automation pipeline was established and iteratively refined.
+In Phase~2 (weeks~7--8.5), basic skills were introduced, but the pipeline was not yet end-to-end automated.
+In Phase~3 (weeks~8.5--13), the full pipeline became operational.
+Both curves accelerate sharply: problem types grew from 23 to 187, and reduction rules from 52 to 239, in under five weeks.
+External domain experts began contributing through the \texttt{propose} skill, filed structured issues in mathematical language while agents handled implementation.
+
 \section{End-User Utility Experiment Details}\label{app:end-user}
 
 This appendix expands on the controlled experiment summarised in \Cref{sec:end-user-utility}.
