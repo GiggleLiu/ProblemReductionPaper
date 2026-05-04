@@ -106,36 +106,21 @@ A path from a problem to integer linear programming (ILP) grants access to matur
 
 \subsection{The Challenge}
 
-Building a reduction graph at scale is itself a hard problem---not computationally, but organizationally.
-Despite decades of work on reduction libraries (\Cref{sec:related}), the gap between \emph{known} and \emph{implemented} reductions has only widened.
+Building a reduction graph at scale is hard---not computationally, but organizationally.
 Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software implementation covers fewer than 20.
-The bottleneck was never mathematical knowledge; it was building and maintaining the software.
+The bottleneck is not mathematical knowledge but the cost of building and maintaining the software.
 
-The reduction graph's value grows with every edge, but so does the cost of maintaining it.
-Every edge must conform to the same conventions---same interface, same file layout, same test pattern---but maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
-Conventions drift as contributors accumulate their own patterns (\emph{convention drift}).
-When a new reduction appears in the literature, the mathematician who understands it has no way to contribute it without learning the implementation language and the project's conventions (\Cref{fig:comic}).
-And every new entry demands the same lengthy checklist.
-Adding a problem type requires resolving whether the problem is genuinely new or a known problem under a different name, writing a formal definition, and identifying the best known algorithm and its complexity.
-Adding a reduction rule requires confirming that both endpoint problems exist, verifying the rule is novel and actually improves on existing routes, analyzing the reduction overhead, providing a correctness argument, implementing the forward and inverse maps, designing correctness tests, and documenting the reduction with a worked example.
-Repeating this cycle for every entry exhausts even dedicated maintainers (\emph{effort exhaustion}).
+Two failure modes recur.
+First, every edge must conform to the same conventions---same interface, same file layout, same test pattern---and human contributors inevitably accumulate their own patterns over time (\emph{convention drift}).
+Second, every new entry demands the same lengthy checklist: confirm novelty, write a definition, prove correctness, implement forward and inverse maps, design tests, and document a worked example.
+Repeating this cycle exhausts even dedicated maintainers (\emph{effort exhaustion}).
+Worse, a mathematician who understands a new reduction has no way to contribute it without first learning the implementation language and the project's conventions (\Cref{fig:comic}).
 
-AI agents offer a way forward.
-OpenAI's recent ``harness engineering'' framing captures the shift: the engineer's primary job becomes designing the constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
-The central requirement of any harness is a \emph{verification gate}, a cheap, automatic check that rejects incorrect output before it enters the codebase.
-Reduction-graph construction supplies one for free: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality.
-This sidesteps the sharp performance degradation that agents exhibit on longer-horizon tasks~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}.
-
-In harness engineering, \emph{scaffold} and \emph{skills} are the two key components.
-The \emph{scaffold} comprises repository structure, CI configuration, formatting rules, and a project specification file (\texttt{CLAUDE.md}, \texttt{AGENTS.md}) auto-loaded into every agent session.
-Together these anchor the system as a single source of truth for architecture and constraints.
-\emph{Skills} are plain-Markdown documents, committed to the repository, that read like checklists, some targeting agents and others guiding human contributors: ``implement the forward and inverse maps, write correctness tests, draft a paper entry with a proof sketch''~\cite{Claude2026AgentSkills}.
-The agent interprets each step using its own capabilities, but the skill ensures nothing is skipped and every step follows the project's conventions.
-Together, scaffold and skills form a domain-specific harness that addresses both barriers:
-\begin{itemize}
-  \item \emph{Convention drift} $\to$ skills enforce the same interface, layout, and test pattern at every invocation.
-  \item \emph{Effort exhaustion} $\to$ the routine work---coding, testing, documenting---becomes repeatable without human attention.
-\end{itemize}
+AI agents offer a way forward---if their output can be trusted.
+The recent ``harness engineering'' framing shifts the engineer's job toward designing the constraints, feedback loops, and verification systems that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
+The central requirement is a \emph{verification gate}: a cheap, automatic check that rejects incorrect output before it enters the codebase.
+Reduction-graph construction supplies one for free---every reduction admits a \emph{round-trip test} (reduce, solve, map back, check optimality)---sidestepping the performance degradation agents exhibit on longer-horizon tasks~\cite{Thai2025SWEEVO, Deng2025SWEBenchPro}.
+Together with a project \emph{scaffold} (repository structure, CI, specification files \texttt{CLAUDE.md}/\texttt{AGENTS.md}) and committed \emph{skills}~\cite{Claude2026AgentSkills}---plain-Markdown checklists that encode the project's conventions---this harness directly addresses both convention drift and effort exhaustion.
 
 \begin{figure}[t]
   \centering
