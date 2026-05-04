@@ -435,14 +435,15 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 
 \subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by six layers: issue check (Stage~2), compile-time type checks, unit tests, round-trip tests, agentic feature tests (Stage~4), and manual verification (Stage~6).
-The first three are standard; we describe the two novel mechanisms below.
+Correctness is enforced by five layers: issue review (Stage~2), compile-time type checks, unit and integration tests, agentic feature tests (Stage~4), and manual verification (Stage~6).
+The first three and the last are standard; agentic feature tests, the only mechanism we claim as novel, are described below.
 
-\textbf{Round-trip tests.}
-As illustrated in~\Cref{fig:example-pipeline}, correctness begins with the issue provided by the domain expert.
-The issue's canonical example, a small, fully worked instance with known solution, goes to the example database.
-This example is used to generate the JSON fixtures, the PDF manual's visual diagram, and the CLI's \texttt{pred create -{}-example} command.
-The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this.
+\textbf{Canonical examples as the test oracle.}
+A prerequisite for the pipeline is that every issue carries a small, fully worked instance with a known solution.
+This canonical example feeds the example database as a builder function.
+For each reduction $A \to B$, an integration test then exercises the registered solution lifter using this example: build $A$, reduce to $B$, solve $B$ by brute force, lift a witness back to $A$, and assert it is feasible against $A$'s own evaluator (and, where a Python-computed fixture is available, optimal).
+The same builder also feeds the JSON fixtures, the Typst PDF manual's diagrams, and the CLI's \texttt{pred create -{}-example} mode (\Cref{fig:example-pipeline}), so the contributor's mathematical intent reaches every downstream artifact through a single source.
+The walkthrough at Stage~6 closes that loop on the human side.
 
 \begin{figure}[t]
   \centering
@@ -450,7 +451,7 @@ The pipeline is designed so that the mathematical intent propagates through all 
   \caption{Canonical examples as a single source of truth.
     The contributor's issue contributes worked instances with known solutions, which are extracted into the example database as builder functions.
     Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from the same builders, so any drift from the issue surfaces as a visible mismatch.
-    The Stage 6 verification step closes the loop: the contributor walks through the manual and CLI output and checks them against the original issue.}
+    The Stage~6 walkthrough closes the loop: the contributor checks the manual and CLI output against the original issue.}
   \label{fig:example-pipeline}
 \end{figure}
 
@@ -465,7 +466,7 @@ Third, the sub-agent steps out of character.
 The main agent interviews it---what worked, what was confusing, where did the output diverge from expectation---and writes a structured report.
 This report surfaces usability gaps, documentation omissions, and semantic errors that unit tests cannot reach.
 
-In our practice, agentic feature tests caught most CLI command bugs, and some user-experience issues, e.g. the mismatch between the help text and the actual command output, which are never caught by the existing unit tests.
+In our practice, agentic feature tests caught most CLI command bugs, and some user-experience issues, e.g.\ the mismatch between the help text and the actual command output, which are never caught by the existing unit tests.
 
 %======================================================================
 %  SECTION 5: EVIDENCE
