@@ -439,20 +439,10 @@ Correctness is enforced by six layers: issue check (Stage~2), compile-time type 
 The first three are standard; we describe the two novel mechanisms below.
 
 \textbf{Round-trip tests.}
-As illustrated in~\Cref{fig:example-pipeline}, correctness begins with the issue provided by the domain expert.
+Correctness begins with the issue provided by the domain expert.
 The issue's canonical example, a small, fully worked instance with known solution, goes to the example database.
 This example is used to generate the JSON fixtures, the PDF manual's visual diagram, and the CLI's \texttt{pred create -{}-example} command.
-The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline.pdf}
-  \caption{Canonical examples as a single source of truth.
-    The contributor's issue contributes worked instances with known solutions, which are extracted into the example database as builder functions.
-    Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from the same builders, so any drift from the issue surfaces as a visible mismatch.
-    The Stage 6 verification step closes the loop: the contributor walks through the manual and CLI output and checks them against the original issue.}
-  \label{fig:example-pipeline}
-\end{figure}
+The pipeline is designed so that the mathematical intent propagates through all downstream artifacts; the contributor's final review confirms this (see \Cref{app:example-pipeline}).
 
 \textbf{Agentic feature tests.}
 Libraries normally stabilize through community use, but a niche library cannot wait for that community to form.
@@ -574,6 +564,18 @@ Quality concerns are equally sharp: AI co-authored code carries $1.7{\times}$ mo
 To tame this variance, \emph{harness engineering}~\cite{OpenAI2026HarnessEngineering,Fowler2026HarnessEngineering} shifts the engineer's role from code authorship to environment design.
 Persistent project instructions and composable skills~\cite{Claude2026AgentSkills, Obra2025Superpowers} keep agents aligned with repository conventions across sessions; verification pipelines reject incorrect output before it enters the codebase.
 Our approach instantiates this pattern for a mathematical domain, exploiting the project's uniform, verifiable structure so that each agent invocation is short, self-contained, and human-reviewable.
+
+\section{Canonical Example Pipeline}\label{app:example-pipeline}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline-fig5-style.pdf}
+  \caption{Canonical examples as a single source of truth.
+    The contributor's issue contributes worked instances with known solutions, which are extracted into the example database as builder functions.
+    Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from the same builders, so any drift from the issue surfaces as a visible mismatch.
+    The Stage 6 verification step closes the loop: the contributor walks through the manual and CLI output and checks them against the original issue.}
+  \label{fig:example-pipeline}
+\end{figure}
 
 \section{CLI Reference}\label{app:cli}
 
