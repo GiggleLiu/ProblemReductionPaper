@@ -435,13 +435,13 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 
 \subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by a four-layer wrapper around the codebase: issue review (Stage~2), compile-time type checks, unit tests, and agentic feature tests (Stage~4).
+\textcolor{red}{Correctness is enforced by a four-layer wrapper around the codebase: issue review (Stage~2), compile-time type checks, unit tests, and agentic feature tests (Stage~4).
 The first three are standard practice; agentic feature tests are the only mechanism we claim as novel.
 
 For unit tests, the reduction-graph design supplies a verification gate for free.
 Every issue carries a small canonical example with a known solution, encoded in the example database as a builder function.
 For each reduction $A \to B$, the unit test then exercises the registered solution lifter against this example: build $A$, reduce to $B$, brute-force the target, lift each witness back to $A$, and compare against an independent brute-force solve of $A$ itself---asserting that the lifted set is contained in $A$'s optima and that objective values agree.
-The same builder feeds outside the test harness as well: the JSON fixtures, the Typst PDF manual's diagrams, and the CLI's \texttt{pred create -{}-example} mode (\Cref{fig:example-pipeline}) all share this single source, so the contributor's mathematical intent reaches every artifact through one definition.
+The same builder feeds outside the test harness as well: the JSON fixtures, the Typst PDF manual's diagrams, and the CLI's \texttt{pred create -{}-example} mode (\Cref{fig:example-pipeline}) all share this single source, so the contributor's mathematical intent reaches every artifact through one definition.}
 
 \begin{figure}[t]
   \centering
