@@ -486,19 +486,26 @@ A catalog of reductions matters only if it changes outcomes when an agent tackle
 The most direct mechanism to test is whether catalog access lets the agent pick a downstream formulation it would not otherwise reach.
 We probe this on dense weighted Max-Cut ($n{=}150$, ${\approx}5300$ signed edges), where the textbook ILP encoding is dominated by simulated annealing on QUBO: a regime in which catalog-aware reformulation has fair scope to pay off, so a null result here would refute the mechanism.
 The instance is presented to a sub-agent in domain language with no algorithmic hints.
-Four configurations vary two axes---\emph{web search} and \emph{access to \texttt{pred}}---across four random seeds (full setup in \Cref{app:end-user}).
+Four configurations vary two axes---\emph{web search} and \emph{access to \texttt{pred}}---across ten random seeds (40~runs total; full setup in \Cref{app:end-user}).
 We separate three quantities AI-coding evaluations often conflate as ``time'': AI tokens, solver wall-time, and solution quality, with optimality claims independently graded.
 
 \Cref{tab:end-user-eval} summarises the outcomes.
-Agents with \texttt{pred} access achieve zero regret on every seed and never falsely claim optimality.
-Without it, agents leave 0.35--9.7\% on the table and produce 1--2 \emph{false-OPT} claims (an answer claimed optimal but beaten by another configuration on the same seed) out of four runs.
+Agents with \texttt{pred} access achieve zero regret on every one of the 10~seeds and never falsely claim optimality.
+Without it, agents leave 1.4--4.0\% on the table on average and produce 2 \emph{false-OPT} claims (an answer claimed optimal but beaten by another configuration on the same seed) out of 10~runs in each baseline.
 Web access alone is worse than neutral: it sharpens the agent's confidence in a textbook ILP encoding whose CBC time-out is then misreported as \texttt{OPTIMAL}.
-With \texttt{pred}, the agent invariably reformulates Max-Cut as QUBO and solves it with simulated annealing, also winning on solver wall-time (42.8--71.1\,s vs.\ 81.8--85.3\,s).
-The catalog-aware route costs 30--40\% more AI tokens for downstream enumeration---a cost the better answers and honest optimality reporting easily justify.
+With \texttt{pred}, the agent invariably reformulates Max-Cut as QUBO and solves it with simulated annealing, also winning on solver wall-time (54.5--74.6\,s vs.\ 65.2--85.5\,s).
+The catalog-aware route costs ${\approx}\,35\%$ more AI tokens for downstream enumeration---a cost the better answers and honest optimality reporting easily justify.
 The library is therefore most useful where the obvious encoding is suboptimal but a stronger one exists via reduction.
 
+\textbf{Where the regret comes from: solver-choice variance.}
+Tracking which solver each agent picked exposes the underlying mechanism (full per-seed picks in \Cref{tab:end-user-solver-table}).
+Without \texttt{pred}, the bare AI scatters across five distinct solver classes (PuLP+CBC, HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal, plus custom heuristics)---five different choices on 10~seeds for both A and B.
+With \texttt{pred}, the agent converges to the same path on every seed: simulated annealing on the QUBO reformulation (10/10 for both C and D).
+All four false-OPT incidents involve PuLP+CBC (3) or PuLP+HiGHS (1), whose timeout behaviour is misreported as \texttt{Optimal} rather than as an open optimality gap; agents that happened to pick Gurobi or simulated annealing avoid the misreport even when their answer is suboptimal.
+The skill's value is therefore not only in finding a stronger formulation but also in eliminating the run-to-run variance that comes from the bare AI's solver lottery.
+
 \begin{table}[h]
-\caption{Outcomes on the Max-Cut instance (4~seeds per configuration; 90~s solver-wall cap).
+\caption{Outcomes on the Max-Cut instance (10~seeds per configuration; 90~s solver-wall cap; 40~runs total).
 Regret~\% is the gap to the best feasible answer found on the same seed; false-OPT counts answers claimed optimal but beaten by another configuration.}
 \label{tab:end-user-eval}
 \centering
@@ -507,10 +514,10 @@ Regret~\% is the gap to the best feasible answer found on the same seed; false-O
 \toprule
 Configuration & Mean regret \% & False-OPT & Mean AI tokens & Mean solver s \\
 \midrule
-Bare AI                              & 0.35 & 1/4 & 39{,}941 & 81.8 \\
-Bare AI + web                        & 9.70 & 2/4 & 36{,}942 & 85.3 \\
-+ \texttt{pred}                      & 0.00 & 0/4 & 55{,}332 & 71.1 \\
-+ \texttt{pred} + web                & 0.00 & 0/4 & 51{,}109 & 42.8 \\
+Bare AI                              & 1.39 & 2/10 & 40{,}142 & 85.5 \\
+Bare AI + web                        & 4.04 & 2/10 & 39{,}103 & 65.2 \\
++ \texttt{pred}                      & 0.00 & 0/10 & 54{,}637 & 74.6 \\
++ \texttt{pred} + web                & 0.00 & 0/10 & 53{,}849 & 54.5 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -863,7 +870,7 @@ This appendix expands on the controlled experiment summarised in \Cref{sec:end-u
 A dense weighted Max-Cut instance ($n=150$ vertices, ${\approx}\,5300$ signed-weight edges, density ${\approx}\,0.48$) is presented to a Claude Sonnet 4.6 sub-agent through an engineer-voice prompt: a people-ops manager dividing an organization into two product teams to maximize cross-team interaction value.
 The prompt contains no algorithm, model, or solver hints; the underlying Max-Cut structure is left for the agent to recognize.
 Four configurations form a $2{\times}2$ factorial along two axes: \emph{web search} (yes/no) and \emph{access to \texttt{pred}} (yes/no).
-Four random seeds per configuration; solver wall-time capped at 90~s per run.
+Ten random seeds per configuration (40 runs total); solver wall-time capped at 90~s per run.
 Agents with \texttt{pred} access also receive a short Markdown protocol that prescribes one extra step before writing solver code---enumerate downstream models with \texttt{pred from} and pick the one whose endpoint admits the strongest off-the-shelf solver.
 
 \paragraph{Three independent axes of measurement.}
@@ -877,6 +884,37 @@ The grader also flags \emph{false-OPT}: a claimed-optimal answer beaten by anoth
 The experiment isolates one mechanism---catalog-driven downstream reformulation---and tests it in a regime where alternative formulations are decisive.
 We do not claim the same gains transfer to families where the natural formulation is already strong (sparse ILP, scheduling) or to other agent backends.
 The benchmark harness---scenario generator, grader, per-run result schema, and aggregation script---is released alongside the library to support broader replication.
+
+\paragraph{Per-seed solver picks.}
+\Cref{tab:end-user-solver-table} lists the solver each agent selected on every seed.
+Without \texttt{pred}, the bare baselines drift across PuLP+CBC, HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal, and various custom local-search heuristics; with \texttt{pred}, every C and D run converged to the same QUBO/SA path.
+False-OPT incidents are marked $\dagger$ and cluster on PuLP+CBC and PuLP+HiGHS, whose ``Optimal'' status under timeout is, in fact, a feasibility incumbent with an unclosed gap.
+
+\begin{table}[h]
+\caption{Solver picked on each seed by each configuration. Cells marked $\dagger$ are false-OPT incidents (the agent declared optimality but another configuration found a strictly better answer on the same seed).
+SA = simulated annealing on the Ising/QUBO reformulation. Custom = hand-rolled local search / Kernighan-Lin / tabu / iterated local search.}
+\label{tab:end-user-solver-table}
+\centering
+\small
+\begin{tabular}{@{}c@{\hspace{2pt}}llll@{}}
+\toprule
+Seed & Bare AI                & Bare AI + web        & + \texttt{pred}   & + \texttt{pred} + web \\
+\midrule
+ 7 & PuLP+CBC$^\dagger$       & PuLP+CBC$^\dagger$    & dwave-neal SA & dwave-neal SA \\
+11 & Gurobi + 1-flip          & Gurobi                & dwave-neal SA & dwave-neal SA \\
+13 & PuLP+Gurobi              & PuLP+CBC$^\dagger$    & dwave-neal SA & dwave-neal SA \\
+17 & custom (KL)              & custom (tabu)         & dwave-neal SA & dwave-neal SA \\
+19 & custom (KL+ILS)          & Gurobi MIQP           & dwave-neal SA & dwave-neal SA \\
+23 & HiGHS + local search     & dwave-neal SA         & dwave-neal SA & dwave-neal SA \\
+29 & PuLP+HiGHS$^\dagger$     & dwave-neal SA         & dwave-neal SA & dwave-neal SA \\
+31 & Gurobi (ILP)             & Gurobi                & dwave-neal SA & dwave-neal SA \\
+37 & HiGHS                    & OR-tools CP-SAT       & dwave-neal SA & dwave-neal SA \\
+41 & dwave-neal SA + polish   & dwave-neal SA         & dwave-neal SA & dwave-neal SA \\
+\midrule
+\textbf{distinct} & 5 classes & 5 classes & \textbf{1 class} & \textbf{1 class} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

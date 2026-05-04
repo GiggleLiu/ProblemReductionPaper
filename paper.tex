@@ -340,8 +340,9 @@ Each column is a state; progress flows left to right.
 If any stage fails, the item moves to \col{OnHold} for human triage.
 Four roles drive the flow: a domain expert files issues, a maintainer triages and merges, and two agents---one for implementation, one for review---handle the routine work in between.
 
-\begin{figure}[t]
+\begin{figure*}[t]
   \centering
+  \begin{minipage}[t]{0.48\textwidth}
   \begin{tcolorbox}[
     colback=gray!5, colframe=gray!80,
     title={\textbf{\texttt{propose}} --- advisor skill (excerpts)},
@@ -382,12 +383,49 @@ cargo run --example detect_unreachable_from_3sat
   \end{tabular}\\[2pt]
   Only issues passing all four checks are filed.
   \end{tcolorbox}
-  \caption{Excerpts from the \texttt{propose} skill.
-    The hard gate enforces no-code contribution.
-    Topology analysis guides experts toward strategic reduction-graph gaps.
-    Pre-validation checks four quality dimensions before the issue enters the pipeline.}
-  \label{fig:skill-propose}
-\end{figure}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+  \begin{tcolorbox}[
+    colback=gray!5, colframe=gray!80,
+    title={\textbf{\texttt{add-rule}} --- automation skill (excerpts)},
+    fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+  ]
+  \footnotesize
+  \begin{lstlisting}[basicstyle=\ttfamily\footnotesize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, xleftmargin=4pt]
+---
+name: add-rule
+description: Adding a new reduction rule to the
+  codebase, either from an issue or interactively
+---
+  \end{lstlisting}
+  \vspace{-4pt}
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Required Information Checklist}
+  \begin{enumerate}
+    \item \textbf{Reduction algorithm} --- how to transform source instance to target, with BibTeX reference.
+    \item \textbf{Size overhead} --- how target size relates to source size, used for estimating the overhead of the reduction.
+    \item \textbf{Concrete example} --- a small worked-out instance, used for testing and documentation.
+    \item $\ldots$
+  \end{enumerate}
+  Do NOT proceed until the checklist is complete.\\[3pt]
+  %
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Reference Implementations} --- Read these first:\\
+  {\ttfamily src/rules/minimumvertexcover\_\\maximumindependentset.rs}\\
+  {\ttfamily src/unit\_tests/rules/\ldots{} (same stem)}\\[3pt]
+  %
+  \rule{\linewidth}{0.3pt}\\[3pt]
+  \textbf{Step 5: Document in paper.}
+  Write a \texttt{reduction-rule} entry in the Typst paper with theorem body, proof (construction, correctness, solution extraction), and a worked example with concrete numbers.
+  Run \texttt{make paper} --- must compile without errors.
+  \end{tcolorbox}
+  \end{minipage}
+  \caption{Excerpts from two representative skills.
+    \textbf{Left} (\texttt{propose}, advisor): the hard gate enforces no-code contribution; topology analysis guides experts toward strategic reduction-graph gaps; pre-validation checks four quality dimensions before the issue enters the pipeline.
+    \textbf{Right} (\texttt{add-rule}, automation): the checklist encodes the mathematical knowledge every reduction requires; reference implementations prevent convention drift; the paper entry ensures visual verifiability by human reviewers.}
+  \label{fig:skill-propose}%
+  \label{fig:skill-addrule}
+\end{figure*}
 
 
 \textbf{Stage~1: Propose} ( $\to$ \col{Backlog}).
