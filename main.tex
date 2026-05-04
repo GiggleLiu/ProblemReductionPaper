@@ -552,18 +552,6 @@ To tame this variance, \emph{harness engineering}~\cite{OpenAI2026HarnessEnginee
 Persistent project instructions and composable skills~\cite{Claude2026AgentSkills, Obra2025Superpowers} keep agents aligned with repository conventions across sessions; verification pipelines reject incorrect output before it enters the codebase.
 Our approach instantiates this pattern for a mathematical domain, exploiting the project's uniform, verifiable structure so that each agent invocation is short, self-contained, and human-reviewable.
 
-\section{Canonical Example Pipeline}\label{app:example-pipeline}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/roundtrip-pipeline-fig5-style.pdf}
-  \caption{Canonical examples as a single source of truth.
-    The contributor's issue contributes worked instances with known solutions, which are extracted into the example database as builder functions.
-    Every downstream artifact---JSON fixtures, the Typst PDF manual, and the \texttt{pred create -{}-example} CLI mode---is generated from the same builders, so any drift from the issue surfaces as a visible mismatch.
-    The Stage 6 verification step closes the loop: the contributor walks through the manual and CLI output and checks them against the original issue.}
-  \label{fig:example-pipeline}
-\end{figure}
-
 \section{CLI Reference}\label{app:cli}
 
 Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem, finding the largest set of vertices with no two adjacent.
