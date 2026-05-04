@@ -256,10 +256,6 @@
     text(7.5pt, weight: "bold", fill: accent.darken(20%))[
       #sym.star Layer 5 · Agentic feature test
     ])
-  content((sub2-x0, s2-top - 0.40), anchor: "north-west",
-    text(6.5pt, fill: fg-light, style: "italic")[
-      acts on the CLI surface: a fresh sub-agent uses it end-to-end
-    ])
 
   // main agent (top-left of sub-panel)
   let main-x1 = sub2-x0 + 0.20
