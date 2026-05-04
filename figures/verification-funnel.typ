@@ -12,28 +12,28 @@
 #let bg-novel  = accent.lighten(85%)
 #let bg-human  = col-human.lighten(85%)
 
-// ── Layer data: (name, what it rejects, category, badge) ──
+// ── Layer data: (name, what it rejects, category) ─────────
 // Categories: "std", "novel", "human"
 // Order is the order a contribution traverses (top = entry, bot = ship).
 #let layers = (
   ("Issue review (Stage 2)",
    "vague specs, undefined symbols, unsupported claims",
-   "std", none),
+   "std"),
   ("Compile-time type checks",
    "API misuse, type errors (Rust compiler)",
-   "std", none),
+   "std"),
   ("Unit tests (CI)",
    "evaluation and serialization bugs",
-   "std", none),
+   "std"),
   ("Round-trip tests",
    "drift between contributor's example and generated artifact",
-   "novel", "novel"),
+   "novel"),
   ("Agentic feature tests (Stage 4)",
    "usability gaps and semantic errors at the CLI surface",
-   "novel", "novel"),
+   "novel"),
   ("Manual verification (Stage 6)",
    "subtle misinterpretations of the original math",
-   "human", none),
+   "human"),
 )
 
 #canvas(length: 0.55cm, {
@@ -98,7 +98,7 @@
     let t-mid = (i + 0.5) / n
     let w-mid = max-w - (max-w - min-w) * t-mid
 
-    let (name, rejects, cat, badge) = layers.at(i)
+    let (name, rejects, cat) = layers.at(i)
     let bg-c = cat-fill(cat)
     let st-c = cat-stroke(cat)
     let txt-c = st-c.darken(15%)
@@ -106,7 +106,7 @@
     // Trapezoid
     merge-path(
       close: true, fill: bg-c,
-      stroke: (thickness: if cat == "novel" { 1.3pt } else { 1pt }, paint: st-c),
+      stroke: (thickness: if cat == "novel" { 1.4pt } else { 1pt }, paint: st-c),
       name: "L" + str(i),
       {
         line(
@@ -120,55 +120,61 @@
 
     // Layer name (bold)
     content(
-      (cx, y-mid + 0.18),
+      (cx, y-mid + 0.20),
       text(7.5pt, weight: "bold", fill: txt-c, name),
     )
 
-    // Subtle badge for novel layers
-    if badge == "novel" {
-      content(
-        (cx + w-mid / 2 - 1.2, y-mid + 0.18), anchor: "east",
-        text(5.5pt, weight: "bold", fill: col-novel,
-          [#sym.star this work]),
-      )
-    }
-
     // "rejects: …" inside the trapezoid
     content(
-      (cx, y-mid - 0.28),
+      (cx, y-mid - 0.27),
       text(5.5pt, fill: txt-c.lighten(15%), style: "italic",
         [rejects: #rejects]),
     )
 
-    // Right-side: dashed reject arrow + bin label
+    // Right-side: dashed reject arrow into discard bin
     let edge-x = cx + w-mid / 2
-    let bin-x = max-w / 2 + 1.0
+    let bin-left = max-w / 2 + 1.6
     line(
-      (edge-x + 0.05, y-mid), (bin-x - 0.05, y-mid),
-      stroke: (thickness: 0.5pt, paint: st-c.lighten(35%), dash: "dotted"),
+      (edge-x + 0.05, y-mid), (bin-left - 0.05, y-mid),
+      stroke: (thickness: 0.6pt, paint: st-c.lighten(30%), dash: "dotted"),
       mark: (end: "straight", scale: 0.3),
     )
   }
 
-  // Discard label on the right (single label spans whole funnel)
-  let discard-y-top = funnel-top - 0.2
-  let discard-y-bot = funnel-top - n * (layer-h + gap)
-  let bin-x = max-w / 2 + 1.0
+  // ── Right-side discard bin ─────────────────────────────
+  let bin-left = max-w / 2 + 1.6
+  let bin-w = 1.4
+  let bin-y-top = funnel-top - 0.05
+  let bin-y-bot = funnel-top - n * (layer-h + gap) + gap + 0.05
+  rect(
+    (bin-left, bin-y-bot),
+    (bin-left + bin-w, bin-y-top),
+    radius: 3pt,
+    fill: luma(245),
+    stroke: (thickness: 0.8pt, paint: fg-light, dash: "dashed"),
+    name: "bin",
+  )
   content(
-    (bin-x + 0.1, (discard-y-top + discard-y-bot) / 2 + 0.5),
-    anchor: "west", angle: 0deg,
-    text(6.5pt, weight: "bold", fill: fg-light)[Rejected /\ sent back],
+    (bin-left + bin-w / 2, (bin-y-top + bin-y-bot) / 2 + 0.4),
+    text(7pt, weight: "bold", fill: fg-light)[Rejected],
+  )
+  content(
+    (bin-left + bin-w / 2, (bin-y-top + bin-y-bot) / 2 - 0.05),
+    text(5.5pt, fill: fg-light, style: "italic")[
+      sent back\
+      for revision
+    ],
   )
 
-  // ── Bottom cap: "Verified code" ────────────────────────
+  // ── Bottom cap: "Verified contribution" ────────────────
   let last-y-bot = funnel-top - (n - 1) * (layer-h + gap) - layer-h
-  let bot-y = last-y-bot - 0.25
+  let bot-y = last-y-bot - 0.30
   let bot-cap-y = bot-y - cap-h
   let bot-w = min-w
 
   merge-path(
     close: true, fill: accent.lighten(90%),
-    stroke: (thickness: 1.2pt, paint: accent.darken(5%)),
+    stroke: (thickness: 1.3pt, paint: accent.darken(5%)),
     {
       line(
         (cx - bot-w / 2, bot-y),
@@ -179,7 +185,7 @@
     },
   )
   content(
-    (cx, (bot-y + bot-cap-y) / 2 + 0.15),
+    (cx, (bot-y + bot-cap-y) / 2 + 0.18),
     text(8pt, weight: "bold", fill: accent.darken(20%))[Verified contribution],
   )
   content(
@@ -189,57 +195,29 @@
     ],
   )
 
-  // ── Left side: category brackets ───────────────────────
-  let bx-left = cx - max-w / 2 - 0.5
+  // small drop arrow connecting last layer to bottom cap
+  line(
+    (cx, last-y-bot - 0.04),
+    (cx, bot-y + 0.04),
+    stroke: (thickness: 0.9pt, paint: accent),
+    mark: (end: "straight", scale: 0.35),
+  )
 
-  // Compute spans for each category
-  let cat-of(i) = layers.at(i).at(2)
-  let std-indices = range(n).filter(i => cat-of(i) == "std")
-  let novel-indices = range(n).filter(i => cat-of(i) == "novel")
-  let human-indices = range(n).filter(i => cat-of(i) == "human")
-
-  let span-y(indices) = {
-    let i-top = indices.first()
-    let i-bot = indices.last()
-    let y-top = funnel-top - i-top * (layer-h + gap)
-    let y-bot = funnel-top - (i-bot + 1) * (layer-h + gap) + gap
-    (y-top, y-bot)
-  }
-
-  let draw-bracket(indices, label-text, col) = {
-    let (y-t, y-b) = span-y(indices)
-    let xL = bx-left
-    let xR = bx-left + 0.28
-    line(
-      (xR, y-t), (xL, y-t), (xL, y-b), (xR, y-b),
-      stroke: (thickness: 1pt, paint: col),
-    )
-    content(
-      (xL - 0.18, (y-t + y-b) / 2),
-      anchor: "east", angle: 90deg,
-      text(7pt, weight: "bold", fill: col, label-text),
-    )
-  }
-
-  draw-bracket(std-indices,   [Standard checks],            col-std)
-  draw-bracket(novel-indices, [Novel — this work],          col-novel)
-  draw-bracket(human-indices, [Human-in-the-loop],          col-human)
-
-  // ── Legend (bottom) ────────────────────────────────────
-  let ly = bot-cap-y - 0.7
+  // ── Legend (bottom row) ────────────────────────────────
+  let ly = bot-cap-y - 0.85
   let lx0 = cx - max-w / 2 + 0.5
 
   let chip(x, col, txt) = {
     rect(
-      (x, ly - 0.18), (x + 0.45, ly + 0.18),
+      (x, ly - 0.22), (x + 0.55, ly + 0.22),
       fill: col.lighten(85%),
-      stroke: (thickness: 0.8pt, paint: col),
+      stroke: (thickness: 0.9pt, paint: col),
     )
-    content((x + 0.55, ly), anchor: "west",
-      text(6pt, fill: fg, txt))
+    content((x + 0.7, ly), anchor: "west",
+      text(6.5pt, fill: fg, txt))
   }
 
-  chip(lx0, col-std, [standard])
-  chip(lx0 + 3.2, col-novel, [novel — this work])
-  chip(lx0 + 7.0, col-human, [human review])
+  chip(lx0,         col-std,   [standard checks])
+  chip(lx0 + 4.2,   col-novel, [novel \u{2014} this work])
+  chip(lx0 + 9.2,   col-human, [human-in-the-loop])
 })
