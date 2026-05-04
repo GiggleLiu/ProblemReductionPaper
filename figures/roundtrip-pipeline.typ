@@ -3,7 +3,7 @@
 #set page(..fig-page)
 #set text(..fig-text)
 
-#let unit-len = 0.36cm
+#let unit-len = 0.40cm
 
 #canvas(length: unit-len, {
   import draw: *
@@ -19,145 +19,141 @@
       name: name-id,
     )
     content(
-      name-id,
-      anchor: "center",
-      box(width: w * unit-len - 8pt, align(center, body)),
+      name-id, anchor: "center",
+      box(width: w * unit-len - 10pt, align(center, body)),
     )
   }
 
-  // Neutral box (default)
-  let nbox(cx, cy, w, h, name-id, body) = box-base(
-    cx, cy, w, h, name-id,
-    fill-light, (thickness: 0.9pt, paint: border),
-    body,
+  let nbox(cx, cy, w, h, id, body) = box-base(
+    cx, cy, w, h, id,
+    fill-light, (thickness: 0.9pt, paint: border), body,
   )
-
-  // Accent box: highlight the single source of truth
-  let abox(cx, cy, w, h, name-id, body) = box-base(
-    cx, cy, w, h, name-id,
-    accent.lighten(85%), (thickness: 1.3pt, paint: accent),
-    body,
+  let abox(cx, cy, w, h, id, body) = box-base(
+    cx, cy, w, h, id,
+    accent.lighten(85%), (thickness: 1.3pt, paint: accent), body,
   )
 
   // ── Arrow style ──────────────────────────────────────────
-  let s-edge   = (thickness: 0.85pt, paint: edge-col)
-  let s-loop   = (thickness: 0.85pt, paint: accent, dash: "dashed")
-  let arr      = (end: "straight", scale: 0.35)
-  let sh       = (start: 0.06, end: 0.06)
+  let s-edge = (thickness: 0.85pt, paint: edge-col)
+  let s-loop = (thickness: 1.0pt,  paint: accent, dash: "dashed")
+  let arr    = (end: "straight", scale: 0.35)
+  let sh     = (start: 0.06, end: 0.06)
 
-  // ── Arrow label helper (above midpoint, with white halo) ──
-  let elabel(name-id, dy, txt) = content(
-    (rel: (0, dy), to: name-id + ".mid"), anchor: "south",
-    text(5.5pt, fill: fg-light)[#txt],
-  )
-
-  // ── Layout (5 columns × 2 rows) ─────────────────────────
-  let bw = 7.0
-  let bh = 2.4
+  // ── Layout ───────────────────────────────────────────────
+  let bw = 8.0
+  let bh = 2.6
   let sw = 6.6
-  let sh-box = 1.8
+  let sh-box = 1.7
 
-  let cx-issue  =  0.0
-  let cx-core   =  8.6
-  let cx-art    = 17.0    // JSON (top) and CLI (bot)
-  let cx-pdf    = 25.4    // PDF Manual (top only)
-  let cx-verify = 34.0
+  let cx-input  =  0.0
+  let cx-core   =  9.8
+  let cx-art1   = 18.4   // JSON top / CLI bot
+  let cx-art2   = 26.6   // PDF top
+  let cx-review = 35.4
 
   let y-mid =  0.0
-  let y-top =  2.8
-  let y-bot = -2.8
+  let y-top =  2.6
+  let y-bot = -2.6
 
   // ── Boxes ────────────────────────────────────────────────
-  // Input
-  nbox(cx-issue, y-mid, bw, bh, "issue", [
-    #text(8pt, weight: "bold")[GitHub Issue] \
-    #v(-0.2em)
-    #text(6pt, fill: fg-light)[definition · example · solution]
+  nbox(cx-input, y-mid, bw, bh, "input", [
+    #text(7.5pt, weight: "bold")[Contributor's worked example] \
+    #v(-0.15em)
+    #text(5.5pt, fill: fg-light)[a concrete instance with a \
+    pre-computed correct answer]
   ])
 
-  // Single source of truth (accent)
   abox(cx-core, y-mid, bw, bh, "core", [
-    #text(8pt, weight: "bold", fill: accent.darken(20%))[Example Database] \
-    #v(-0.2em)
-    #text(6pt, fill: accent.darken(10%))[canonical builders]
+    #text(7.5pt, weight: "bold", fill: accent.darken(20%))[
+      Canonical builder
+    ] \
+    #v(-0.15em)
+    #text(5.5pt, fill: accent.darken(10%))[
+      encodes the example as code; \
+      *single source of truth*
+    ]
   ])
 
-  // JSON Fixtures (top, upstream of PDF manual)
-  nbox(cx-art, y-top, sw, sh-box, "json", [
-    #text(7.5pt, weight: "bold")[JSON Fixtures] \
-    #v(-0.2em)
-    #text(5.5pt, fill: fg-light)[ground-truth I/O]
+  nbox(cx-art1, y-top, sw, sh-box, "json", [
+    #text(7pt, weight: "bold")[JSON fixture] \
+    #v(-0.15em)
+    #text(5pt, fill: fg-light)[ground-truth I/O]
   ])
 
-  // CLI (bottom, parallel branch from DB)
-  nbox(cx-art, y-bot, sw, sh-box, "cli", [
-    #text(7.5pt, weight: "bold")[#raw("pred --example")] \
-    #v(-0.2em)
-    #text(5.5pt, fill: fg-light)[interactive demo]
+  nbox(cx-art1, y-bot, sw, sh-box, "cli", [
+    #text(7pt, weight: "bold")[#raw("pred --example")] \
+    #v(-0.15em)
+    #text(5pt, fill: fg-light)[interactive demo]
   ])
 
-  // Typst PDF Manual (rendered from JSON)
-  nbox(cx-pdf, y-top, sw, sh-box, "pdf", [
-    #text(7.5pt, weight: "bold")[Typst PDF Manual] \
-    #v(-0.2em)
-    #text(5.5pt, fill: fg-light)[diagrams · proofs]
+  nbox(cx-art2, y-top, sw, sh-box, "pdf", [
+    #text(7pt, weight: "bold")[PDF manual] \
+    #v(-0.15em)
+    #text(5pt, fill: fg-light)[diagram + proof]
   ])
 
-  // Verification (Stage 6)
-  nbox(cx-verify, y-mid, bw, bh, "verify", [
-    #text(8pt, weight: "bold")[Verification] \
-    #v(-0.2em)
-    #text(6pt, fill: fg-light)[stage 6 · contributor review]
+  nbox(cx-review, y-mid, bw, bh, "review", [
+    #text(7.5pt, weight: "bold")[Contributor checks] \
+    #v(-0.15em)
+    #text(5.5pt, fill: fg-light, style: "italic")[
+      "does every artifact still \
+      match the example I gave?"
+    ]
   ])
 
-  // ── Forward arrows ───────────────────────────────────────
-  // Issue → Core
-  line("issue.east", "core.west",
-    stroke: s-edge, mark: arr, shorten: sh, name: "e-extract")
-  elabel("e-extract", 0.35, [extract])
+  // ── Forward arrows ──────────────────────────────────────
+  // Input → Core
+  line("input.east", "core.west",
+    stroke: s-edge, mark: arr, shorten: sh, name: "e-codify")
+  content((rel: (0, 0.35), to: "e-codify.mid"), anchor: "south",
+    text(5.5pt, fill: fg-light)[codified as Rust function])
 
-  // Core → JSON (orthogonal up)
-  let fork = (cx-core + cx-art) / 2
+  // Core → JSON (top), Core → CLI (bot) — orthogonal fork
+  let fork = (cx-core + cx-art1) / 2
   line("core.east", (fork, y-mid), (fork, y-top), "json.west",
-    stroke: s-edge, mark: arr, shorten: sh, name: "e-gen-json")
-  // Core → CLI (orthogonal down)
+    stroke: s-edge, mark: arr, shorten: sh)
   line("core.east", (fork, y-mid), (fork, y-bot), "cli.west",
     stroke: s-edge, mark: arr, shorten: sh)
-  // single "generate" label sits in the fork gutter
-  content((fork, y-mid + 0.25), anchor: "south",
-    text(5.5pt, fill: fg-light)[generate])
+  content((fork, y-mid + 0.3), anchor: "south",
+    text(5.5pt, fill: fg-light)[auto-generates])
 
-  // JSON → PDF Manual (top branch, horizontal: render)
+  // JSON → PDF (top horizontal)
   line("json.east", "pdf.west",
     stroke: s-edge, mark: arr, shorten: sh, name: "e-render")
-  elabel("e-render", 0.35, [render])
+  content((rel: (0, 0.3), to: "e-render.mid"), anchor: "south",
+    text(5.5pt, fill: fg-light)[rendered into])
 
-  // PDF → Verify (top, orthogonal down)
-  let merge = (cx-pdf + cx-verify) / 2
-  line("pdf.east", (merge, y-top), (merge, y-mid), "verify.west",
+  // PDF → Review (top), CLI → Review (bot) — orthogonal merge
+  let merge = (cx-art2 + cx-review) / 2
+  line("pdf.east", (merge, y-top), (merge, y-mid), "review.west",
     stroke: s-edge, mark: arr, shorten: sh)
-  // CLI → Verify (bottom, orthogonal up)
-  line("cli.east", (merge, y-bot), (merge, y-mid), "verify.west",
+  line("cli.east", (merge, y-bot), (merge, y-mid), "review.west",
     stroke: s-edge, mark: arr, shorten: sh)
-  content((merge, y-mid + 0.25), anchor: "south",
-    text(5.5pt, fill: fg-light)[contributor compares])
+  content((merge, y-mid + 0.3), anchor: "south",
+    text(5.5pt, fill: fg-light)[seen by contributor])
 
   // ── Closing the loop ────────────────────────────────────
-  // Dashed accent arrow from Verification back to Issue
-  let loop-y = y-bot - 1.6
+  let loop-y = y-bot - 1.8
   line(
-    "verify.south",
-    (cx-verify, loop-y),
-    (cx-issue,  loop-y),
-    "issue.south",
+    "review.south",
+    (cx-review, loop-y),
+    (cx-input,  loop-y),
+    "input.south",
     stroke: s-loop,
     mark: arr,
   )
   content(
-    ((cx-issue + cx-verify) / 2, loop-y - 0.35),
+    ((cx-input + cx-review) / 2, loop-y - 0.4),
     anchor: "north",
-    text(5.5pt, fill: accent.darken(10%), style: "italic")[
-      Stage 6: any drift from the original issue surfaces here
+    text(6pt, fill: accent.darken(10%), weight: "bold")[
+      ROUND-TRIP TEST
+    ],
+  )
+  content(
+    ((cx-input + cx-review) / 2, loop-y - 1.05),
+    anchor: "north",
+    text(5.5pt, fill: fg-light, style: "italic")[
+      any divergence between an artifact and the original example reveals a pipeline bug
     ],
   )
 })
