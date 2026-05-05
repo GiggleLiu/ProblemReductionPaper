@@ -293,20 +293,20 @@ The remaining problems fall back to brute-force enumeration on small instances.
 Both reduction overheads and algorithm complexities are represented as symbolic expressions.
 The symbolic engine supports three operations: \emph{composition} substitutes one edge's output polynomial into the next edge's input, often used to determine the composite overhead of a multi-step reduction path; \emph{comparison} determines whether a symbolic expression has lower asymptotic growth than another, used for finding the cheapest reduction path; and \emph{evaluation} evaluates a symbolic expression.
 
-Appendix~\ref{app:architecture} provides more details about the Rust language specific design choices.
+Appendix~\ref{app:architecture} presents the engineering details of the Rust crate.
 
 \subsection{Why Rust?}\label{sec:why-rust}
 
 None of the maintainers had written Rust before this project---the language was chosen in large part for properties that benefit agents.
 
 \emph{Explicit, actionable error messages.}
-The Rust compiler produces diagnostics that include the error location, the conflicting types or lifetimes, and often a suggested fix.
-Agents parse these messages and resolve errors without human intervention.
-Languages with less structured diagnostics would require more agent reasoning per cycle.
-Rust's other well-known strengths also help: memory safety and Cargo's integrated toolchain further reduce the surface area of errors agents must debug.
+The Rust compiler points to the error location, names the conflicting types or lifetimes, and often suggests a fix.
+Agents parse and resolve these without human help.
 
 \emph{Fast feedback.}
-Incremental compilation and the built-in test harness produce results in seconds, enabling agents to iterate rapidly.
+Incremental compilation and the built-in test harness return results in seconds.
+Cargo's unified CLI bundles build, test, and format into one tool.
+Memory safety eliminates a class of bugs upfront.
 
 
 %======================================================================
