@@ -259,7 +259,7 @@ Domain experts review it for correctness, and agents register a new entry whenev
 
 \subsection{Library Layer}\label{sec:graph-structure}
 
-The library layer (\Cref{fig:library-architecture}) is a collection of problem types and the reduction rules between them, with a database of canonical instances for tests and documentation.
+The library layer is a collection of problem types and the reduction rules between them.
 
 \textbf{Problem types.}
 Every problem type implements a uniform interface for problems, such as input domain, solution type and \emph{size measures}.
@@ -275,8 +275,8 @@ Each rule also carries a \emph{reduction overhead}: a set of multivariate polyno
 For example, the 3-SAT $\to$ MIS reduction creates one vertex per literal occurrence in the formula, yielding $O(L)$ vertices and $O(L^2)$ edges where $L$ is the total number of literal occurrences.
 
 \textbf{Example database.}
-Canonical instances serve as the single source of truth.
-\textcolor{red}{The same instance feeds tests, worked examples in the PDF manual, and the \texttt{pred create --example} command for interactive exploration.}
+Each problem type defines a canonical instance, such as the Petersen graph for Maximum Independent Set.
+The same instance drives the test suite and serves as the worked example in the PDF manual.
 
 \subsection{Infrastructure Layer}\label{sec:infrastructure}
 
