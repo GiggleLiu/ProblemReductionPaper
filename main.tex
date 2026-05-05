@@ -225,14 +225,14 @@ We build a domain-specific harness that addresses both \emph{convention drift} a
 We make three contributions, each addressing one actor in the workflow:
 
 \textbf{For domain experts.}
-A \texttt{/propose} skill that walks contributors through brainstorming a new problem model or reduction rule in mathematical language and ends in a well-formed GitHub issue---no familiarity with the implementation language needed (\Cref{sec:method}).
+A no-code contribution route that walks contributors through brainstorming a new problem model or reduction rule in mathematical language and ends in a well-formed GitHub issue, with no familiarity with the implementation language needed (\Cref{sec:method}).
 
 \textbf{For maintainers.}
 A skill-based agentic harness in which agents pick up the issue and execute the per-reduction checklist (coding, testing, documentation) under a layered correctness gate.
 Maintainer effort no longer scales with library size (\Cref{sec:skills}).
 
 \textbf{For end users.}
-Two interactive skills, \texttt{/find-solver} and \texttt{/find-problem}, that map a real-world problem to a solving strategy via reductions, or, conversely, identify all problems a given solver can handle.
+Two interactive workflows that map a real-world problem to a solving strategy via reductions, or, conversely, identify all problems a given solver can handle.
 Backed by 200+ reductions among 100+ problem types, 170k lines of code, built in about three months by a small team and AI agents (\Cref{sec:end-user-utility}).
 
 \begin{figure}[t]
