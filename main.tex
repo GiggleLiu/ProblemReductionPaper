@@ -248,11 +248,13 @@ We implements the reduction graph as a Rust crate, organized in three layers (\C
 
 \subsection{Interfaces}\label{sec:user-interfaces}
 
-The crate ships with a command-line interface (CLI), \texttt{pred}, as the primary entry point.
-The three commands compose through Unix pipes: \texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it to a target formulation, and \texttt{solve} invokes a solver. See Appendix~\ref{app:cli} for a worked CLI session and the full subcommand list.
+The CLI \texttt{pred} provides a friendly interface for both human users and AI agents.
+They browse the catalog of problems and reductions, \texttt{create} a problem instance as JSON, and \texttt{reduce} it through any path in the graph; the resulting JSON flows to external solvers or downstream tools through Unix pipes.
+A built-in \texttt{solve} closes the loop for quick checks.
+See Appendix~\ref{app:cli} for a worked session.
 
-The build system also produces a PDF manual from Typst source.
-The manual serves two audiences: domain experts reviewing the mathematical content, and agents reading it as reference material during implementation.
+The PDF manual is the human-readable specification: each problem and reduction comes with a formal definition, a worked example, a diagram, and a proof sketch.
+Domain experts read it to verify that the implementation matches the mathematics.
 
 \subsection{Library Layer}\label{sec:graph-structure}
 
