@@ -312,15 +312,6 @@ Incremental compilation and unit tests make that loop fast enough for agent iter
 %======================================================================
 %  SECTION 4: SKILLS AND AUTOMATION
 %======================================================================
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/skill-map.pdf}
-  \caption{Skills architecture.
-    Blue boxes are \emph{advisor} skills (human in the loop); white boxes are \emph{automation} skills (fully autonomous).
-    Both are executed by agents, but humans are more involved when advisor skills are loaded.}
-  \label{fig:skill-architecture}
-  \end{figure}
-
 \section{Harness Design}\label{sec:method}
 
 \subsection{Anatomy of the Harness}\label{sec:skills}
@@ -343,6 +334,15 @@ ArXiv MCP and web search retrieve references, and Typst compiles the PDF manual 
 Domain knowledge includes Garey and Johnson's catalogue~\cite{garey1979}, reference papers converted to Markdown for agent consumption, and reference implementations already in the codebase.
 This body of material is too large to fit in a single agent context window.
 The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents discover relevant files through search and read full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/skill-map.pdf}
+  \caption{Skills architecture.
+    (a) The two skill kinds: \emph{advisor} skills keep humans in the loop with the agent throughout, while \emph{automation} skills run end-to-end once a human invokes them.
+    (b) The skill catalogue, grouped by invoker (user, contributor, maintainer, or agent). Blue boxes are advisor skills; white boxes are automation skills.}
+  \label{fig:skill-architecture}
+  \end{figure}
 
 Skills are plain-Markdown documents that orchestrate specification, tools, and knowledge into multi-step, repeatable workflows.
 We divide skills into two kinds (\Cref{fig:skill-architecture}): \emph{automation skills} that agents execute end-to-end, and \emph{advisor skills} that bring humans into the loop at decision points.
@@ -459,7 +459,7 @@ Beyond the four automated layers, the Stage~6 walkthrough with the original cont
 
 \subsection{Library Status}
 
-\Cref{fig:overview}c summarizes the library at v0.5.0: 190~problem types (220 variants), 265~reduction rules, 129~types (68\%) with a reduction path to ILP, and 78 reachable from 3-SAT.
+\Cref{fig:overview}(c) summarizes the library at v0.5.0: 190~problem types (220 variants), 265~reduction rules, 129~types (68\%) with a reduction path to ILP, and 78 reachable from 3-SAT.
 Each ILP path grants automatic solver access via the \texttt{pred} CLI; each 3-SAT path provides a tested NP-hardness argument backed by executable code rather than pen-and-paper proofs.
 Growth is concentrated in the final phase: once the full skill-based pipeline came online at week~8.5, problem types went from 23 to 187 and reduction rules from 52 to 239 in under five weeks.
 The phase-by-phase narrative is detailed in \Cref{app:phases}.
