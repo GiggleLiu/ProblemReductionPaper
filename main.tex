@@ -195,12 +195,12 @@ Scaling an \emph{executable} reduction graph is an engineering problem.
 The literature is far ahead of any implementation: Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software library (Appendix~\ref{sec:related}) covers fewer than 20.
 Implementation and maintenance are the bottleneck, and two barriers in particular emerge.
 
-\emph{Convention drift.}
-Every edge must conform to the same conventions---same interface, same file layout, same test pattern---but maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
-As contributors accumulate their own patterns, the codebase fractures.
+\textbf{Convention drift.}
+Every reduction rule must conform to the same interface, the same file layout, and the same test pattern.
+Maintaining this uniformity across many contributions is precisely what human teams cannot do at scale: as contributors accumulate their own patterns, the codebase fractures.
 A mathematician who understands a new reduction has no way to contribute it without first learning the implementation language and the project's conventions (\Cref{fig:comic}).
 
-\emph{Effort exhaustion.}
+\textbf{Effort exhaustion.}
 Every new entry demands the same lengthy checklist.
 Adding a problem type requires resolving whether the problem is genuinely new or a known problem under a different name, writing a formal definition, and identifying the best known algorithm and its complexity.
 Adding a reduction rule requires confirming that both endpoint problems exist, verifying the rule is novel and actually improves on existing routes, analyzing the reduction overhead, providing a correctness argument, implementing the forward and inverse maps, designing correctness tests, and documenting the reduction with a worked example.
