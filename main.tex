@@ -465,12 +465,12 @@ The phase-by-phase narrative is detailed in \Cref{app:phases}.
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
-We evaluate end-user utility on dense weighted Max-Cut ($n{=}150$, $\approx 5300$ signed edges), an instance where direct ILP solving is dominated by reformulation to QUBO with simulated annealing.
+The library produced by our harness is itself an agent-callable tool through the \texttt{pred} CLI.
+We test whether catalog access measurably improves agent problem-solving on a representative instance: dense weighted Max-Cut ($n{=}150$, $\approx 5300$ signed edges), where direct ILP solving is dominated by reformulation to QUBO with simulated annealing.
 The instance is presented to a sub-agent in domain language without algorithmic hints.
 We compare four configurations along two axes---web search access and \texttt{pred} (catalog) access---on ten random seeds each, for 40 runs total.
-We report three metrics that AI-coding evaluations often conflate as ``time'': AI tokens consumed, solver wall-time, and solution quality.
-Optimality claims are graded independently against the best feasible solution found on the same seed.
-Full setup is in \Cref{app:end-user}.
+We track three metrics that AI-coding evaluations often conflate as ``time'': AI tokens consumed, solver wall-time, and solution quality.
+Optimality claims are graded independently against the best feasible solution found on the same seed (full setup in \Cref{app:end-user}).
 
 \Cref{tab:end-user-eval} summarizes the outcomes.
 Agents with \texttt{pred} access achieve 0\% regret on all 10 seeds and produce no false-OPT claims.
