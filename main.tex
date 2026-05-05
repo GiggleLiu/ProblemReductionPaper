@@ -430,7 +430,7 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 
 \subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by six layers: issue review (Stage~2), compile-time type checks, unit tests, round-trip tests, our \emph{agentic feature tests} (Stage~4)---a new layer we introduce and describe in detail below---and final review by a maintainer (Stage~5).
+Correctness is enforced by six layers: issue review (Stage~2), compile-time type checks, unit tests, round-trip tests, \emph{agentic feature tests} (Stage~4) and manual verification (Stage 5 and 6). The first three are standard; we describe the two novel mechanisms below.
 
 \textbf{Unit tests and round-trip tests.}
 Unit tests cover individual problems, solvers, and helper functions.
@@ -449,16 +449,12 @@ This report surfaces usability gaps, documentation omissions, and semantic error
 
 In our practice, agentic feature tests caught most CLI command bugs, and some user-experience issues, e.g.\ the mismatch between the help text and the actual command output, which are never caught by the existing unit tests.
 
-\textbf{Final review.}
-Before merge (Stage~5), the \texttt{final-review} skill walks a maintainer through the agentic review report; the maintainer makes the merge call. This catches what earlier layers miss: most often a builder that quietly encodes a different problem from the one in the issue, or a judgment call where the automated review's confidence is misleading.
-
-Beyond these six layers, Stage~6 brings the original contributor in for a community walkthrough: a domain-expert review against the original problem statement, catching subtle interpretation errors and proof gaps only the contributor recognizes.
-
 %======================================================================
 %  SECTION 5: EVIDENCE
 %======================================================================
-\section{Evidence}\label{sec:evidence}
+\section{Evaluation}\label{sec:evidence}
 
+We evaluate two questions. First, how much library does the harness actually produce? Second, does that library change what end-user agents do on a concrete problem?
 
 \subsection{Library Status}
 
