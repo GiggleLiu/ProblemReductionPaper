@@ -449,7 +449,10 @@ This report surfaces usability gaps, documentation omissions, and semantic error
 
 In our practice, agentic feature tests caught most CLI command bugs, and some user-experience issues, e.g.\ the mismatch between the help text and the actual command output, which are never caught by the existing unit tests.
 
-Beyond the five automated layers, the Stage~6 walkthrough with the original contributor remains as a final human safeguard, catching mismatches that automation cannot see---most often a builder that quietly encodes a different problem from the one in the issue.
+\textbf{Final review.}
+A maintainer reading the PR before merge (Stage~5) catches mismatches the earlier layers miss: most often a builder that quietly encodes a different problem from the one in the issue, or a judgment call where the automated review's confidence is misleading.
+
+Beyond these six layers, Stage~6 brings the original contributor in for a community walkthrough: a domain-expert review against the original problem statement, catching subtle interpretation errors and proof gaps only the contributor recognizes.
 
 %======================================================================
 %  SECTION 5: EVIDENCE
