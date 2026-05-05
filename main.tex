@@ -299,14 +299,14 @@ Appendix~\ref{app:architecture} presents the engineering details of the Rust cra
 
 None of the maintainers had written Rust before this project---the language was chosen in large part for properties that benefit agents.
 
-\emph{Explicit, actionable error messages.}
-The Rust compiler points to the error location, names the conflicting types or lifetimes, and often suggests a fix.
-Agents parse and resolve these without human help.
+\emph{Strict compiler, actionable errors.}
+Memory safety eliminates a class of bugs upfront.
+For the rest, the compiler points to the error location, names the conflicting types or lifetimes, and often suggests a fix.
+Agents resolve these without human help.
 
 \emph{Fast feedback.}
 Incremental compilation and the built-in test harness return results in seconds.
 Cargo's unified CLI bundles build, test, and format into one tool.
-Memory safety eliminates a class of bugs upfront.
 
 
 %======================================================================
