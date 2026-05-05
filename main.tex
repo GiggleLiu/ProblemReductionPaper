@@ -225,10 +225,11 @@ We build a domain-specific harness that addresses both \emph{convention drift} a
 We make three contributions, each addressing one actor in the workflow:
 
 \textbf{For domain experts.}
-A no-code contribution route that turns a structured GitHub issue into a merged reduction, with no familiarity with the implementation language needed (\Cref{sec:method}).
+A no-code contribution route that turns a structured GitHub issue into a merged reduction, with no familiarity with the implementation language needed (\Cref{fig:overview}(b)).
 
 \textbf{For maintainers.}
-A skill-based agentic harness that absorbs the implementation, testing, verification, and documentation work that would otherwise grow with every new edge (\Cref{sec:skills}).
+A skill-based agentic harness in which agents execute the per-reduction checklist (coding, testing, documentation) under a layered correctness gate.
+Maintainer effort no longer scales with the graph (\Cref{sec:skills}).
 
 \textbf{For end users.}
 A single-command tool that routes any source problem through the graph to a mature solver.
