@@ -192,12 +192,8 @@ The target solver's time complexity, $t_I$ for ILP, thereby upper-bounds the end
 \end{wrapfigure}
 
 Scaling a reduction graph is an engineering problem.
-Decades of work on reduction libraries (Appendix~\ref{sec:related}) have steadily widened the gap between \emph{known} and \emph{implemented} reductions.
-Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software implementation covers fewer than 20.
-Implementation and maintenance are the bottleneck.
-
-The reduction graph's value grows with every edge, but so does the cost of maintaining it.
-Two barriers in particular emerge.
+Decades of work on reduction libraries (Appendix~\ref{sec:related}) have steadily widened the gap between \emph{known} and \emph{implemented} reductions: Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software implementation covers fewer than 20.
+Implementation and maintenance are the bottleneck, and two barriers in particular emerge.
 
 \emph{Convention drift.}
 Every edge must conform to the same conventions---same interface, same file layout, same test pattern---but maintaining such uniformity across many contributions is precisely what human teams cannot do at scale.
