@@ -248,9 +248,9 @@ We implements the reduction graph as a Rust crate, organized in three layers (\C
 
 \subsection{Interfaces}\label{sec:user-interfaces}
 
-The CLI \texttt{pred} provides a friendly interface for both human users and AI agents.
-They browse the catalog of problems and reductions, \texttt{create} a problem instance as JSON, and \texttt{reduce} it through any path in the graph; the resulting JSON flows to external solvers or downstream tools through Unix pipes.
-A built-in \texttt{solve} closes the loop for quick checks.
+The command-line interface (CLI) \texttt{pred} is the friendly entry point for users and AI agents.
+\texttt{create} emits a problem instance as JSON, \texttt{reduce} transforms it along any reduction path, and the resulting JSON pipes into external solvers or downstream tools.
+\texttt{solve} closes the loop for quick checks.
 See Appendix~\ref{app:cli} for a worked session.
 
 The PDF manual is the human-readable specification: each problem and reduction comes with a formal definition, a worked example, a diagram, and a proof sketch.
