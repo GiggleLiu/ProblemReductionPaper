@@ -465,33 +465,29 @@ The phase-by-phase narrative is detailed in \Cref{app:phases}.
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
-The library produced by our harness is itself an agent-callable tool through the \texttt{pred} CLI.
-We test whether catalog access measurably improves agent problem-solving on a representative instance: dense weighted Max-Cut ($n{=}150$, $\approx 5300$ signed edges), where direct ILP solving is dominated by reformulation to QUBO with simulated annealing.
-The instance is presented to a sub-agent in domain language without algorithmic hints.
-We compare four configurations along two axes---web search access and \texttt{pred} (catalog) access---on ten random seeds each, for 40 runs total.
-We track three metrics that AI-coding evaluations often conflate as ``time'': AI tokens consumed, solver wall-time, and solution quality.
-Optimality claims are graded independently against the best feasible solution found on the same seed (full setup in \Cref{app:end-user}).
+The library is itself an agent-callable tool via the \texttt{pred} CLI.
+We test whether catalog access improves agent problem-solving on a domain-language instance: a HR manager splits a 150-person org into two product teams to maximize total signed cross-team value from a dense pairwise survey.
+No abstract problem name is given; recognizing the structure and routing it to a competitive solver is part of the task.
+Four configurations form a $2{\times}2$ factorial over web-search and \texttt{pred} access, ten random instances each (40 runs), with solver wall-time capped at 90~s.
+We separate three quantities usually conflated as ``time'': AI tokens, solver wall-time, and graded solution quality (full setup in \Cref{app:end-user}).
 
 \Cref{tab:end-user-eval} summarizes the outcomes.
-Agents with \texttt{pred} access achieve 0\% regret on all 10 seeds and produce no false-OPT claims.
-Agents without \texttt{pred} leave 1.4--4.0\% on the table on average and produce 2 false-OPT claims out of 10 runs in each baseline (a false-OPT being an answer claimed optimal but beaten by another configuration on the same seed).
-\texttt{pred} access also reduces solver wall-time (54.5--74.6\,s versus 65.2--85.5\,s) at the cost of $\sim$35\% additional AI tokens.
-Web access without \texttt{pred} degrades performance: it increases agent confidence in the textbook ILP encoding, whose CBC timeout is misreported as \texttt{OPTIMAL}.
+\texttt{pred}-enabled agents achieve 0\% regret and zero false-OPT on all 10 instances; bare baselines leave 1.4--4.0\% on the table and produce 2/10 false-OPT each.
+\texttt{pred} access also cuts solver wall-time (54.5--74.6\,s vs.\ 65.2--85.5\,s) at $\sim$35\% extra AI tokens.
+Web access without \texttt{pred} is worse than no web at all: agents look up textbook ILP encodings and misread CBC's time-limit termination as \texttt{OPTIMAL}.
 
 \textbf{Solver-choice analysis.}
-\Cref{tab:end-user-solver-table} reports each agent's solver selection.
-Without \texttt{pred}, agents distribute across five solver classes (PuLP+CBC, HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal, plus ad-hoc heuristics).
-With \texttt{pred}, agents converge on simulated annealing applied to the QUBO reformulation across all 10 seeds in both \texttt{pred}-enabled configurations.
-All four false-OPT incidents originate from PuLP+CBC (3) or PuLP+HiGHS (1), whose timeout behavior is reported as \texttt{OPTIMAL} rather than as an open optimality gap.
-The catalog therefore contributes along two dimensions: it identifies the stronger reformulation, and it reduces inter-run variance arising from solver selection.
+\Cref{tab:end-user-solver-table} reports the model and solver each agent settled on.
+Bare baselines scatter across five families (PuLP+CBC/HiGHS on a natural ILP encoding, Gurobi, OR-tools CP-SAT, dwave-neal, ad-hoc heuristics).
+\texttt{pred}-enabled agents recognize the instance as signed-weight cut maximization on a dense graph, follow the catalog into the spin-glass / QUBO family, and run simulated annealing on the Ising form on every instance.
+All four false-OPT incidents come from the ILP route.
+The catalog points agents to a reformulation whose downstream solver is competitive on this class, and removes the per-run modelling variance.
 
-Beyond the Max-Cut instance, this experiment completes a loop that runs through the paper.
-AI agents built the library under our harness pipeline; the library, deployed as an agent-callable tool, now augments the problem-solving of agents tackling new instances.
-The harness thus produces tools that strengthen the systems that built them.
+This experiment closes a loop in the paper: agents built the library, and the library now augments agents tackling new instances.
 
 \begin{table}[h]
-\caption{Outcomes on the Max-Cut instance (10~seeds per configuration; 90~s solver-wall cap; 40~runs total).
-Regret~\% is the gap to the best feasible answer found on the same seed; false-OPT counts answers claimed optimal but beaten by another configuration.}
+\caption{Outcomes on the team-split instance class (10~instances per configuration; 90~s solver-wall cap; 40~runs total).
+Regret~\% is the gap to the best feasible answer found on the same instance; false-OPT counts answers claimed optimal but beaten by another configuration.}
 \label{tab:end-user-eval}
 \centering
 \small
@@ -859,32 +855,32 @@ External domain experts began contributing through the \texttt{propose} skill, f
 This appendix expands on the controlled experiment summarised in \Cref{sec:end-user-utility}.
 
 \paragraph{Setup.}
-A dense weighted Max-Cut instance ($n=150$ vertices, ${\approx}\,5300$ signed-weight edges, density ${\approx}\,0.48$) is presented to a Claude Sonnet 4.6 sub-agent through an engineer-voice prompt: a people-ops manager dividing an organization into two product teams to maximize cross-team interaction value.
-The prompt contains no algorithm, model, or solver hints; the underlying Max-Cut structure is left for the agent to recognize.
-Four configurations form a $2{\times}2$ factorial along two axes: \emph{web search} (yes/no) and \emph{access to \texttt{pred}} (yes/no).
-Ten random seeds per configuration (40 runs total); solver wall-time capped at 90~s per run.
-Agents with \texttt{pred} access also receive a short Markdown protocol that prescribes one extra step before writing solver code---enumerate downstream models with \texttt{pred from} and pick the one whose endpoint admits the strongest off-the-shelf solver.
+A Claude Sonnet 4.6 sub-agent receives an engineer-voice prompt: a HR manager splits a 150-person org into two product teams to maximize total cross-team value from a dense signed pairwise survey (${\approx}\,5300$ entries, density ${\approx}\,0.48$, mix of positive and negative scores).
+The prompt gives no model or solver hint; recognizing the underlying signed-weight Max-Cut structure is part of the task.
+Configurations form a $2{\times}2$ factorial over \emph{web search} (yes/no) and \emph{\texttt{pred} access} (yes/no), with ten random instances per cell (40 runs) and a 90~s solver wall-time cap.
+Agents with \texttt{pred} access also receive a short Markdown protocol prescribing one extra step before writing solver code: enumerate downstream models with \texttt{pred from} and pick the one whose endpoint admits the strongest off-the-shelf solver.
 
 \paragraph{Three independent axes of measurement.}
 We separate three quantities that AI-coding evaluations often blend into a single ``time'' figure:
 (i) \emph{AI cost}---tokens consumed by the agent;
 (ii) \emph{algorithm cost}---solver wall-time, reported by the agent in a structured \texttt{meta.json};
 (iii) \emph{solution quality}---feasibility, objective value, and the agent's claim of optimality, all re-checked by an independent grader.
-The grader also flags \emph{false-OPT}: a claimed-optimal answer beaten by another configuration on the same seed.
+The grader also flags \emph{false-OPT}: a claimed-optimal answer beaten by another configuration on the same instance.
 
 \paragraph{Scope.}
 The experiment isolates one mechanism---catalog-driven downstream reformulation---and tests it in a regime where alternative formulations are decisive.
 We do not claim the same gains transfer to families where the natural formulation is already strong (sparse ILP, scheduling) or to other agent backends.
 The benchmark harness---scenario generator, grader, per-run result schema, and aggregation script---is released alongside the library to support broader replication.
 
-\paragraph{Per-seed solver picks.}
-\Cref{tab:end-user-solver-table} lists the solver each agent selected on every seed.
-Without \texttt{pred}, the bare baselines drift across PuLP+CBC, HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal, and various custom local-search heuristics; with \texttt{pred}, every C and D run converged to the same QUBO/SA path.
+\paragraph{Per-instance solver picks.}
+\Cref{tab:end-user-solver-table} lists the solver each agent selected on every instance.
+Without \texttt{pred}, the bare baselines drift across PuLP+CBC, HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal, and various custom local-search heuristics; with \texttt{pred}, every \texttt{pred}-enabled run converged to the same QUBO / simulated-annealing path.
 False-OPT incidents are marked $\dagger$ and cluster on PuLP+CBC and PuLP+HiGHS, whose ``Optimal'' status under timeout is, in fact, a feasibility incumbent with an unclosed gap.
 
 \begin{table}[h]
-\caption{Solver picked on each seed by each configuration. Cells marked $\dagger$ are false-OPT incidents (the agent declared optimality but another configuration found a strictly better answer on the same seed).
-SA = simulated annealing on the Ising/QUBO reformulation. Custom = hand-rolled local search / Kernighan-Lin / tabu / iterated local search.}
+\caption{Solver picked on each instance by each configuration. $\dagger$ marks false-OPT incidents.
+SA~=~simulated annealing on the Ising/QUBO reformulation; Custom~=~hand-rolled local search / Kernighan-Lin / tabu / ILS.
+Both \texttt{pred}-enabled configurations converge to dwave-neal SA but with different runtimes: web access lets the agent recover the package's documented hyperparameters and trust early stopping, while the offline variant defaults to a budget-filling loop.}
 \label{tab:end-user-solver-table}
 \centering
 \small
