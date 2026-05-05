@@ -435,11 +435,11 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 
 \subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by four automated layers: issue review (Stage~2), compile-time type checks, unit tests, and our \emph{agentic feature tests} (Stage~4)---a new layer we introduce and describe in detail below.
+Correctness is enforced by five automated layers: issue review (Stage~2), compile-time type checks, unit tests, round-trip tests, and our \emph{agentic feature tests} (Stage~4)---a new layer we introduce and describe in detail below.
 
-\textbf{Unit and round-trip tests.}
-Every rule ships with a unit test of its end-to-end behavior: given a small canonical instance of the source problem, reduce through the rule, brute-force solve the target, lift the solution back to the source domain, and check it against an independent brute-force solve of the source---feasibility and objective value must agree.
-We call this pattern a \emph{round-trip test}: the problem travels forward through the reduction, the solution travels back through the lifter, and the loop closes when the two ends agree.
+\textbf{Unit tests and round-trip tests.}
+Unit tests target individual components: each model has tests for its evaluator and serialization, each solver has tests for correctness and witness recovery, and reduction helpers have their own assertions.
+Round-trip tests target each reduction rule end-to-end: given a small canonical instance of the source problem, reduce through the rule, brute-force solve the target, lift the solution back to the source domain, and check it against an independent brute-force solve of the source---feasibility and objective value must agree.
 The source-side brute force never invokes the rule, so each rule is graded against a value computed entirely outside it.
 
 \textbf{Agentic feature tests.}
