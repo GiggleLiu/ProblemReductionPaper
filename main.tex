@@ -485,8 +485,9 @@ With \texttt{pred}, agents converge on simulated annealing applied to the QUBO r
 All four false-OPT incidents originate from PuLP+CBC (3) or PuLP+HiGHS (1), whose timeout behavior is reported as \texttt{OPTIMAL} rather than as an open optimality gap.
 The catalog therefore contributes along two dimensions: it identifies the stronger reformulation, and it reduces inter-run variance arising from solver selection.
 
-These results demonstrate utility in the regime where direct encodings are dominated by reachable reformulations.
-Outside this regime---instances without applicable reductions, or where direct solving suffices---the catalog incurs token cost without functional benefit.
+Beyond the Max-Cut instance, this experiment completes a loop that runs through the paper.
+AI agents built the library under our harness pipeline; the library, deployed as an agent-callable tool, now augments the problem-solving of agents tackling new instances.
+The harness thus produces tools that strengthen the systems that built them.
 
 \begin{table}[h]
 \caption{Outcomes on the Max-Cut instance (10~seeds per configuration; 90~s solver-wall cap; 40~runs total).
