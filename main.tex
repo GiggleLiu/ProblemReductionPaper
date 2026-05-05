@@ -465,28 +465,28 @@ The phase-by-phase narrative is detailed in \Cref{app:phases}.
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
-Does a catalog of reductions change what agents do? On dense weighted Max-Cut, yes: catalog access produces strictly better solutions, honest optimality reporting, and tight solver convergence.
+We evaluate end-user utility on dense weighted Max-Cut ($n{=}150$, $\approx 5300$ signed edges), an instance where direct ILP solving is dominated by reformulation to QUBO with simulated annealing.
+The instance is presented to a sub-agent in domain language without algorithmic hints.
+We compare four configurations along two axes---web search access and \texttt{pred} (catalog) access---on ten random seeds each, for 40 runs total.
+We report three metrics that AI-coding evaluations often conflate as ``time'': AI tokens consumed, solver wall-time, and solution quality.
+Optimality claims are graded independently against the best feasible solution found on the same seed.
+Full setup is in \Cref{app:end-user}.
 
-We pick Max-Cut ($n{=}150$, $\approx 5300$ signed edges) because the textbook ILP encoding is known to be dominated by simulated annealing on a QUBO reformulation---a regime where a reduction catalog should help.
-The instance is presented to a sub-agent in domain language only, with no algorithmic hints.
-Four configurations vary two axes (web search and \texttt{pred} access) over ten random seeds each, for 40 runs total, separating three quantities AI evaluations often conflate: AI tokens, solver wall-time, and solution quality, with optimality claims independently graded (full setup in \Cref{app:end-user}).
+\Cref{tab:end-user-eval} summarizes the outcomes.
+Agents with \texttt{pred} access achieve 0\% regret on all 10 seeds and produce no false-OPT claims.
+Agents without \texttt{pred} leave 1.4--4.0\% on the table on average and produce 2 false-OPT claims out of 10 runs in each baseline (a false-OPT being an answer claimed optimal but beaten by another configuration on the same seed).
+\texttt{pred} access also reduces solver wall-time (54.5--74.6\,s versus 65.2--85.5\,s) at the cost of $\sim$35\% additional AI tokens.
+Web access without \texttt{pred} degrades performance: it increases agent confidence in the textbook ILP encoding, whose CBC timeout is misreported as \texttt{OPTIMAL}.
 
-\Cref{tab:end-user-eval} reports the outcomes.
-Agents with \texttt{pred} reach 0\% regret on all 10 seeds and never falsely claim optimality.
-Without \texttt{pred}, agents leave 1.4--4.0\% on the table on average and falsely claim optimality in 2 of 10 runs in each baseline.
-\texttt{pred} also wins on solver wall-time (54.5--74.6\,s vs.\ 65.2--85.5\,s).
-It costs $\sim$35\% more AI tokens, which the better answers and honest reporting justify.
-Web access alone is actively harmful: it sharpens the agent's confidence in the textbook ILP encoding, whose CBC time-out is then misreported as \texttt{OPTIMAL}.
+\textbf{Solver-choice analysis.}
+\Cref{tab:end-user-solver-table} reports each agent's solver selection.
+Without \texttt{pred}, agents distribute across five solver classes (PuLP+CBC, HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal, plus ad-hoc heuristics).
+With \texttt{pred}, agents converge on simulated annealing applied to the QUBO reformulation across all 10 seeds in both \texttt{pred}-enabled configurations.
+All four false-OPT incidents originate from PuLP+CBC (3) or PuLP+HiGHS (1), whose timeout behavior is reported as \texttt{OPTIMAL} rather than as an open optimality gap.
+The catalog therefore contributes along two dimensions: it identifies the stronger reformulation, and it reduces inter-run variance arising from solver selection.
 
-\textbf{Mechanism: from solver lottery to deterministic path.}
-Tracking which solver each agent picked (\Cref{tab:end-user-solver-table}) shows what the catalog removes.
-Without \texttt{pred}, the bare AI scatters across five solver classes (PuLP+CBC, HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal, plus custom heuristics).
-With \texttt{pred}, every seed converges to the same path: simulated annealing on the QUBO reformulation.
-All four false-OPT incidents involve PuLP+CBC or PuLP+HiGHS, whose timeout behavior is misreported as \texttt{OPTIMAL}.
-The catalog's value is therefore twofold: it surfaces the stronger reformulation, and it eliminates the run-to-run variance from the bare AI's solver guessing.
-
-The result is strongest where the obvious encoding is suboptimal but a stronger one is available via reduction.
-Outside this regime, the catalog adds tokens without adding options.
+These results demonstrate utility in the regime where direct encodings are dominated by reachable reformulations.
+Outside this regime---instances without applicable reductions, or where direct solving suffices---the catalog incurs token cost without functional benefit.
 
 \begin{table}[h]
 \caption{Outcomes on the Max-Cut instance (10~seeds per configuration; 90~s solver-wall cap; 40~runs total).
