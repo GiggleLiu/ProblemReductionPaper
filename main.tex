@@ -385,7 +385,7 @@ Authorizing merges is security critical; a human with long-term memory must be r
   \includegraphics[width=\textwidth]{figures/pipeline.pdf}
   \caption{Contribution pipeline as a state machine on the GitHub project board.
     Each box is a board column (state); arrows show the single allowed transition direction.
-    Four roles drive the flow: a \emph{domain expert} files issues (orange), a \emph{maintainer} triages and merges (orange), an \emph{implementation agent} picks issues and creates PRs (blue), and a \emph{review agent} runs parallel reviews and posts verdicts (teal).
+    Four roles drive the flow: a \emph{domain expert} files issues (brown), a \emph{maintainer} triages and merges (orange), an \emph{implementation agent} picks issues and creates PRs (blue), and a \emph{review agent} runs parallel reviews and posts verdicts (teal).
     If any stage fails, the item moves to On~Hold (not shown) for human triage.}
   \label{fig:pipeline}
 \end{figure*}
@@ -430,7 +430,7 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 
 \subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by five automated layers: issue review (Stage~2), compile-time type checks, unit tests, round-trip tests, and our \emph{agentic feature tests} (Stage~4)---a new layer we introduce and describe in detail below.
+Correctness is enforced by six layers: issue review (Stage~2), compile-time type checks, unit tests, round-trip tests, our \emph{agentic feature tests} (Stage~4)---a new layer we introduce and describe in detail below---and final review by a maintainer (Stage~5).
 
 \textbf{Unit tests and round-trip tests.}
 Unit tests cover individual problems, solvers, and helper functions.
@@ -440,7 +440,7 @@ Round-trip tests cover each reduction rule end-to-end: from a small canonical so
 Libraries normally stabilize through community use, but a niche library cannot wait for that community to form.
 Agentic feature tests approximate user feedback by simulating realistic use scenarios before real users arrive.
 The mechanism has three phases.
-First, the main agent launches a sub-agent in a \emph{fresh context window}---one that has never seen the implementation---and injects a \emph{user profile}: a structured persona with domain expertise and a concrete use case (\Cref{fig:agent-profile}).
+First, the main agent launches a sub-agent in a \emph{fresh context window}---one that has never seen the implementation---and injects a \emph{user profile}: a structured persona with domain expertise and a concrete use case (Appendix~\ref{app:agent-profile}).
 The fresh context is essential; an agent that has just written the code cannot objectively test it.
 Second, the sub-agent role-plays the persona end-to-end: it reads only the project's documentation, picks a problem it recognizes from its domain, builds an instance with realistic data, discovers a reduction path through the CLI, solves, and verifies the result against its own expectation.
 Third, the sub-agent steps out of character.
@@ -449,7 +449,7 @@ This report surfaces usability gaps, documentation omissions, and semantic error
 
 In our practice, agentic feature tests caught most CLI command bugs, and some user-experience issues, e.g.\ the mismatch between the help text and the actual command output, which are never caught by the existing unit tests.
 
-Beyond the four automated layers, the Stage~6 walkthrough with the original contributor remains as a final human safeguard, catching mismatches that automation cannot see---most often a builder that quietly encodes a different problem from the one in the issue.
+Beyond the five automated layers, the Stage~6 walkthrough with the original contributor remains as a final human safeguard, catching mismatches that automation cannot see---most often a builder that quietly encodes a different problem from the one in the issue.
 
 %======================================================================
 %  SECTION 5: EVIDENCE

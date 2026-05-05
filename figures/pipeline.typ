@@ -25,7 +25,7 @@
       (x + card-w / 2, y + card-h / 2),
       radius: 3pt, fill: fill-light, stroke: 0.8pt + border, name: id,
     )
-    content(id, text(7pt, fill: fg, label))
+    content(id, text(7pt, fill: fg, label, weight: "bold"))
   }
 
   let harrow(from-x, to-x, col, cy) = {
@@ -57,12 +57,12 @@
   let entry-y = cy + card-h / 2 + 1.5
   content(
     (x0, entry-y), anchor: "center",
-    text(6.5pt, fill: col-human.darken(10%),
+    text(6.5pt, fill: col-human.darken(50%),
       align(center, [#bob(size: ic) Domain Expert\ (`propose`)])),
   )
   line(
     (x0, entry-y - 0.5), (x0, cy + card-h / 2 + 0.05),
-    stroke: (thickness: 1pt, paint: col-human),
+    stroke: (thickness: 1pt, paint: col-human.darken(50%)),
     mark: (end: "straight", scale: 0.35),
   )
 
