@@ -205,9 +205,9 @@ Adding a problem type requires resolving whether the problem is genuinely new or
 Adding a reduction rule requires confirming that both endpoint problems exist, verifying the rule is novel and actually improves on existing routes, analyzing the reduction overhead, providing a correctness argument, implementing the forward and inverse maps, designing correctness tests, and documenting the reduction with a worked example.
 Repeating this cycle for every entry exhausts even dedicated maintainers (\emph{effort exhaustion}).
 
-AI coding agents offer a way forward, but only when paired with a reliable \emph{verification gate}---a cheap, automatic check that rejects incorrect output before it enters the codebase~\cite{OpenAI2026HarnessEngineering}.
-Reduction-graph construction supplies one for free: every reduction admits a \emph{round-trip test}---reduce a small instance, solve the target problem, map the solution back, and check optimality.
-Building on this, we design a domain-specific harness that addresses both \emph{convention drift} and \emph{effort exhaustion}; we detail it in \Cref{sec:method}.
+AI coding agents offer a way forward, but only when paired with a \emph{harness}---the engineered constraints, feedback loops, and automatic checks that channel agents toward reliable output~\cite{OpenAI2026HarnessEngineering}.
+The engineer's job is no longer to write the code, but to design the harness that makes the agent's code trustworthy.
+We build a domain-specific harness that addresses both \emph{convention drift} and \emph{effort exhaustion}; \Cref{sec:method} details its components.
 
 \subsection{Contributions}
 
