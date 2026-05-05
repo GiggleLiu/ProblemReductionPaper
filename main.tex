@@ -344,9 +344,8 @@ Domain knowledge includes Garey and Johnson's catalogue~\cite{garey1979}, refere
 This body of material is too large to fit in a single agent context window.
 The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents discover relevant files through search and read full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
 
-\textbf{Skills.}
 Skills are plain-Markdown documents that orchestrate specification, tools, and knowledge into multi-step, repeatable workflows.
-The harness has two kinds: \emph{automation skills} that agents execute end-to-end, and \emph{advisor skills} that bring humans into the loop at decision points.
+We divide skills into two kinds (\Cref{fig:skill-architecture}): \emph{automation skills} that agents execute end-to-end, and \emph{advisor skills} that bring humans into the loop at decision points.
 
 \textbf{Automation skills} can include \emph{abstract} steps that traditional automation (Makefiles, shell scripts) cannot: ``implement the reduction algorithm''(\texttt{run-pipeline} skill in~\Cref{fig:skill-architecture}), ``review the pull request for correctness''(\texttt{review-pipeline} skill) and ``make a new release''(\texttt{release} skill).
 These steps require judgment and are interpreted by the agent using its own capabilities.
