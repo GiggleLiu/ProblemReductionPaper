@@ -300,14 +300,13 @@ Appendix~\ref{app:architecture} presents the engineering details of the Rust cra
 None of the maintainers had written Rust before this project.
 The language was chosen in large part for properties that benefit agents.
 
-\emph{Strict compiler, actionable errors.}
-Memory safety eliminates a class of bugs upfront.
-For the rest, the compiler points to the error location, names the conflicting types or lifetimes, and often suggests a fix.
-Agents resolve these without human help.
+\textbf{Strict compiler, actionable errors.}
+Rust rejects many invalid programs before execution, and reports precise type, ownership, and lifetime errors.
+These diagnostics give agents a concrete repair target.
 
-\emph{Fast feedback.}
-Incremental compilation and the built-in test harness return results in seconds.
-Cargo's unified CLI bundles build, test, and format into one tool.
+\textbf{Fast feedback.}
+Cargo provides a standard loop for building, testing, and formatting.
+Incremental compilation and unit tests make that loop fast enough for agent iteration.
 
 
 %======================================================================
@@ -345,8 +344,11 @@ Domain knowledge includes Garey and Johnson's catalogue~\cite{garey1979}, refere
 This body of material is too large to fit in a single agent context window.
 The harness organizes this knowledge for \emph{progressive disclosure}~\cite{Nielsen2006ProgressiveDisclosure}: agents discover relevant files through search and read full content (formal definitions, proof sketches, worked examples) only when a specific task demands it.
 
-\textbf{Automation skills} are plain-Markdown documents that orchestrate multi-step pipelines---connecting specification, tools, and knowledge into repeatable workflows.
-Unlike traditional automation (Makefiles, shell scripts), which chains deterministic commands, skills can include \emph{abstract} steps: ``implement the reduction algorithm''(\texttt{run-pipeline} skill in~\Cref{fig:skill-architecture}), ``review the pull request for correctness''(\texttt{review-pipeline} skill)  and ``make a new release''(\texttt{release} skill).
+\textbf{Skills.}
+Skills are plain-Markdown documents that orchestrate specification, tools, and knowledge into multi-step, repeatable workflows.
+The harness has two kinds: \emph{automation skills} that agents execute end-to-end, and \emph{advisor skills} that bring humans into the loop at decision points.
+
+\textbf{Automation skills} can include \emph{abstract} steps that traditional automation (Makefiles, shell scripts) cannot: ``implement the reduction algorithm''(\texttt{run-pipeline} skill in~\Cref{fig:skill-architecture}), ``review the pull request for correctness''(\texttt{review-pipeline} skill) and ``make a new release''(\texttt{release} skill).
 These steps require judgment and are interpreted by the agent using its own capabilities.
 Unlike bare prompts, skills break a complex task into concrete, ordered steps small enough for an agent to execute faithfully, preventing the drift and omissions that occur when agents plan from scratch.
 
