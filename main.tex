@@ -475,14 +475,9 @@ For each run we record three quantities: tokens spent overall, solver wall-time,
 \Cref{tab:end-user-eval} summarizes the outcomes: both \texttt{pred}-enabled configurations match the \emph{best-of-four} objective on every instance and cut solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens.
 Both bare configurations miss the best-of-four on $3$ of $10$ instances, and on their worst run each falls $19.1\%$ below it.
 The misses share a single failure mode: the agent picks a reduction whose downstream solver is not suited to this problem.
-The extra tokens for \texttt{pred}-enabled runs go into reading the reduction graph and choosing the endpoint; the speedup comes from that endpoint, simulated annealing on the Ising form, terminating in a single short call rather than a long branch-and-bound run.
-
-\textbf{Solver-choice analysis.}
-\Cref{tab:end-user-solver-table} reports the model and solver each agent settled on.
-Without \texttt{pred}, agents scatter across HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal / dwave-samplers SA, dwave-tabu, and ad-hoc local-search heuristics; the catastrophic misses all come from integer- or mixed-integer routes whose linear relaxations are weak on dense signed-weight cut instances.
-Adding web access alone does not fix this: B still misses three instances by drifting to MILP or CP-SAT, the same failure mode as A.
-With \texttt{pred}, every run models the instance as a signed-weight cut on a dense graph, reduces it through the spin-glass / QUBO family, and runs simulated annealing on the Ising form; \texttt{pred} narrows the modelling choice to a single reduction path that the available solvers can handle within the time budget.
-Appendix~\ref{app:end-user} reports the per-instance solver picks, raw objectives and wall-times, and a finer-grained look at how web access affects parameter tuning under \texttt{pred}.
+Without \texttt{pred}, agents scatter across MILP (HiGHS, Gurobi), CP-SAT (OR-tools), simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), tabu, and ad-hoc heuristics, and the misses come from the MILP and CP-SAT runs; adding web access alone does not fix this.
+With \texttt{pred}, every run reduces the instance through the spin-glass / QUBO family and runs simulated annealing on the Ising form, terminating in a single short call rather than a long branch-and-bound run (\Cref{tab:end-user-solver-table}).
+Appendix~\ref{app:end-user} has the per-instance picks, raw data, and a finer-grained look at web's role under \texttt{pred}.
 
 % This experiment closes a loop in the paper: agents built the library, and the library now augments agents tackling new instances.
 
