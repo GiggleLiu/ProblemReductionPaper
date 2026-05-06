@@ -468,7 +468,7 @@ The phase-by-phase narrative is detailed in \Cref{app:phases}.
 The library is itself an agent-callable tool via the \texttt{pred} CLI.
 We measure whether catalog access improves how agents solve a problem stated in everyday language.
 The instance: a manager splits a 150-person organization into two product teams; every pair of employees has a positive or negative compatibility score, and the goal is to maximize the sum of cross-team scores.
-No abstract problem name is given; recognizing the structure and routing it to a competitive solver is part of the task.
+The agent's task is to pick the best algorithm for the problem and write the code that solves each instance.
 Four configurations form a $2{\times}2$ factorial over web-search and \texttt{pred} access, with ten random instances each (40 runs) and solver wall-time capped at 90~s.
 For each run we record three quantities the literature often blurs together: AI tokens spent on modelling, solver wall-time, and the objective value graded against the per-instance best (full setup in Appendix~\ref{app:end-user}).
 
