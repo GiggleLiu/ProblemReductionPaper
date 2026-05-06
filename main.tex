@@ -474,9 +474,9 @@ To isolate the catalog's contribution, we compare four configurations that toggl
 Each configuration is run on ten random instances, with solver wall-time capped at 90~s.
 For each run we record three quantities: tokens spent overall, solver wall-time, and the objective value obtained by the solver (full setup in Appendix~\ref{app:end-user}).
 
-\Cref{tab:end-user-eval} summarizes the outcomes: both catalog-enabled configurations match the per-instance best on every instance and cut solver wall-time by a factor of $4$--$8$, at the cost of roughly $2{\times}$ more AI tokens.
-Both bare configurations miss the per-instance best on multiple instances; bare AI (no web) drops 9.8\% below the best on its worst run, bare AI + web drops 20.6\% on each of its two worst runs.
-The misses share a single failure mode: the agent commits to a textbook integer-programming formulation, whose linear relaxation is too loose for the solver to close within 90~s.
+\Cref{tab:end-user-eval} summarizes the outcomes: both catalog-enabled configurations match the per-instance best on every instance and cut solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens.
+Both bare configurations miss the per-instance best on $3$ of $10$ instances, and on their worst run each falls $19.1\%$ below the best.
+The misses share a single failure mode: the agent commits to a textbook integer-programming formulation (MILP or CP-SAT), whose linear relaxation is too loose for the solver to close within 90~s.
 The extra catalog tokens go into reading the reduction graph and choosing the endpoint; the speedup comes from that endpoint --- simulated annealing on the Ising form --- terminating in a single short call rather than a long branch-and-bound run.
 
 \textbf{Solver-choice analysis.}
@@ -498,10 +498,10 @@ Higher objective is better; the per-instance best is the maximum across the four
 \toprule
 Configuration & Mean obj. & Min obj. & Best-match & Mean AI tokens & Mean solver s \\
 \midrule
-Bare AI                              & 12{,}431 & 11{,}673 & 7/10  & 39{,}570 & 48.1 \\
-Bare AI + web                        & 12{,}074 & 10{,}011 & 8/10  & 42{,}589 & 54.2 \\
-+ \texttt{pred}                      & 12{,}603 & 12{,}187 & 10/10 & 84{,}773 & 10.8 \\
-+ \texttt{pred} + web                & 12{,}603 & 12{,}187 & 10/10 & 89{,}502 &  6.7 \\
+Bare AI                              & 12{,}306 & 9{,}966 & 7/10  & 37{,}379 & 37.1 \\
+Bare AI + web                        & 12{,}331 & 9{,}854 & 7/10  & 37{,}874 & 35.3 \\
++ \texttt{pred}                      & 12{,}603 & 12{,}187 & 10/10 & 70{,}523 & 12.9 \\
++ \texttt{pred} + web                & 12{,}603 & 12{,}187 & 10/10 & 80{,}592 &  6.5 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -513,7 +513,7 @@ Bare AI + web                        & 12{,}074 & 10{,}011 & 8/10  & 42{,}589 & 
 
 \subsection{Conclusion}
 
-In about three months, a small team and AI agents built a verified reduction graph of 190 problem types and 265 reduction rules, with 129 types (68\%) reaching ILP and 78 reaching 3-SAT. An agent calls the library and gets a verified path from a user-stated problem to a fast solver, supplying the practical judgment AI agents lack: knowing in advance which approach will actually work.
+In about three months, a small team and AI agents built a verified reduction graph of 190 problem types and 265 reduction rules. An agent calls the library and gets a verified path from a user-stated problem to a fast solver, supplying the practical judgment AI agents lack: knowing in advance which approach will actually work.
 
 Three coordinated mechanisms produced this outcome. The \emph{scaffold} gives every session the same experimental conditions, so contributions compose rather than collide. \emph{Skills} turn recurring engineering work (proposing an issue, validating a draft, reviewing a PR) into a repeatable flow any agent can execute. \emph{Correctness assurance}, layered from compile-time checks through round-trip tests, agentic feature tests, and final human verification, keeps the artifact trustworthy as it grows. Speed and rigor reinforce each other in this design: the same harness that accelerates contribution also enforces the checks that prevent drift. Together, they make a verified reduction library tractable for a small team in a single quarter.
 
@@ -851,7 +851,7 @@ External domain experts began contributing through the \texttt{propose} skill, f
 This appendix expands on the controlled experiment summarised in \Cref{sec:end-user-utility}.
 
 \paragraph{Instance generator.}
-Each of the ten seeds (the primes 7, 11, 13, 17, 19, 23, 29, 31, 37, 41) deterministically produces one team-split scenario: 150 engineers with a dense signed-weight survey over the 150-choose-2 pair graph. Each pair is independently sampled with probability $0.5$ and, if sampled, receives an integer weight drawn uniformly from $[-5, 12]$ (zeros skipped). Positive weights mean the pair benefits from being on different teams; negative weights mean they belong on the same team. The resulting graph has roughly 5{,}300 edges (density ${\approx}\,0.48$) with mixed signs. The corresponding mathematical model is signed-weight Maximum Cut on a 150-vertex dense graph; the agent must recognize this from the natural-language prompt, which carries no model or solver hint and asks only for the best feasible split it can produce within a couple of minutes.
+Each of the ten seeds (the primes 7, 11, 13, 17, 19, 23, 29, 31, 37, 41) deterministically produces one team-split scenario: 150 engineers with a dense signed-weight survey over the 150-choose-2 pair graph. Each pair is independently sampled with probability $0.5$ and, if sampled, receives an integer weight drawn uniformly from $[-5, 12]$ (zeros skipped). Positive weights mean the pair benefits from being on different teams; negative weights mean they belong on the same team. The resulting graph has roughly 5{,}300 edges (density ${\approx}\,0.48$) with mixed signs. The corresponding mathematical model is signed-weight Maximum Cut on a 150-vertex dense graph; the agent must recognize this from the natural-language prompt, which carries no model or solver hint.
 
 \paragraph{Four configurations.}
 The agent runs in one of four configurations differing on two binary axes ($2{\times}2$ factorial over \emph{web search} and \texttt{pred} \emph{access}):
@@ -867,7 +867,189 @@ Each cell runs ten seeds (40 runs total). A and B receive only the user-facing p
 The protocol scripts a four-phase workflow. Phase~1 reads the engineer-voice prompt and matches the natural model from \texttt{pred list}. Phase~2---the structural step that the bare AI does not perform---enumerates reachable downstream models (\texttt{pred from --hops 2}), enumerates all reduction paths with per-step overhead (\texttt{pred path --all}), saves the smallest-endpoint path (\texttt{pred path --cost minimize:<field> -o path.json}), reads each endpoint's worst-case complexity (\texttt{pred show}), and researches off-the-shelf solver capabilities for the candidate endpoints. Phase~3 builds the natural-model JSON, forward-reduces along the saved path (\texttt{pred reduce --via path.json}), runs a single-pass solver call, and inverse-maps the target-space configuration back to source-space (\texttt{pred extract}). Phase~4 runs an independent verifier that recomputes the objective from the original prompt literals; the agent reports the answer only after the verifier passes.
 
 \paragraph{Solver environment.}
-Each run uses a fresh working directory and a fresh Python virtual-environment at \texttt{.pred-solve/} created via \texttt{uv}; the agent installs whatever solver package it picks. The solver is invoked exactly once as \texttt{timeout 90 .pred-solve/bin/python solve.py}---the 90~s kill cutoff is OS-enforced, not a budget for the agent to fill. The same single-pass / honest-reporting discipline is imposed on the bare-AI conditions to keep the four configurations comparable: every agent is told to commit to one algorithm and one hyperparameter configuration, run it once under the timeout, and report whatever target-space configuration the call returns---no retry-on-poor-result loop, no method chaining, no polish stage. A Claude Opus~4.7 instance (\texttt{claude-opus-4-7}, dispatched via Claude Code's general-purpose subagent) handles each run independently in its own workdir, and we record the model id in every \texttt{meta.json}.
+Each run uses a fresh working directory and a fresh Python virtual-environment at \texttt{.pred-solve/} created via \texttt{uv}; the agent installs whatever solver package it picks. The solver is invoked exactly once as \texttt{timeout 90 .pred-solve/bin/python solve.py}---the 90~s kill cutoff is OS-enforced, not a budget for the agent to fill. The same single-pass / honest-reporting discipline is imposed on the bare-AI conditions to keep the four configurations comparable: every agent is told to commit to one algorithm and one hyperparameter configuration, run it once under the timeout, and report whatever target-space configuration the call returns---no retry-on-poor-result loop, no method chaining, no polish stage. A Claude Opus~4.7 instance with extra-high reasoning effort (\texttt{claude-opus-4-7-xhigh}, dispatched via Claude Code's general-purpose subagent) handles each run independently in its own workdir, and we record the model id in every \texttt{meta.json}.
+
+\paragraph{User-facing prompt.}
+All four configurations receive the same engineer-voice prompt rendered from a shared template (\Cref{fig:end-user-prompt}). The template carries no model or solver hint. The placeholders \texttt{\{NUM\_PEOPLE\}}, \texttt{\{LAST\_ID\}}, and \texttt{\{NUM\_PAIRS\}} are interpolated per seed; the $\sim$5{,}300 pair scores themselves are attached as a 3-column \texttt{a,b,score} CSV (\texttt{pairs.csv}) placed in the agent's workdir, so the chat-channel prompt itself stays compact.
+
+\begin{figure}[h]
+\centering
+\begin{tcolorbox}[colback=gray!5, colframe=gray!80, title={\textbf{User-facing prompt template (rendered identically for all four configurations)}}, fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, breaklines=true, xleftmargin=4pt]
+Hi - I run people-ops for a {NUM_PEOPLE}-person engineering org and we're
+about to do our annual team re-org. The CTO wants to split the whole org
+into exactly two product teams (call them Team A and Team B), and she
+wants the split chosen to maximize total cross-team collaboration value.
+
+Here's the model:
+We have {NUM_PEOPLE} engineers (id 0..{LAST_ID}). HR has run a yearly
+survey asking everyone about who they've worked with productively, who
+they've clashed with, and so on. From that I built a per-pair score:
+
+  - score > 0 means putting these two on DIFFERENT teams is GOOD.
+  - score < 0 means they're better off on the SAME team.
+  - pairs not in the CSV have score = 0.
+
+The objective we're maximizing is:
+
+    sum over all listed pairs of   score_pair,
+    ONLY IF the two people end up on different teams.
+
+There is no team-size constraint - Team A can be any size from 0 to
+
+{NUM_PEOPLE}, and Team B gets the rest. We just want the split that
+maximizes the cross-team value sum.
+
+I've attached the per-pair scores as `pairs.csv` in your workdir
+({NUM_PAIRS} rows total - the survey is dense). Each row is
+`a,b,score` (3 columns, no header), with engineer ids in 0..{LAST_ID}.
+
+Please write a script that picks the split and prints the resulting total
+cross-team value. Save the answer as `answer.json` with structure:
+
+    { "team_a": [3, 7, 19, 42, ...] }
+
+I'd like the algorithm to be both fast and good. Thanks!
+\end{lstlisting}
+\end{tcolorbox}
+\caption{Shared user-facing prompt rendered to all four configurations. Light non-substantive abridgement applied for the printed version.}
+\label{fig:end-user-prompt}
+\end{figure}
+
+\paragraph{Allowed tools per condition.}
+\Cref{tab:end-user-tools} lists the tools each configuration may use. Tools not listed are explicitly disallowed: A and B cannot run \texttt{pred}; A and C cannot run \texttt{WebSearch} or \texttt{WebFetch}. All four conditions share the same workdir-only file/shell access and the same \texttt{uv}-managed Python environment for the solver; only the bracketed Markdown protocol and the search/CLI capabilities differ.
+
+\begin{table}[h]
+\caption{Tools available to each condition. ``\checkmark'' indicates the tool is allowed; ``---'' that it is disallowed.}
+\label{tab:end-user-tools}
+\centering
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Tool / capability & A & B & C & D \\
+\midrule
+\texttt{Read}, \texttt{Write}, \texttt{Edit}, \texttt{Bash} (workdir only) & \checkmark & \checkmark & \checkmark & \checkmark \\
+\texttt{uv}-managed \texttt{.pred-solve/} venv (any pip-installable solver) & \checkmark & \checkmark & \checkmark & \checkmark \\
+\texttt{WebSearch} / \texttt{WebFetch} & --- & \checkmark & --- & \checkmark \\
+\texttt{pred} CLI (\texttt{from / path / show / create / reduce / extract}) & --- & --- & \checkmark & \checkmark \\
+\texttt{solve-instance(-offline)} Markdown protocol & --- & --- & offline & online \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Skill content (C and D).}
+\Cref{fig:end-user-skill} reproduces the \texttt{solve-instance} skill given verbatim to the agent in condition D. Condition C uses the offline variant, which is identical except that Phase 2 step 4 substitutes ``identify from your training-time knowledge'' for ``use \texttt{WebSearch}/\texttt{WebFetch} to identify''.
+
+\begin{figure*}[h]
+\centering
+\begin{tcolorbox}[colback=gray!5, colframe=gray!80, title={\textbf{\texttt{solve-instance} skill (online; condition D). Condition C uses the offline variant: identical except Phase 2 step 4 reads ``training-time knowledge'' instead of ``WebSearch / WebFetch''.}}, fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, breaklines=true, xleftmargin=4pt]
+---
+name: solve-instance
+description: Take a concrete industrial problem instance,
+  enumerate reformulation paths via pred, pick the one whose
+  downstream model has the strongest off-the-shelf solver, then
+  write/run/verify a Python script
+---
+
+# Solve Instance
+
+The point of this skill is **reformulation discipline**. A frontier-AI
+baseline maps any well-stated problem to its textbook formulation and
+writes the model. That formulation is often not the strongest available
+- a different reformulation may have an endpoint whose off-the-shelf
+solver is better-suited to the instance's size and structure. The
+skill's job is to enumerate every model reachable from the natural one
+via `pred from`, inspect each candidate's overhead and complexity, and
+pick the path whose endpoint is best-matched to a known external solver.
+
+## Hard rules
+- Operates in cwd only. Never edit files under src/, docs/, .claude/.
+- Allowed: pred ..., WebSearch, WebFetch, write solve.py / instance.json
+  / answer.json / meta.json / .pred-solve/ venv in cwd, install solver
+  packages into that venv via uv.
+- Solver timeout: 90 s, OS-enforced via
+  `timeout 90 .pred-solve/bin/python solve.py`.
+- `pred solve` is a sanity-check, never the production answer.
+
+## pred cheatsheet
+- `pred from <S>/<V> --hops N`           list reachable downstream models
+- `pred path <S> <T> --all`              enumerate paths with overheads
+                                         (default --cost minimize-steps
+                                          is hop-count and often blows up
+                                          the endpoint; always check --all)
+- `pred path <S> <T> --cost minimize:<f>
+   -o path.json`                         save smallest-endpoint path
+- `pred show <V>` / `--json`             complexity + schema
+- `pred create <M> --<field> ...`        small instances; for larger
+                                         ones, write the JSON directly
+- `pred reduce <in>.json --via path.json
+   -o bundle.json`                       always pass --via; without it,
+                                         default path may OOM (exit 137).
+                                         Bundle is {source, target, path};
+                                         bundle.target is the target
+                                         instance. Bundles not chainable.
+- `pred extract bundle.json
+   --config <csv>`                       inverse-map back to source
+
+## Flow
+
+### Phase 1 - Identify the natural model
+Read the user's spec. Map their domain language to a problem in
+`pred list`. Output a one-paragraph match.
+
+### Phase 2 - Reformulation frontier (core step)
+1. Graph topology. `pred from <Model>/<Variant> --hops 2`.
+2. Endpoint size. `pred path <s> <t> --all` then
+   `pred path <s> <t> --cost minimize:<field> -o path.json`.
+   Plug actual num_vertices, num_edges into the overhead to compute
+   the concrete endpoint size.
+3. Endpoint complexity. `pred show <endpoint_variant>` for declared
+   worst-case complexity.
+4. External solver capabilities (from WebSearch). External solvers are
+   not part of this catalog. Use WebSearch / WebFetch to identify which
+   solver has been empirically shown to dominate within practical
+   wall-time budgets on instances of this size, density, and integrality
+   structure - not just which libraries exist. Match the solver to what
+   the user actually asked for: re-read the prompt and identify whether
+   they want the best feasible answer within the time budget or a
+   certified optimum - those select different solver families.
+5. Decide. Cite (i) endpoint size, (ii) worst-case complexity,
+   (iii) web-researched solver capability.
+
+### Phase 3 - Solve
+1. Build the natural-model instance JSON via `pred create` or directly.
+2. Forward-reduce: `pred reduce <natural>.json --via path.json
+   -o bundle.json`.
+3. Pick one algorithm and one hyperparameter configuration.
+4. Run the external solver once via
+   `timeout 90 .pred-solve/bin/python solve.py`.
+   Single pass; no retry-with-different-configs after seeing the result;
+   no chained methods; no polish loop.
+5. Lift back to source-space:
+   `pred extract bundle.json --config <csv>`.
+6. Record solver wall-time separately.
+
+### Phase 4 - Verify and report
+1. Independent verifier on the ORIGINAL spec (not the reduced one).
+2. Write answer.json in the user's schema.
+3. Write meta.json with: natural_model, phase2_candidates, chosen_path,
+   solver_pkg, solver_wall_s, objective, claimed_optimal,
+   verifier_passed, model_id.
+
+If the verifier rejects, do not present the answer.
+
+## Anti-patterns
+- Skipping Phase 2 because the natural model looks "obvious".
+- Picking the shortest path by hop count.
+- Trusting the solver's OPTIMAL claim without the independent verifier.
+- Writing the natural formulation "as a baseline" before Phase 2.
+- Asking the user to confirm Phase 2.
+\end{lstlisting}
+\end{tcolorbox}
+\caption{The \texttt{solve-instance} skill given verbatim to condition D. Light formatting changes for the printed version (Unicode arrows replaced with ASCII; long bullet bodies wrapped); the executable skill lives in the released benchmark harness.}
+\label{fig:end-user-skill}
+\end{figure*}
 
 \paragraph{Three independent axes of measurement.}
 We separate three quantities that AI-coding evaluations often blend into a single ``time'' figure:
@@ -882,12 +1064,12 @@ The benchmark harness---scenario generator, grader, per-run result schema, and a
 
 \paragraph{Per-instance solver picks.}
 \Cref{tab:end-user-solver-table} lists the solver each agent selected on every instance.
-Without \texttt{pred}, the bare baselines drift across MILP (HiGHS, PuLP+CBC), MIQP (Gurobi with \texttt{NonConvex=2}), OR-tools CP-SAT, simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), \texttt{dwave-tabu}, and ad-hoc local-search heuristics; the misses concentrate on the integer-programming routes whose linear relaxations are weak on dense signed-weight cut maximization.
-With \texttt{pred}+web every run routes simulated annealing on the Ising / QUBO endpoint; the offline \texttt{pred} variant likewise routes to simulated annealing on 9 of 10 instances, with the single miss occurring when the agent's training-time priors led it to commit to a 45{,}000-variable MILP route on the \texttt{ILP/bool} endpoint instead.
+Without \texttt{pred}, the bare baselines drift across MILP (HiGHS, PuLP+CBC), OR-tools CP-SAT, simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), and \texttt{dwave-tabu}; the misses concentrate on the integer-programming routes (CP-SAT and MILP) whose linear relaxations are weak on dense signed-weight cut maximization.
+With \texttt{pred} (with or without web), every run reformulates to the SpinGlass/QUBO endpoint and runs simulated annealing on the Ising form, recovering the per-instance best on every run.
 
 \begin{table}[h]
 \caption{Solver picked on each instance by each configuration.
-SA~=~simulated annealing on the Ising / QUBO reformulation (\texttt{dwave-neal} or \texttt{dwave-samplers}); MILP~=~mixed-integer linear program (HiGHS or PuLP+CBC); MIQP~=~mixed-integer quadratic program (Gurobi); CP-SAT~=~OR-tools constraint programming; Tabu~=~D-Wave \texttt{TabuSampler}; Custom~=~hand-rolled local search (KL / ILS / 1-flip multi-start).
+SA~=~simulated annealing on the Ising / QUBO reformulation (\texttt{dwave-neal} or \texttt{dwave-samplers}); MILP~=~mixed-integer linear program (HiGHS or PuLP+CBC); CP-SAT~=~OR-tools constraint programming; Tabu~=~D-Wave \texttt{TabuSampler}.
 Bold cells are the largest gaps to the per-instance best.}
 \label{tab:end-user-solver-table}
 \centering
@@ -896,18 +1078,18 @@ Bold cells are the largest gaps to the per-instance best.}
 \toprule
 Seed & Bare AI         & Bare AI + web   & + \texttt{pred}   & + \texttt{pred} + web \\
 \midrule
- 7 & \textbf{CP-SAT}   & SA              & SA        & SA \\
-11 & SA                & \textbf{MILP}   & SA        & SA \\
-13 & \textbf{MILP}     & MIQP            & SA        & SA \\
-17 & \textbf{MILP}     & SA              & SA        & SA \\
-19 & Custom            & \textbf{MILP}   & SA        & SA \\
-23 & SA                & MIQP            & MIQP      & SA \\
-29 & SA                & SA              & SA        & SA \\
-31 & SA                & MIQP            & Custom SA & SA \\
-37 & SA                & MIQP            & SA        & SA \\
-41 & Tabu              & SA              & SA        & SA \\
+ 7 & SA                & Tabu              & SA & SA \\
+11 & SA                & SA                & SA & SA \\
+13 & \textbf{CP-SAT}   & SA                & SA & SA \\
+17 & \textbf{MILP}     & SA                & SA & SA \\
+19 & SA                & SA                & SA & SA \\
+23 & SA                & SA                & SA & SA \\
+29 & SA                & \textbf{CP-SAT}   & SA & SA \\
+31 & SA                & SA                & SA & SA \\
+37 & \textbf{MILP}     & \textbf{CP-SAT}   & SA & SA \\
+41 & SA                & \textbf{MILP}     & SA & SA \\
 \midrule
-\textbf{solver families} & 4 & 4 & 3 & 1 \\
+\textbf{solver families} & 3 & 4 & 1 & 1 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -916,51 +1098,27 @@ Seed & Bare AI         & Bare AI + web   & + \texttt{pred}   & + \texttt{pred} +
 \Cref{tab:end-user-raw-obj} lists the objective achieved by each (configuration, instance) pair, and \Cref{tab:end-user-raw-wall} the corresponding solver wall-times. Bold cells in \Cref{tab:end-user-raw-obj} mark misses below the per-instance best.
 
 \begin{table}[h]
-\caption{Raw per-instance objective for each configuration. The right column is the per-instance best across the four configurations; bold cells fall below it.}
-\label{tab:end-user-raw-obj}
+\caption{Raw per-instance objective and solver wall-time for each configuration. Each cell shows ``objective\,/\,wall-time\,(s)''; bold objectives fall below the per-instance best (right column). The 90~s OS-enforced kill cutoff bounds wall-times; entries near 80--90~s indicate the solver was running until killed.}
+\label{tab:end-user-raw}
 \centering
-\small
+\scriptsize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}cccccc@{}}
 \toprule
 Seed & Bare AI & Bare AI + web & + \texttt{pred} & + \texttt{pred} + web & Best \\
 \midrule
- 7 & \textbf{12{,}656} & 12{,}962          & 12{,}962         & 12{,}962 & 12{,}962 \\
-11 & 12{,}641          & \textbf{10{,}011} & 12{,}641         & 12{,}641 & 12{,}641 \\
-13 & \textbf{11{,}673} & 12{,}944          & 12{,}944         & 12{,}944 & 12{,}944 \\
-17 & \textbf{12{,}182} & 12{,}326          & 12{,}326         & 12{,}326 & 12{,}326 \\
-19 & 12{,}915          & \textbf{10{,}252} & 12{,}915         & 12{,}915 & 12{,}915 \\
-23 & 12{,}240          & 12{,}240          & 12{,}240         & 12{,}240 & 12{,}240 \\
-29 & 12{,}944          & 12{,}944          & 12{,}944         & 12{,}944 & 12{,}944 \\
-31 & 12{,}401          & 12{,}401          & 12{,}401         & 12{,}401 & 12{,}401 \\
-37 & 12{,}471          & 12{,}471          & 12{,}471         & 12{,}471 & 12{,}471 \\
-41 & 12{,}187          & 12{,}187          & 12{,}187         & 12{,}187 & 12{,}187 \\
+ 7 & 12{,}962 / 13.0          & 12{,}962 / 40.2          & 12{,}962 / 1.3   & 12{,}962 / 1.2  & 12{,}962 \\
+11 & 12{,}641 / 6.5           & 12{,}641 / 24.7          & 12{,}641 / 15.3  & 12{,}641 / 11.9 & 12{,}641 \\
+13 & \textbf{12{,}552} / 75.0 & 12{,}944 / 5.9           & 12{,}944 / 6.1   & 12{,}944 / 11.7 & 12{,}944 \\
+17 & \textbf{9{,}966} / 83.0  & 12{,}326 / 12.2          & 12{,}326 / 2.9   & 12{,}326 / 1.2  & 12{,}326 \\
+19 & 12{,}915 / 12.5          & 12{,}915 / 6.0           & 12{,}915 / 14.7  & 12{,}915 / 5.9  & 12{,}915 \\
+23 & 12{,}240 / 12.1          & 12{,}240 / 24.3          & 12{,}240 / 59.7  & 12{,}240 / 1.2  & 12{,}240 \\
+29 & 12{,}944 / 25.0          & \textbf{12{,}685} / 80.1 & 12{,}944 / 12.6  & 12{,}944 / 5.8  & 12{,}944 \\
+31 & 12{,}401 / 32.8          & 12{,}401 / 3.0           & 12{,}401 / 3.0   & 12{,}401 / 11.6 & 12{,}401 \\
+37 & \textbf{12{,}250} / 85.1 & \textbf{12{,}340} / 85.1 & 12{,}471 / 12.5  & 12{,}471 / 14.4 & 12{,}471 \\
+41 & 12{,}187 / 26.2          & \textbf{9{,}854} / 71.8  & 12{,}187 / 1.2   & 12{,}187 / 0.6  & 12{,}187 \\
 \midrule
-\textbf{mean} & 12{,}431 & 12{,}074 & \textbf{12{,}603} & \textbf{12{,}603} & 12{,}603 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[h]
-\caption{Raw per-instance solver wall-time (seconds) for each configuration. The 90~s OS-enforced kill cutoff is the upper bound; entries near 80--90~s indicate the solver was running until killed.}
-\label{tab:end-user-raw-wall}
-\centering
-\small
-\begin{tabular}{@{}ccccc@{}}
-\toprule
-Seed & Bare AI & Bare AI + web & + \texttt{pred} & + \texttt{pred} + web \\
-\midrule
- 7 & 75.1 & 26.7 &  6.2 &  5.9 \\
-11 & 11.8 & 80.0 &  3.0 &  4.7 \\
-13 & 80.2 & 70.0 &  1.3 &  4.7 \\
-17 & 75.1 & 11.5 &  0.9 &  4.7 \\
-19 & 86.0 & 80.1 &  0.8 &  3.0 \\
-23 & 18.5 & 80.2 & 70.0 &  1.6 \\
-29 & 24.9 &  2.3 &  5.9 &  5.8 \\
-31 & 17.7 & 80.1 &  9.5 & 29.4 \\
-37 & 32.0 & 80.1 &  2.4 &  5.9 \\
-41 & 60.0 & 30.5 &  8.4 &  1.2 \\
-\midrule
-\textbf{mean} & 48.1 & 54.2 & \textbf{10.8} & \textbf{6.7} \\
+\textbf{mean} & 12{,}306 / 37.1 & 12{,}331 / 35.3 & \textbf{12{,}603} / \textbf{12.9} & \textbf{12{,}603} / \textbf{6.5} & 12{,}603 \\
 \bottomrule
 \end{tabular}
 \end{table}
