@@ -474,9 +474,10 @@ To isolate the catalog's contribution, we compare four configurations that toggl
 Each configuration is run on ten random instances, with solver wall-time capped at 90~s.
 For each run we record three quantities: tokens spent overall, solver wall-time, and the objective value obtained by the solver (full setup in Appendix~\ref{app:end-user}).
 
-\Cref{tab:end-user-eval} summarizes the outcomes: catalog access raises Best-match counts and cuts solver wall-time, at the cost of more AI tokens.
-The bare-baseline and intermediate configurations all show large misses (bare AI's worst run drops 9.8\% below the per-instance best), traceable to a single failure mode: the agent commits to a textbook integer-programming formulation, whose linear relaxation is too loose to close within 90~s.
-The extra tokens are spent reading the catalog; the speedup comes from the catalog's recommended endpoint, simulated annealing on the Ising form, which terminates in a single short call rather than a long branch-and-bound run.
+\Cref{tab:end-user-eval} summarizes the outcomes: both catalog-enabled configurations match the per-instance best on every instance and cut solver wall-time by a factor of $4$--$8$, at the cost of roughly $2{\times}$ more AI tokens.
+Both bare configurations miss the per-instance best on multiple instances; bare AI (no web) drops 9.8\% below the best on its worst run, bare AI + web drops 20.6\% on each of its two worst runs.
+The misses share a single failure mode: the agent commits to a textbook integer-programming formulation, whose linear relaxation is too loose for the solver to close within 90~s.
+The extra catalog tokens go into reading the reduction graph and choosing the endpoint; the speedup comes from that endpoint --- simulated annealing on the Ising form --- terminating in a single short call rather than a long branch-and-bound run.
 
 \textbf{Solver-choice analysis.}
 \Cref{tab:end-user-solver-table} reports the model and solver each agent settled on.
@@ -499,7 +500,7 @@ Configuration & Mean obj. & Min obj. & Best-match & Mean AI tokens & Mean solver
 \midrule
 Bare AI                              & 12{,}431 & 11{,}673 & 7/10  & 39{,}570 & 48.1 \\
 Bare AI + web                        & 12{,}074 & 10{,}011 & 8/10  & 42{,}589 & 54.2 \\
-+ \texttt{pred}                      & 12{,}375 & 10{,}194 & 9/10  & 80{,}261 & 22.6 \\
++ \texttt{pred}                      & 12{,}603 & 12{,}187 & 10/10 & 84{,}773 & 10.8 \\
 + \texttt{pred} + web                & 12{,}603 & 12{,}187 & 10/10 & 89{,}502 &  6.7 \\
 \bottomrule
 \end{tabular}
@@ -859,7 +860,7 @@ This appendix expands on the controlled experiment summarised in \Cref{sec:end-u
 \paragraph{Setup.}
 A Claude Opus~4.7 agent (\texttt{claude-opus-4-7}, dispatched via Claude Code's general-purpose subagent and recorded in each run's \texttt{meta.json}) receives an engineer-voice prompt: a manager splits a 150-person organization into two product teams to maximize total cross-team value from a dense signed pairwise survey (${\approx}\,5300$ entries, density ${\approx}\,0.48$, mix of positive and negative scores).
 The prompt gives no model or solver hint; recognizing the underlying signed-weight Max-Cut structure is part of the task.
-Configurations form a $2{\times}2$ factorial over \emph{web search} (yes/no) and \emph{\texttt{pred} access} (yes/no), with ten random instances per cell (40 runs) and a 90~s solver wall-time cap.
+Configurations form a $2{\times}2$ factorial over \emph{web search} (yes/no) and \texttt{pred} \emph{access} (yes/no), with ten random instances per cell (40 runs) and a 90~s solver wall-time cap.
 Agents with \texttt{pred} access also receive a short Markdown protocol that scripts a graph-data-driven reformulation step before solver code is written: \texttt{pred from} enumerates reachable downstream models, \texttt{pred path} reads each candidate's reduction overhead, \texttt{pred show} reads each endpoint's declared worst-case complexity, and \texttt{pred reduce} / \texttt{pred extract} handle the forward and inverse mappings between the natural-model instance and the chosen target endpoint. The protocol prescribes a single-pass external solver call inside an OS-enforced \texttt{timeout 90} and instructs the agent to report whatever the call returns honestly, without any retry-on-poor-result loop. The same single-pass / honest-reporting discipline is also imposed on the bare-AI conditions to keep the four configurations comparable.
 
 \paragraph{Three independent axes of measurement.}
@@ -889,16 +890,16 @@ Bold cells are the largest gaps to the per-instance best.}
 \toprule
 Seed & Bare AI         & Bare AI + web   & + \texttt{pred}   & + \texttt{pred} + web \\
 \midrule
- 7 & \textbf{CP-SAT}   & SA              & SA & SA \\
-11 & SA                & \textbf{MILP}   & SA & SA \\
-13 & \textbf{MILP}     & MIQP            & MIQP & SA \\
-17 & \textbf{MILP}     & SA              & SA & SA \\
-19 & Custom            & \textbf{MILP}   & SA & SA \\
-23 & SA                & MIQP            & SA & SA \\
-29 & SA                & SA              & SA & SA \\
+ 7 & \textbf{CP-SAT}   & SA              & SA        & SA \\
+11 & SA                & \textbf{MILP}   & SA        & SA \\
+13 & \textbf{MILP}     & MIQP            & SA        & SA \\
+17 & \textbf{MILP}     & SA              & SA        & SA \\
+19 & Custom            & \textbf{MILP}   & SA        & SA \\
+23 & SA                & MIQP            & MIQP      & SA \\
+29 & SA                & SA              & SA        & SA \\
 31 & SA                & MIQP            & Custom SA & SA \\
-37 & SA                & MIQP            & \textbf{MILP} & SA \\
-41 & Tabu              & SA              & SA & SA \\
+37 & SA                & MIQP            & SA        & SA \\
+41 & Tabu              & SA              & SA        & SA \\
 \midrule
 \textbf{solver families} & 4 & 4 & 3 & 1 \\
 \bottomrule
@@ -925,10 +926,10 @@ Seed & Bare AI & Bare AI + web & + \texttt{pred} & + \texttt{pred} + web & Best 
 23 & 12{,}240          & 12{,}240          & 12{,}240         & 12{,}240 & 12{,}240 \\
 29 & 12{,}944          & 12{,}944          & 12{,}944         & 12{,}944 & 12{,}944 \\
 31 & 12{,}401          & 12{,}401          & 12{,}401         & 12{,}401 & 12{,}401 \\
-37 & 12{,}471          & 12{,}471          & \textbf{10{,}194}& 12{,}471 & 12{,}471 \\
+37 & 12{,}471          & 12{,}471          & 12{,}471         & 12{,}471 & 12{,}471 \\
 41 & 12{,}187          & 12{,}187          & 12{,}187         & 12{,}187 & 12{,}187 \\
 \midrule
-\textbf{mean} & 12{,}431 & 12{,}074 & 12{,}375 & \textbf{12{,}603} & 12{,}603 \\
+\textbf{mean} & 12{,}431 & 12{,}074 & \textbf{12{,}603} & \textbf{12{,}603} & 12{,}603 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -942,18 +943,18 @@ Seed & Bare AI & Bare AI + web & + \texttt{pred} & + \texttt{pred} + web & Best 
 \toprule
 Seed & Bare AI & Bare AI + web & + \texttt{pred} & + \texttt{pred} + web \\
 \midrule
- 7 & 75.1 & 26.7 &  1.5 &  5.9 \\
-11 & 11.8 & 80.0 &  2.7 &  4.7 \\
-13 & 80.2 & 70.0 & 80.0 &  4.7 \\
-17 & 75.1 & 11.5 & 17.8 &  4.7 \\
-19 & 86.0 & 80.1 &  8.5 &  3.0 \\
-23 & 18.5 & 80.2 &  1.2 &  1.6 \\
-29 & 24.9 &  2.3 &  2.1 &  5.8 \\
-31 & 17.7 & 80.1 & 23.8 & 29.4 \\
-37 & 32.0 & 80.1 & 84.7 &  5.9 \\
-41 & 60.0 & 30.5 &  3.4 &  1.2 \\
+ 7 & 75.1 & 26.7 &  6.2 &  5.9 \\
+11 & 11.8 & 80.0 &  3.0 &  4.7 \\
+13 & 80.2 & 70.0 &  1.3 &  4.7 \\
+17 & 75.1 & 11.5 &  0.9 &  4.7 \\
+19 & 86.0 & 80.1 &  0.8 &  3.0 \\
+23 & 18.5 & 80.2 & 70.0 &  1.6 \\
+29 & 24.9 &  2.3 &  5.9 &  5.8 \\
+31 & 17.7 & 80.1 &  9.5 & 29.4 \\
+37 & 32.0 & 80.1 &  2.4 &  5.9 \\
+41 & 60.0 & 30.5 &  8.4 &  1.2 \\
 \midrule
-\textbf{mean} & 48.1 & 54.2 & 22.6 & \textbf{6.7} \\
+\textbf{mean} & 48.1 & 54.2 & \textbf{10.8} & \textbf{6.7} \\
 \bottomrule
 \end{tabular}
 \end{table}
