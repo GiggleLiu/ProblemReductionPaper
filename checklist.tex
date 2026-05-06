@@ -5,7 +5,7 @@
 \item {\bf Claims}
     \item[] Question: Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The abstract states two claims---that harness engineering enables AI agents to build a verified reduction library at scale, and that the resulting library contains 100+ problem types and 200+ reduction rules in 170k+ lines of Rust. Both are substantiated in Section~\ref{sec:method} (harness design) and Section~\ref{sec:evidence} (development metrics and quality gates).
+    \item[] Justification: The abstract makes two claims. First, harness engineering enables AI agents to build a verified reduction library at scale; this is substantiated in Section~\ref{sec:method} (harness design) and Section~\ref{sec:evidence} (development phases). Second, the resulting library covers 100+ problem types and 200+ reduction rules in 170k+ lines of Rust within roughly three months; the exact counts (190 problem types, 265 rules) and growth trajectory are reported in Section~\ref{sec:evidence} and Appendix~\ref{app:phases}. The end-user utility of the library is illustrated by a case study in Section~\ref{sec:end-user-utility} with full setup in Appendix~\ref{app:end-user}.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the abstract and introduction do not include the claims made in the paper.
@@ -17,7 +17,7 @@
 \item {\bf Limitations}
     \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section~\ref{sec:conclusion} (Discussion) discusses limitations including reliance on asymptotic cost rather than fine-grained cost prediction, scope currently restricted to NP-class problems, and the continuing dependence on human judgment for final correctness interpretation.
+    \item[] Justification: Section~\ref{sec:conclusion} (Discussion) acknowledges limitations: reliance on asymptotic complexity rather than fine-grained cost prediction, scope currently restricted to NP-class problems, and continuing dependence on human judgment for final correctness review (Stage~6 community call). The end-user utility case study (Section~\ref{sec:end-user-utility}) is conducted on a single instance class (a 150-vertex signed-weight team-split, ten random seeds) with one agent backbone (Claude Opus~4.7); the case study is illustrative rather than a benchmark and we do not claim generalization to other problem classes or agents.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper has no limitation while the answer \answerNo{} means that the paper has limitations, but those are not discussed in the paper.
@@ -33,7 +33,7 @@
 \item {\bf Theory assumptions and proofs}
     \item[] Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (and correct) proof?
     \item[] Answer: \answerNA{}
-    \item[] Justification: The paper does not present new theoretical results. Reduction correctness is verified empirically via round-trip tests rather than via formal proofs in the paper.
+    \item[] Justification: The paper does not present new theoretical results. Reduction correctness is verified empirically through round-trip tests rather than via formal proofs in the paper.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include theoretical results.
@@ -47,7 +47,7 @@
     \item {\bf Experimental result reproducibility}
     \item[] Question: Does the paper fully disclose all the information needed to reproduce the main experimental results of the paper to the extent that it affects the main claims and/or conclusions of the paper (regardless of whether the code and data are provided or not)?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The full Rust library is open-sourced (URL anonymized for review). Development metrics in Section~\ref{sec:evidence} are derived from public PR history via mining scripts included in the paper artifact, and harness components (specifications, skills, verification scripts) are committed to the repository.
+    \item[] Justification: All artifacts needed to reproduce the paper's results are released as supplementary material~\cite{Supplement}: the Rust library, the harness specifications and skills (\texttt{CLAUDE.md}, \texttt{AGENTS.md}, \texttt{propose}, \texttt{run-pipeline}, \texttt{review-pipeline}, etc.), and the end-user case study artifacts (deterministic instance generator, user-facing prompt template, agent skill definitions for C and D, and per-run logs). Development metrics in Section~\ref{sec:evidence} are direct counts from the public PR history. The case-study setup is fully specified in Appendix~\ref{app:end-user}, including seeds, configurations, and per-instance objectives and wall-times.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -67,7 +67,7 @@
 \item {\bf Open access to data and code}
     \item[] Question: Does the paper provide open access to the data and code, with sufficient instructions to faithfully reproduce the main experimental results, as described in supplemental material?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Both the reduction library (MIT-licensed Rust package) and the mining/analysis scripts used to produce all reported metrics are publicly available. URLs are anonymized for double-blind submission and will be de-anonymized in the camera-ready version.
+    \item[] Justification: All source code, agent skills, and experimental data are released as supplementary material to this paper~\cite{Supplement}. The reduction library is an MIT-licensed Rust package; the case-study artifacts include the instance generator, agent skills (\texttt{solve-instance-offline}, \texttt{solve-instance}), and the per-run logs (objectives, wall-times, solver picks, hyperparameters). URLs are anonymized for double-blind review and will be de-anonymized in the camera-ready version.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that paper does not include experiments requiring code.
@@ -83,8 +83,8 @@
 
 \item {\bf Experimental setting/details}
     \item[] Question: Does the paper specify all the training and test details (e.g., data splits, hyperparameters, how they were chosen, type of optimizer) necessary to understand the results?
-    \item[] Answer: \answerNA{}
-    \item[] Justification: The paper is methodological; it does not involve model training, train/test splits, or hyperparameter selection. The harness configuration (skills, verification stack, agent prompts) is fully specified in Section~\ref{sec:method} and committed to the artifact.
+    \item[] Answer: \answerYes{}
+    \item[] Justification: The end-user utility case study (Section~\ref{sec:end-user-utility}, Appendix~\ref{app:end-user}) specifies the four configurations (\emph{Bare AI}, \emph{Bare AI + web}, \emph{+ \texttt{pred}}, \emph{+ \texttt{pred} + web}), the ten random seeds (the primes 7, 11, 13, 17, 19, 23, 29, 31, 37, 41), the deterministic instance generator (150 engineers, density~$\approx 0.48$, integer weights drawn from $[-5, 12]$), the 90~s solver wall-time cap, the user-facing prompt template, the skill protocol given to C and D, and the agent backbone (Claude Opus~4.7 at extra-high reasoning effort). No hyperparameter sweep was performed; the agent commits to one algorithm and one configuration per run.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -95,7 +95,7 @@
 \item {\bf Experiment statistical significance}
     \item[] Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments?
     \item[] Answer: \answerNA{}
-    \item[] Justification: Reported metrics (number of problem types, reduction rules, PRs, lines of code, weekly growth) are direct counts from the artifact's git history rather than estimates from sampled experiments, so error bars do not apply.
+    \item[] Justification: Development metrics (problem types, reduction rules, weekly growth) are direct counts from git history and do not admit error bars. The end-user utility case study reports each of the ten per-seed results individually (objective, wall-time, solver pick) rather than aggregated estimates with confidence intervals; with $n=10$ random seeds and a single agent backbone, we frame the results as a case study rather than a benchmark and avoid claims that would require statistical significance testing.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -111,8 +111,8 @@
 
 \item {\bf Experiments compute resources}
     \item[] Question: For each experiment, does the paper provide sufficient information on the computer resources (type of compute workers, memory, time of execution) needed to reproduce the experiments?
-    \item[] Answer: \answerNA{}
-    \item[] Justification: The work involves no large-scale ML training. Agent invocations used standard commercial LLM APIs, and verification was run on commodity workstations; reproducing the artifact does not require specialized compute.
+    \item[] Answer: \answerYes{}
+    \item[] Justification: The case study comprises 40 runs (4 configurations $\times$ 10 seeds), each performed by Claude Opus~4.7 at extra-high reasoning effort with a 90~s solver wall-time cap. Per-run AI token usage averages 37k--81k tokens (Section~\ref{sec:end-user-utility}, Table~\ref{tab:end-user-eval}). Solvers run inside a fresh \texttt{uv} Python virtual environment on a commodity workstation; reproducing the artifact does not require specialized compute. Library development used standard commercial LLM API access (Claude Code with Opus~4.6, Codex with GPT-5.4) over roughly three months.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -124,7 +124,7 @@
 \item {\bf Code of ethics}
     \item[] Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics \url{https://neurips.cc/public/EthicsGuidelines}?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The authors have reviewed the NeurIPS Code of Ethics, and the research---which involves no human subjects, sensitive data, or high-risk model release---conforms with it in all respects.
+    \item[] Justification: The authors have reviewed the NeurIPS Code of Ethics, and the research, which involves no human subjects, sensitive data, or high-risk model release, conforms with it in all respects.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the authors have not reviewed the NeurIPS Code of Ethics.
@@ -136,7 +136,7 @@
 \item {\bf Broader impacts}
     \item[] Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work performed?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section~\ref{sec:conclusion} discusses both directions: positively, harness engineering lowers the barrier for domain experts to contribute verified scientific software; negatively, the paper acknowledges the unsettling fact that human contributors become substitutable ``plugins'' in such a workflow, with implications for engineering labor.
+    \item[] Justification: Section~\ref{sec:conclusion} (Discussion) discusses both directions. Positively, harness engineering lowers the barrier for domain experts to contribute verified scientific software without writing code, and the resulting reduction graph gives any registered solver immediate reach over a large class of problems. Negatively, the paper acknowledges the unsettling fact that human contributors become substitutable plugins in such a workflow, with implications for engineering labor.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that there is no societal impact of the work performed.
@@ -150,7 +150,7 @@
 \item {\bf Safeguards}
     \item[] Question: Does the paper describe safeguards that have been put in place for responsible release of data or models that have a high risk for misuse (e.g., pre-trained language models, image generators, or scraped datasets)?
     \item[] Answer: \answerNA{}
-    \item[] Justification: The released artifact is a library of polynomial-time reductions between combinatorial problems; it contains no pre-trained models, generative content, or scraped data, and poses no foreseeable misuse risk beyond standard software.
+    \item[] Justification: The released artifact is a library of polynomial-time reductions between combinatorial problems together with the agent skills used to maintain it. It contains no pre-trained models, generative content, or scraped data, and poses no foreseeable misuse risk beyond standard software.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper poses no such risks.
@@ -162,7 +162,7 @@
 \item {\bf Licenses for existing assets}
     \item[] Question: Are the creators or original owners of assets (e.g., code, data, models), used in the paper, properly credited and are the license and terms of use explicitly mentioned and properly respected?
     \item[] Answer: \answerYes{}
-    \item[] Justification: All third-party assets used (solvers, prior reduction libraries, the Rust toolchain, and the LLM agent platforms) are cited in the references. The artifact depends only on permissively licensed (MIT/Apache-2.0) open-source crates, and licenses are recorded in the repository's \texttt{Cargo.toml} and \texttt{LICENSE} files.
+    \item[] Justification: Third-party assets used in the paper are cited in the references: solvers (HiGHS~\cite{Huangfu2018HiGHS}, Gurobi~\cite{Gurobi2026}, OR-Tools~\cite{Perron2024ORTools}, D-Wave Ocean~\cite{DWaveOcean2026}, Goemans--Williamson~\cite{GoemansWilliamson1995}), prior reduction libraries (ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping}, qubogen~\cite{Tamura2020qubogen}), the Rust toolchain, and the LLM agent platforms (Claude Code~\cite{Anthropic2025ClaudeCode}, Codex~\cite{OpenAI2026Codex}). The released library depends only on permissively licensed (MIT/Apache-2.0) open-source crates; licenses are recorded in the repository's \texttt{Cargo.toml} and \texttt{LICENSE} files.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not use existing assets.
@@ -178,7 +178,7 @@
 \item {\bf New assets}
     \item[] Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The released library includes inline Rust documentation, a CLI tool with built-in help, registries listing every problem type and reduction rule, and the harness specifications (\texttt{CLAUDE.md}, \texttt{AGENTS.md}, skills directory) used to govern contributions. Documentation is shipped within the repository.
+    \item[] Justification: The released artifact includes inline Rust documentation, the \texttt{pred} CLI with built-in help, registries listing every problem type and reduction rule, the harness specifications (\texttt{CLAUDE.md}, \texttt{AGENTS.md}, skills directory) used to govern contributions, and the end-user case-study artifacts (instance generator, agent skills for C and D, raw run logs). Documentation ships within the repository.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not release new assets.
@@ -214,7 +214,7 @@
     \item[] Question: Does the paper describe the usage of LLMs if it is an important, original, or non-standard component of the core methods in this research? Note that if the LLM is used only for writing, editing, or formatting purposes and does \emph{not} impact the core methodology, scientific rigor, or originality of the research, declaration is not required.
     %this research?
     \item[] Answer: \answerYes{}
-    \item[] Justification: LLM-based coding agents are the central methodology of this paper. Section~\ref{sec:method} describes in detail the harness components (project specifications, tools, knowledge base, automation skills, advisor skills) and the verification stack used to govern agent contributions, and Section~\ref{sec:evidence} reports the resulting development metrics.
+    \item[] Justification: LLM-based coding agents are the central methodology of this paper. Section~\ref{sec:method} specifies the harness components (project specifications, tools, knowledge base, automation skills, advisor skills) and the verification stack used to govern agent contributions. Library development used Claude Code (Opus~4.6) for interactive sessions and OpenAI Codex (GPT-5.4 at extra-high reasoning) for headless implementation and review (Section~\ref{sec:pipeline-overview}). The end-user utility case study (Section~\ref{sec:end-user-utility}, Appendix~\ref{app:end-user}) uses Claude Opus~4.7 at extra-high reasoning effort as the agent backbone for all four configurations.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the core method development in this research does not involve LLMs as any important, original, or non-standard components.
