@@ -561,7 +561,7 @@ Our approach instantiates this pattern for a mathematical domain, exploiting the
 
 \section{A Worked CLI Session}\label{app:cli}
 
-We introduce the \texttt{pred} CLI through one worked path-driven session. The instance is weighted MaxCut on a 4-cycle (\texttt{0-1, 1-2, 2-3, 3-0}) with unit weights. Build the instance:
+We introduce the \texttt{pred} CLI through one example. The instance is weighted MaxCut on a 4-cycle (\texttt{0-1, 1-2, 2-3, 3-0}) with unit weights. Build the instance:
 \begin{quote}\ttfamily\small
 pred create MaxCut -{}-graph 0-1,1-2,2-3,3-0 -o instance.json
 \end{quote}
@@ -600,7 +600,7 @@ forward-reduces the instance along the saved path; the bundle carries the origin
 \begin{quote}\ttfamily\small
 pred extract bundle.json -{}-config 1,0,1,0
 \end{quote}
-inverse-maps the QUBO solution back through every reduction step and reports the source-space evaluation \texttt{Max(4)}: every edge of the 4-cycle is cut. The agent never has to write the inverse map by hand; it follows from the path.
+inverse-maps the QUBO solution back through every reduction step and reports the source-space evaluation \texttt{Max(4)} (\Cref{app:architecture}): every edge of the 4-cycle is cut. The agent never has to write the inverse map by hand; it follows from the path.
 
 \paragraph{Other subcommands.}
 \begin{itemize}
