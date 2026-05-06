@@ -430,7 +430,7 @@ Anecdotally, we found \texttt{gpt-5.4} more reliable for code implementation and
 
 \subsection{Correctness Assurance}\label{sec:verification}
 
-Correctness is enforced by six layers: issue review (Stage~2), compile-time type checks, unit tests, round-trip tests, \emph{agentic feature tests} (Stage~4) and manual verification (Stage 5 and 6). The first three are standard; we describe the two novel mechanisms below.
+Correctness is enforced by six layers: issue review (Stage~2), compile-time type checks, unit tests, round-trip tests, \emph{agentic feature tests} (Stage~4) and manual verification (Stage 5 and 6).
 
 \textbf{Unit tests and round-trip tests.}
 Unit tests cover individual problems, solvers, and helper functions.
@@ -486,7 +486,7 @@ The catastrophic misses all come from integer- or mixed-integer routes whose lin
 With the catalog, every run reformulates the instance as a signed-weight cut on a dense graph, follows the path through the spin-glass / QUBO family, and runs simulated annealing on the Ising form.
 The catalog narrows the modelling choice to a single reformulation that the available solvers can handle within the time budget.
 
-This experiment closes a loop in the paper: agents built the library, and the library now augments agents tackling new instances.
+% This experiment closes a loop in the paper: agents built the library, and the library now augments agents tackling new instances.
 
 \begin{table}[h]
 \caption{Outcomes on the team-split instance class (10~instances per configuration; 90~s solver-wall cap; 40~runs total). Agent: Claude Opus~4.7.
@@ -513,16 +513,9 @@ Bare AI + web                        & 12{,}074 & 10{,}011 & 8/10  & 42{,}589 & 
 
 \subsection{Conclusion}
 
-In about three months, a small team and AI agents built a verified reduction graph with 100+ problem types and 200+ reduction rules.
-More than the size of the artifact, we take this as evidence that a well-designed harness system can change how scientific software is built. The \emph{scaffold} gives every
-agent session the same experimental conditions, while \emph{skills}
-turn recurring engineering work into a repeatable flow, unlocking a level of productivity that manual
-workflows have not reached.
-At the same time, \emph{correctness assurance} remains the necessary
-safeguard: \textcolor{red}{with round-trip tests, agentic feature tests, and final human interpretation, the library stays
-grounded in mathematical rigor rather than speed alone.} In this sense, harness engineering is not just a
-convenience around AI coding agents, but a new kind of scientific instrument, whose power comes from
-combining automation with human judgment and creativity.
+In about three months, a small team and AI agents built a verified reduction graph of 190 problem types and 265 reduction rules, with 129 types (68\%) reaching ILP and 78 reaching 3-SAT. An agent calls the library and gets a verified path from a user-stated problem to a fast solver, supplying the practical judgment AI agents lack: knowing in advance which approach will actually work.
+
+Three coordinated mechanisms produced this outcome. The \emph{scaffold} gives every session the same experimental conditions, so contributions compose rather than collide. \emph{Skills} turn recurring engineering work (proposing an issue, validating a draft, reviewing a PR) into a repeatable flow any agent can execute. \emph{Correctness assurance}, layered from compile-time checks through round-trip tests, agentic feature tests, and final human verification, keeps the artifact trustworthy as it grows. Speed and rigor reinforce each other in this design: the same harness that accelerates contribution also enforces the checks that prevent drift. Together, they make a verified reduction library tractable for a small team in a single quarter.
 
 
 \subsection{Discussion}
@@ -857,11 +850,24 @@ External domain experts began contributing through the \texttt{propose} skill, f
 
 This appendix expands on the controlled experiment summarised in \Cref{sec:end-user-utility}.
 
-\paragraph{Setup.}
-A Claude Opus~4.7 agent (\texttt{claude-opus-4-7}, dispatched via Claude Code's general-purpose subagent and recorded in each run's \texttt{meta.json}) receives an engineer-voice prompt: a manager splits a 150-person organization into two product teams to maximize total cross-team value from a dense signed pairwise survey (${\approx}\,5300$ entries, density ${\approx}\,0.48$, mix of positive and negative scores).
-The prompt gives no model or solver hint; recognizing the underlying signed-weight Max-Cut structure is part of the task.
-Configurations form a $2{\times}2$ factorial over \emph{web search} (yes/no) and \texttt{pred} \emph{access} (yes/no), with ten random instances per cell (40 runs) and a 90~s solver wall-time cap.
-Agents with \texttt{pred} access also receive a short Markdown protocol that scripts a graph-data-driven reformulation step before solver code is written: \texttt{pred from} enumerates reachable downstream models, \texttt{pred path} reads each candidate's reduction overhead, \texttt{pred show} reads each endpoint's declared worst-case complexity, and \texttt{pred reduce} / \texttt{pred extract} handle the forward and inverse mappings between the natural-model instance and the chosen target endpoint. The protocol prescribes a single-pass external solver call inside an OS-enforced \texttt{timeout 90} and instructs the agent to report whatever the call returns honestly, without any retry-on-poor-result loop. The same single-pass / honest-reporting discipline is also imposed on the bare-AI conditions to keep the four configurations comparable.
+\paragraph{Instance generator.}
+Each of the ten seeds (the primes 7, 11, 13, 17, 19, 23, 29, 31, 37, 41) deterministically produces one team-split scenario: 150 engineers with a dense signed-weight survey over the 150-choose-2 pair graph. Each pair is independently sampled with probability $0.5$ and, if sampled, receives an integer weight drawn uniformly from $[-5, 12]$ (zeros skipped). Positive weights mean the pair benefits from being on different teams; negative weights mean they belong on the same team. The resulting graph has roughly 5{,}300 edges (density ${\approx}\,0.48$) with mixed signs. The corresponding mathematical model is signed-weight Maximum Cut on a 150-vertex dense graph; the agent must recognize this from the natural-language prompt, which carries no model or solver hint and asks only for the best feasible split it can produce within a couple of minutes.
+
+\paragraph{Four configurations.}
+The agent runs in one of four configurations differing on two binary axes ($2{\times}2$ factorial over \emph{web search} and \texttt{pred} \emph{access}):
+\begin{itemize}
+\item \textbf{Bare AI (A):} no \texttt{pred}, no web. The agent works from training-time priors only.
+\item \textbf{Bare AI + web (B):} no \texttt{pred}, but \texttt{WebSearch}/\texttt{WebFetch} allowed.
+\item \textbf{+ \texttt{pred} (C):} \texttt{pred} CLI available, no web.
+\item \textbf{+ \texttt{pred} + web (D):} both \texttt{pred} and web available.
+\end{itemize}
+Each cell runs ten seeds (40 runs total). A and B receive only the user-facing prompt and the solver-environment hard rules. C and D additionally receive the same Markdown protocol (\texttt{solve-instance} / \texttt{solve-instance-offline}); the only difference between them is whether the protocol's solver-capability research step uses \texttt{WebSearch} or training-time priors.
+
+\paragraph{Skill protocol (C and D).}
+The protocol scripts a four-phase workflow. Phase~1 reads the engineer-voice prompt and matches the natural model from \texttt{pred list}. Phase~2---the structural step that the bare AI does not perform---enumerates reachable downstream models (\texttt{pred from --hops 2}), enumerates all reduction paths with per-step overhead (\texttt{pred path --all}), saves the smallest-endpoint path (\texttt{pred path --cost minimize:<field> -o path.json}), reads each endpoint's worst-case complexity (\texttt{pred show}), and researches off-the-shelf solver capabilities for the candidate endpoints. Phase~3 builds the natural-model JSON, forward-reduces along the saved path (\texttt{pred reduce --via path.json}), runs a single-pass solver call, and inverse-maps the target-space configuration back to source-space (\texttt{pred extract}). Phase~4 runs an independent verifier that recomputes the objective from the original prompt literals; the agent reports the answer only after the verifier passes.
+
+\paragraph{Solver environment.}
+Each run uses a fresh working directory and a fresh Python virtual-environment at \texttt{.pred-solve/} created via \texttt{uv}; the agent installs whatever solver package it picks. The solver is invoked exactly once as \texttt{timeout 90 .pred-solve/bin/python solve.py}---the 90~s kill cutoff is OS-enforced, not a budget for the agent to fill. The same single-pass / honest-reporting discipline is imposed on the bare-AI conditions to keep the four configurations comparable: every agent is told to commit to one algorithm and one hyperparameter configuration, run it once under the timeout, and report whatever target-space configuration the call returns---no retry-on-poor-result loop, no method chaining, no polish stage. A Claude Opus~4.7 instance (\texttt{claude-opus-4-7}, dispatched via Claude Code's general-purpose subagent) handles each run independently in its own workdir, and we record the model id in every \texttt{meta.json}.
 
 \paragraph{Three independent axes of measurement.}
 We separate three quantities that AI-coding evaluations often blend into a single ``time'' figure:
