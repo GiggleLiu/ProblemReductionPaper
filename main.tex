@@ -600,7 +600,7 @@ forward-reduces the instance along the saved path; the bundle carries the origin
 \begin{quote}\ttfamily\small
 pred extract bundle.json -{}-config 1,0,1,0
 \end{quote}
-inverse-maps the QUBO solution back through every reduction step and reports the source-space evaluation \texttt{Max(4)} (\Cref{app:architecture}): every edge of the 4-cycle is cut. The agent never has to write the inverse map by hand; it follows from the path.
+inverse-maps the QUBO solution back through every reduction step and reports the source-space evaluation \texttt{Max(4)} (Appendix~\ref{app:architecture}): every edge of the 4-cycle is cut. \texttt{extract} composes the inverse of every reduction in the path.
 
 \paragraph{Other subcommands.}
 \begin{itemize}
@@ -645,7 +645,7 @@ Wrapper & Class & Witness & Example \\
 \texttt{Or}     & NP decision     & Yes & $k$-Satisfiability \\
 \texttt{Sum<W>} & \#P counting    & No  & $k$-th Largest $m$-Tuple \\
 \texttt{And}    & co-NP decision  & No  & (reserved) \\
-\shortstack[l]{\texttt{Extremum}\\\texttt{<V>}} & NP optimization$^\dagger$ & Yes & Integer Lin.\ Prog. \\
+\shortstack[l]{\texttt{Extremum}\texttt{<V>}} & NP optimization$^\dagger$ & Yes & Integer Lin.\ Prog. \\
 \bottomrule
 \end{tabular}
 \\[2pt]
@@ -675,7 +675,7 @@ When the user invokes \texttt{pred solve}, the system selects a solver in priori
 First, if the problem has a dedicated solver that exploits its structure (currently six problem types), the system uses it.
 Second, if a witness-capable reduction path to Integer Linear Programming (ILP) exists, the system reduces along the cheapest path (by Dijkstra) and solves with HiGHS.
 Third, the brute-force enumerator is always available: it folds over all configurations using the aggregation interface.
-\textcolor{red}{Brute force remains essential for round-trip testing, where correctness matters more than speed.}
+Brute force remains essential for testing, where correctness matters more than speed.
 
 \paragraph{Reduction graph construction.}
 Problem variants and reduction rules compose into the directed graph described in \Cref{sec:graph-structure}.
@@ -888,13 +888,12 @@ Each cell runs ten seeds under the same environment settings (\emph{Solver envir
 The skills cover two responsibilities the bare AI has to handle on its own:
 \begin{itemize}
 \setlength\itemsep{1pt}
-\item \textbf{Use \texttt{pred} to find a reformulation.} Match the user's spec to a natural model, walk the reduction graph to enumerate downstream endpoints by overhead and worst-case complexity, save a chosen path, forward-reduce along it, and inverse-map the solution back to source-space. Appendix~\ref{app:cli} documents the subcommands.
-\item \textbf{Pick a solver for the chosen endpoint.} Identify an off-the-shelf solver that handles instances of that endpoint's size and structure within the 90~s wall budget. C uses training-time priors for this step; D additionally uses \texttt{WebSearch}/\texttt{WebFetch}.
+\item \textbf{Use \texttt{pred} to find a reformulation.} Match the user's spec to a natural model, walk the reduction graph to enumerate downstream endpoints by overhead and worst-case complexity, save a chosen path, forward-reduce along it, and inverse-map the solution back to source-space. Appendix~\ref{app:cli} documents the example.
+\item \textbf{Pick a solver for the chosen endpoint.} Identify an off-the-shelf solver that handles instances of that endpoint's size and structure within the computational resource budget. C uses training-time priors for this step; D additionally uses \texttt{WebSearch}/\texttt{WebFetch}.
 \end{itemize}
-After the solver call, an independent verifier recomputes the objective from the user's original literals before the agent is allowed to report the answer.
 
 \paragraph{Solver environment.}
-Each run uses a fresh working directory and a fresh Python virtual-environment at \texttt{.pred-solve/} created via \texttt{uv}; the agent installs whatever solver package it picks. The solver is invoked exactly once as \texttt{timeout 90 .pred-solve/bin/python solve.py}---the 90~s kill cutoff is OS-enforced, not a budget for the agent to fill. The same single-pass / honest-reporting discipline is imposed on the bare-AI conditions to keep the four configurations comparable: every agent is told to commit to one algorithm and one hyperparameter configuration, run it once under the timeout, and report whatever target-space configuration the call returns---no retry-on-poor-result loop, no method chaining, no polish stage. A Claude Opus~4.7 instance with extra-high reasoning effort (\texttt{claude-opus-4-7-xhigh}, dispatched via Claude Code's general-purpose subagent) handles each run independently in its own workdir, and we record the model id in every \texttt{meta.json}.
+Each run uses a fresh working directory and a fresh Python virtual-environment created via \texttt{uv}; the agent installs whatever solver package it picks. All four configurations follow the same single-pass protocol: the agent commits to one algorithm and one hyperparameter configuration, invokes the solver exactly once as \texttt{timeout 90 python solve.py}, and reports whatever target-space configuration the call returns (no retry-on-poor-result loop, no method chaining, no polish stage). A Claude Opus~4.7 instance with extra-high reasoning effort (\texttt{claude-opus-4-7-xhigh}, dispatched via Claude Code's general-purpose subagent) handles each run independently in its own workdir, and we record the model id in every \texttt{meta.json}.
 
 \paragraph{User-facing prompt.}
 All four configurations receive the same engineer-voice prompt rendered from a shared template (\Cref{fig:end-user-prompt}). The template carries no model or solver hint. The placeholders \texttt{\{NUM\_PEOPLE\}}, \texttt{\{LAST\_ID\}}, and \texttt{\{NUM\_PAIRS\}} are interpolated per seed; the $\sim$5{,}300 pair scores themselves are attached as a 3-column \texttt{a,b,score} CSV (\texttt{pairs.csv}) placed in the agent's workdir, so the chat-channel prompt itself stays compact.
