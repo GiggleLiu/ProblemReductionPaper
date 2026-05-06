@@ -864,7 +864,15 @@ The agent runs in one of four configurations differing on two binary axes ($2{\t
 Each cell runs ten seeds (40 runs total). A and B receive only the user-facing prompt and the solver-environment hard rules. C and D additionally receive the same Markdown protocol (\texttt{solve-instance} / \texttt{solve-instance-offline}); the only difference between them is whether the protocol's solver-capability research step uses \texttt{WebSearch} or training-time priors.
 
 \paragraph{Skill protocol (C and D).}
-The protocol scripts a four-phase workflow. Phase~1 reads the engineer-voice prompt and matches the natural model from \texttt{pred list}. Phase~2---the structural step that the bare AI does not perform---enumerates reachable downstream models (\texttt{pred from --hops 2}), enumerates all reduction paths with per-step overhead (\texttt{pred path --all}), saves the smallest-endpoint path (\texttt{pred path --cost minimize:<field> -o path.json}), reads each endpoint's worst-case complexity (\texttt{pred show}), and researches off-the-shelf solver capabilities for the candidate endpoints. Phase~3 builds the natural-model JSON, forward-reduces along the saved path (\texttt{pred reduce --via path.json}), runs a single-pass solver call, and inverse-maps the target-space configuration back to source-space (\texttt{pred extract}). Phase~4 runs an independent verifier that recomputes the objective from the original prompt literals; the agent reports the answer only after the verifier passes.
+The protocol scripts a four-phase workflow:
+\begin{itemize}
+\setlength\itemsep{1pt}
+\item \textbf{Phase~1 --- Identify natural model.} Match the engineer's prompt to a problem in \texttt{pred list}.
+\item \textbf{Phase~2 --- Reformulation frontier.} Enumerate reachable downstream models (\texttt{pred from --hops}), enumerate paths with per-step overhead (\texttt{pred path --all}), save the smallest-endpoint path (\texttt{pred path --cost minimize:<field> -o path.json}), read each endpoint's worst-case complexity (\texttt{pred show}), and decide on the path based on endpoint size, complexity, and off-the-shelf solver capability for that endpoint. C uses training-time priors for solver capability; D additionally uses \texttt{WebSearch}/\texttt{WebFetch}.
+\item \textbf{Phase~3 --- Solve.} Build the natural-model JSON, forward-reduce along the saved path (\texttt{pred reduce --via path.json}), run a single-pass external solver call, and inverse-map the target-space configuration back to source-space (\texttt{pred extract}).
+\item \textbf{Phase~4 --- Verify.} An independent verifier recomputes the objective from the original prompt literals; the agent reports the answer only after the verifier passes.
+\end{itemize}
+Phase~2 is the structural step the bare AI does not perform; the verbatim skill text is reproduced in \Cref{fig:end-user-skill}.
 
 \paragraph{Solver environment.}
 Each run uses a fresh working directory and a fresh Python virtual-environment at \texttt{.pred-solve/} created via \texttt{uv}; the agent installs whatever solver package it picks. The solver is invoked exactly once as \texttt{timeout 90 .pred-solve/bin/python solve.py}---the 90~s kill cutoff is OS-enforced, not a budget for the agent to fill. The same single-pass / honest-reporting discipline is imposed on the bare-AI conditions to keep the four configurations comparable: every agent is told to commit to one algorithm and one hyperparameter configuration, run it once under the timeout, and report whatever target-space configuration the call returns---no retry-on-poor-result loop, no method chaining, no polish stage. A Claude Opus~4.7 instance with extra-high reasoning effort (\texttt{claude-opus-4-7-xhigh}, dispatched via Claude Code's general-purpose subagent) handles each run independently in its own workdir, and we record the model id in every \texttt{meta.json}.
@@ -1095,30 +1103,32 @@ Seed & Bare AI         & Bare AI + web   & + \texttt{pred}   & + \texttt{pred} +
 \end{table}
 
 \paragraph{Raw per-run data.}
-\Cref{tab:end-user-raw-obj} lists the objective achieved by each (configuration, instance) pair, and \Cref{tab:end-user-raw-wall} the corresponding solver wall-times. Bold cells in \Cref{tab:end-user-raw-obj} mark misses below the per-instance best.
+\Cref{tab:end-user-raw} lists the objective ($v$) and corresponding solver wall-time ($t$) for each (configuration, instance) pair. Bold objectives mark misses below the per-instance best.
 
-\begin{table}[h]
-\caption{Raw per-instance objective and solver wall-time for each configuration. Each cell shows ``objective\,/\,wall-time\,(s)''; bold objectives fall below the per-instance best (right column). The 90~s OS-enforced kill cutoff bounds wall-times; entries near 80--90~s indicate the solver was running until killed.}
+\begin{table*}[h]
+\caption{Raw per-instance objective ($v$) and solver wall-time in seconds ($t$) for each configuration. Bold objectives fall below the per-instance best (right column). The 90~s OS-enforced kill cutoff bounds wall-times; entries near 80--90~s indicate the solver was running until killed.}
 \label{tab:end-user-raw}
 \centering
-\scriptsize
+\footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}cccccc@{}}
+\begin{tabular}{@{}c cc cc cc cc c@{}}
 \toprule
-Seed & Bare AI & Bare AI + web & + \texttt{pred} & + \texttt{pred} + web & Best \\
+& \multicolumn{2}{c}{Bare AI} & \multicolumn{2}{c}{Bare AI + web} & \multicolumn{2}{c}{+ \texttt{pred}} & \multicolumn{2}{c}{+ \texttt{pred} + web} & \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+Seed & $v$ & $t$ & $v$ & $t$ & $v$ & $t$ & $v$ & $t$ & Best \\
 \midrule
- 7 & 12{,}962 / 13.0          & 12{,}962 / 40.2          & 12{,}962 / 1.3   & 12{,}962 / 1.2  & 12{,}962 \\
-11 & 12{,}641 / 6.5           & 12{,}641 / 24.7          & 12{,}641 / 15.3  & 12{,}641 / 11.9 & 12{,}641 \\
-13 & \textbf{12{,}552} / 75.0 & 12{,}944 / 5.9           & 12{,}944 / 6.1   & 12{,}944 / 11.7 & 12{,}944 \\
-17 & \textbf{9{,}966} / 83.0  & 12{,}326 / 12.2          & 12{,}326 / 2.9   & 12{,}326 / 1.2  & 12{,}326 \\
-19 & 12{,}915 / 12.5          & 12{,}915 / 6.0           & 12{,}915 / 14.7  & 12{,}915 / 5.9  & 12{,}915 \\
-23 & 12{,}240 / 12.1          & 12{,}240 / 24.3          & 12{,}240 / 59.7  & 12{,}240 / 1.2  & 12{,}240 \\
-29 & 12{,}944 / 25.0          & \textbf{12{,}685} / 80.1 & 12{,}944 / 12.6  & 12{,}944 / 5.8  & 12{,}944 \\
-31 & 12{,}401 / 32.8          & 12{,}401 / 3.0           & 12{,}401 / 3.0   & 12{,}401 / 11.6 & 12{,}401 \\
-37 & \textbf{12{,}250} / 85.1 & \textbf{12{,}340} / 85.1 & 12{,}471 / 12.5  & 12{,}471 / 14.4 & 12{,}471 \\
-41 & 12{,}187 / 26.2          & \textbf{9{,}854} / 71.8  & 12{,}187 / 1.2   & 12{,}187 / 0.6  & 12{,}187 \\
+ 7 & 12{,}962          & 13.0 & 12{,}962          & 40.2 & 12{,}962 &  1.3 & 12{,}962 &  1.2 & 12{,}962 \\
+11 & 12{,}641          &  6.5 & 12{,}641          & 24.7 & 12{,}641 & 15.3 & 12{,}641 & 11.9 & 12{,}641 \\
+13 & \textbf{12{,}552} & 75.0 & 12{,}944          &  5.9 & 12{,}944 &  6.1 & 12{,}944 & 11.7 & 12{,}944 \\
+17 & \textbf{9{,}966}  & 83.0 & 12{,}326          & 12.2 & 12{,}326 &  2.9 & 12{,}326 &  1.2 & 12{,}326 \\
+19 & 12{,}915          & 12.5 & 12{,}915          &  6.0 & 12{,}915 & 14.7 & 12{,}915 &  5.9 & 12{,}915 \\
+23 & 12{,}240          & 12.1 & 12{,}240          & 24.3 & 12{,}240 & 59.7 & 12{,}240 &  1.2 & 12{,}240 \\
+29 & 12{,}944          & 25.0 & \textbf{12{,}685} & 80.1 & 12{,}944 & 12.6 & 12{,}944 &  5.8 & 12{,}944 \\
+31 & 12{,}401          & 32.8 & 12{,}401          &  3.0 & 12{,}401 &  3.0 & 12{,}401 & 11.6 & 12{,}401 \\
+37 & \textbf{12{,}250} & 85.1 & \textbf{12{,}340} & 85.1 & 12{,}471 & 12.5 & 12{,}471 & 14.4 & 12{,}471 \\
+41 & 12{,}187          & 26.2 & \textbf{9{,}854}  & 71.8 & 12{,}187 &  1.2 & 12{,}187 &  0.6 & 12{,}187 \\
 \midrule
-\textbf{mean} & 12{,}306 / 37.1 & 12{,}331 / 35.3 & \textbf{12{,}603} / \textbf{12.9} & \textbf{12{,}603} / \textbf{6.5} & 12{,}603 \\
+\textbf{mean} & 12{,}306 & 37.1 & 12{,}331 & 35.3 & \textbf{12{,}603} & \textbf{12.9} & \textbf{12{,}603} & \textbf{6.5} & 12{,}603 \\
 \bottomrule
 \end{tabular}
 \end{table}
