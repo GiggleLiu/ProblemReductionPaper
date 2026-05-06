@@ -471,7 +471,7 @@ No abstract problem name is given; recognizing the structure and routing it to a
 Four configurations form a $2{\times}2$ factorial over web-search and \texttt{pred} access, ten random instances each (40 runs), with solver wall-time capped at 90~s.
 We separate three quantities usually conflated as ``time'': AI tokens, solver wall-time, and graded solution quality (full setup in Appendix~\ref{app:end-user}).
 
-\Cref{tab:end-user-eval} summarizes the outcomes; \Cref{fig:end-user-scatter} plots all 40 runs in the (solver wall-time, gap-from-best) plane.
+\Cref{tab:end-user-eval} summarizes the outcomes.
 The full \texttt{pred}+web configuration matches the per-instance best objective on all 10 instances and is the only configuration whose minimum objective stays at the per-instance best.
 The bare-AI baseline matches the per-instance best on 7 of 10 instances; the worst miss (instance 13, 11{,}673 versus 12{,}944) is a 9.8\% gap.
 The two intermediate configurations each suffer one or two large misses where the agent commits to a textbook integer-programming encoding and the solver hits the wall-time cap with a poor incumbent: bare-AI+web finishes at 10{,}011 / 10{,}252 on instances 11 and 19; \texttt{pred} (offline) finishes at 10{,}194 on instance 37.
@@ -502,16 +502,6 @@ Bare AI + web                        & 12{,}074 & 10{,}011 & 8/10  & 42{,}589 & 
 \bottomrule
 \end{tabular}
 \end{table}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.85\linewidth]{figures/end_user_scatter.pdf}
-\caption{Per-run quality vs.\ solver wall-time across all 40 benchmark runs.
-Each marker is one (configuration, instance) pair; the y-axis shows the gap from the per-instance best objective achieved by any configuration on that instance, so the dashed line at $0\%$ is ``matched the best.''
-The y-axis is broken between $-3.5\%$ and $-8\%$ to keep the main cluster legible alongside the four catastrophic misses.
-Catalog-enabled runs (\textcolor[HTML]{1f77b4}{\textbf{+pred}}, \textcolor[HTML]{2ca02c}{\textbf{+pred+web}}) sit on the upper-left ``fast and on-target'' line; the bare baselines (\textcolor[HTML]{d62728}{\textbf{Bare AI}}, \textcolor[HTML]{ff7f0e}{\textbf{Bare AI+web}}) spread further right and account for three of the four misses in the lower panel.}
-\label{fig:end-user-scatter}
-\end{figure}
 
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION
