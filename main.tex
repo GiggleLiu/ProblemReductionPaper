@@ -474,8 +474,9 @@ To isolate the catalog's contribution, we compare four configurations that toggl
 Each configuration is run on ten random instances, with solver wall-time capped at 90~s.
 For each run we record three quantities: tokens spent overall, solver wall-time, and the objective value obtained by the solver (full setup in Appendix~\ref{app:end-user}).
 
-\Cref{tab:end-user-eval} summarizes the outcomes: both catalog-enabled configurations match the per-instance best on every instance and cut solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens.
-Both bare configurations miss the per-instance best on $3$ of $10$ instances, and on their worst run each falls $19.1\%$ below the best.
+\Cref{tab:end-user-eval} summarizes the outcomes: both catalog-enabled configurations match the \emph{best-of-four} objective on every instance and cut solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens.
+Here \emph{best-of-four} denotes the highest objective observed across the four configurations on a given instance; we do not claim it is the global optimum (proving optimality on dense 150-vertex signed cuts is itself hard).
+Both bare configurations miss the best-of-four on $3$ of $10$ instances, and on their worst run each falls $19.1\%$ below it.
 The misses share a single failure mode: the agent commits to a textbook integer-programming formulation (MILP or CP-SAT), whose linear relaxation is too loose for the solver to close within 90~s.
 The extra catalog tokens go into reading the reduction graph and choosing the endpoint; the speedup comes from that endpoint --- simulated annealing on the Ising form --- terminating in a single short call rather than a long branch-and-bound run.
 
