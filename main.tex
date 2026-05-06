@@ -119,7 +119,7 @@
 
 
 \begin{abstract}
-  Solving an NP-hard optimization problem often requires reformulating it for a specific solver---quantum hardware, a commercial optimizer, or a domain heuristic.
+  Solving an NP-hard optimization problem often requires reducing it to a form the chosen solver accepts---quantum hardware, a commercial optimizer, or a domain heuristic.
   A tool for polynomial-time reductions between hard problems would let practitioners route any supported problem to any supported solver through a single interface.
   Building such a library at scale, however, has remained out of reach.
   We show that \emph{harness engineering}, the practice of designing constraints, verification systems, and feedback loops that channel AI coding agents, can overcome this barrier.
@@ -946,7 +946,7 @@ I'd like the algorithm to be both fast and good. Thanks!
 \Cref{tab:end-user-solver-table} lists the solver each agent selected on every instance.
 Without \texttt{pred}, the bare baselines drift across MILP (HiGHS, PuLP+CBC), OR-tools CP-SAT, simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), and \texttt{dwave-tabu}. The suboptimal answers all come from the MILP and CP-SAT runs: on this dense, mixed-sign cut problem the LP-relaxation bound is too loose for branch-and-bound to close within 90~s.
 
-With \texttt{pred} (with or without web), every run reformulates the problem to QUBO via the SpinGlass route and solves it with simulated annealing on the Ising form, hitting the per-instance best on all ten instances. The win has two sources. First, \texttt{pred}'s overhead-aware path ranking ($O(|V|)$ for SpinGlass vs.\ $O(|V|^4)$ for the ILP route) surfaces the SpinGlass endpoint, where signed-weight MaxCut maps directly to an Ising Hamiltonian (each edge weight becomes a coupling) without auxiliary variables. Second, on this Ising form simulated annealing is the natural fit: local spin flips suffice to navigate the energy landscape, and the 90~s budget is more than enough for the 150-variable problem. The MILP and CP-SAT solvers spend the same budget tightening a loose LP relaxation and cannot close the gap.
+With \texttt{pred} (C and D), every run reformulates the problem to QUBO via the SpinGlass route and solves it with simulated annealing on the Ising form, hitting the per-instance best on all ten instances. The win has two sources. First, \texttt{pred}'s overhead-aware path ranking ($O(|V|)$ for SpinGlass vs.\ $O(|V|^4)$ for the ILP route) surfaces the SpinGlass endpoint, where signed-weight MaxCut maps directly to an Ising Hamiltonian (each edge weight becomes a coupling) without auxiliary variables. Second, on this Ising form simulated annealing is the natural fit: local spin flips suffice to navigate the energy landscape, and the 90~s budget is more than enough for the 150-variable problem. The MILP and CP-SAT solvers spend the same budget tightening a loose LP relaxation and cannot close the gap.
 
 \begin{table}[h]
 \caption{Solver picked on each instance by each configuration.
