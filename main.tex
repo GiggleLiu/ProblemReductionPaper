@@ -471,7 +471,7 @@ No abstract problem name is given; recognizing the structure and routing it to a
 Four configurations form a $2{\times}2$ factorial over web-search and \texttt{pred} access, ten random instances each (40 runs), with solver wall-time capped at 90~s.
 We separate three quantities usually conflated as ``time'': AI tokens, solver wall-time, and graded solution quality (full setup in Appendix~\ref{app:end-user}).
 
-\Cref{tab:end-user-eval} summarizes the outcomes; \Cref{fig:end-user-scatter} plots all 40 runs in the (solver wall-time, objective) plane.
+\Cref{tab:end-user-eval} summarizes the outcomes; \Cref{fig:end-user-scatter} plots all 40 runs in the (solver wall-time, gap-from-best) plane.
 The full \texttt{pred}+web configuration matches the per-instance best objective on all 10 instances and is the only configuration whose minimum objective stays at the per-instance best.
 The bare-AI baseline matches the per-instance best on 7 of 10 instances; the worst miss (instance 13, 11{,}673 versus 12{,}944) is a 9.8\% gap.
 The two intermediate configurations each suffer one or two large misses where the agent commits to a textbook integer-programming encoding and the solver hits the wall-time cap with a poor incumbent: bare-AI+web finishes at 10{,}011 / 10{,}252 on instances 11 and 19; \texttt{pred} (offline) finishes at 10{,}194 on instance 37.
