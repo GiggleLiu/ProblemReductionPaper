@@ -465,9 +465,9 @@ In 12 weeks of development, most of the library was built after week~8.5, once t
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
-The simplest use of the library starts from a high-performance solver and asks what problems it can serve. For an Ising machine that accepts QUBO input, a single \texttt{pred} command surfaces 138 problem variants in the library that route to QUBO within three hops (\Cref{app:qubo-coverage}), giving the machine immediate reach over every one of them through composed reductions. 
+The simplest use of \texttt{pred} starts from a high-performance solver and asks what problems it can serve. For an Ising machine that accepts QUBO input, a single \texttt{pred} command surfaces 138 problem variants in the library that route to QUBO within three hops (\Cref{app:qubo-coverage}), giving the machine immediate reach over every one of them through composed reductions. 
 
-The harder direction starts from a problem stated in everyday language and asks an AI agent to use the library to deliver a fast and good solver end-to-end. To check whether \texttt{pred} helps in this direction, we set up a case study where the agent receives a problem in everyday language. In our instance, a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores.
+The harder direction starts from a problem stated in everyday language and asks an AI agent to use \texttt{pred} to deliver a fast and good solver end-to-end. To check whether \texttt{pred} helps in this direction, we set up a case study where the agent receives a problem in everyday language. In our instance, a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores. Mathematically, this is signed-weight Maximum Cut on a 150-vertex dense graph, an NP-hard problem.
 
 To answer, the agent has to recognize the underlying mathematical model, pick a reduction path to a solver-friendly endpoint, choose a solver for that endpoint, and write the code that ties them together. Each of these steps depends on prior knowledge that may be wrong, partial, or out of date; \texttt{pred} replaces the reduction-path step with a walk over a verified graph.
 
