@@ -467,7 +467,7 @@ In 12 weeks of development, most of the library was built after week~8.5, once t
 The library is itself an agent-callable tool via the \texttt{pred} CLI.
 As a case study, we look at how \texttt{pred} access affects agents solving a problem stated in everyday language.
 The instance: a manager splits a 150-person organization into two product teams; every pair of employees has a positive or negative compatibility score, and the goal is to maximize the sum of cross-team scores.
-The agent's task is to pick the best algorithm for the problem and write the code that solves each instance.
+The agent's task is to pick a fast and good algorithm for the problem and write the code that solves each instance.
 
 To isolate \texttt{pred}'s contribution, we compare four configurations that toggle \texttt{pred} access and web search independently (the four rows of \Cref{tab:end-user-eval}).
 Each configuration is run on ten random instances, with solver wall-time capped at 90~s.
