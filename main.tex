@@ -561,31 +561,30 @@ Our approach instantiates this pattern for a mathematical domain, exploiting the
 
 \section{CLI Reference}\label{app:cli}
 
-Consider a logistics engineer who models warehouse bin placement as a Maximum Independent Set (MIS) problem, finding the largest set of vertices with no two adjacent.
-The conflict graph encodes spatial constraints: vertices are candidate locations, edges connect locations that are too close.
-\Cref{lst:cli-session} shows how one solves this instance with an ILP solver.
-\begin{figure}[t]
-\lstset{basicstyle=\ttfamily\scriptsize,commentstyle=\color{gray}\itshape,morecomment=[l]{\#},moredelim=[is][\color{black!80}\bfseries]{@}{@},numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt,breaklines=true,frame=single,xleftmargin=14pt,xrightmargin=4pt,aboveskip=6pt,belowskip=2pt}
-\begin{lstlisting}
-# Create a conflict graph (4 locations, 3 conflicts),
-# reduce to ILP, and solve
-@$ pred create MIS --graph 0-1,1-2,2-3 \
-    | pred reduce - --to ILP \
-    | pred solve -@
-Problem: "MaximumIndependentSet"
-Solver: ilp (via ILP)
-Solution: [1, 0, 0, 1]  // locations 0 and 3
-Evaluation: "Max(2)"    // 2 non-conflicting bins
-\end{lstlisting}
-\caption{CLI using example: creating and solving a Maximum Independent Set instance via reduction to integer linear programming (ILP).
-  Commands communicate via Unix pipes (\texttt{|}), reading JSON from stdin (\texttt{-}) and writing JSON to stdout, so they compose without intermediate files.}
-\label{lst:cli-session}
-\end{figure}
+We walk through one concrete path-driven session on a tiny instance: weighted MaxCut on a 4-cycle (\texttt{0-1, 1-2, 2-3, 3-0}) with unit weights, built via \texttt{pred create MaxCut -{}-graph 0-1,1-2,2-3,3-0 -o instance.json}. The downstream solver target is QUBO/f64.
 
-Beyond this workflow, \texttt{pred path} shows the reduction route and per-step overhead between any two problem types.
-\texttt{pred show} prints a problem's definition and neighboring reductions.
-\texttt{pred list} lists all registered problem types with their complexities.
-\texttt{pred evaluate} scores a candidate configuration against any problem instance, useful for verifying solutions independently of the solver.
+\paragraph{Enumerate downstream models.} \texttt{pred from MaxCut/SimpleGraph/i32 -{}-hops 2} prints the reachable downstream cone --- two branches, each three hops from QUBO/f64:
+\begin{quote}\ttfamily\small
+MaxCut/SimpleGraph/i32\\
+\hspace*{1em}|-- MinimumCutIntoBoundedSets/SimpleGraph/i32 -> ILP/bool\\
+\hspace*{1em}|-- SpinGlass/SimpleGraph/i32 -> SpinGlass/SimpleGraph/f64
+\end{quote}
+
+\paragraph{Compare reformulation paths.} \texttt{pred path MaxCut/SimpleGraph/i32 QUBO/f64 -{}-all} enumerates both paths and reports their per-step overhead. The endpoints differ by orders of magnitude:
+\begin{itemize}
+\setlength\itemsep{1pt}
+\item \emph{Path~1} (via \texttt{SpinGlass}): $\text{num\_vars} = O(|V|)$ at the QUBO endpoint.
+\item \emph{Path~2} (via \texttt{MinimumCutIntoBoundedSets} and \texttt{ILP/bool}): $\text{num\_vars} = O(|V|^4)$.
+\end{itemize}
+Path~2 inflates because the intermediate ILP encoding adds a constraint per cut edge before being quadratised into QUBO; Path~1 keeps the variable count linear. \texttt{pred path -{}-cost minimize:num\_vars -o path.json} saves Path~1 to a file so downstream reductions consume the same choice deterministically.
+
+\paragraph{Reduce, solve, lift.} \texttt{pred reduce instance.json -{}-via path.json -o bundle.json} forward-reduces the instance along the saved path; the bundle carries the original instance under \texttt{source}, the reduction trace under \texttt{path}, and the resulting 4-variable QUBO under \texttt{target}. After an external solver returns a target-space configuration --- on this instance, alternating colours \texttt{[1,0,1,0]} achieves the QUBO minimum $-8$ --- the call \texttt{pred extract bundle.json -{}-config 1,0,1,0} inverse-maps the QUBO solution back through every reduction step and reports the source-space evaluation \texttt{Max(4)}: every edge of the 4-cycle is cut. The agent never has to write the inverse map by hand; it follows from the path.
+
+\paragraph{Other subcommands.}
+\texttt{pred show <variant>} prints a problem's definition, schema, complexity, and neighbouring reductions.
+\texttt{pred list} enumerates all registered problem types with their complexities.
+\texttt{pred evaluate <instance>.json -{}-config <csv>} scores a candidate configuration against the instance directly, useful for verifying solutions independently of the solver.
+\texttt{pred solve <instance>.json} runs an end-to-end solve via the cheapest reduction path with a built-in solver; in agent-driven settings (\Cref{sec:end-user-utility}) it serves as a sanity check rather than the production answer, since the agent's chosen external solver is typically much stronger than the built-in fallback.
 
 Each PDF manual entry contains a formal definition, a proof sketch, and a worked example with visualization.
 The example is the same canonical instance that the contributor provided in the original issue.
@@ -861,13 +860,13 @@ The agent runs in one of four configurations differing on two binary axes ($2{\t
 \item \textbf{+ \texttt{pred} (C):} \texttt{pred} CLI available, no web.
 \item \textbf{+ \texttt{pred} + web (D):} both \texttt{pred} and web available.
 \end{itemize}
-Each cell runs ten seeds under the same environment settings (\emph{Solver environment} below); A and B receive only the user-facing prompt, while C and D additionally receive a Markdown skill (\texttt{solve-instance} for C, \texttt{solve-instance-offline} for D).
+Each cell runs ten seeds under the same environment settings (\emph{Solver environment} below); A and B receive only the user-facing prompt, while C and D additionally receive a Markdown skill (\texttt{solve-instance-offline} for C, \texttt{solve-instance} for D).
 
 \paragraph{Skill protocol (C and D).}
 The skills cover two responsibilities the bare AI has to handle on its own:
 \begin{itemize}
 \setlength\itemsep{1pt}
-\item \textbf{Use \texttt{pred} to find a reformulation.} Match the user's spec to a natural model, enumerate reachable downstream endpoints with overhead and worst-case complexity (\texttt{pred from}, \texttt{pred path --all}, \texttt{pred show}), save the smallest-endpoint path (\texttt{pred path --cost minimize:<field> -o path.json}), forward-reduce (\texttt{pred reduce --via path.json}), and inverse-map the solution back to source-space (\texttt{pred extract}).
+\item \textbf{Use \texttt{pred} to find a reformulation.} Match the user's spec to a natural model, walk the reduction graph to enumerate downstream endpoints by overhead and worst-case complexity, save a chosen path, forward-reduce along it, and inverse-map the solution back to source-space. Appendix~\ref{app:cli} documents the subcommands.
 \item \textbf{Pick a solver for the chosen endpoint.} Identify an off-the-shelf solver that handles instances of that endpoint's size and structure within the 90~s wall budget. C uses training-time priors for this step; D additionally uses \texttt{WebSearch}/\texttt{WebFetch}.
 \end{itemize}
 After the solver call, an independent verifier recomputes the objective from the user's original literals before the agent is allowed to report the answer.
