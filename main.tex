@@ -507,9 +507,8 @@ Bare AI + web                        & 12{,}074 & 10{,}011 & 8/10  & 42{,}589 & 
 \centering
 \includegraphics[width=0.85\linewidth]{figures/end_user_scatter.pdf}
 \caption{Per-run quality vs.\ solver wall-time across all 40 benchmark runs.
-Each marker is one (configuration, instance) pair; horizontal dashed lines mark the per-instance best objective achieved by any configuration on that instance.
-Cross markers ($\times$) indicate catastrophic misses where the agent's chosen solver finished below the per-instance best.
-Catalog-enabled runs (\textcolor[HTML]{1f77b4}{\textbf{+pred}}, \textcolor[HTML]{2ca02c}{\textbf{+pred+web}}) cluster in the upper-left ``fast and on-target'' regime; the bare baselines (\textcolor[HTML]{d62728}{\textbf{Bare AI}}, \textcolor[HTML]{ff7f0e}{\textbf{Bare AI+web}}) spread further right and account for all but one of the catastrophic misses.}
+Each marker is one (configuration, instance) pair; the y-axis shows the gap from the per-instance best objective achieved by any configuration on that instance, so the dashed line at $0\%$ is ``matched the best.''
+Catalog-enabled runs (\textcolor[HTML]{1f77b4}{\textbf{+pred}}, \textcolor[HTML]{2ca02c}{\textbf{+pred+web}}) sit on the upper-left ``fast and on-target'' line; the bare baselines (\textcolor[HTML]{d62728}{\textbf{Bare AI}}, \textcolor[HTML]{ff7f0e}{\textbf{Bare AI+web}}) spread further right and account for three of the four catastrophic misses that fall below $-8\%$.}
 \label{fig:end-user-scatter}
 \end{figure}
 
