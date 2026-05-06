@@ -467,7 +467,7 @@ In 12 weeks of development, most of the library was built after week~8.5, once t
 
 The simplest use of \texttt{pred} starts from a high-performance solver and asks what problems it can serve. For an Ising machine that accepts QUBO input, a single \texttt{pred} command surfaces 138 problem variants in the library that route to QUBO within three hops (\Cref{app:qubo-coverage}), giving the machine immediate reach over every one of them through composed reductions. 
 
-The harder direction starts from a problem stated in everyday language and asks an AI agent to use \texttt{pred} to deliver a fast and good solver end-to-end. To check whether \texttt{pred} helps in this direction, we set up a case study where the agent receives a problem in everyday language. In our instance, a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores. Mathematically, this is signed-weight Maximum Cut on a 150-vertex dense graph, an NP-hard problem.
+The harder direction starts from a problem stated in everyday language and asks an AI agent to use \texttt{pred} to deliver a fast and good solver end-to-end. To check whether \texttt{pred} helps in this direction, we set up a case study where the agent receives a problem in everyday language. In our instance, a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores. Mathematically, this is NP-hard Maximum Cut.
 
 To answer, the agent has to recognize the underlying mathematical model, pick a reduction path to a solver-friendly endpoint, choose a solver for that endpoint, and write the code that ties them together. Each of these steps depends on prior knowledge that may be wrong, partial, or out of date; \texttt{pred} replaces the reduction-path step with a walk over a verified graph.
 
@@ -491,8 +491,8 @@ Higher objective is better; \emph{Best-match} reports how many of the ten instan
 \toprule
 Configuration & Mean obj.\,$\uparrow$ & Min obj.\,$\uparrow$ & Best-match & Mean AI tokens & Mean solver s \\
 \midrule
-Bare                                 & 12{,}306 & 9{,}966 & 7/10  & 37{,}379 & 37.1 \\
-Bare + web                           & 12{,}331 & 9{,}854 & 7/10  & 37{,}874 & 35.3 \\
+Bare AI                              & 12{,}306 & 9{,}966 & 7/10  & 37{,}379 & 37.1 \\
+Bare AI + web                        & 12{,}331 & 9{,}854 & 7/10  & 37{,}874 & 35.3 \\
 + \texttt{pred}                      & 12{,}603 & 12{,}187 & 10/10 & 70{,}523 & 12.9 \\
 + \texttt{pred} + web                & 12{,}603 & 12{,}187 & 10/10 & 80{,}592 &  6.5 \\
 \bottomrule
@@ -870,8 +870,8 @@ Each of the ten seeds (the primes 7, 11, 13, 17, 19, 23, 29, 31, 37, 41) determi
 \paragraph{Four configurations.}
 The agent runs in one of four configurations differing on two binary axes ($2{\times}2$ factorial over \emph{web search} and \texttt{pred} \emph{access}):
 \begin{itemize}
-\item \textbf{Bare (A):} no \texttt{pred}, no web. The agent works from training-time priors only.
-\item \textbf{Bare + web (B):} no \texttt{pred}, but \texttt{WebSearch}/\texttt{WebFetch} allowed.
+\item \textbf{Bare AI (A):} no \texttt{pred}, no web. The agent works from training-time priors only.
+\item \textbf{Bare AI + web (B):} no \texttt{pred}, but \texttt{WebSearch}/\texttt{WebFetch} allowed.
 \item \textbf{+ \texttt{pred} (C):} \texttt{pred} CLI available, no web.
 \item \textbf{+ \texttt{pred} + web (D):} both \texttt{pred} and web available.
 \end{itemize}
@@ -945,7 +945,7 @@ Bold cells are the largest gaps to the best-of-four.}
 \small
 \begin{tabular}{@{}c@{\hspace{2pt}}llll@{}}
 \toprule
-Seed & Bare            & Bare + web      & + \texttt{pred}   & + \texttt{pred} + web \\
+Seed & Bare AI         & Bare AI + web   & + \texttt{pred}   & + \texttt{pred} + web \\
 \midrule
  7 & SA                & Tabu              & SA & SA \\
 11 & SA                & SA                & SA & SA \\
@@ -974,7 +974,7 @@ Seed & Bare            & Bare + web      & + \texttt{pred}   & + \texttt{pred} +
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}c cc cc cc cc c@{}}
 \toprule
-& \multicolumn{2}{c}{Bare} & \multicolumn{2}{c}{Bare + web} & \multicolumn{2}{c}{+ \texttt{pred}} & \multicolumn{2}{c}{+ \texttt{pred} + web} & \\
+& \multicolumn{2}{c}{Bare AI} & \multicolumn{2}{c}{Bare AI + web} & \multicolumn{2}{c}{+ \texttt{pred}} & \multicolumn{2}{c}{+ \texttt{pred} + web} & \\
 \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
 Seed & Obj. & Time (s) & Obj. & Time (s) & Obj. & Time (s) & Obj. & Time (s) & Best of 4 \\
 \midrule
