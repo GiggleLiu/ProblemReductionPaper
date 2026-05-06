@@ -454,17 +454,17 @@ In our practice, agentic feature tests caught most CLI command bugs, and some us
 %======================================================================
 \section{Evidence}\label{sec:evidence}
 
-The pipeline produced a substantive reduction library, which helps a non-expert end user.
+The pipeline produced a substantive reduction library and an agent-callable interface. We evaluate both the library's coverage and its utility in an end-user case study.
 
 \subsection{Library Status}
 
 \Cref{fig:overview}(c) summarizes the library at v0.5.0: 190~problem types (220 variants), 265~reduction rules, 129~types (68\%) with a reduction path to ILP, and 78 reachable from 3-SAT.
-Each ILP path grants automatic solver access via the \texttt{pred} CLI; each 3-SAT path provides a tested NP-hardness argument backed by executable code rather than pen-and-paper proofs.
+Each ILP path grants standard solver access via the \texttt{pred} CLI; each 3-SAT path provides a tested NP-hardness argument backed by executable code rather than pen-and-paper proofs.
 In 12 weeks of development, most of the library was built after week~8.5, once the full skill-based pipeline was in place (Appendix~\ref{app:phases}).
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
-The library is itself an agent-callable tool via the \texttt{pred} CLI. To check whether this tool helps when an agent faces a real end-user request, we set up a case study where the agent receives a problem in everyday language, with no mathematical model named and no solver hint given. The instance: a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores (each pair has a positive or negative compatibility score). 
+The library is itself an agent-callable tool via the \texttt{pred} CLI. To check whether this tool helps when an agent faces a realistic end-user request, we set up a case study where the agent receives a problem in everyday language, with no mathematical model named and no solver hint given. The instance: a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores (each pair has a positive or negative compatibility score). 
 
 To answer, the agent has to recognize the underlying mathematical model, pick a reduction path to a solver-friendly endpoint, choose a solver for that endpoint, and write the code that ties them together. Each of these steps depends on prior knowledge that may be wrong, partial, or out of date; \texttt{pred} replaces the reduction-path step with a walk over a verified graph, while leaving the other steps to the agent. 
 
@@ -479,8 +479,6 @@ Without \texttt{pred}, agents scatter across MILP (HiGHS, Gurobi), CP-SAT (OR-to
 With \texttt{pred}, every run reduces the instance through the spin-glass / QUBO family and runs simulated annealing on the Ising form, terminating in a single short call rather than a long branch-and-bound run (\Cref{tab:end-user-solver-table}).
 Appendix~\ref{app:end-user} has the per-instance picks, raw data, and a finer-grained look at web's role under \texttt{pred}.
 
-% This experiment closes a loop in the paper: agents built the library, and the library now augments agents tackling new instances.
-
 \begin{table}[h]
 \caption{Outcomes on the team-split instance class (10~instances per configuration; 90~s solver-wall cap; 40~runs total). Agent: Claude Opus~4.7.
 Higher objective is better; the best-of-four is the highest objective observed across the four configurations on each instance, not a proven global optimum.}
@@ -489,7 +487,7 @@ Higher objective is better; the best-of-four is the highest objective observed a
 \small
 \begin{tabular}{@{}lccccc@{}}
 \toprule
-Configuration & Mean obj. & Min obj. & Best-match & Mean AI tokens & Mean solver s \\
+Configuration & Mean obj.\,$\uparrow$ & Min obj.\,$\uparrow$ & Best-match & Mean AI tokens & Mean solver s \\
 \midrule
 Bare AI                              & 12{,}306 & 9{,}966 & 7/10  & 37{,}379 & 37.1 \\
 Bare AI + web                        & 12{,}331 & 9{,}854 & 7/10  & 37{,}874 & 35.3 \\
