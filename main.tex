@@ -888,7 +888,7 @@ Each cell runs ten seeds under the same environment settings (\emph{Solver envir
 The skills cover two responsibilities the bare AI has to handle on its own:
 \begin{itemize}
 \setlength\itemsep{1pt}
-\item \textbf{Use \texttt{pred} to find a reformulation.} Match the user's spec to a natural model, walk the reduction graph to enumerate downstream endpoints by overhead and worst-case complexity, save a chosen path, forward-reduce along it, and inverse-map the solution back to source-space. Appendix~\ref{app:cli} documents the example.
+\item \textbf{Use \texttt{pred} to find a reduction path.} Match the user's spec to a natural model, walk the reduction graph to enumerate downstream endpoints by overhead and worst-case complexity, save a chosen path, forward-reduce along it, and inverse-map the solution back to source-space. Appendix~\ref{app:cli} documents the example.
 \item \textbf{Pick a solver for the chosen endpoint.} Identify an off-the-shelf solver that handles instances of that endpoint's size and structure within the computational resource budget. C uses training-time priors for this step; D additionally uses \texttt{WebSearch}/\texttt{WebFetch}.
 \end{itemize}
 
