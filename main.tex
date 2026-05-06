@@ -561,7 +561,7 @@ Our approach instantiates this pattern for a mathematical domain, exploiting the
 
 \section{A Worked CLI Session}\label{app:cli}
 
-We walk through one concrete path-driven session on a tiny instance: weighted MaxCut on a 4-cycle (\texttt{0-1, 1-2, 2-3, 3-0}) with unit weights. The downstream solver target is QUBO/f64. Build the instance:
+We introduce the \texttt{pred} CLI through one worked path-driven session. The instance is weighted MaxCut on a 4-cycle (\texttt{0-1, 1-2, 2-3, 3-0}) with unit weights. Build the instance:
 \begin{quote}\ttfamily\small
 pred create MaxCut -{}-graph 0-1,1-2,2-3,3-0 -o instance.json
 \end{quote}
@@ -608,11 +608,8 @@ inverse-maps the QUBO solution back through every reduction step and reports the
 \item \texttt{pred show <variant>}: prints a problem's definition, schema, complexity, and neighbouring reductions.
 \item \texttt{pred list}: enumerates all registered problem types with their complexities.
 \item \texttt{pred evaluate <instance>.json -{}-config <csv>}: scores a candidate configuration against the instance directly, useful for verifying solutions independently of the solver.
-\item \texttt{pred solve <instance>.json}: runs an end-to-end solve via the cheapest reduction path with a built-in solver. In agent-driven settings (\Cref{sec:end-user-utility}) it serves as a sanity check rather than the production answer, since the agent's chosen external solver is typically much stronger than the built-in fallback.
+\item \texttt{pred solve <instance>.json}: runs an end-to-end solve via the cheapest reduction path with a built-in default solver.
 \end{itemize}
-
-Each PDF manual entry contains a formal definition, a proof sketch, and a worked example with visualization.
-The example is the same canonical instance that the contributor provided in the original issue.
 
 \section{Implementation Details}\label{app:architecture}
 
