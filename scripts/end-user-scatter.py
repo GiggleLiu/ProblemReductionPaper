@@ -74,7 +74,6 @@ ax_bot.plot((1 - d, 1 + d), (1 - d * 5, 1 + d * 5), **kwargs)
 
 ax_bot.set_xlabel("Solver wall time (s, log)")
 fig.supylabel("Gap from per-instance best (%)", x=0.015, fontsize=10)
-ax_top.set_title("End-user benchmark: quality vs. solver wall, all 40 runs")
 
 handles = [
     mlines.Line2D([], [], color=col, marker="o", linestyle="None",
@@ -83,7 +82,7 @@ handles = [
 ]
 handles.append(mlines.Line2D([], [], color="0.55", linestyle=(0, (3, 3)),
                              label="per-instance best (0%)"))
-ax_top.legend(handles=handles, loc="lower left", fontsize=8, framealpha=0.95)
+ax_bot.legend(handles=handles, loc="lower left", fontsize=8, framealpha=0.95)
 
 ax_top.text(90, ax_top.get_ylim()[1] - 0.1, "90 s timeout", color="0.4",
             fontsize=8, ha="right", va="top", rotation=90)
