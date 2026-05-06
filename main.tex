@@ -886,12 +886,13 @@ The agent runs in one of four configurations differing on two binary axes ($2{\t
 Each cell runs ten seeds under the same environment settings (\emph{Solver environment} below); A and B receive only the user-facing prompt, while C and D additionally receive a Markdown skill (\texttt{solve-instance-offline} for C, \texttt{solve-instance} for D).
 
 \paragraph{Skill protocol (C and D).}
-The skills cover two responsibilities the bare AI has to handle on its own:
+``With \texttt{pred}'' here means the agent additionally receives a Markdown skill that documents how to use the \texttt{pred} CLI and walk a reduction path; the skill injects no prior on which solver to run. It covers two responsibilities, both of which A and B have to handle without any aid:
 \begin{itemize}
 \setlength\itemsep{1pt}
 \item \textbf{Use \texttt{pred} to find a reduction path.} Match the user's spec to a natural model, walk the reduction graph to enumerate downstream endpoints by overhead and worst-case complexity, save a chosen path, forward-reduce along it, and inverse-map the solution back to source-space. Appendix~\ref{app:cli} documents the example.
-\item \textbf{Pick a solver for the chosen endpoint.} Identify an off-the-shelf solver that handles instances of that endpoint's size and structure within the computational resource budget. C uses training-time priors for this step; D additionally uses \texttt{WebSearch}/\texttt{WebFetch}.
+\item \textbf{Pick a solver for the chosen endpoint.} Starting only from the endpoint \texttt{pred} returned, identify an off-the-shelf solver that handles instances of that size and structure within the computational resource budget. The skill names no candidate solvers and expresses no preference; C relies on the agent's training-time priors, while D additionally uses \texttt{WebSearch}/\texttt{WebFetch}.
 \end{itemize}
+This separation keeps the comparison fair: \texttt{pred} contributes to reduction-endpoint selection, while solver selection on top of that endpoint is left entirely to the agent's own knowledge or web search.
 
 \paragraph{Solver environment.}
 Each run uses a fresh working directory and a fresh Python virtual-environment created via \texttt{uv}; the agent installs whatever solver package it picks. All four configurations follow the same single-pass protocol: the agent commits to one algorithm and one hyperparameter configuration, invokes the solver exactly once as \texttt{timeout 90 python solve.py}, and reports whatever target-space configuration the call returns (no retries, no method chaining, no polish stage). Each run is handled by Claude Opus~4.7 at extra-high reasoning effort (\texttt{claude-opus-4-7-xhigh}) in its own workdir.
