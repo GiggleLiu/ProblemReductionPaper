@@ -464,9 +464,9 @@ In 12 weeks of development, most of the library was built after week~8.5, once t
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
-The library is itself an agent-callable tool via the \texttt{pred} CLI. To check whether this tool helps when an agent faces a realistic end-user request, we set up a case study where the agent receives a problem in everyday language, with no mathematical model named and no solver hint given. The instance: a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores (each pair has a positive or negative compatibility score). 
+The library is itself an agent-callable tool via the \texttt{pred} CLI. To check whether this tool helps when an agent faces a realistic end-user request, we set up a case study where the agent receives a problem in everyday language, with no mathematical model named and no solver hint given. The instance: a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores. We want the agent to pick a fast and good solver for the problem.
 
-To answer, the agent has to recognize the underlying mathematical model, pick a reduction path to a solver-friendly endpoint, choose a solver for that endpoint, and write the code that ties them together. Each of these steps depends on prior knowledge that may be wrong, partial, or out of date; \texttt{pred} replaces the reduction-path step with a walk over a verified graph, while leaving the other steps to the agent. 
+To answer, the agent has to recognize the underlying mathematical model, pick a reduction path to a solver-friendly endpoint, choose a solver for that endpoint, and write the code that ties them together. Each of these steps depends on prior knowledge that may be wrong, partial, or out of date; \texttt{pred} replaces the reduction-path step with a walk over a verified graph.
 
 Beyond \texttt{pred}, the other obvious way for an agent to reach external information is to search the web. To tell apart \texttt{pred}'s contribution from generic web access, we compare four configurations that toggle the two independently (the four rows of \Cref{tab:end-user-eval}).
 Each configuration is run on ten random instances, with solver wall-time capped at 90~s.
@@ -474,12 +474,12 @@ For each run we record three quantities: tokens spent overall, solver wall-time,
 
 \Cref{tab:end-user-eval} summarizes the outcomes. \emph{With \texttt{pred}, the agent picks the right reduction every time.} Every \texttt{pred}-enabled run lands on the same path (spin-glass / QUBO) and the same solver (simulated annealing on the Ising form), matches the \emph{best-of-four} objective on every instance, and cuts solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens (\Cref{tab:end-user-solver-table}).
 
-\emph{Without \texttt{pred}, solver choice is unreliable.} Bare configurations miss the best-of-four on $3$ of $10$ instances, with the worst run $19.1\%$ below it. Agents scatter across MILP (HiGHS, Gurobi), CP-SAT (OR-tools), simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), tabu, and ad-hoc heuristics; the misses fall on solvers that do not perform well within the 90~s budget.
+\emph{Without} \texttt{pred} \emph{, solver choice is unreliable.} Bare configurations miss the best-of-four on $3$ of $10$ instances, with the worst run $19.1\%$ below it. Agents scatter across MILP (HiGHS, Gurobi), CP-SAT (OR-tools), simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), tabu, and ad-hoc heuristics; the misses fall on solvers that do not perform well within the 90~s budget.
 
 \emph{Web access alone does not close the gap.} Bare\,+\,web shares the same failure pattern as bare. Appendix~\ref{app:end-user} has the per-instance picks, raw data, and a finer-grained look at web's role under \texttt{pred}.
 
 \begin{table}[h]
-\caption{Outcomes on the team-split instance class (10~instances per configuration; 90~s solver-wall cap; 40~runs total). Agent: Claude Opus~4.7.
+\caption{Outcomes on the team-split instance class (10~instances per configuration; 90~s solver-wall cap). Agent: Claude Opus~4.7.
 Higher objective is better; \emph{Best-match} reports how many of the ten instances each configuration achieves the best-of-four objective.}
 \label{tab:end-user-eval}
 \centering
@@ -503,7 +503,7 @@ Bare AI + web                        & 12{,}331 & 9{,}854 & 7/10  & 37{,}874 & 3
 
 \subsection{Conclusion}
 
-In about three months, a small team and AI agents built a verified reduction graph of 190 problem types and 265 reduction rules. An agent calls the library and gets a verified path from a user-stated problem to a fast solver, supplying the practical judgment AI agents lack: knowing in advance which approach will actually work.
+In about three months, a small team and AI agents built a verified reduction graph of 190 problem types and 265 reduction rules. The library now augments the agents that built it: given a problem stated in everyday language, the \texttt{pred} CLI walks the graph to a solver that fits the time budget. Our case study (\Cref{sec:end-user-utility}) confirms this aid is necessary: bare agents miss on $3/10$ instances, while every \texttt{pred}-enabled run hits the best-of-four.
 
 Three coordinated mechanisms produced this outcome. The \emph{scaffold} gives every session the same experimental conditions, so contributions compose rather than collide. \emph{Skills} turn recurring engineering work (proposing an issue, validating a draft, reviewing a PR) into a repeatable flow any agent can execute. \emph{Correctness assurance}, layered from compile-time checks through round-trip tests, agentic feature tests, and final human verification, keeps the artifact trustworthy as it grows. Speed and rigor reinforce each other in this design: the same harness that accelerates contribution also enforces the checks that prevent drift. Together, they make a verified reduction library tractable for a small team in a single quarter.
 
