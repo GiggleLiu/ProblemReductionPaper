@@ -475,7 +475,7 @@ For each run we record three quantities: tokens spent overall, solver wall-time,
 \Cref{tab:end-user-eval} summarizes the outcomes: both \texttt{pred}-enabled configurations match the \emph{best-of-four} objective on every instance and cut solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens.
 Both bare configurations miss the best-of-four on $3$ of $10$ instances, and on their worst run each falls $19.1\%$ below it.
 The misses share a single failure mode: the agent picks a reduction whose downstream solver is not suited to this problem.
-Without \texttt{pred}, agents scatter across MILP (HiGHS, Gurobi), CP-SAT (OR-tools), simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), tabu, and ad-hoc heuristics, and the misses come from the MILP and CP-SAT runs; adding web access alone does not fix this.
+Without \texttt{pred}, agents scatter across MILP (HiGHS, Gurobi), CP-SAT (OR-tools), simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), tabu, and ad-hoc heuristics; some of these solvers do not perform well within the 90~s budget, and that is where the misses fall. Adding web access alone does not fix this.
 With \texttt{pred}, every run reduces the instance through the spin-glass / QUBO family and runs simulated annealing on the Ising form, terminating in a single short call rather than a long branch-and-bound run (\Cref{tab:end-user-solver-table}).
 Appendix~\ref{app:end-user} has the per-instance picks, raw data, and a finer-grained look at web's role under \texttt{pred}.
 
