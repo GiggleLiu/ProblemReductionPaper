@@ -483,8 +483,8 @@ The extra catalog tokens go into reading the reduction graph and choosing the en
 \Cref{tab:end-user-solver-table} reports the model and solver each agent settled on.
 Without the catalog, agents scatter across HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal / dwave-samplers SA, dwave-tabu, and ad-hoc local-search heuristics.
 The catastrophic misses all come from integer- or mixed-integer routes whose linear relaxations are weak on dense signed-weight cut instances.
-With the catalog, every run reformulates the instance as a signed-weight cut on a dense graph, follows the path through the spin-glass / QUBO family, and runs simulated annealing on the Ising form.
-The catalog narrows the modelling choice to a single reformulation that the available solvers can handle within the time budget.
+With the catalog, every run models the instance as a signed-weight cut on a dense graph, reduces it through the spin-glass / QUBO family, and runs simulated annealing on the Ising form.
+The catalog narrows the modelling choice to a single reduction path that the available solvers can handle within the time budget.
 
 % This experiment closes a loop in the paper: agents built the library, and the library now augments agents tackling new instances.
 
