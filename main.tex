@@ -444,7 +444,7 @@ First, the main agent launches a sub-agent in a \emph{fresh context window} (one
 The fresh context is essential; an agent that has just written the code cannot objectively test it.
 Second, the sub-agent role-plays the persona end-to-end: it reads only the project's documentation, picks a problem it recognizes from its domain, builds an instance with realistic data, discovers a reduction path through the CLI, solves, and verifies the result against its own expectation.
 Third, the sub-agent steps out of character.
-The main agent interviews it (what worked, what was confusing, where did the output diverge from expectation) and writes a structured report.
+The main agent interviews it about what worked, what was confusing, and where the output diverged from expectation, then writes a structured report.
 This report surfaces usability gaps, documentation omissions, and semantic errors that unit tests cannot reach.
 
 In our practice, agentic feature tests caught most CLI command bugs, and some user-experience issues, e.g.\ the mismatch between the help text and the actual command output, which are never caught by the existing unit tests.
