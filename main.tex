@@ -471,15 +471,12 @@ The instance: a manager splits a 150-person organization into two product teams;
 The agent's task is to pick the best algorithm for the problem and write the code that solves each instance.
 
 To isolate the catalog's contribution, we compare four configurations that toggle \texttt{pred} access and web search independently (the four rows of \Cref{tab:end-user-eval}).
-Each configuration is run on ten random instances (40 runs total), with solver wall-time capped at 90~s.
-For each run we record three quantities: AI tokens spent on modelling, solver wall-time, and the objective value graded against the per-instance best (full setup in Appendix~\ref{app:end-user}).
+Each configuration is run on ten random instances, with solver wall-time capped at 90~s.
+For each run we record three quantities: tokens spent overall, solver wall-time, and the objective value obtained by the solver (full setup in Appendix~\ref{app:end-user}).
 
-\Cref{tab:end-user-eval} summarizes the outcomes.
-The full \texttt{pred}+web configuration is the only one to match the per-instance best on every instance.
-Bare AI matches it on 7 of 10; its worst run drops to $11{,}673$, a 9.8\% gap.
-The intermediate configurations each suffer one or two large misses, all traceable to the same failure mode: the agent commits to a textbook integer-programming formulation, and its linear relaxation is too loose to close within 90~s.
-\texttt{pred} access also speeds the solver up by a factor of $3$--$8$ at the cost of roughly $2{\times}$ more AI tokens.
-The extra tokens go to reading the catalog; the speedup comes from the catalog's recommended endpoint---simulated annealing on the Ising form---which terminates in a single short call rather than a long branch-and-bound run.
+\Cref{tab:end-user-eval} summarizes the outcomes: catalog access raises Best-match counts and cuts solver wall-time, at the cost of more AI tokens.
+The bare-baseline and intermediate configurations all show large misses (bare AI's worst run drops 9.8\% below the per-instance best), traceable to a single failure mode: the agent commits to a textbook integer-programming formulation, whose linear relaxation is too loose to close within 90~s.
+The extra tokens are spent reading the catalog; the speedup comes from the catalog's recommended endpoint, simulated annealing on the Ising form, which terminates in a single short call rather than a long branch-and-bound run.
 
 \textbf{Solver-choice analysis.}
 \Cref{tab:end-user-solver-table} reports the model and solver each agent settled on.
