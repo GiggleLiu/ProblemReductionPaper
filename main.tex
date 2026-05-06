@@ -470,7 +470,7 @@ We measure whether \texttt{pred} access improves how agents solve a problem stat
 The instance: a manager splits a 150-person organization into two product teams; every pair of employees has a positive or negative compatibility score, and the goal is to maximize the sum of cross-team scores.
 The agent's task is to pick the best algorithm for the problem and write the code that solves each instance.
 
-To isolate the catalog's contribution, we compare four configurations that toggle \texttt{pred} access and web search independently (the four rows of \Cref{tab:end-user-eval}).
+To isolate \texttt{pred}'s contribution, we compare four configurations that toggle \texttt{pred} access and web search independently (the four rows of \Cref{tab:end-user-eval}).
 Each configuration is run on ten random instances, with solver wall-time capped at 90~s.
 For each run we record three quantities: tokens spent overall, solver wall-time, and the objective value obtained by the solver (full setup in Appendix~\ref{app:end-user}).
 
