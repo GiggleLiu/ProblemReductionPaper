@@ -477,9 +477,9 @@ For each run we record three quantities: tokens spent overall, solver wall-time,
 
 \Cref{tab:end-user-eval} summarizes the outcomes. \emph{With \texttt{pred}, the agent picks the right reduction every time.} Every \texttt{pred}-enabled run lands on the same path (spin-glass / QUBO) and the same solver (simulated annealing on the Ising form), matches the \emph{best-of-four} objective on every instance, and cuts solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens (\Cref{tab:end-user-solver-table}).
 
-\emph{Without} \texttt{pred} \emph{, solver choice is unreliable.} Bare configurations miss the best-of-four on $3$ of $10$ instances, with the worst run $19.1\%$ below it. Agents scatter across mixed-integer linear programming (MILP), constraint-programming SAT (CP-SAT), simulated annealing, tabu search, and ad-hoc heuristics; the misses fall on solvers that do not perform well within the 90~s budget.
+\emph{Without} \texttt{pred} \emph{, solver choice is unreliable.} The bare configurations scatter over mixed-integer linear programming (MILP), constraint-programming SAT (CP-SAT), simulated annealing, tabu search, semidefinite relaxation, and ad-hoc heuristics; the misses always fall on solvers that do not perform well at the 90~s budget. Bare AI misses the best-of-four on $3/10$ instances (worst $19.1\%$ below); bare\,+\,web misses on $2/10$, but its two missed runs return $0$, dragging its mean objective \emph{below} bare AI's.
 
-\emph{Web access alone does not close the gap.} Bare\,+\,web shares the same failure pattern as bare. Appendix~\ref{app:end-user} has the per-instance picks, raw data, and a finer-grained look at web's role under \texttt{pred}.
+\emph{Web access alone does not close the gap.} It exposes the agent to more candidate solvers but gives no structural guarantee that any of them will work in the budget; on this case study, that broader exposure is net harmful. Appendix~\ref{app:end-user} has the per-instance picks, raw data, and a finer-grained look at web's role under \texttt{pred}.
 
 \begin{table}[h]
 \caption{Outcomes on the team-split instance class (10~instances per configuration; 90~s solver-wall cap). Agent: Claude Opus~4.7 with extra-high reasoning effort.
@@ -492,7 +492,7 @@ Higher objective is better; \emph{Best-match} reports how many of the ten instan
 Configuration & Mean obj.\,$\uparrow$ & Min obj.\,$\uparrow$ & Best-match & Mean AI tokens & Mean solver s \\
 \midrule
 Bare AI                              & 12{,}306 & 9{,}966 & 7/10  & 37{,}379 & 37.1 \\
-Bare AI + web                        & 12{,}331 & 9{,}854 & 7/10  & 37{,}874 & 35.3 \\
+Bare AI + web                        & 10{,}014 & 0       & 8/10  & 41{,}504 & 26.1 \\
 + \texttt{pred}                      & 12{,}603 & 12{,}187 & 10/10 & 70{,}523 & 12.9 \\
 + \texttt{pred} + web                & 12{,}603 & 12{,}187 & 10/10 & 80{,}592 &  6.5 \\
 \bottomrule
@@ -936,7 +936,7 @@ With \texttt{pred} (C and D), every run reduces the problem to QUBO via the Spin
 
 \begin{table}[h]
 \caption{Solver picked on each instance by each configuration.
-SA~=~simulated annealing on the Ising / QUBO reduction (\texttt{dwave-neal} or \texttt{dwave-samplers}); MILP~=~mixed-integer linear program (HiGHS or PuLP+CBC); CP-SAT~=~OR-tools constraint programming; Tabu~=~D-Wave \texttt{TabuSampler}.
+SA~=~simulated annealing on the Ising / QUBO reduction (\texttt{dwave-neal} or \texttt{dwave-samplers}); MILP~=~mixed-integer linear program (HiGHS or PuLP+CBC); CP-SAT~=~OR-tools constraint programming; Tabu~=~D-Wave \texttt{TabuSampler}; SDP~=~Goemans--Williamson semidefinite relaxation (PICOS+CVXOPT).
 Bold cells are the largest gaps to the best-of-four.}
 \label{tab:end-user-solver-table}
 \centering
@@ -945,18 +945,18 @@ Bold cells are the largest gaps to the best-of-four.}
 \toprule
 Seed & Bare AI         & Bare AI + web   & + \texttt{pred}   & + \texttt{pred} + web \\
 \midrule
- 7 & SA                & Tabu              & SA & SA \\
+ 7 & SA                & SA                & SA & SA \\
 11 & SA                & SA                & SA & SA \\
-13 & \textbf{CP-SAT}   & SA                & SA & SA \\
+13 & \textbf{CP-SAT}   & \textbf{Tabu}     & SA & SA \\
 17 & \textbf{MILP}     & SA                & SA & SA \\
 19 & SA                & SA                & SA & SA \\
 23 & SA                & SA                & SA & SA \\
-29 & SA                & \textbf{CP-SAT}   & SA & SA \\
+29 & SA                & \textbf{SDP}      & SA & SA \\
 31 & SA                & SA                & SA & SA \\
-37 & \textbf{MILP}     & \textbf{CP-SAT}   & SA & SA \\
-41 & SA                & \textbf{MILP}     & SA & SA \\
+37 & \textbf{MILP}     & SA                & SA & SA \\
+41 & SA                & SA                & SA & SA \\
 \midrule
-\textbf{solver families} & 3 & 4 & 1 & 1 \\
+\textbf{solver families} & 3 & 3 & 1 & 1 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -976,18 +976,18 @@ Seed & Bare AI         & Bare AI + web   & + \texttt{pred}   & + \texttt{pred} +
 \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
 Seed & Obj. & Time (s) & Obj. & Time (s) & Obj. & Time (s) & Obj. & Time (s) & Best of 4 \\
 \midrule
- 7 & 12{,}962          & 13.0 & 12{,}962          & 40.2 & 12{,}962 &  1.3 & 12{,}962 &  1.2 & 12{,}962 \\
-11 & 12{,}641          &  6.5 & 12{,}641          & 24.7 & 12{,}641 & 15.3 & 12{,}641 & 11.9 & 12{,}641 \\
-13 & \textbf{12{,}552} & 75.0 & 12{,}944          &  5.9 & 12{,}944 &  6.1 & 12{,}944 & 11.7 & 12{,}944 \\
-17 & \textbf{9{,}966}  & 83.0 & 12{,}326          & 12.2 & 12{,}326 &  2.9 & 12{,}326 &  1.2 & 12{,}326 \\
-19 & 12{,}915          & 12.5 & 12{,}915          &  6.0 & 12{,}915 & 14.7 & 12{,}915 &  5.9 & 12{,}915 \\
-23 & 12{,}240          & 12.1 & 12{,}240          & 24.3 & 12{,}240 & 59.7 & 12{,}240 &  1.2 & 12{,}240 \\
-29 & 12{,}944          & 25.0 & \textbf{12{,}685} & 80.1 & 12{,}944 & 12.6 & 12{,}944 &  5.8 & 12{,}944 \\
-31 & 12{,}401          & 32.8 & 12{,}401          &  3.0 & 12{,}401 &  3.0 & 12{,}401 & 11.6 & 12{,}401 \\
-37 & \textbf{12{,}250} & 85.1 & \textbf{12{,}340} & 85.1 & 12{,}471 & 12.5 & 12{,}471 & 14.4 & 12{,}471 \\
-41 & 12{,}187          & 26.2 & \textbf{9{,}854}  & 71.8 & 12{,}187 &  1.2 & 12{,}187 &  0.6 & 12{,}187 \\
+ 7 & 12{,}962          & 13.0 & 12{,}962          & 25.3 & 12{,}962 &  1.3 & 12{,}962 &  1.2 & 12{,}962 \\
+11 & 12{,}641          &  6.5 & 12{,}641          &  6.4 & 12{,}641 & 15.3 & 12{,}641 & 11.9 & 12{,}641 \\
+13 & \textbf{12{,}552} & 75.0 & \textbf{0}        & 90.0 & 12{,}944 &  6.1 & 12{,}944 & 11.7 & 12{,}944 \\
+17 & \textbf{9{,}966}  & 83.0 & 12{,}326          &  3.2 & 12{,}326 &  2.9 & 12{,}326 &  1.2 & 12{,}326 \\
+19 & 12{,}915          & 12.5 & 12{,}915          &  3.0 & 12{,}915 & 14.7 & 12{,}915 &  5.9 & 12{,}915 \\
+23 & 12{,}240          & 12.1 & 12{,}240          &  6.3 & 12{,}240 & 59.7 & 12{,}240 &  1.2 & 12{,}240 \\
+29 & 12{,}944          & 25.0 & \textbf{0}        & 90.0 & 12{,}944 & 12.6 & 12{,}944 &  5.8 & 12{,}944 \\
+31 & 12{,}401          & 32.8 & 12{,}401          &  1.3 & 12{,}401 &  3.0 & 12{,}401 & 11.6 & 12{,}401 \\
+37 & \textbf{12{,}250} & 85.1 & 12{,}471          & 32.5 & 12{,}471 & 12.5 & 12{,}471 & 14.4 & 12{,}471 \\
+41 & 12{,}187          & 26.2 & 12{,}187          &  3.4 & 12{,}187 &  1.2 & 12{,}187 &  0.6 & 12{,}187 \\
 \midrule
-\textbf{mean} & 12{,}306 & 37.1 & 12{,}331 & 35.3 & \textbf{12{,}603} & \textbf{12.9} & \textbf{12{,}603} & \textbf{6.5} & 12{,}603 \\
+\textbf{mean} & 12{,}306 & 37.1 & 10{,}014 & 26.1 & \textbf{12{,}603} & \textbf{12.9} & \textbf{12{,}603} & \textbf{6.5} & 12{,}603 \\
 \bottomrule
 \end{tabular}
 \end{table*}
