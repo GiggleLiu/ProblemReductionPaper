@@ -10,7 +10,7 @@ help:
 
 # Build the paper (latexmk handles bibtex/rerun automatically)
 paper:
-	latexmk -pdf -interaction=nonstopmode paper.tex
+	latexmk -pdf -interaction=nonstopmode main.tex
 
 # Compile Typst figure sources to PDF
 TYPST_FIGURES := $(filter-out %/lib.typ,$(wildcard figures/*.typ))
