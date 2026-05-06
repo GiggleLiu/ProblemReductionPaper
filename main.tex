@@ -1015,7 +1015,7 @@ On C and D every run lands on simulated annealing (SA), so the only remaining de
 Taken together, A vs B and C vs D give a consistent picture of what web access does and does not do in one-shot solving. It cannot substitute for \texttt{pred}'s structural reasoning about which solver to use, but it does help as a quick documentation lookup for that solver's parameters once chosen. This split reflects a more general fact: good solver and parameter choices are highly instance-dependent (problem type, size, density, weight distribution), and even human practitioners converge to them through grid search over solvers and parameters rather than from a single web query. \texttt{pred} contributes on the solver-selection axis, where structure provides a reliable criterion; tuning a chosen solver's parameters is naturally layered on top as an iterative grid-search refinement.
 
 \begin{table}[h]
-\caption{Simulated-annealing budget chosen by each catalog-enabled run and the resulting solver wall-time. Each cell shows \texttt{num\_reads} $\times$ \texttt{num\_sweeps}.}
+\caption{Simulated-annealing budget chosen by each \texttt{pred}-enabled run and the resulting solver wall-time. Each cell shows \texttt{num\_reads} $\times$ \texttt{num\_sweeps}.}
 \label{tab:end-user-sa-hyperparams}
 \centering
 \small
