@@ -464,9 +464,7 @@ In 12 weeks of development, most of the library was built after week~8.5, once t
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
-The library is itself an agent-callable tool via the \texttt{pred} CLI.
-As a case study, we look at how \texttt{pred} access affects agents solving a problem stated in everyday language.
-The instance: a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores (each pair has a positive or negative compatibility score). The agent has to recognize the underlying model, pick a reduction path to a solver-friendly endpoint, and write the solver code; \texttt{pred} provides a CLI for walking the reduction graph in that middle step.
+The library is itself an agent-callable tool via the \texttt{pred} CLI. To check whether this tool helps when an agent faces a real end-user request, we set up a case study where the agent receives a problem in everyday language, with no mathematical model named and no solver hint given. The instance: a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores (each pair has a positive or negative compatibility score). To answer, the agent has to recognize the underlying mathematical model, pick a reduction path to a solver-friendly endpoint, choose a solver for that endpoint, and write the code that ties them together. Each of these steps depends on prior knowledge that may be wrong, partial, or out of date; \texttt{pred} replaces the reduction-path step with a walk over a verified graph, while leaving the other steps to the agent. The case study asks whether this single tool is enough to move the agent from inconsistent solver choices to consistently fast and good ones.
 
 To isolate \texttt{pred}'s contribution, we compare four configurations that toggle \texttt{pred} access and web search independently (the four rows of \Cref{tab:end-user-eval}).
 Each configuration is run on ten random instances, with solver wall-time capped at 90~s.
