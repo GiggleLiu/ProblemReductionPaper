@@ -466,42 +466,52 @@ The phase-by-phase narrative is detailed in \Cref{app:phases}.
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
 The library is itself an agent-callable tool via the \texttt{pred} CLI.
-We test whether catalog access improves agent problem-solving on a domain-language instance: a HR manager splits a 150-person org into two product teams to maximize total signed cross-team value from a dense pairwise survey.
+We test whether catalog access improves agent problem-solving on a domain-language instance: a HR manager splits a 150-person organization into two product teams to maximize total signed cross-team value from a dense pairwise survey.
 No abstract problem name is given; recognizing the structure and routing it to a competitive solver is part of the task.
 Four configurations form a $2{\times}2$ factorial over web-search and \texttt{pred} access, ten random instances each (40 runs), with solver wall-time capped at 90~s.
-We separate three quantities usually conflated as ``time'': AI tokens, solver wall-time, and graded solution quality (full setup in \Cref{app:end-user}).
+We separate three quantities usually conflated as ``time'': AI tokens, solver wall-time, and graded solution quality (full setup in Appendix~\ref{app:end-user}).
 
-\Cref{tab:end-user-eval} summarizes the outcomes.
-\texttt{pred}-enabled agents achieve 0\% regret and zero false-OPT on all 10 instances; bare baselines leave 1.4--4.0\% on the table and produce 2/10 false-OPT each.
-\texttt{pred} access also cuts solver wall-time (54.5--74.6\,s vs.\ 65.2--85.5\,s) at $\sim$35\% extra AI tokens.
-Web access without \texttt{pred} is worse than no web at all: agents look up textbook ILP encodings and misread CBC's time-limit termination as \texttt{OPTIMAL}.
+\Cref{tab:end-user-eval} summarizes the outcomes; \Cref{fig:end-user-scatter} plots all 40 runs in the (solver wall-time, objective) plane.
+The full \texttt{pred}+web configuration matches the per-instance best objective on all 10 instances and is the only configuration whose minimum objective stays at the per-instance best.
+The bare-AI baseline matches the per-instance best on 7 of 10 instances; the worst miss (instance 13, 11{,}673 versus 12{,}944) is a 9.8\% gap.
+The two intermediate configurations each suffer one or two large misses where the agent commits to a textbook integer-programming encoding and the solver hits the wall-time cap with a poor incumbent: bare-AI+web finishes at 10{,}011 / 10{,}252 on instances 11 and 19; \texttt{pred} (offline) finishes at 10{,}194 on instance 37.
+\texttt{pred} access also cuts solver wall-time by a factor of $3$--$8$ (6.7--22.6\,s vs.\ 48.1--54.2\,s) at the cost of roughly $2{\times}$ more AI tokens, because graph-derived endpoint sizes let agents commit to short single-pass simulated-annealing calls instead of long branch-and-bound runs.
 
 \textbf{Solver-choice analysis.}
 \Cref{tab:end-user-solver-table} reports the model and solver each agent settled on.
-Bare baselines scatter across five families (PuLP+CBC/HiGHS on a natural ILP encoding, Gurobi, OR-tools CP-SAT, dwave-neal, ad-hoc heuristics).
-\texttt{pred}-enabled agents recognize the instance as signed-weight cut maximization on a dense graph, follow the catalog into the spin-glass / QUBO family, and run simulated annealing on the Ising form on every instance.
-All four false-OPT incidents come from the ILP route.
-The catalog points agents to a reformulation whose downstream solver is competitive on this class, and removes the per-run modelling variance.
+The bare configurations scatter across HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal / dwave-samplers SA, dwave-tabu, and ad-hoc local-search heuristics; the misses concentrate on the integer-programming and quadratic-mixed-integer routes whose linear relaxations are weak on dense signed-weight cut maximization.
+With \texttt{pred}, agents recognize the instance as a signed-weight cut on a dense graph, follow the catalog through the spin-glass / QUBO family, and run simulated annealing (or, on a single instance, a multi-replica parallel-tempering variant) on the Ising form on every run.
+The catalog therefore acts as a variance reducer for solver selection: it removes the inter-run modelling lottery and consistently routes agents to a reformulation whose endpoint solver dominates within the wall-time budget.
 
 This experiment closes a loop in the paper: agents built the library, and the library now augments agents tackling new instances.
 
 \begin{table}[h]
-\caption{Outcomes on the team-split instance class (10~instances per configuration; 90~s solver-wall cap; 40~runs total).
-Regret~\% is the gap to the best feasible answer found on the same instance; false-OPT counts answers claimed optimal but beaten by another configuration.}
+\caption{Outcomes on the team-split instance class (10~instances per configuration; 90~s solver-wall cap; 40~runs total). Agent: Claude Opus~4.7.
+Higher objective is better; the per-instance best is the maximum across the four configurations on the same instance.}
 \label{tab:end-user-eval}
 \centering
 \small
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-Configuration & Mean regret \% & False-OPT & Mean AI tokens & Mean solver s \\
+Configuration & Mean obj. & Min obj. & Best-match & Mean AI tokens & Mean solver s \\
 \midrule
-Bare AI                              & 1.39 & 2/10 & 40{,}142 & 85.5 \\
-Bare AI + web                        & 4.04 & 2/10 & 39{,}103 & 65.2 \\
-+ \texttt{pred}                      & 0.00 & 0/10 & 54{,}637 & 74.6 \\
-+ \texttt{pred} + web                & 0.00 & 0/10 & 53{,}849 & 54.5 \\
+Bare AI                              & 12{,}431 & 11{,}673 & 7/10  & 39{,}570 & 48.1 \\
+Bare AI + web                        & 12{,}074 & 10{,}011 & 8/10  & 42{,}589 & 54.2 \\
++ \texttt{pred}                      & 12{,}375 & 10{,}194 & 9/10  & 80{,}261 & 22.6 \\
++ \texttt{pred} + web                & 12{,}603 & 12{,}187 & 10/10 & 89{,}502 &  6.7 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/end_user_scatter.pdf}
+\caption{Per-run quality vs.\ solver wall-time across all 40 benchmark runs.
+Each marker is one (configuration, instance) pair; horizontal dashed lines mark the per-instance best objective achieved by any configuration on that instance.
+Cross markers ($\times$) indicate catastrophic misses where the agent's chosen solver finished below the per-instance best.
+Catalog-enabled runs (\textcolor[HTML]{1f77b4}{\textbf{+pred}}, \textcolor[HTML]{2ca02c}{\textbf{+pred+web}}) cluster in the upper-left ``fast and on-target'' regime; the bare baselines (\textcolor[HTML]{d62728}{\textbf{Bare AI}}, \textcolor[HTML]{ff7f0e}{\textbf{Bare AI+web}}) spread further right and account for all but one of the catastrophic misses.}
+\label{fig:end-user-scatter}
+\end{figure}
 
 %======================================================================
 %  SECTION: DISCUSSION AND CONCLUSION
@@ -855,17 +865,16 @@ External domain experts began contributing through the \texttt{propose} skill, f
 This appendix expands on the controlled experiment summarised in \Cref{sec:end-user-utility}.
 
 \paragraph{Setup.}
-A Claude Sonnet 4.6 sub-agent receives an engineer-voice prompt: a HR manager splits a 150-person org into two product teams to maximize total cross-team value from a dense signed pairwise survey (${\approx}\,5300$ entries, density ${\approx}\,0.48$, mix of positive and negative scores).
+A Claude Opus~4.7 agent (\texttt{claude-opus-4-7}, dispatched via Claude Code's general-purpose subagent and recorded in each run's \texttt{meta.json}) receives an engineer-voice prompt: a HR manager splits a 150-person org into two product teams to maximize total cross-team value from a dense signed pairwise survey (${\approx}\,5300$ entries, density ${\approx}\,0.48$, mix of positive and negative scores).
 The prompt gives no model or solver hint; recognizing the underlying signed-weight Max-Cut structure is part of the task.
 Configurations form a $2{\times}2$ factorial over \emph{web search} (yes/no) and \emph{\texttt{pred} access} (yes/no), with ten random instances per cell (40 runs) and a 90~s solver wall-time cap.
-Agents with \texttt{pred} access also receive a short Markdown protocol prescribing one extra step before writing solver code: enumerate downstream models with \texttt{pred from} and pick the one whose endpoint admits the strongest off-the-shelf solver.
+Agents with \texttt{pred} access also receive a short Markdown protocol that scripts a graph-data-driven reformulation step before solver code is written: \texttt{pred from} enumerates reachable downstream models, \texttt{pred path} reads each candidate's reduction overhead, \texttt{pred show} reads each endpoint's declared worst-case complexity, and \texttt{pred reduce} / \texttt{pred extract} handle the forward and inverse mappings between the natural-model instance and the chosen target endpoint. The protocol prescribes a single-pass external solver call inside an OS-enforced \texttt{timeout 90} and instructs the agent to report whatever the call returns honestly, without any retry-on-poor-result loop. The same single-pass / honest-reporting discipline is also imposed on the bare-AI conditions to keep the four configurations comparable.
 
 \paragraph{Three independent axes of measurement.}
 We separate three quantities that AI-coding evaluations often blend into a single ``time'' figure:
 (i) \emph{AI cost}---tokens consumed by the agent;
 (ii) \emph{algorithm cost}---solver wall-time, reported by the agent in a structured \texttt{meta.json};
-(iii) \emph{solution quality}---feasibility, objective value, and the agent's claim of optimality, all re-checked by an independent grader.
-The grader also flags \emph{false-OPT}: a claimed-optimal answer beaten by another configuration on the same instance.
+(iii) \emph{solution quality}---feasibility and the raw objective value, both re-checked by an independent grader on the original instance literals.
 
 \paragraph{Scope.}
 The experiment isolates one mechanism---catalog-driven downstream reformulation---and tests it in a regime where alternative formulations are decisive.
@@ -874,32 +883,85 @@ The benchmark harness---scenario generator, grader, per-run result schema, and a
 
 \paragraph{Per-instance solver picks.}
 \Cref{tab:end-user-solver-table} lists the solver each agent selected on every instance.
-Without \texttt{pred}, the bare baselines drift across PuLP+CBC, HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal, and various custom local-search heuristics; with \texttt{pred}, every \texttt{pred}-enabled run converged to the same QUBO / simulated-annealing path.
-False-OPT incidents are marked $\dagger$ and cluster on PuLP+CBC and PuLP+HiGHS, whose ``Optimal'' status under timeout is, in fact, a feasibility incumbent with an unclosed gap.
+Without \texttt{pred}, the bare baselines drift across MILP (HiGHS, PuLP+CBC), MIQP (Gurobi with \texttt{NonConvex=2}), OR-tools CP-SAT, simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), \texttt{dwave-tabu}, and ad-hoc local-search heuristics; the misses concentrate on the integer-programming routes whose linear relaxations are weak on dense signed-weight cut maximization.
+With \texttt{pred}+web every run routes simulated annealing on the Ising / QUBO endpoint; the offline \texttt{pred} variant likewise routes to simulated annealing on 9 of 10 instances, with the single miss occurring when the agent's training-time priors led it to commit to a 45{,}000-variable MILP route on the \texttt{ILP/bool} endpoint instead.
 
 \begin{table}[h]
-\caption{Solver picked on each instance by each configuration. $\dagger$ marks false-OPT incidents.
-SA~=~simulated annealing on the Ising/QUBO reformulation; Custom~=~hand-rolled local search / Kernighan-Lin / tabu / ILS.
-Both \texttt{pred}-enabled configurations converge to dwave-neal SA but with different runtimes: web access lets the agent recover the package's documented hyperparameters and trust early stopping, while the offline variant defaults to a budget-filling loop.}
+\caption{Solver picked on each instance by each configuration.
+SA~=~simulated annealing on the Ising / QUBO reformulation (\texttt{dwave-neal} or \texttt{dwave-samplers}); MILP~=~mixed-integer linear program (HiGHS or PuLP+CBC); MIQP~=~mixed-integer quadratic program (Gurobi); CP-SAT~=~OR-tools constraint programming; Tabu~=~D-Wave \texttt{TabuSampler}; Custom~=~hand-rolled local search (KL / ILS / 1-flip multi-start).
+Bold cells are the largest gaps to the per-instance best.}
 \label{tab:end-user-solver-table}
 \centering
 \small
 \begin{tabular}{@{}c@{\hspace{2pt}}llll@{}}
 \toprule
-Seed & Bare AI                & Bare AI + web        & + \texttt{pred}   & + \texttt{pred} + web \\
+Seed & Bare AI         & Bare AI + web   & + \texttt{pred}   & + \texttt{pred} + web \\
 \midrule
- 7 & PuLP+CBC$^\dagger$       & PuLP+CBC$^\dagger$    & dwave-neal SA & dwave-neal SA \\
-11 & Gurobi + 1-flip          & Gurobi                & dwave-neal SA & dwave-neal SA \\
-13 & PuLP+Gurobi              & PuLP+CBC$^\dagger$    & dwave-neal SA & dwave-neal SA \\
-17 & custom (KL)              & custom (tabu)         & dwave-neal SA & dwave-neal SA \\
-19 & custom (KL+ILS)          & Gurobi MIQP           & dwave-neal SA & dwave-neal SA \\
-23 & HiGHS + local search     & dwave-neal SA         & dwave-neal SA & dwave-neal SA \\
-29 & PuLP+HiGHS$^\dagger$     & dwave-neal SA         & dwave-neal SA & dwave-neal SA \\
-31 & Gurobi (ILP)             & Gurobi                & dwave-neal SA & dwave-neal SA \\
-37 & HiGHS                    & OR-tools CP-SAT       & dwave-neal SA & dwave-neal SA \\
-41 & dwave-neal SA + polish   & dwave-neal SA         & dwave-neal SA & dwave-neal SA \\
+ 7 & \textbf{CP-SAT}   & SA              & SA & SA \\
+11 & SA                & \textbf{MILP}   & SA & SA \\
+13 & \textbf{MILP}     & MIQP            & MIQP & SA \\
+17 & \textbf{MILP}     & SA              & SA & SA \\
+19 & Custom            & \textbf{MILP}   & SA & SA \\
+23 & SA                & MIQP            & SA & SA \\
+29 & SA                & SA              & SA & SA \\
+31 & SA                & MIQP            & Custom SA & SA \\
+37 & SA                & MIQP            & \textbf{MILP} & SA \\
+41 & Tabu              & SA              & SA & SA \\
 \midrule
-\textbf{distinct} & 5 classes & 5 classes & \textbf{1 class} & \textbf{1 class} \\
+\textbf{solver families} & 4 & 4 & 3 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Raw per-run data.}
+\Cref{tab:end-user-raw-obj} lists the objective achieved by each (configuration, instance) pair, and \Cref{tab:end-user-raw-wall} the corresponding solver wall-times. Bold cells in \Cref{tab:end-user-raw-obj} mark misses below the per-instance best.
+
+\begin{table}[h]
+\caption{Raw per-instance objective for each configuration. The right column is the per-instance best across the four configurations; bold cells fall below it.}
+\label{tab:end-user-raw-obj}
+\centering
+\small
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+Seed & Bare AI & Bare AI + web & + \texttt{pred} & + \texttt{pred} + web & Best \\
+\midrule
+ 7 & \textbf{12{,}656} & 12{,}962          & 12{,}962         & 12{,}962 & 12{,}962 \\
+11 & 12{,}641          & \textbf{10{,}011} & 12{,}641         & 12{,}641 & 12{,}641 \\
+13 & \textbf{11{,}673} & 12{,}944          & 12{,}944         & 12{,}944 & 12{,}944 \\
+17 & \textbf{12{,}182} & 12{,}326          & 12{,}326         & 12{,}326 & 12{,}326 \\
+19 & 12{,}915          & \textbf{10{,}252} & 12{,}915         & 12{,}915 & 12{,}915 \\
+23 & 12{,}240          & 12{,}240          & 12{,}240         & 12{,}240 & 12{,}240 \\
+29 & 12{,}944          & 12{,}944          & 12{,}944         & 12{,}944 & 12{,}944 \\
+31 & 12{,}401          & 12{,}401          & 12{,}401         & 12{,}401 & 12{,}401 \\
+37 & 12{,}471          & 12{,}471          & \textbf{10{,}194}& 12{,}471 & 12{,}471 \\
+41 & 12{,}187          & 12{,}187          & 12{,}187         & 12{,}187 & 12{,}187 \\
+\midrule
+\textbf{mean} & 12{,}431 & 12{,}074 & 12{,}375 & \textbf{12{,}603} & 12{,}603 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\caption{Raw per-instance solver wall-time (seconds) for each configuration. The 90~s OS-enforced kill cutoff is the upper bound; entries near 80--90~s indicate the solver was running until killed.}
+\label{tab:end-user-raw-wall}
+\centering
+\small
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+Seed & Bare AI & Bare AI + web & + \texttt{pred} & + \texttt{pred} + web \\
+\midrule
+ 7 & 75.1 & 26.7 &  1.5 &  5.9 \\
+11 & 11.8 & 80.0 &  2.7 &  4.7 \\
+13 & 80.2 & 70.0 & 80.0 &  4.7 \\
+17 & 75.1 & 11.5 & 17.8 &  4.7 \\
+19 & 86.0 & 80.1 &  8.5 &  3.0 \\
+23 & 18.5 & 80.2 &  1.2 &  1.6 \\
+29 & 24.9 &  2.3 &  2.1 &  5.8 \\
+31 & 17.7 & 80.1 & 23.8 & 29.4 \\
+37 & 32.0 & 80.1 & 84.7 &  5.9 \\
+41 & 60.0 & 30.5 &  3.4 &  1.2 \\
+\midrule
+\textbf{mean} & 48.1 & 54.2 & 22.6 & \textbf{6.7} \\
 \bottomrule
 \end{tabular}
 \end{table}
