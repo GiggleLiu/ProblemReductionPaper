@@ -577,13 +577,20 @@ MaxCut/SimpleGraph/i32\\
 \hspace*{1em}|-- SpinGlass/SimpleGraph/i32 -> SpinGlass/SimpleGraph/f64
 \end{quote}
 
-\paragraph{Compare reformulation paths.} \texttt{pred path MaxCut/SimpleGraph/i32 QUBO/f64 -{}-all} enumerates both paths and reports their per-step overhead. The endpoints differ by orders of magnitude:
+\paragraph{Compare reformulation paths.}
+\begin{quote}\ttfamily\small
+pred path MaxCut/SimpleGraph/i32 QUBO/f64 -{}-all
+\end{quote}
+enumerates both paths and reports their per-step overhead. The endpoints differ by orders of magnitude:
 \begin{itemize}
 \setlength\itemsep{1pt}
 \item \emph{Path~1} (via \texttt{SpinGlass}): $\text{num\_vars} = O(|V|)$ at the QUBO endpoint.
 \item \emph{Path~2} (via \texttt{MinimumCutIntoBoundedSets} and \texttt{ILP/bool}): $\text{num\_vars} = O(|V|^4)$.
 \end{itemize}
-Path~2 inflates because the intermediate ILP encoding adds a constraint per cut edge before being quadratised into QUBO; Path~1 keeps the variable count linear. \texttt{pred path -{}-cost minimize:num\_vars -o path.json} saves Path~1 to a file so downstream reductions consume the same choice deterministically.
+Path~2 inflates because the intermediate ILP encoding adds a constraint per cut edge before being quadratised into QUBO; Path~1 keeps the variable count linear. To save Path~1 so that downstream reductions consume the same choice deterministically:
+\begin{quote}\ttfamily\small
+pred path -{}-cost minimize:num\_vars -o path.json
+\end{quote}
 
 \paragraph{Reduce, solve, lift.} \texttt{pred reduce instance.json -{}-via path.json -o bundle.json} forward-reduces the instance along the saved path; the bundle carries the original instance under \texttt{source}, the reduction trace under \texttt{path}, and the resulting 4-variable QUBO under \texttt{target}. After an external solver returns a target-space configuration --- on this instance, alternating colours \texttt{[1,0,1,0]} achieves the QUBO minimum $-8$ --- the call \texttt{pred extract bundle.json -{}-config 1,0,1,0} inverse-maps the QUBO solution back through every reduction step and reports the source-space evaluation \texttt{Max(4)}: every edge of the 4-cycle is cut. The agent never has to write the inverse map by hand; it follows from the path.
 
