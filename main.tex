@@ -484,8 +484,9 @@ The extra tokens for \texttt{pred}-enabled runs go into reading the reduction gr
 \Cref{tab:end-user-solver-table} reports the model and solver each agent settled on.
 Without \texttt{pred}, agents scatter across HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal / dwave-samplers SA, dwave-tabu, and ad-hoc local-search heuristics.
 The catastrophic misses all come from integer- or mixed-integer routes whose linear relaxations are weak on dense signed-weight cut instances.
-With \texttt{pred}, every run models the instance as a signed-weight cut on a dense graph, reduces it through the spin-glass / QUBO family, and runs simulated annealing on the Ising form.
-\texttt{pred} narrows the modelling choice to a single reduction path that the available solvers can handle within the time budget.
+Adding web access alone does not fix this: B still misses three instances by drifting to MILP or CP-SAT, the same failure mode as A.
+With \texttt{pred}, every run models the instance as a signed-weight cut on a dense graph, reduces it through the spin-glass / QUBO family, and runs simulated annealing on the Ising form; \texttt{pred} narrows the modelling choice to a single reduction path that the available solvers can handle within the time budget.
+On top of \texttt{pred}, web access mainly serves as a documentation lookup for solver parameters: D anchors its simulated-annealing budget to ranges it finds online, while C, lacking that reference, occasionally inflates the budget as a safety margin (Appendix~\ref{app:end-user} breaks this down).
 
 % This experiment closes a loop in the paper: agents built the library, and the library now augments agents tackling new instances.
 
