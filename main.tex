@@ -222,7 +222,7 @@ We build a domain-specific harness that addresses both \emph{convention drift} a
   \label{fig:overview}
 \end{figure}
 
-We make three contributions, each addressing one actor in the workflow:
+We make three contributions, each addressing one actor in the workflow. 
 
 \textbf{For domain experts.}
 A no-code contribution route that turns a structured GitHub issue into validated implementation, with no familiarity with the implementation language needed.
@@ -234,7 +234,6 @@ Maintainers are freed from routine work to focus on the intellectual work.
 \textbf{For end users.}
 The first comprehensive and executable library of computationally hard problem reductions: 200+ reductions among 100+ problem types and 170k lines of Rust code, an inventory that would have taken years by hand but landed in three months with a small team and AI agents.
 
-\noindent All source code, agent skills, and experimental data are released as supplementary material to this paper.
 
 \begin{figure}[t]
   \centering
@@ -508,6 +507,7 @@ Bare AI + web                        & 12{,}331 & 9{,}854 & 7/10  & 37{,}874 & 3
 In about three months, a small team and AI agents built a verified reduction graph of 190 problem types and 265 reduction rules. The resulting library gives those problems verified paths to standard solver targets and executable hardness witnesses.
 Building a reduction library at this scale was previously out of reach. What made it tractable is AI coding agents working under the harness we design. The harness loads a project specification into every agent session so contributions compose rather than collide, drives work through role-typed skills, and enforces a layered correctness gate from compile-time checks through unit tests, round-trip tests, agentic feature tests, and final human verification. Speed and rigor reinforce each other in this design: the same harness that accelerates contribution also enforces the checks that prevent drift.
 
+All source code and agent skills are released as supplementary material to this paper.
 
 \subsection{Discussion}
 
@@ -673,7 +673,7 @@ Problem variants and reduction rules compose into the directed graph described i
 For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both reduction traits with an identity solution map.
 At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the reduction-graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 
-\section{Solver Coverage: QUBO}\label{app:qubo-coverage}
+\section{Usage Example: One \texttt{pred} Command Routes 138 Problems to QUBO}\label{app:qubo-coverage}
 
 Specialized hardware for combinatorial optimization is one of the fastest-growing frontiers of AI infrastructure.
 Ising machines, quantum annealers~\cite{glover2019}, and physics-inspired neural solvers~\cite{Schuetz2022PhysicsGNN} all promise substantial speedups over conventional CPU solvers, and the field has converged on a single input format: QUBO.
