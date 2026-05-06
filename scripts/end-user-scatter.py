@@ -35,24 +35,46 @@ LABELS = {
     "D": "+ pred + web",
 }
 
-fig, ax = plt.subplots(figsize=(6.0, 4.0))
+fig, (ax_top, ax_bot) = plt.subplots(
+    2, 1, sharex=True, figsize=(6.0, 4.0),
+    gridspec_kw={"height_ratios": [2.2, 1.0], "hspace": 0.08},
+)
 
-ax.axhline(0, color="0.55", linewidth=0.8, linestyle=(0, (3, 3)), zorder=1)
+for ax in (ax_top, ax_bot):
+    ax.axhline(0, color="0.55", linewidth=0.8, linestyle=(0, (3, 3)), zorder=1)
+    ax.axvline(90, color="0.55", linewidth=0.8, linestyle=":", zorder=1)
 
 for r in rows:
     cond = r["condition"]
     obj  = r["objective"]
     wall = max(r["solver_wall_s"], 0.5)
     gap_pct = 100.0 * (obj - best[r["seed"]]) / best[r["seed"]]
-    ax.scatter(wall, gap_pct,
-               c=COLORS[cond], s=42, marker="o",
-               edgecolors="none", alpha=0.9, zorder=3)
+    target = ax_top if gap_pct > -5 else ax_bot
+    target.scatter(wall, gap_pct,
+                   c=COLORS[cond], s=42, marker="o",
+                   edgecolors="none", alpha=0.9, zorder=3)
 
-ax.set_xscale("log")
-ax.set_xlim(0.7, 110)
-ax.set_xlabel("Solver wall time (s, log)")
-ax.set_ylabel("Gap from per-instance best (%)")
-ax.set_title("End-user benchmark: quality vs. solver wall, all 40 runs")
+ax_top.set_xscale("log")
+ax_top.set_xlim(0.7, 110)
+ax_top.set_ylim(-3.5, 0.6)
+ax_bot.set_ylim(-22.5, -8.0)
+
+ax_top.spines["bottom"].set_visible(False)
+ax_bot.spines["top"].set_visible(False)
+ax_top.tick_params(axis="x", which="both", bottom=False, labelbottom=False)
+
+# Break marks on the broken axis.
+d = 0.012
+kwargs = dict(transform=ax_top.transAxes, color="0.4", clip_on=False, linewidth=0.8)
+ax_top.plot((-d, +d), (-d * 2.2, +d * 2.2), **kwargs)
+ax_top.plot((1 - d, 1 + d), (-d * 2.2, +d * 2.2), **kwargs)
+kwargs.update(transform=ax_bot.transAxes)
+ax_bot.plot((-d, +d), (1 - d * 5, 1 + d * 5), **kwargs)
+ax_bot.plot((1 - d, 1 + d), (1 - d * 5, 1 + d * 5), **kwargs)
+
+ax_bot.set_xlabel("Solver wall time (s, log)")
+fig.supylabel("Gap from per-instance best (%)", x=0.015, fontsize=10)
+ax_top.set_title("End-user benchmark: quality vs. solver wall, all 40 runs")
 
 handles = [
     mlines.Line2D([], [], color=col, marker="o", linestyle="None",
@@ -61,14 +83,13 @@ handles = [
 ]
 handles.append(mlines.Line2D([], [], color="0.55", linestyle=(0, (3, 3)),
                              label="per-instance best (0%)"))
-ax.legend(handles=handles, loc="lower left", fontsize=8, framealpha=0.95)
+ax_top.legend(handles=handles, loc="lower left", fontsize=8, framealpha=0.95)
 
-ax.axvline(90, color="0.55", linewidth=0.8, linestyle=":", zorder=1)
-ymax = ax.get_ylim()[1]
-ax.text(90, ymax - 0.5, "90 s timeout", color="0.4",
-        fontsize=8, ha="right", va="top", rotation=90)
+ax_top.text(90, ax_top.get_ylim()[1] - 0.1, "90 s timeout", color="0.4",
+            fontsize=8, ha="right", va="top", rotation=90)
 
-ax.grid(axis="y", color="0.92", linewidth=0.5)
+for ax in (ax_top, ax_bot):
+    ax.grid(axis="y", color="0.92", linewidth=0.5)
 fig.tight_layout()
 
 plt.rcParams["text.usetex"] = False
