@@ -503,7 +503,7 @@ Bare AI + web                        & 12{,}331 & 9{,}854 & 7/10  & 37{,}874 & 3
 
 \subsection{Conclusion}
 
-In about three months, a small team and AI agents built a verified reduction graph of 190 problem types and 265 reduction rules. The library now augments the agents that built it: given a problem stated in everyday language, the \texttt{pred} CLI walks the graph to a solver that fits the time budget. Our case study (\Cref{sec:end-user-utility}) confirms this aid is necessary: bare agents miss on $3/10$ instances, while every \texttt{pred}-enabled run hits the best-of-four.
+In about three months, a small team and AI agents built a verified reduction graph of 190 problem types and 265 reduction rules. The library closes the loop with the agents that built it, providing a verified path from any source problem to a tractable target solver.
 
 Three coordinated mechanisms produced this outcome. The \emph{scaffold} gives every session the same experimental conditions, so contributions compose rather than collide. \emph{Skills} turn recurring engineering work (proposing an issue, validating a draft, reviewing a PR) into a repeatable flow any agent can execute. \emph{Correctness assurance}, layered from compile-time checks through round-trip tests, agentic feature tests, and final human verification, keeps the artifact trustworthy as it grows. Speed and rigor reinforce each other in this design: the same harness that accelerates contribution also enforces the checks that prevent drift. Together, they make a verified reduction library tractable for a small team in a single quarter.
 
