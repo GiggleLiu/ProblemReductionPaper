@@ -861,18 +861,16 @@ The agent runs in one of four configurations differing on two binary axes ($2{\t
 \item \textbf{+ \texttt{pred} (C):} \texttt{pred} CLI available, no web.
 \item \textbf{+ \texttt{pred} + web (D):} both \texttt{pred} and web available.
 \end{itemize}
-Each cell runs ten seeds (40 runs total). A and B receive only the user-facing prompt and the solver-environment hard rules. C and D additionally receive the same Markdown protocol (\texttt{solve-instance} / \texttt{solve-instance-offline}); the only difference between them is whether the protocol's solver-capability research step uses \texttt{WebSearch} or training-time priors.
+Each cell runs ten seeds under the same environment settings (\emph{Solver environment} below); A and B receive only the user-facing prompt, while C and D additionally receive a Markdown skill (\texttt{solve-instance} for C, \texttt{solve-instance-offline} for D).
 
 \paragraph{Skill protocol (C and D).}
-The protocol scripts a four-phase workflow:
+The skills cover two responsibilities the bare AI has to handle on its own:
 \begin{itemize}
 \setlength\itemsep{1pt}
-\item \textbf{Phase~1 --- Identify natural model.} Match the engineer's prompt to a problem in \texttt{pred list}.
-\item \textbf{Phase~2 --- Reformulation frontier.} Enumerate reachable downstream models (\texttt{pred from --hops}), enumerate paths with per-step overhead (\texttt{pred path --all}), save the smallest-endpoint path (\texttt{pred path --cost minimize:<field> -o path.json}), read each endpoint's worst-case complexity (\texttt{pred show}), and decide on the path based on endpoint size, complexity, and off-the-shelf solver capability for that endpoint. C uses training-time priors for solver capability; D additionally uses \texttt{WebSearch}/\texttt{WebFetch}.
-\item \textbf{Phase~3 --- Solve.} Build the natural-model JSON, forward-reduce along the saved path (\texttt{pred reduce --via path.json}), run a single-pass external solver call, and inverse-map the target-space configuration back to source-space (\texttt{pred extract}).
-\item \textbf{Phase~4 --- Verify.} An independent verifier recomputes the objective from the original prompt literals; the agent reports the answer only after the verifier passes.
+\item \textbf{Use \texttt{pred} to find a reformulation.} Match the user's spec to a natural model, enumerate reachable downstream endpoints with overhead and worst-case complexity (\texttt{pred from}, \texttt{pred path --all}, \texttt{pred show}), save the smallest-endpoint path (\texttt{pred path --cost minimize:<field> -o path.json}), forward-reduce (\texttt{pred reduce --via path.json}), and inverse-map the solution back to source-space (\texttt{pred extract}).
+\item \textbf{Pick a solver for the chosen endpoint.} Identify an off-the-shelf solver that handles instances of that endpoint's size and structure within the 90~s wall budget. C uses training-time priors for this step; D additionally uses \texttt{WebSearch}/\texttt{WebFetch}.
 \end{itemize}
-Phase~2 is the structural step the bare AI does not perform; the verbatim skill text is reproduced in \Cref{fig:end-user-skill}.
+After the solver call, an independent verifier recomputes the objective from the user's original literals before the agent is allowed to report the answer.
 
 \paragraph{Solver environment.}
 Each run uses a fresh working directory and a fresh Python virtual-environment at \texttt{.pred-solve/} created via \texttt{uv}; the agent installs whatever solver package it picks. The solver is invoked exactly once as \texttt{timeout 90 .pred-solve/bin/python solve.py}---the 90~s kill cutoff is OS-enforced, not a budget for the agent to fill. The same single-pass / honest-reporting discipline is imposed on the bare-AI conditions to keep the four configurations comparable: every agent is told to commit to one algorithm and one hyperparameter configuration, run it once under the timeout, and report whatever target-space configuration the call returns---no retry-on-poor-result loop, no method chaining, no polish stage. A Claude Opus~4.7 instance with extra-high reasoning effort (\texttt{claude-opus-4-7-xhigh}, dispatched via Claude Code's general-purpose subagent) handles each run independently in its own workdir, and we record the model id in every \texttt{meta.json}.
@@ -945,119 +943,6 @@ Tool / capability & A & B & C & D \\
 \end{tabular}
 \end{table}
 
-\paragraph{Skill content (C and D).}
-\Cref{fig:end-user-skill} reproduces the \texttt{solve-instance} skill given verbatim to the agent in condition D. Condition C uses the offline variant, which is identical except that Phase 2 step 4 substitutes ``identify from your training-time knowledge'' for ``use \texttt{WebSearch}/\texttt{WebFetch} to identify''.
-
-\begin{figure*}[h]
-\centering
-\begin{tcolorbox}[colback=gray!5, colframe=gray!80, title={\textbf{\texttt{solve-instance} skill (online; condition D). Condition C uses the offline variant: identical except Phase 2 step 4 reads ``training-time knowledge'' instead of ``WebSearch / WebFetch''.}}, fonttitle=\footnotesize, boxrule=0.4pt, arc=2pt, left=4pt, right=4pt, top=2pt, bottom=2pt]
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, numbers=none, frame=none, aboveskip=0pt, belowskip=0pt, breaklines=true, xleftmargin=4pt]
----
-name: solve-instance
-description: Take a concrete industrial problem instance,
-  enumerate reformulation paths via pred, pick the one whose
-  downstream model has the strongest off-the-shelf solver, then
-  write/run/verify a Python script
----
-
-# Solve Instance
-
-The point of this skill is **reformulation discipline**. A frontier-AI
-baseline maps any well-stated problem to its textbook formulation and
-writes the model. That formulation is often not the strongest available
-- a different reformulation may have an endpoint whose off-the-shelf
-solver is better-suited to the instance's size and structure. The
-skill's job is to enumerate every model reachable from the natural one
-via `pred from`, inspect each candidate's overhead and complexity, and
-pick the path whose endpoint is best-matched to a known external solver.
-
-## Hard rules
-- Operates in cwd only. Never edit files under src/, docs/, .claude/.
-- Allowed: pred ..., WebSearch, WebFetch, write solve.py / instance.json
-  / answer.json / meta.json / .pred-solve/ venv in cwd, install solver
-  packages into that venv via uv.
-- Solver timeout: 90 s, OS-enforced via
-  `timeout 90 .pred-solve/bin/python solve.py`.
-- `pred solve` is a sanity-check, never the production answer.
-
-## pred cheatsheet
-- `pred from <S>/<V> --hops N`           list reachable downstream models
-- `pred path <S> <T> --all`              enumerate paths with overheads
-                                         (default --cost minimize-steps
-                                          is hop-count and often blows up
-                                          the endpoint; always check --all)
-- `pred path <S> <T> --cost minimize:<f>
-   -o path.json`                         save smallest-endpoint path
-- `pred show <V>` / `--json`             complexity + schema
-- `pred create <M> --<field> ...`        small instances; for larger
-                                         ones, write the JSON directly
-- `pred reduce <in>.json --via path.json
-   -o bundle.json`                       always pass --via; without it,
-                                         default path may OOM (exit 137).
-                                         Bundle is {source, target, path};
-                                         bundle.target is the target
-                                         instance. Bundles not chainable.
-- `pred extract bundle.json
-   --config <csv>`                       inverse-map back to source
-
-## Flow
-
-### Phase 1 - Identify the natural model
-Read the user's spec. Map their domain language to a problem in
-`pred list`. Output a one-paragraph match.
-
-### Phase 2 - Reformulation frontier (core step)
-1. Graph topology. `pred from <Model>/<Variant> --hops 2`.
-2. Endpoint size. `pred path <s> <t> --all` then
-   `pred path <s> <t> --cost minimize:<field> -o path.json`.
-   Plug actual num_vertices, num_edges into the overhead to compute
-   the concrete endpoint size.
-3. Endpoint complexity. `pred show <endpoint_variant>` for declared
-   worst-case complexity.
-4. External solver capabilities (from WebSearch). External solvers are
-   not part of this catalog. Use WebSearch / WebFetch to identify which
-   solver has been empirically shown to dominate within practical
-   wall-time budgets on instances of this size, density, and integrality
-   structure - not just which libraries exist. Match the solver to what
-   the user actually asked for: re-read the prompt and identify whether
-   they want the best feasible answer within the time budget or a
-   certified optimum - those select different solver families.
-5. Decide. Cite (i) endpoint size, (ii) worst-case complexity,
-   (iii) web-researched solver capability.
-
-### Phase 3 - Solve
-1. Build the natural-model instance JSON via `pred create` or directly.
-2. Forward-reduce: `pred reduce <natural>.json --via path.json
-   -o bundle.json`.
-3. Pick one algorithm and one hyperparameter configuration.
-4. Run the external solver once via
-   `timeout 90 .pred-solve/bin/python solve.py`.
-   Single pass; no retry-with-different-configs after seeing the result;
-   no chained methods; no polish loop.
-5. Lift back to source-space:
-   `pred extract bundle.json --config <csv>`.
-6. Record solver wall-time separately.
-
-### Phase 4 - Verify and report
-1. Independent verifier on the ORIGINAL spec (not the reduced one).
-2. Write answer.json in the user's schema.
-3. Write meta.json with: natural_model, phase2_candidates, chosen_path,
-   solver_pkg, solver_wall_s, objective, claimed_optimal,
-   verifier_passed, model_id.
-
-If the verifier rejects, do not present the answer.
-
-## Anti-patterns
-- Skipping Phase 2 because the natural model looks "obvious".
-- Picking the shortest path by hop count.
-- Trusting the solver's OPTIMAL claim without the independent verifier.
-- Writing the natural formulation "as a baseline" before Phase 2.
-- Asking the user to confirm Phase 2.
-\end{lstlisting}
-\end{tcolorbox}
-\caption{The \texttt{solve-instance} skill given verbatim to condition D. Light formatting changes for the printed version (Unicode arrows replaced with ASCII; long bullet bodies wrapped); the executable skill lives in the released benchmark harness.}
-\label{fig:end-user-skill}
-\end{figure*}
 
 \paragraph{Three independent axes of measurement.}
 We separate three quantities that AI-coding evaluations often blend into a single ``time'' figure:
