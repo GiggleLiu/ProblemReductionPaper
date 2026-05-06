@@ -112,7 +112,7 @@
 \item {\bf Experiments compute resources}
     \item[] Question: For each experiment, does the paper provide sufficient information on the computer resources (type of compute workers, memory, time of execution) needed to reproduce the experiments?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The case study comprises 40 runs (4 configurations $\times$ 10 seeds), each performed by Claude Opus~4.7 at extra-high reasoning effort with a 90~s solver wall-time cap. Per-run AI token usage averages 37k--81k tokens (Section~\ref{sec:end-user-utility}, Table~\ref{tab:end-user-eval}). Solvers run inside a fresh \texttt{uv} Python virtual environment on a commodity workstation; reproducing the artifact does not require specialized compute. Library development used standard commercial LLM API access (Claude Code with Opus~4.6, Codex with GPT-5.4) over roughly three months.
+    \item[] Justification: Library development used standard commercial LLM API access (Claude Code with Opus~4.6, Codex with GPT-5.4) over roughly three months. The case study comprises 40 runs (4 configurations $\times$ 10 seeds), each performed by Claude Opus~4.7 at extra-high reasoning effort with a 90~s solver wall-time cap. Per-run AI token usage averages 37k--81k tokens (Section~\ref{sec:end-user-utility}, Table~\ref{tab:end-user-eval}). Solvers run inside a fresh \texttt{uv} Python virtual environment on a commodity workstation; reproducing the artifact does not require specialized compute.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -136,7 +136,7 @@
 \item {\bf Broader impacts}
     \item[] Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work performed?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section~\ref{sec:conclusion} (Discussion) discusses both directions. Positively, harness engineering lowers the barrier for domain experts to contribute verified scientific software without writing code, and the resulting reduction graph gives any registered solver immediate reach over a large class of problems. Negatively, the paper acknowledges the unsettling fact that human contributors become substitutable plugins in such a workflow, with implications for engineering labor.
+    \item[] Justification: Section~\ref{sec:conclusion} (Discussion) describes the positive societal impact: harness engineering lowers the barrier for domain experts to contribute verified scientific software without writing code, and the resulting reduction graph gives any registered solver immediate reach over a large class of problems. As foundational research on tooling for combinatorial optimization, we do not identify a direct path to negative societal impacts beyond those common to general open-source software.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that there is no societal impact of the work performed.
