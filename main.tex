@@ -566,7 +566,11 @@ We walk through one concrete path-driven session on a tiny instance: weighted Ma
 pred create MaxCut -{}-graph 0-1,1-2,2-3,3-0 -o instance.json
 \end{quote}
 
-\paragraph{Enumerate downstream models.} \texttt{pred from MaxCut/SimpleGraph/i32 -{}-hops 2} prints the reachable downstream cone --- two branches, each three hops from QUBO/f64:
+\paragraph{Enumerate downstream models.}
+\begin{quote}\ttfamily\small
+pred from MaxCut/SimpleGraph/i32 -{}-hops 2
+\end{quote}
+prints the reachable downstream cone (two branches, each three hops from QUBO/f64):
 \begin{quote}\ttfamily\small
 MaxCut/SimpleGraph/i32\\
 \hspace*{1em}|-- MinimumCutIntoBoundedSets/SimpleGraph/i32 -> ILP/bool\\
