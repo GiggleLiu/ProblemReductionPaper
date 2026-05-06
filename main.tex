@@ -470,7 +470,7 @@ We measure whether catalog access improves how agents solve a problem stated in 
 The instance: a manager splits a 150-person organization into two product teams; every pair of employees has a positive or negative compatibility score, and the goal is to maximize the sum of cross-team scores.
 The agent's task is to pick the best algorithm for the problem and write the code that solves each instance.
 
-To isolate the catalog's contribution, we vary two tools available to the agent (\texttt{pred} access and web search), yielding four configurations in a $2{\times}2$ factorial.
+To isolate the catalog's contribution, we compare four configurations that toggle \texttt{pred} access and web search independently (the four rows of \Cref{tab:end-user-eval}).
 Each configuration is run on ten random instances (40 runs total), with solver wall-time capped at 90~s.
 For each run we record three quantities: AI tokens spent on modelling, solver wall-time, and the objective value graded against the per-instance best (full setup in Appendix~\ref{app:end-user}).
 
