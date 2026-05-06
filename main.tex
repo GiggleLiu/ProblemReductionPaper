@@ -474,7 +474,7 @@ For each run we record three quantities: tokens spent overall, solver wall-time,
 
 \Cref{tab:end-user-eval} summarizes the outcomes: both \texttt{pred}-enabled configurations match the \emph{best-of-four} objective on every instance and cut solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens.
 Both bare configurations miss the best-of-four on $3$ of $10$ instances, and on their worst run each falls $19.1\%$ below it.
-The misses share a single failure mode: the agent commits to a textbook integer-programming formulation (MILP or CP-SAT), whose linear relaxation is too loose for the solver to close within 90~s.
+The misses share a single failure mode: the agent picks a reduction whose downstream solver is not suited to this problem.
 The extra tokens for \texttt{pred}-enabled runs go into reading the reduction graph and choosing the endpoint; the speedup comes from that endpoint, simulated annealing on the Ising form, terminating in a single short call rather than a long branch-and-bound run.
 
 \textbf{Solver-choice analysis.}
