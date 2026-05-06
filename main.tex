@@ -412,7 +412,7 @@ Only issues passing all four checks move to \col{Ready}.
 An implementation agent reads the \texttt{run-pipeline} skill, picks an issue automatically from \col{Ready} column, implements it\footnote{The engineering workflow builds on Superpowers~\cite{Obra2025Superpowers}}, submits a pull request (PR) and moves the issue to \col{Review Pool}, all in headless mode, no human in the loop.
 
 \textbf{Stage~4: Review} (\col{Review Pool} $\to$ \col{Final Review}).
-Similarly, a review agent reads the \texttt{review-pipeline} skill, claims an issue from \col{Review Pool}, moves it to \col{Under Review}, dispatches three read-only sub-agents: structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification}), and posts a review report on the PR and moves the issue to \col{Final Review}---all in headless mode.
+Similarly, a review agent reads the \texttt{review-pipeline} skill, claims an issue from \col{Review Pool}, moves it to \col{Under Review}, dispatches three read-only sub-agents: structural completeness, code quality, and agentic feature testing (AI agents role-playing as end users; \Cref{sec:verification}), and posts a review report on the PR and moves the issue to \col{Final Review}, all in headless mode.
 
 \textbf{Stage~5: Merge} (\col{Final Review} $\to$ \col{Done}).
 A maintainer invokes the \texttt{final-review} skill to review the PR.
