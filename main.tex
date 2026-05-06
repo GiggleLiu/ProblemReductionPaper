@@ -672,7 +672,7 @@ Problem variants and reduction rules compose into the directed graph described i
 For subtype edges (e.g., MIS on a king's subgraph to MIS on a general graph), a generic \texttt{ReductionAutoCast} implements both reduction traits with an identity solution map.
 At runtime, type-erased blanket implementations (\texttt{DynReductionResult}) let the reduction-graph engine chain reductions along Dijkstra-discovered paths without knowing the concrete types at compile time.
 
-\section{Usage Example: One \texttt{pred} Command Routes 138 Problems to QUBO}\label{app:qubo-coverage}
+\section{QUBO Coverage}\label{app:qubo-coverage}
 
 Specialized hardware for combinatorial optimization is one of the fastest-growing frontiers of AI infrastructure.
 Ising machines, quantum annealers~\cite{glover2019}, and physics-inspired neural solvers~\cite{Schuetz2022PhysicsGNN} all promise substantial speedups over conventional CPU solvers, and the field has converged on a single input format: QUBO.
