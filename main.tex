@@ -885,7 +885,7 @@ The agent runs in one of four configurations differing on two binary axes ($2{\t
 \end{itemize}
 Each cell runs ten seeds under the same environment settings (\emph{Solver environment} below); A and B receive only the user-facing prompt, while C and D additionally receive a Markdown skill (\texttt{solve-instance-offline} for C, \texttt{solve-instance} for D).
 
-\paragraph{Skill protocol (C and D).}
+\paragraph{Scope of \texttt{pred}'s contribution (C and D).}
 ``With \texttt{pred}'' here means the agent additionally receives a Markdown skill that documents how to use the \texttt{pred} CLI and walk a reduction path; the skill injects no prior on which solver to run. It covers two responsibilities that A and B have to handle without any aid. First, the agent uses \texttt{pred} to find a reduction path: match the user's spec to a natural model, walk the reduction graph to enumerate downstream endpoints by overhead and worst-case complexity, save a chosen path, forward-reduce along it, and inverse-map the solution back to source-space (Appendix~\ref{app:cli} documents the example). Second, the agent picks a solver for the chosen endpoint: starting only from the endpoint \texttt{pred} returned, it must identify an off-the-shelf solver that handles instances of that size and structure within the computational resource budget. The skill names no candidate solvers and expresses no preference; C relies on the agent's training-time priors for this step, while D additionally uses \texttt{WebSearch}/\texttt{WebFetch}. This separation keeps the comparison fair: \texttt{pred} contributes to reduction-endpoint selection, while solver selection on top of that endpoint is left entirely to the agent's own knowledge or web search.
 
 \paragraph{Solver environment.}
