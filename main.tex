@@ -466,22 +466,25 @@ The phase-by-phase narrative is detailed in \Cref{app:phases}.
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
 The library is itself an agent-callable tool via the \texttt{pred} CLI.
-We test whether catalog access improves agent problem-solving on a domain-language instance: a HR manager splits a 150-person organization into two product teams to maximize total signed cross-team value from a dense pairwise survey.
+We measure whether catalog access improves how agents solve a problem stated in everyday language.
+The instance: a manager splits a 150-person organization into two product teams; every pair of employees has a positive or negative compatibility score, and the goal is to maximize the sum of cross-team scores.
 No abstract problem name is given; recognizing the structure and routing it to a competitive solver is part of the task.
-Four configurations form a $2{\times}2$ factorial over web-search and \texttt{pred} access, ten random instances each (40 runs), with solver wall-time capped at 90~s.
-We separate three quantities usually conflated as ``time'': AI tokens, solver wall-time, and graded solution quality (full setup in Appendix~\ref{app:end-user}).
+Four configurations form a $2{\times}2$ factorial over web-search and \texttt{pred} access, with ten random instances each (40 runs) and solver wall-time capped at 90~s.
+For each run we record three quantities the literature often blurs together: AI tokens spent on modelling, solver wall-time, and the objective value graded against the per-instance best (full setup in Appendix~\ref{app:end-user}).
 
 \Cref{tab:end-user-eval} summarizes the outcomes.
-The full \texttt{pred}+web configuration matches the per-instance best objective on all 10 instances and is the only configuration whose minimum objective stays at the per-instance best.
-The bare-AI baseline matches the per-instance best on 7 of 10 instances; the worst miss (instance 13, 11{,}673 versus 12{,}944) is a 9.8\% gap.
-The two intermediate configurations each suffer one or two large misses where the agent commits to a textbook integer-programming encoding and the solver hits the wall-time cap with a poor incumbent: bare-AI+web finishes at 10{,}011 / 10{,}252 on instances 11 and 19; \texttt{pred} (offline) finishes at 10{,}194 on instance 37.
-\texttt{pred} access also cuts solver wall-time by a factor of $3$--$8$ (6.7--22.6\,s vs.\ 48.1--54.2\,s) at the cost of roughly $2{\times}$ more AI tokens, because graph-derived endpoint sizes let agents commit to short single-pass simulated-annealing calls instead of long branch-and-bound runs.
+The full \texttt{pred}+web configuration is the only one to match the per-instance best on every instance.
+Bare AI matches it on 7 of 10; its worst run drops to $11{,}673$, a 9.8\% gap.
+The intermediate configurations each suffer one or two large misses, all traceable to the same failure mode: the agent commits to a textbook integer-programming formulation, and its linear relaxation is too loose to close within 90~s.
+\texttt{pred} access also speeds the solver up by a factor of $3$--$8$ at the cost of roughly $2{\times}$ more AI tokens.
+The extra tokens go to reading the catalog; the speedup comes from the catalog's recommended endpoint---simulated annealing on the Ising form---which terminates in a single short call rather than a long branch-and-bound run.
 
 \textbf{Solver-choice analysis.}
 \Cref{tab:end-user-solver-table} reports the model and solver each agent settled on.
-The bare configurations scatter across HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal / dwave-samplers SA, dwave-tabu, and ad-hoc local-search heuristics; the misses concentrate on the integer-programming and quadratic-mixed-integer routes whose linear relaxations are weak on dense signed-weight cut maximization.
-With \texttt{pred}, agents recognize the instance as a signed-weight cut on a dense graph, follow the catalog through the spin-glass / QUBO family, and run simulated annealing (or, on a single instance, a multi-replica parallel-tempering variant) on the Ising form on every run.
-The catalog therefore acts as a variance reducer for solver selection: it removes the inter-run modelling lottery and consistently routes agents to a reformulation whose endpoint solver dominates within the wall-time budget.
+Without the catalog, agents scatter across HiGHS, Gurobi, OR-tools CP-SAT, dwave-neal / dwave-samplers SA, dwave-tabu, and ad-hoc local-search heuristics.
+The catastrophic misses all come from integer- or mixed-integer routes whose linear relaxations are weak on dense signed-weight cut instances.
+With the catalog, every run reformulates the instance as a signed-weight cut on a dense graph, follows the path through the spin-glass / QUBO family, and runs simulated annealing on the Ising form (one run picks a parallel-tempering variant).
+The catalog narrows the modelling choice to a single reformulation that the available solvers can handle within the time budget.
 
 This experiment closes a loop in the paper: agents built the library, and the library now augments agents tackling new instances.
 
