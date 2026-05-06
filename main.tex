@@ -454,14 +454,13 @@ In our practice, agentic feature tests caught most CLI command bugs, and some us
 %======================================================================
 \section{Evidence}\label{sec:evidence}
 
-We ask two questions: is the resulting library substantive, and is it useful to end users?
+The pipeline produced a substantive reduction library, which helps a non-expert end user.
 
 \subsection{Library Status}
 
 \Cref{fig:overview}(c) summarizes the library at v0.5.0: 190~problem types (220 variants), 265~reduction rules, 129~types (68\%) with a reduction path to ILP, and 78 reachable from 3-SAT.
 Each ILP path grants automatic solver access via the \texttt{pred} CLI; each 3-SAT path provides a tested NP-hardness argument backed by executable code rather than pen-and-paper proofs.
-Growth is concentrated in the final phase: once the full skill-based pipeline came online at week~8.5, problem types went from 23 to 187 and reduction rules from 52 to 239 in under five weeks.
-The phase-by-phase narrative is detailed in \Cref{app:phases}.
+During 12 weeks of development, the library grew to 187 problem types and 239 reduction rules, mostly in the final five weeks after the full skill-based pipeline came online at week~8.5 (\Cref{app:phases}).
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
