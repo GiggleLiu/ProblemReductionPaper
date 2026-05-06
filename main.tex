@@ -465,7 +465,7 @@ In 12 weeks of development, most of the library was built after week~8.5, once t
 
 \subsection{End-User Utility}\label{sec:end-user-utility}
 
-The simplest use of \texttt{pred} starts from a high-performance solver and asks what problems it can serve. For an Ising machine that takes QUBO input, \texttt{pred} can list all 138 library problems that reach QUBO within three hops (\Cref{app:qubo-coverage}). 
+The simplest use of \texttt{pred} starts from a high-performance solver and asks what problems it can serve. For an Ising machine that takes QUBO input, \texttt{pred} can list all 138 library problems that reach QUBO within three hops (Appendix~\ref{app:qubo-coverage}). 
 
 The harder direction starts from a problem stated in everyday language and asks an AI agent to use \texttt{pred} to deliver a fast and good solver end-to-end. To check whether \texttt{pred} helps in this direction, we set up a case study where the agent receives a problem in everyday language. In our instance, a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores. Mathematically, this is NP-hard Maximum Cut.
 
@@ -477,7 +477,7 @@ For each run we record three quantities: tokens spent overall, solver wall-time,
 
 \Cref{tab:end-user-eval} summarizes the outcomes. \emph{With \texttt{pred}, the agent picks the right reduction every time.} Every \texttt{pred}-enabled run lands on the same path (spin-glass / QUBO) and the same solver (simulated annealing on the Ising form), matches the \emph{best-of-four} objective on every instance, and cuts solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens (\Cref{tab:end-user-solver-table}).
 
-\emph{Without} \texttt{pred} \emph{, solver choice is unreliable.} Bare configurations miss the best-of-four on $3$ of $10$ instances, with the worst run $19.1\%$ below it. Agents scatter across MILP (HiGHS, Gurobi), CP-SAT (OR-tools), simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}), tabu, and ad-hoc heuristics; the misses fall on solvers that do not perform well within the 90~s budget.
+\emph{Without} \texttt{pred} \emph{, solver choice is unreliable.} Bare configurations miss the best-of-four on $3$ of $10$ instances, with the worst run $19.1\%$ below it. Agents scatter across MILP (HiGHS, Gurobi), CP-SAT (OR-Tools~\cite{Perron2024ORTools}), simulated annealing (\texttt{dwave-neal} / \texttt{dwave-samplers}~\cite{DWaveOcean2026}), tabu (D-Wave \texttt{TabuSampler}~\cite{DWaveOcean2026}), and ad-hoc heuristics; the misses fall on solvers that do not perform well within the 90~s budget.
 
 \emph{Web access alone does not close the gap.} Bare\,+\,web shares the same failure pattern as bare. Appendix~\ref{app:end-user} has the per-instance picks, raw data, and a finer-grained look at web's role under \texttt{pred}.
 
