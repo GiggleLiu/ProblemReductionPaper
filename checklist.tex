@@ -17,7 +17,7 @@
 \item {\bf Limitations}
     \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section~\ref{sec:conclusion} (Discussion) acknowledges limitations: reliance on asymptotic complexity rather than fine-grained cost prediction, scope currently restricted to NP-class problems, and continuing dependence on human judgment for final correctness review (Stage~6 community call). The end-user utility case study (Section~\ref{sec:end-user-utility}) is conducted on a single instance class (a 150-vertex signed-weight team-split, ten random seeds) with one agent backbone (Claude Opus~4.7); the case study is illustrative rather than a benchmark and we do not claim generalization to other problem classes or agents.
+    \item[] Justification: Section~\ref{sec:conclusion} (Discussion) acknowledges limitations: reliance on asymptotic complexity rather than fine-grained cost prediction, scope currently restricted to NP-class problems.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper has no limitation while the answer \answerNo{} means that the paper has limitations, but those are not discussed in the paper.
@@ -95,7 +95,7 @@
 \item {\bf Experiment statistical significance}
     \item[] Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments?
     \item[] Answer: \answerNA{}
-    \item[] Justification: Development metrics (problem types, reduction rules, weekly growth) are direct counts from git history and do not admit error bars. The end-user utility case study reports each of the ten per-seed results individually (objective, wall-time, solver pick) rather than aggregated estimates with confidence intervals; with $n=10$ random seeds and a single agent backbone, we frame the results as a case study rather than a benchmark and avoid claims that would require statistical significance testing.
+    \item[] Justification: Development metrics (problem types, reduction rules, weekly growth) are direct counts from git history and do not admit error bars. The end-user utility experiment is framed as an illustrative case study rather than a benchmark; we make no claims that would require formal significance testing.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
