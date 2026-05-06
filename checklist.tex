@@ -84,7 +84,7 @@
 \item {\bf Experimental setting/details}
     \item[] Question: Does the paper specify all the training and test details (e.g., data splits, hyperparameters, how they were chosen, type of optimizer) necessary to understand the results?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The end-user utility case study (Section~\ref{sec:end-user-utility}, Appendix~\ref{app:end-user}) specifies the four configurations (\emph{Bare AI}, \emph{Bare AI + web}, \emph{+ \texttt{pred}}, \emph{+ \texttt{pred} + web}), the ten random seeds (the primes 7, 11, 13, 17, 19, 23, 29, 31, 37, 41), the deterministic instance generator (150 engineers, density~$\approx 0.48$, integer weights drawn from $[-5, 12]$), the 90~s solver wall-time cap, the user-facing prompt template, the skill protocol given to C and D, and the agent backbone (Claude Opus~4.7 at extra-high reasoning effort). No hyperparameter sweep was performed; the agent commits to one algorithm and one configuration per run.
+    \item[] Justification: Strictly speaking, the paper's main contribution is a software development process and the delivered software tool, rather than an experimental study. The one controlled comparison we report, the end-user utility case study (Section~\ref{sec:end-user-utility}, Appendix~\ref{app:end-user}), specifies the four configurations (\emph{Bare AI}, \emph{Bare AI + web}, \emph{+ \texttt{pred}}, \emph{+ \texttt{pred} + web}), the ten random seeds (the primes 7, 11, 13, 17, 19, 23, 29, 31, 37, 41), the deterministic instance generator (150 engineers, density~$\approx 0.48$, integer weights drawn from $[-5, 12]$), the 90~s solver wall-time cap, the user-facing prompt template, the skill protocol given to C and D, and the agent backbone (Claude Opus~4.7 at extra-high reasoning effort). No hyperparameter sweep was performed; the agent commits to one algorithm and one configuration per run.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -178,7 +178,7 @@
 \item {\bf New assets}
     \item[] Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The released artifact includes inline Rust documentation, the \texttt{pred} CLI with built-in help, registries listing every problem type and reduction rule, the harness specifications (\texttt{CLAUDE.md}, \texttt{AGENTS.md}, skills directory) used to govern contributions, and the end-user case-study artifacts (instance generator, agent skills for C and D, raw run logs). Documentation ships within the repository.
+    \item[] Justification: The released artifact includes inline Rust documentation, the \texttt{pred} CLI with built-in help, registries listing every problem type and reduction rule, and the harness specifications (\texttt{CLAUDE.md}, \texttt{AGENTS.md}, skills directory) used to govern contributions. Documentation ships within the repository.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not release new assets.
