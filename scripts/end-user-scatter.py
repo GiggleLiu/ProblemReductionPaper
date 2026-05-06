@@ -84,8 +84,8 @@ handles.append(mlines.Line2D([], [], color="0.55", linestyle=(0, (3, 3)),
                              label="per-instance best (0%)"))
 ax_bot.legend(handles=handles, loc="lower left", fontsize=8, framealpha=0.95)
 
-ax_top.text(90, ax_top.get_ylim()[1] - 0.1, "90 s timeout", color="0.4",
-            fontsize=8, ha="right", va="top", rotation=90)
+ax_bot.text(90, ax_bot.get_ylim()[0] + 0.5, "90 s timeout", color="0.4",
+            fontsize=8, ha="right", va="bottom", rotation=90)
 
 for ax in (ax_top, ax_bot):
     ax.grid(axis="y", color="0.92", linewidth=0.5)
