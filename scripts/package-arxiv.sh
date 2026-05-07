@@ -47,8 +47,17 @@ sed -E \
   -e 's|~\\cite\{Supplement\}||g' \
   main.tex > "$STAGE/main.tex"
 
-cp main.bbl        "$STAGE/main.bbl"
 cp neurips_2026.sty "$STAGE/neurips_2026.sty"
+cp references.bib   "$STAGE/references.bib"
+
+echo "==> Compiling staged main.tex to regenerate main.bbl (without uncited entries)"
+(
+  cd "$STAGE"
+  latexmk -pdf -interaction=nonstopmode main.tex >/dev/null
+)
+# Drop intermediates so the tarball ships only source + bbl + figures.
+rm -f "$STAGE"/main.{aux,log,out,fls,fdb_latexmk,synctex.gz,blg,pdf} \
+      "$STAGE/references.bib"
 
 echo "==> Extracting referenced figures"
 mapfile -t FIGS < <(
