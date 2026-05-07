@@ -534,7 +534,7 @@ This reduction graph can be improved in several directions: one is to refine \em
 \section{Related Work}\label{sec:related}
 
 \textbf{Reduction libraries and tools.}
-Prior work falls along a ladder of executability and scope (\Cref{tab:related-reductions}): paper catalogues of mathematical proofs, executable per-rule tools, single-target compilers, and an earlier inter-type prototype. The present library extends this line by connecting \emph{many} source types to \emph{many} targets with composable overhead and inverse maps, maintained by AI agents.
+Prior work falls along a ladder of executability and scope (\Cref{tab:related-reductions}): paper catalogues and formulation surveys, executable per-rule tools, single-endpoint modeling libraries, and an earlier inter-type prototype. The present library extends this line by connecting \emph{many} source types to \emph{many} targets with composable overhead and inverse maps, under AI-assisted maintenance.
 
 \begin{table*}[h]
 \caption{Reduction libraries and tools, ordered by executability and scope.}
@@ -550,7 +550,7 @@ Karp~\cite{karp1972}; Garey and Johnson~\cite{garey1979}; Lucas~\cite{lucas2014}
 Karp DSL~\cite{Zhang2022Karp} & Executable per-rule & 25 reductions from a standard textbook (Kleinberg-Tardos); declarative, polynomial-time by construction, with automated property testing; reductions are isolated, no reusable graph \\
 REDNP~\cite{Creus2014REDNP} & Executable per-rule & Imperative C-based DSL for student exercises (online judge); each new problem must bootstrap via a hand-written reduction to SAT; no automated property testing or complexity guarantees \\
 PyQUBO~\cite{Zaman2021PyQUBO}; qubovert~\cite{Iosue2022qubovert}; QUBO.jl~\cite{Monteiro2022ToQUBO}; D-Wave Ocean~\cite{DWaveOcean2026} & Executable library & Compiles many problems into a single endpoint (QUBO or Ising); no inter-type reductions \\
-ProblemReductions.jl~\cite{gao2025programming,Liu2023GenericTN} & Executable graph & 18 problem types; first inter-type reduction graph; manually maintained \\
+ProblemReductions.jl~\cite{gao2025programming,Liu2023GenericTN} & Executable graph & 18 problem types; an inter-type reduction graph; manually maintained \\
 \textbf{This work} & Executable graph & 190 problem types, 265 reduction rules; composable inverse maps; AI-maintained \\
 \bottomrule
 \end{tabular}
