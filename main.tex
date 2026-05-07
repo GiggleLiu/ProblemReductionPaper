@@ -461,7 +461,7 @@ The pipeline produced a substantive reduction library and an agent-callable inte
 Each ILP path grants standard solver access via the \texttt{pred} CLI; each 3-SAT path provides a tested NP-hardness argument backed by executable code rather than pen-and-paper proofs.
 In 12 weeks of development, most of the library was built after week~8.5, once the full skill-based pipeline was in place (Appendix~\ref{app:phases}).
 
-\subsection{End-User Utility}\label{sec:end-user-utility}
+\subsection{Case Study on End-User Utility}\label{sec:end-user-utility}
 
 The simplest use of \texttt{pred} starts from a high-performance solver and asks what problems it can serve. For an Ising machine that takes QUBO input, \texttt{pred} can list all 138 library problems that reach QUBO within three hops (Appendix~\ref{app:qubo-coverage}). 
 
@@ -1022,11 +1022,9 @@ Seed & Obj. & Time (s) & Obj. & Time (s) & Obj. & Time (s) & Obj. & Time (s) & B
 \paragraph{Role of web access.}
 Comparing A and B isolates the effect of web access on the bare configurations. Web has real but two-sided effects: it can steer the agent away from exact methods like MILP that do not scale to this problem size (B's match rate rises to $8/10$ from A's $7/10$), but the broader candidate pool also exposes the agent to fancier methods whose integrations are subtle, and two of B's runs return $0$ (dragging its mean to $10{,}014$, below A's $12{,}306$). Web changes which solver the agent picks but provides no structural guarantee about budget feasibility; the net effect on this case study is unreliable. The agent still needs domain-specific tools and skills (here \texttt{pred}) to reliably pick an effective solver.
 
-On C and D every run lands on simulated annealing (SA), so the only remaining decision is the SA budget. \Cref{tab:end-user-sa-hyperparams} shows that the two configurations pick similar budgets on most seeds, but D's largest budgets stay well below C's. The reason shows up in D's logs: D queries WebSearch for typical \texttt{dwave-neal} budgets and anchors its choices near the documented values, while C, lacking that reference, occasionally inflates the budget as a safety margin. 
+On C and D every run lands on simulated annealing (SA), so the only remaining decision is the SA budget. \Cref{tab:end-user-sa-hyperparams} shows that the two configurations pick similar budgets on most seeds, but D's largest budgets stay well below C's. The reason shows up in D's logs: D queries WebSearch for typical \texttt{dwave-neal} budgets and anchors its choices near the documented values, while C, lacking that reference, occasionally inflates the budget as a safety margin.
 
-Taken together, A vs B and C vs D give a consistent picture of what web access does and does not do in one-shot solving. Web has real effects in both directions. Without \texttt{pred}'s structural guardrail, those effects are unreliable: web changes which solver the agent picks, sometimes for the better and sometimes catastrophically for the worse. With \texttt{pred} fixing the solver class, web takes on a narrower role: it can serve as a documentation lookup that anchors parameter choices to known-good ranges. This split reflects a more general fact: there are few universal priors for solver parameters; choices are usually case-by-case, and even experienced practitioners reach good settings through grid search over plausible values rather than a single recipe. \texttt{pred} contributes on the solver-selection axis, where structure provides a reliable criterion; tuning a chosen solver's parameters is naturally layered on top as an iterative grid-search refinement.
-
-\begin{table}[htbp]
+\begin{table}[!ht]
 \caption{Simulated-annealing budget chosen by each \texttt{pred}-enabled run and the resulting solver wall-time. Each cell shows \texttt{num\_reads} $\times$ \texttt{num\_sweeps}.}
 \label{tab:end-user-sa-hyperparams}
 \centering
@@ -1050,6 +1048,8 @@ Seed   & reads $\times$ sweeps      & time (s) & reads $\times$ sweeps      & ti
 \bottomrule
 \end{tabular}
 \end{table}
+
+Taken together, A vs B and C vs D give a consistent picture of what web access does and does not do in one-shot solving. Web has real effects in both directions. Without \texttt{pred}'s structural guardrail, those effects are unreliable: web changes which solver the agent picks, sometimes for the better and sometimes catastrophically for the worse. With \texttt{pred} fixing the solver class, web takes on a narrower role: it can serve as a documentation lookup that anchors parameter choices to known-good ranges. This split reflects a more general fact: there are few universal priors for solver parameters; choices are usually case-by-case, and even experienced practitioners reach good settings through grid search over plausible values rather than a single recipe. \texttt{pred} contributes on the solver-selection axis, where structure provides a reliable criterion; tuning a chosen solver's parameters is naturally layered on top as an iterative grid-search refinement.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
