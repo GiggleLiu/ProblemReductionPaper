@@ -27,10 +27,20 @@ echo "==> Generating arXiv variant of main.tex (preprint mode, no checklist)"
 # 1. Comment out L10:  \usepackage{neurips_2026}
 # 2. Uncomment L45:    \usepackage[preprint]{neurips_2026}
 # 3. Drop the \input{checklist.tex} line(s) from the body
+# 4. Replace the ARXIV-FOOTNOTE-MARKER with a footnote that names equal-contribution
+#    authors and the corresponding author. Kept out of main.tex so the anonymous
+#    submission build never renders identifying information.
 sed -E \
   -e 's|^\\usepackage\{neurips_2026\}|% \\usepackage{neurips_2026}|' \
   -e 's|^%[[:space:]]*\\usepackage\[preprint\]\{neurips_2026\}|\\usepackage[preprint]{neurips_2026}|' \
   -e '/^\\input\{checklist\.tex\}/d' \
+  -e '/%% ARXIV-FOOTNOTE-MARKER/{
+    s|.*|\\begingroup\
+  \\renewcommand\\thefootnote{}%\
+  \\footnotetext{\\textsuperscript{*}Equal contribution.\\quad \\textsuperscript{$\\dagger$}Corresponding author: \\texttt{jinguoliu@hkust-gz.edu.cn}.}%\
+  \\addtocounter{footnote}{-1}%\
+\\endgroup|
+  }' \
   main.tex > "$STAGE/main.tex"
 
 cp main.bbl        "$STAGE/main.bbl"
