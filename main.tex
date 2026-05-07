@@ -540,12 +540,13 @@ Prior work falls along a ladder of executability and scope (\Cref{tab:related-re
 \caption{Reduction libraries and tools, ordered by executability and scope.}
 \label{tab:related-reductions}
 \centering
-\small
-\begin{tabular}{@{}p{4.6cm}lp{9.5cm}@{}}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{4.2cm}lp{8.5cm}@{}}
 \toprule
 Work & Form & Scope \\
 \midrule
-Karp~\cite{karp1972}; Garey and Johnson~\cite{garey1979}; Lucas~\cite{lucas2014} & Paper catalogue & Reduction sketches and Ising formulas, written-out mathematics rather than runnable code \\
+Karp~\cite{karp1972}; Garey and Johnson~\cite{garey1979}; Lucas~\cite{lucas2014} & Paper catalogue & Reduction sketches and Ising formulas; written-out mathematics rather than runnable code \\
 Karp DSL~\cite{Zhang2022Karp}; REDNP~\cite{Creus2014REDNP} & Executable per-rule & Student-written reductions in a DSL, auto-checked but isolated; no reusable graph \\
 PyQUBO~\cite{Zaman2021PyQUBO}; qubovert~\cite{Iosue2022qubovert}; QUBO.jl~\cite{Monteiro2022ToQUBO}; D-Wave Ocean~\cite{DWaveOcean2026} & Executable library & Compiles many problems into a single endpoint (QUBO or Ising); no inter-type reductions \\
 ProblemReductions.jl~\cite{gao2025programming,Liu2023GenericTN} & Executable graph & 18 problem types; first inter-type reduction graph; manually maintained \\
