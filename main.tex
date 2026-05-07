@@ -847,43 +847,18 @@ description: Adding a new reduction
 
 \section{Agentic Feature Test Findings}\label{app:agentic-tests}
 
-Two examples illustrate why the ${\sim}\,50$ \texttt{pred} defects of \Cref{sec:verification} evade the existing Rust test suite.
+The ${\sim}\,50$ \texttt{pred} defects of \Cref{sec:verification} fall into three categories. Each is invisible to the existing Rust unit tests for a different reason.
 
-\paragraph{Help text spliced onto the bare command.}
-Typing \texttt{pred} with no subcommand printed the top-level help, then appended the entire \texttt{pred solve -{}-help} block:
-\begin{quote}\ttfamily\small
-\$ pred\\
-Usage: pred {<}COMMAND{>} [OPTIONS]\\[2pt]
-Commands:\\
-\hspace*{1em}create\hspace*{1em}Create a problem instance\\
-\hspace*{1em}show\hspace*{2em}Show a problem's definition\\
-\hspace*{1em}\dots\\[6pt]
-Run an ILP solver on a problem.\hspace*{1em}\textit{[unrelated; $\sim$70 lines]}\\
-Usage: pred solve {<}FILE{>}\\
-\hspace*{1em}-{}-backend {<}NAME{>}\hspace*{1em}ILP backend [highs|cplex|\dots]\\
-\hspace*{1em}-{}-timeout {<}SECS{>}\hspace*{1em}\dots
-\end{quote}
-A naive user reading this output concluded that \texttt{pred} required a solve invocation by default. The Rust unit tests never noticed: they assert that each subcommand's help is correct in isolation, not that the bare binary stops where it should.
+\paragraph{Help text inconsistent with behaviour.}
+The program described itself in ways that did not match what it did. Typing \texttt{pred} with no subcommand printed the top-level menu, then appended roughly seventy lines of unrelated solver help. User-facing documentation listed flag names that the parser no longer recognized. \texttt{pred create -{}-help} advertised problem types that had no creation handler. The typo-suggestion routine answered ``did you mean \texttt{MaximalIS}?'' when the user typed \texttt{MaximalIS}. Unit tests assert each subcommand's output in isolation, so they never observe these surface inconsistencies, which a first-time user meets immediately.
 
-\paragraph{Library passes, CLI fails.}
-The closed-loop unit test for 3-Partition $\to$ Job-Shop-Scheduling passes:
-\begin{quote}\ttfamily\small
-let target~~ = source.reduce\_to();\\
-let witness~ = brute\_force(\&target);\\
-let source\_2 = rule.extract\_solution(\&witness);\\
-assert!(source.evaluate(\&source\_2).is\_true()); ~~\textit{[passes]}
-\end{quote}
-The same rule, invoked through the CLI, fails:
-\begin{quote}\ttfamily\small
-\$ pred create -{}-example ThreePartition -o tp.json\\
-\$ pred reduce tp.json -{}-to JobShopScheduling -o b.json\\
-\$ pred solve b.json\\
-\{ "target\_eval": "Or(true)", ~~\textit{[solver found a valid witness]}\\
-\hspace*{1em}"source\_eval": "Or(false)" \}~\textit{[lift produced invalid source config]}
-\end{quote}
-The brute-force solver and the ILP solver return different valid witnesses for the same target instance. \texttt{extract\_solution} happened to invert only the brute-force one, so it silently produced an invalid source configuration whenever the CLI's default ILP backend picked a structurally different witness. Four reductions had this bug. All four shipped with passing closed-loop unit tests. None reaches the CLI surface, where end users meet the library, before agentic feature tests run a complete \texttt{create} $\to$ \texttt{reduce} $\to$ \texttt{solve} $\to$ \texttt{evaluate} pipeline on canonical examples.
+\paragraph{Library passes in isolation, CLI fails end-to-end.}
+A reduction must be invertible: any valid solution of the target should map back to a valid solution of the source. The Rust closed-loop unit test for a reduction checks this property on one witness, the one returned by a reference brute-force solver. The CLI by default invokes an ILP solver, which legitimately returns a different valid witness for the same target instance. Four reductions had inverse maps that silently produced \emph{invalid} source configurations on those alternative witnesses; the unit tests passed, the CLI pipeline did not. A related defect: one reduction produced different target instances on identical inputs across repeated runs, breaking benchmark reproducibility. Unit tests cannot reach either failure because they drive the library API with the witness the test happens to construct, not the realistic distribution of inputs the CLI delivers.
 
-The remaining defects are mechanical: missing canonical examples for some variants, schema fields out of sync with constructor parameters, default values printed twice, flag aliases referenced in help text but not recognized by the parser, and CLI casts of negative integers to unsigned types.
+\paragraph{Mechanical contract gaps.}
+Schema fields drifted out of sync with constructor parameters. Default values were declared and printed twice. Canonical examples were missing for variants used by valid reduction paths, so a documented pipeline crashed on the first command. CLI parsing cast negative integers to unsigned types, turning a malformed input into a trivially feasible problem. Each gap is small in isolation and survives because no test exercises the human-facing surface end-to-end.
+
+These three categories share a common origin: agentic feature tests evaluate the program from the outside, on the surface a user touches, with realistic data and the documentation as the only guide.
 
 \section{Development Phases}\label{app:phases}
 
