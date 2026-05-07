@@ -224,15 +224,15 @@ We build a domain-specific harness that addresses both \emph{convention drift} a
 
 We make three contributions, each addressing one actor in the workflow. 
 
-\textbf{For domain experts.}
-A no-code contribution route that turns a structured GitHub issue into validated implementation, with no familiarity with the implementation language needed.
+\textbf{For end users.}
+The first comprehensive and executable library of computationally hard problem reductions: 265 reductions among 190 problem types and 170k lines of Rust code, an inventory that would have taken years by hand but landed in three months with a small team and AI agents.
 
 \textbf{For maintainers.}
 Our harness uses skills to guide agents through the full pipeline, from coding to the final review, under a layered correctness gate.
 Maintainers are freed from routine work to focus on the intellectual work.
 
-\textbf{For end users.}
-The first comprehensive and executable library of computationally hard problem reductions: 265 reductions among 190 problem types and 170k lines of Rust code, an inventory that would have taken years by hand but landed in three months with a small team and AI agents.
+\textbf{For domain experts.}
+A no-code contribution route that turns a structured GitHub issue into validated implementation, with no familiarity with the implementation language needed.
 
 
 \begin{figure}[t]
@@ -247,7 +247,7 @@ The first comprehensive and executable library of computationally hard problem r
 
 We implement the reduction graph as a Rust crate~\cite{Supplement}, organized in three layers (\Cref{fig:library-architecture}).
 
-\subsection{Interfaces}\label{sec:user-interfaces}
+\subsection{Interface Layer}\label{sec:user-interfaces}
 
 The library exposes two interfaces, both designed for humans and AI agents: the \texttt{pred} command-line interface (CLI) and a PDF manual.
 
