@@ -878,8 +878,8 @@ The same rule, invoked through the CLI, fails:
 \$ pred create -{}-example ThreePartition -o tp.json\\
 \$ pred reduce tp.json -{}-to JobShopScheduling -o b.json\\
 \$ pred solve b.json\\
-\{ "target\_eval": "Or(true)", ~~\textit{← solver found a valid witness}\\
-\hspace*{1em}"source\_eval": "Or(false)" \}~\textit{← lift produced invalid source config}
+\{ "target\_eval": "Or(true)", ~~\textit{[solver found a valid witness]}\\
+\hspace*{1em}"source\_eval": "Or(false)" \}~\textit{[lift produced invalid source config]}
 \end{quote}
 The brute-force solver and the ILP solver return different valid witnesses for the same target instance. \texttt{extract\_solution} happened to invert only the brute-force one, so it silently produced an invalid source configuration whenever the CLI's default ILP backend picked a structurally different witness. Four reductions had this bug. All four shipped with passing closed-loop unit tests. None reaches the CLI surface, where end users meet the library, before agentic feature tests run a complete \texttt{create} $\to$ \texttt{reduce} $\to$ \texttt{solve} $\to$ \texttt{evaluate} pipeline on canonical examples.
 
