@@ -192,7 +192,7 @@ The target solver's time complexity, $t_I$ for ILP, thereby upper-bounds the end
 \end{wrapfigure}
 
 Scaling an \emph{executable} reduction graph is an engineering problem.
-The literature is far ahead of any implementation: Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest software library (Appendix~\ref{sec:related}) covers fewer than 20.
+The literature is far ahead of any implementation: Garey and Johnson~\cite{garey1979} catalogue over 300~NP-hard problems with reduction sketches, yet the largest executable reduction graph (Appendix~\ref{sec:related}) covers fewer than 20 problem types.
 Implementation and maintenance are the bottleneck, and two barriers in particular emerge.
 
 \textbf{Convention drift.}
@@ -549,7 +549,7 @@ Work & Form & Scope \\
 Karp~\cite{karp1972}; Garey and Johnson~\cite{garey1979}; Lucas~\cite{lucas2014} & Paper catalogue & Reduction sketches and Ising formulas; not executable \\
 Karp DSL~\cite{Zhang2022Karp} & Executable per-rule & 25 reductions from a textbook; isolated rules, no reusable graph \\
 REDNP~\cite{Creus2014REDNP} & Executable per-rule & DSL for student exercises; new problems bootstrap via reduction to SAT \\
-PyQUBO~\cite{Zaman2021PyQUBO}; qubovert~\cite{Iosue2022qubovert}; QUBO.jl~\cite{Monteiro2022ToQUBO}; D-Wave Ocean~\cite{DWaveOcean2026} & Executable library & Many problems $\to$ single endpoint (QUBO/Ising) \\
+PyQUBO~\cite{Zaman2021PyQUBO}; qubovert~\cite{Iosue2022qubovert}; QUBO.jl~\cite{Monteiro2022ToQUBO}; D-Wave Ocean~\cite{DWaveOcean2026} & Executable library & Many problems to single endpoint (QUBO/Ising) \\
 ProblemReductions.jl~\cite{gao2025programming,Liu2023GenericTN} & Executable graph & 18 types; inter-type reduction graph; manually maintained \\
 \textbf{This work} & Executable graph & 190 types, 265 rules; composable inverse maps; AI-assisted maintenance \\
 \bottomrule
