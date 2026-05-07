@@ -41,6 +41,9 @@ sed -E \
   \\addtocounter{footnote}{-1}%\
 \\endgroup|
   }' \
+  -e '/%% ARXIV-CODE-URL-MARKER/{
+    s|.*|  The source code is available at \\url{https://github.com/CodingThrust/problem-reductions}.|
+  }' \
   main.tex > "$STAGE/main.tex"
 
 cp main.bbl        "$STAGE/main.bbl"
