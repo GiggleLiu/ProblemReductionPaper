@@ -847,15 +847,43 @@ description: Adding a new reduction
 
 \section{Agentic Feature Test Findings}\label{app:agentic-tests}
 
-The ${\sim}\,50$ defects claim of \Cref{sec:verification} aggregates findings across agentic-feature-test passes on the \texttt{pred} CLI. Two cases illustrate why these defects evade the existing test suite.
+Two examples illustrate why the ${\sim}\,50$ \texttt{pred} defects of \Cref{sec:verification} evade the existing Rust test suite.
 
-\paragraph{Help text inconsistent with command output.}
-Running \texttt{pred} with no subcommand printed the top-level help \emph{plus} the entire \texttt{pred solve --help} block, roughly seventy extra lines on solver backends, ILP examples, and timeout flags, appended without a header. A user reading the output reasonably concluded that \texttt{pred} required a solve invocation by default. The Rust unit tests never noticed: they assert on subcommand behavior, not on what the bare binary prints. The agentic test caught it on the first session because a simulated user typed \texttt{pred} expecting a subcommand menu and was confused by what came back.
+\paragraph{Help text spliced onto the bare command.}
+Typing \texttt{pred} with no subcommand printed the top-level help, then appended the entire \texttt{pred solve -{}-help} block:
+\begin{quote}\ttfamily\small
+\$ pred\\
+Usage: pred {<}COMMAND{>} [OPTIONS]\\[2pt]
+Commands:\\
+\hspace*{1em}create\hspace*{1em}Create a problem instance\\
+\hspace*{1em}show\hspace*{2em}Show a problem's definition\\
+\hspace*{1em}\dots\\[6pt]
+Run an ILP solver on a problem.\hspace*{1em}\textit{← unrelated; \string~70 lines}\\
+Usage: pred solve {<}FILE{>}\\
+\hspace*{1em}-{}-backend {<}NAME{>}\hspace*{1em}ILP backend [highs|cplex|\dots]\\
+\hspace*{1em}-{}-timeout {<}SECS{>}\hspace*{1em}\dots
+\end{quote}
+A naive user reading this output concluded that \texttt{pred} required a solve invocation by default. The Rust unit tests never noticed: they assert that each subcommand's help is correct in isolation, not that the bare binary stops where it should.
 
-\paragraph{Library passes, CLI fails: witness-dependent extraction.}
-Four reductions (3-Partition $\to$ Sequencing-to-Minimize-Weighted-Tardiness, 3-Partition $\to$ Job-Shop-Scheduling, Hamiltonian-Path $\to$ Consecutive-Ones-Submatrix, 3-Partition $\to$ Flow-Shop-Scheduling) shipped with closed-loop unit tests that all passed. The CLI pipeline (\texttt{create} $\to$ \texttt{reduce} $\to$ \texttt{solve} $\to$ \texttt{evaluate}) failed: the target solver returned \texttt{Or(true)}, but the lifted source configuration evaluated to \texttt{Or(false)}. The root cause was a contract violation. Each \texttt{extract\_solution} implementation worked for the specific witness that the brute-force solver happened to return during unit tests, but not for structurally different valid witnesses found by the ILP solver invoked through the CLI. Unit tests could not catch this because they only ever exercised one witness; agentic feature tests caught all four because the simulated end-user invoked the CLI's default ILP backend on canonical examples.
+\paragraph{Library passes, CLI fails.}
+The closed-loop unit test for 3-Partition $\to$ Job-Shop-Scheduling passes:
+\begin{quote}\ttfamily\small
+let target~~ = source.reduce\_to();\\
+let witness~ = brute\_force(\&target);\\
+let source\_2 = rule.extract\_solution(\&witness);\\
+assert!(source.evaluate(\&source\_2).is\_true()); ~~\textit{✓}
+\end{quote}
+The same rule, invoked through the CLI, fails:
+\begin{quote}\ttfamily\small
+\$ pred create -{}-example ThreePartition -o tp.json\\
+\$ pred reduce tp.json -{}-to JobShopScheduling -o b.json\\
+\$ pred solve b.json\\
+\{ "target\_eval": "Or(true)", ~~\textit{← solver found a valid witness}\\
+\hspace*{1em}"source\_eval": "Or(false)" \}~\textit{← lift produced invalid source config}
+\end{quote}
+The brute-force solver and the ILP solver return different valid witnesses for the same target instance. \texttt{extract\_solution} happened to invert only the brute-force one, so it silently produced an invalid source configuration whenever the CLI's default ILP backend picked a structurally different witness. Four reductions had this bug. All four shipped with passing closed-loop unit tests. None reaches the CLI surface, where end users meet the library, before agentic feature tests run a complete \texttt{create} $\to$ \texttt{reduce} $\to$ \texttt{solve} $\to$ \texttt{evaluate} pipeline on canonical examples.
 
-Two patterns account for the bulk of the ${\sim}\,50$ findings: surface-level inconsistencies between help and behavior, and silent contract violations exposed only by realistic end-to-end pipelines. The remainder are mechanical: missing canonical examples, schema fields out of sync with constructor parameters, default values printed twice, flag aliases that the help text references but the parser does not recognize, and CLI casts of negative integers to unsigned types.
+The remaining defects are mechanical: missing canonical examples for some variants, schema fields out of sync with constructor parameters, default values printed twice, flag aliases referenced in help text but not recognized by the parser, and CLI casts of negative integers to unsigned types.
 
 \section{Development Phases}\label{app:phases}
 
