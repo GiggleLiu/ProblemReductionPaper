@@ -80,6 +80,7 @@ echo "==> Compiling staged main.tex to regenerate main.bbl (without uncited entr
 # Drop intermediates so the tarball ships only source + bbl + figures.
 rm -f "$STAGE"/main.{aux,log,out,fls,fdb_latexmk,synctex.gz,blg,pdf} \
       "$STAGE/references.bib"
+rm -f "$STAGE/main.synctex(busy)"
 
 echo "==> Creating tarball"
 TAR="$OUT/arxiv.tar.gz"
