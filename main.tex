@@ -437,8 +437,7 @@ Third, the sub-agent steps out of character.
 The main agent interviews it about what worked, what was confusing, and where the output diverged from expectation, then writes a structured report.
 This report surfaces usability gaps, documentation omissions, and semantic errors that unit tests cannot reach.
 
-Agentic feature tests on the \texttt{pred} CLI surfaced $\sim$50 defects in command behavior, help text, and end-to-end pipelines (Appendix~\ref{app:agentic-tests}). The existing Rust unit tests cannot catch these classes of issue because they exercise the library API rather than the CLI surface.
-
+Agentic feature tests on the \texttt{pred} CLI surfaced $\sim$50 defects in command behavior, help text, and end-to-end pipelines (Appendix~\ref{app:agentic-tests}). Existing unit and round-trip tests miss these issues because they encode the developer's view of the library API; agentic feature tests instead exercise the CLI from a fresh user's perspective, surfacing documentation drift and unguarded edge cases that the test author never considered.
 %======================================================================
 %  SECTION 5: EVIDENCE
 %======================================================================
