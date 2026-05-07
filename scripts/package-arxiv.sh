@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Package an arXiv-ready tarball into submit/.
-# Includes: paper.tex, paper.bbl, and only the figures referenced by \includegraphics.
+# Includes: main.tex, checklist.tex, main.bbl, neurips_2026.sty,
+# and only the figures referenced by \includegraphics.
 
 set -euo pipefail
 
@@ -10,11 +11,11 @@ STAGE="$OUT/arxiv"
 
 cd "$ROOT"
 
-echo "==> Building paper to refresh paper.bbl"
-latexmk -pdf -interaction=nonstopmode paper.tex >/dev/null
+echo "==> Building paper to refresh main.bbl"
+latexmk -pdf -interaction=nonstopmode main.tex >/dev/null
 
-if [[ ! -f paper.bbl ]]; then
-  echo "error: paper.bbl not found after build" >&2
+if [[ ! -f main.bbl ]]; then
+  echo "error: main.bbl not found after build" >&2
   exit 1
 fi
 
@@ -22,18 +23,20 @@ echo "==> Staging in $STAGE"
 rm -rf "$STAGE"
 mkdir -p "$STAGE/figures"
 
-cp paper.tex "$STAGE/paper.tex"
-cp paper.bbl "$STAGE/paper.bbl"
+cp main.tex        "$STAGE/main.tex"
+cp checklist.tex   "$STAGE/checklist.tex"
+cp main.bbl        "$STAGE/main.bbl"
+cp neurips_2026.sty "$STAGE/neurips_2026.sty"
 
 echo "==> Extracting referenced figures"
 mapfile -t FIGS < <(
-  grep -oE '\\includegraphics(\[[^]]*\])?\{figures/[^}]+\}' paper.tex \
+  grep -hoE '\\includegraphics(\[[^]]*\])?\{figures/[^}]+\}' main.tex checklist.tex \
     | sed -E 's/.*\{figures\/([^}]+)\}/\1/' \
     | sort -u
 )
 
 if [[ ${#FIGS[@]} -eq 0 ]]; then
-  echo "error: no figures found in paper.tex" >&2
+  echo "error: no figures found in main.tex/checklist.tex" >&2
   exit 1
 fi
 
