@@ -44,6 +44,7 @@ sed -E \
   -e '/%% ARXIV-CODE-URL-MARKER/{
     s|.*|  The source code is available at \\url{https://github.com/CodingThrust/problem-reductions}.|
   }' \
+  -e 's|~\\cite\{Supplement\}||g' \
   main.tex > "$STAGE/main.tex"
 
 cp main.bbl        "$STAGE/main.bbl"
