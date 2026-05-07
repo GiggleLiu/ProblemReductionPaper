@@ -547,7 +547,7 @@ Prior work falls along a ladder of executability and scope (\Cref{tab:related-re
 Work & Form & Scope \\
 \midrule
 Karp~\cite{karp1972}; Garey and Johnson~\cite{garey1979}; Lucas~\cite{lucas2014} & Paper catalogue & Reduction sketches and Ising formulas; written-out mathematics rather than runnable code \\
-Karp DSL~\cite{Zhang2022Karp} & Executable per-rule & 25 reductions from a standard textbook (Kleinberg-Tardos); declarative, polynomial-time by construction, with automated property testing; reductions are isolated, no reusable graph \\
+Karp DSL~\cite{Zhang2022Karp} & Executable per-rule & 25 reductions from a standard textbook (Kleinberg-Tardos); declarative DSL designed to express polynomial-time reductions, with automated property testing; reductions are isolated, no reusable graph \\
 REDNP~\cite{Creus2014REDNP} & Executable per-rule & Imperative C-based DSL for student exercises (online judge); each new problem must bootstrap via a hand-written reduction to SAT; no automated property testing or complexity guarantees \\
 PyQUBO~\cite{Zaman2021PyQUBO}; qubovert~\cite{Iosue2022qubovert}; QUBO.jl~\cite{Monteiro2022ToQUBO}; D-Wave Ocean~\cite{DWaveOcean2026} & Executable library & Compiles many problems into a single endpoint (QUBO or Ising); no inter-type reductions \\
 ProblemReductions.jl~\cite{gao2025programming,Liu2023GenericTN} & Executable graph & 18 problem types; an inter-type reduction graph; manually maintained \\
