@@ -845,6 +845,18 @@ description: Adding a new reduction
   \label{fig:agent-profile}
 \end{figure}
 
+\section{Agentic Feature Test Findings}\label{app:agentic-tests}
+
+The ${\sim}\,50$ defects claim of \Cref{sec:verification} aggregates findings across agentic-feature-test passes on the \texttt{pred} CLI. Two cases illustrate why these defects evade the existing test suite.
+
+\paragraph{Help text inconsistent with command output.}
+Running \texttt{pred} with no subcommand printed the top-level help \emph{plus} the entire \texttt{pred solve --help} block, roughly seventy extra lines on solver backends, ILP examples, and timeout flags, appended without a header. A user reading the output reasonably concluded that \texttt{pred} required a solve invocation by default. The Rust unit tests never noticed: they assert on subcommand behavior, not on what the bare binary prints. The agentic test caught it on the first session because a simulated user typed \texttt{pred} expecting a subcommand menu and was confused by what came back.
+
+\paragraph{Library passes, CLI fails: witness-dependent extraction.}
+Four reductions (3-Partition $\to$ Sequencing-to-Minimize-Weighted-Tardiness, 3-Partition $\to$ Job-Shop-Scheduling, Hamiltonian-Path $\to$ Consecutive-Ones-Submatrix, 3-Partition $\to$ Flow-Shop-Scheduling) shipped with closed-loop unit tests that all passed. The CLI pipeline (\texttt{create} $\to$ \texttt{reduce} $\to$ \texttt{solve} $\to$ \texttt{evaluate}) failed: the target solver returned \texttt{Or(true)}, but the lifted source configuration evaluated to \texttt{Or(false)}. The root cause was a contract violation. Each \texttt{extract\_solution} implementation worked for the specific witness that the brute-force solver happened to return during unit tests, but not for structurally different valid witnesses found by the ILP solver invoked through the CLI. Unit tests could not catch this because they only ever exercised one witness; agentic feature tests caught all four because the simulated end-user invoked the CLI's default ILP backend on canonical examples.
+
+Two patterns account for the bulk of the ${\sim}\,50$ findings: surface-level inconsistencies between help and behavior, and silent contract violations exposed only by realistic end-to-end pipelines. The remainder are mechanical: missing canonical examples, schema fields out of sync with constructor parameters, default values printed twice, flag aliases that the help text references but the parser does not recognize, and CLI casts of negative integers to unsigned types.
+
 \section{Development Phases}\label{app:phases}
 
 In Phase~1 (weeks~0--7), the team and AI agents ported reduction rules from existing packages (ProblemReductions.jl~\cite{gao2025programming}, UnitDiskMapping.jl~\cite{Nguyen2023UnitDiskMapping,pan2025encodingcomputationallyhardproblems}, and qubogen~\cite{Tamura2020qubogen}) and from Garey and Johnson's catalogue~\cite{garey1979}.
