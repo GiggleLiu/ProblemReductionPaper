@@ -23,8 +23,16 @@ echo "==> Staging in $STAGE"
 rm -rf "$STAGE"
 mkdir -p "$STAGE/figures"
 
-cp main.tex        "$STAGE/main.tex"
-cp checklist.tex   "$STAGE/checklist.tex"
+echo "==> Generating arXiv variant of main.tex (preprint mode, no checklist)"
+# 1. Comment out L10:  \usepackage{neurips_2026}
+# 2. Uncomment L45:    \usepackage[preprint]{neurips_2026}
+# 3. Drop the \input{checklist.tex} line(s) from the body
+sed -E \
+  -e 's|^\\usepackage\{neurips_2026\}|% \\usepackage{neurips_2026}|' \
+  -e 's|^%[[:space:]]*\\usepackage\[preprint\]\{neurips_2026\}|\\usepackage[preprint]{neurips_2026}|' \
+  -e '/^\\input\{checklist\.tex\}/d' \
+  main.tex > "$STAGE/main.tex"
+
 cp main.bbl        "$STAGE/main.bbl"
 cp neurips_2026.sty "$STAGE/neurips_2026.sty"
 
