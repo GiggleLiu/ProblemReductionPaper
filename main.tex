@@ -871,7 +871,7 @@ The closed-loop unit test for 3-Partition $\to$ Job-Shop-Scheduling passes:
 let target~~ = source.reduce\_to();\\
 let witness~ = brute\_force(\&target);\\
 let source\_2 = rule.extract\_solution(\&witness);\\
-assert!(source.evaluate(\&source\_2).is\_true()); ~~\textit{✓}
+assert!(source.evaluate(\&source\_2).is\_true()); ~~\textit{[passes]}
 \end{quote}
 The same rule, invoked through the CLI, fails:
 \begin{quote}\ttfamily\small
