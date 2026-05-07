@@ -1026,7 +1026,7 @@ On C and D every run lands on simulated annealing (SA), so the only remaining de
 
 Taken together, A vs B and C vs D give a consistent picture of what web access does and does not do in one-shot solving. Web has real effects in both directions. Without \texttt{pred}'s structural guardrail, those effects are unreliable: web changes which solver the agent picks, sometimes for the better and sometimes catastrophically for the worse. With \texttt{pred} fixing the solver class, web takes on a narrower role: it can serve as a documentation lookup that anchors parameter choices to known-good ranges. This split reflects a more general fact: there are few universal priors for solver parameters; choices are usually case-by-case, and even experienced practitioners reach good settings through grid search over plausible values rather than a single recipe. \texttt{pred} contributes on the solver-selection axis, where structure provides a reliable criterion; tuning a chosen solver's parameters is naturally layered on top as an iterative grid-search refinement.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \caption{Simulated-annealing budget chosen by each \texttt{pred}-enabled run and the resulting solver wall-time. Each cell shows \texttt{num\_reads} $\times$ \texttt{num\_sweeps}.}
 \label{tab:end-user-sa-hyperparams}
 \centering
