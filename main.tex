@@ -224,12 +224,11 @@ We build a domain-specific harness that addresses both \emph{convention drift} a
 
 We make three contributions, each addressing one actor in the workflow. 
 
+\textbf{For maintainers.}
+An agent-ready scaffold for a research codebase: Markdown skills drive a fully automated implementation--review--integration pipeline under a layered correctness gate, freeing maintainers from routine work to focus on the intellectual work.
+
 \textbf{For domain experts.}
 A no-code contribution route that turns a structured GitHub issue into validated implementation, with no familiarity with the implementation language needed.
-
-\textbf{For maintainers.}
-Our harness uses skills to guide agents through the full pipeline, from coding to the final review, under a layered correctness gate.
-Maintainers are freed from routine work to focus on the intellectual work.
 
 \textbf{For end users.}
 The first comprehensive and executable library of computationally hard problem reductions: 265 reductions among 190 problem types and 170k lines of Rust code, an inventory that would have taken years by hand but landed in three months with a small team and AI agents.
@@ -245,7 +244,7 @@ The first comprehensive and executable library of computationally hard problem r
 
 \section{System Architecture}\label{sec:architecture}
 
-We implement the reduction graph as a Rust crate~\cite{Supplement}, organized in three layers (\Cref{fig:library-architecture}).
+The reduction graph is implemented as a Rust crate~\cite{Supplement}, organized in three layers (\Cref{fig:library-architecture}).
 
 \subsection{Interfaces}\label{sec:user-interfaces}
 
@@ -258,7 +257,7 @@ See Appendix~\ref{app:cli} for a worked session.
 Compiled from Typst, the manual collects the library's formal mathematics: each problem and reduction has a definition, a worked example, a diagram, and a proof sketch.
 Domain experts review it for correctness, and agents register a new entry whenever they add a model or rule, keeping code and mathematics in lockstep.
 
-\subsection{Library Layer}\label{sec:graph-structure}
+\subsection{Library}\label{sec:graph-structure}
 
 The library layer is a collection of problem types and the reduction rules between them.
 
@@ -279,7 +278,7 @@ For example, the 3-SAT $\to$ MIS reduction creates one vertex per literal occurr
 Each problem type defines a canonical instance, such as the Petersen graph for Maximum Independent Set.
 The same instance drives the test suite and serves as the worked example in the PDF manual.
 
-\subsection{Infrastructure Layer}\label{sec:infrastructure}
+\subsection{Infrastructure}\label{sec:infrastructure}
 
 The infrastructure layer provides the computational backends that the library layer builds on: backend solvers for exact verification, and a symbolic engine for analyzing computational complexity. Appendix~\ref{app:architecture} presents the engineering details of the Rust crate.
 
