@@ -534,11 +534,25 @@ This reduction graph can be improved in several directions: one is to refine \em
 \section{Related Work}\label{sec:related}
 
 \textbf{Reduction libraries and tools.}
-Karp~\cite{karp1972} established 21~reductions; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems with reduction sketches; Lucas~\cite{lucas2014} gave explicit Ising formulations for Karp's list. These are paper catalogues: authoritative references, but the reductions live as written-out mathematics rather than runnable code.
-The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} are executable, letting students write reductions in a domain-specific language and auto-checking them, but each reduction stands alone rather than forming a reusable graph.
-PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave Ocean~\cite{DWaveOcean2026} are executable libraries that compile problems into QUBO or Ising, but they expose a single target endpoint rather than inter-type reductions.
-ProblemReductions.jl~\cite{gao2025programming}, an earlier Julia prototype with 18~types~\cite{Liu2023GenericTN}, was the first to expose inter-type reductions as an executable graph and motivated the present work.
-Our library differs by connecting \emph{many} source types to \emph{many} targets with composable overhead and inverse maps, maintained by AI agents.
+Prior work falls along a ladder of executability and scope (\Cref{tab:related-reductions}): paper catalogues of mathematical proofs, executable per-rule tools, single-target compilers, and an earlier inter-type prototype. The present library extends this line by connecting \emph{many} source types to \emph{many} targets with composable overhead and inverse maps, maintained by AI agents.
+
+\begin{table*}[h]
+\caption{Reduction libraries and tools, ordered by executability and scope.}
+\label{tab:related-reductions}
+\centering
+\small
+\begin{tabular}{@{}p{4.6cm}lp{9.5cm}@{}}
+\toprule
+Work & Form & Scope \\
+\midrule
+Karp~\cite{karp1972}; Garey and Johnson~\cite{garey1979}; Lucas~\cite{lucas2014} & Paper catalogue & Reduction sketches and Ising formulas, written-out mathematics rather than runnable code \\
+Karp DSL~\cite{Zhang2022Karp}; REDNP~\cite{Creus2014REDNP} & Executable per-rule & Student-written reductions in a DSL, auto-checked but isolated; no reusable graph \\
+PyQUBO~\cite{Zaman2021PyQUBO}; qubovert~\cite{Iosue2022qubovert}; QUBO.jl~\cite{Monteiro2022ToQUBO}; D-Wave Ocean~\cite{DWaveOcean2026} & Executable library & Compiles many problems into a single endpoint (QUBO or Ising); no inter-type reductions \\
+ProblemReductions.jl~\cite{gao2025programming,Liu2023GenericTN} & Executable graph & 18 problem types; first inter-type reduction graph; manually maintained \\
+\textbf{This work} & Executable graph & 190 problem types, 265 reduction rules; composable inverse maps; AI-maintained \\
+\bottomrule
+\end{tabular}
+\end{table*}
 
 \textbf{AI coding agents: capabilities and limitations.}
 SWE-agent~\cite{Yang2024SWEagent}, Devin~\cite{Wu2024Devin}, OpenHands~\cite{Wang2024OpenHands}, and Claude Code~\cite{Anthropic2025ClaudeCode} resolve isolated issues with increasing reliability~\cite{Xia2025LiveSWEagent}, but longer-horizon benchmarks reveal a capability cliff: frontier agents resolve up to $\sim$70\% of single-file issues on SWE-bench Verified~\cite{jimenez2024swebench}, yet SWE-bench Pro~\cite{Deng2025SWEBenchPro} reports only $\sim$23\% on multi-file tasks and SWE-EVO~\cite{Thai2025SWEEVO} $\sim$21\%; LongCLI-Bench~\cite{LongCLIBench2026} finds pass rates below 20\% on long-horizon CLI tasks.
