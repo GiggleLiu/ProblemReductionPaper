@@ -344,7 +344,7 @@ Unlike bare prompts, skills break a complex task into concrete, ordered steps sm
 \textbf{Advisor skills} involve humans for two purposes: \emph{training} humans to use the library or contribute to it, and \emph{utilizing} humans for tasks agents cannot reliably perform, such as critical decisions, hard mathematical reasoning, and creative work like designing canonical examples.
 \emph{Training} skills flatten the learning curve:
 end users invoke \texttt{find-solver} skill (\Cref{fig:skill-architecture}(b)) to go from a real-world problem to a concrete solving strategy by exploring the reduction graph, or \texttt{find-problem} to discover what problems a given solver covers; contributors invoke \texttt{propose} skill to brainstorm a new problem or reduction in mathematical language and file a well-formed GitHub issue, with no programming required.
-\emph{Utilizing} skills retain humans for critical correctness work: maintainers invoke \texttt{fix-issue} to identify and address quality issues such as unsound proofs or low-quality examples interactively, and \texttt{final-review} to catch dangerous commits or correctness gaps before merge.
+\emph{Utilizing} skills retain humans for critical correctness work: maintainers invoke \texttt{fix-issue} to identify and address quality defects such as unsound proofs or low-quality examples interactively, and \texttt{final-review} to catch dangerous commits or correctness gaps before merge.
 These skills lower the usage barrier from ``knows the library'' to ``knows the problem,'' and the contribution barrier from ``knows the programming language'' to ``knows the mathematics.''
 
 Appendix~\ref{app:skills} excerpts one skill of each kind: \texttt{propose} (advisor) and \texttt{add-rule} (automation).
