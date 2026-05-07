@@ -38,7 +38,6 @@ sed -E \
     s|.*|\\begingroup\
   \\renewcommand\\thefootnote{}%\
   \\footnotetext{\\textsuperscript{*}Equal contribution.\\quad \\textsuperscript{$\\dagger$}Corresponding author: \\texttt{jinguoliu@hkust-gz.edu.cn}.}%\
-  \\addtocounter{footnote}{-1}%\
 \\endgroup|
   }' \
   -e '/%% ARXIV-CODE-URL-MARKER/{
