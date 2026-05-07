@@ -38,13 +38,13 @@ cp neurips_2026.sty "$STAGE/neurips_2026.sty"
 
 echo "==> Extracting referenced figures"
 mapfile -t FIGS < <(
-  grep -hoE '\\includegraphics(\[[^]]*\])?\{figures/[^}]+\}' main.tex checklist.tex \
+  grep -hoE '\\includegraphics(\[[^]]*\])?\{figures/[^}]+\}' "$STAGE/main.tex" \
     | sed -E 's/.*\{figures\/([^}]+)\}/\1/' \
     | sort -u
 )
 
 if [[ ${#FIGS[@]} -eq 0 ]]; then
-  echo "error: no figures found in main.tex/checklist.tex" >&2
+  echo "error: no figures found in staged main.tex" >&2
   exit 1
 fi
 
