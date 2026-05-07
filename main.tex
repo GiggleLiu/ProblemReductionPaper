@@ -534,10 +534,10 @@ This reduction graph can be improved in several directions: one is to refine \em
 \section{Related Work}\label{sec:related}
 
 \textbf{Reduction libraries and tools.}
-Karp~\cite{karp1972} established 21~reductions; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems with reduction sketches; Lucas~\cite{lucas2014} gave explicit Ising formulations for Karp's list.
-The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students write and auto-check reductions but provide no reusable graph.
-PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave Ocean~\cite{DWaveOcean2026} compile problems into QUBO/Ising but support no inter-type reductions.
-ProblemReductions.jl~\cite{gao2025programming}, an earlier Julia prototype with 18~types~\cite{Liu2023GenericTN}, motivated the present work.
+Karp~\cite{karp1972} established 21~reductions; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems with reduction sketches; Lucas~\cite{lucas2014} gave explicit Ising formulations for Karp's list. These are paper catalogues: authoritative references, but the reductions live as written-out mathematics rather than runnable code.
+The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} are executable, letting students write reductions in a domain-specific language and auto-checking them, but each reduction stands alone rather than forming a reusable graph.
+PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave Ocean~\cite{DWaveOcean2026} are executable libraries that compile problems into QUBO or Ising, but they expose a single target endpoint rather than inter-type reductions.
+ProblemReductions.jl~\cite{gao2025programming}, an earlier Julia prototype with 18~types~\cite{Liu2023GenericTN}, was the first to expose inter-type reductions as an executable graph and motivated the present work.
 Our library differs by connecting \emph{many} source types to \emph{many} targets with composable overhead and inverse maps, maintained by AI agents.
 
 \textbf{AI coding agents: capabilities and limitations.}
@@ -847,7 +847,7 @@ description: Adding a new reduction
 
 \section{Agentic Feature Test Findings}\label{app:agentic-tests}
 
-The ${\sim}\,50$ \texttt{pred} defects of \Cref{sec:verification} fall into two categories. Each illustrates a different way an end user can be misled by a library that passes its own unit tests. Every defect is faithfully recorded in the project's development history (GitHub issues and pull requests), which will be made public alongside the paper.
+The ${\sim}\,50$ \texttt{pred} defects of \Cref{sec:verification} fall into two categories. Every defect is faithfully recorded in the project's development history (GitHub issues and pull requests), which will be made public alongside the paper.
 
 \paragraph{Help text drifts from actual behaviour.}
 A user only knows what the program tells them, so any disagreement between the documentation and the running code propagates into every later decision the user makes. As one example, in \texttt{pred} v0.3.0 typing \texttt{pred} with no subcommand printed the top-level menu and then appended roughly seventy lines of unrelated \texttt{pred solve} help, which may lead the user to believe a solve invocation is required by default. A simulated first-time user found this on the very first command and reported the confusion. An AI agent writing unit tests thinks about the code it has just built, not about how a user would first meet the tool.
