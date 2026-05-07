@@ -465,13 +465,13 @@ In 12 weeks of development, most of the library was built after week~8.5, once t
 
 The simplest use of \texttt{pred} starts from a high-performance solver and asks what problems it can serve. For an Ising machine that takes QUBO input, \texttt{pred} can list all 138 library problems that reach QUBO within three hops (Appendix~\ref{app:qubo-coverage}). 
 
-The harder direction starts from a problem stated in everyday language and asks an AI agent to use \texttt{pred} to deliver a fast and good solver end-to-end. To check whether \texttt{pred} helps in this direction, we set up a case study where the agent receives a problem in everyday language. In our instance, a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores. Mathematically, this is NP-hard Maximum Cut.
+The harder direction starts from a problem stated in everyday language and asks an AI agent to use \texttt{pred} to deliver a fast and good solver end-to-end. To check whether \texttt{pred} helps in this direction, we set up a case study where the agent receives a problem in everyday language. In our instance, a manager wants to split a 150-person organization into two product teams to maximize the sum of pair-wise cross-team scores. Mathematically, this is NP-hard Maximum Cut (full setup in Appendix~\ref{app:end-user}).
 
 To answer, the agent has to recognize the underlying mathematical model, pick a reduction path to a solver-friendly endpoint, choose a solver for that endpoint, and write the code that ties them together. Each of these steps depends on prior knowledge that may be wrong, partial, or out of date; \texttt{pred} replaces the reduction-path step with a walk over a verified graph.
 
 Beyond \texttt{pred}, the other obvious way for an agent to reach external information is to search the web. To tell apart \texttt{pred}'s contribution from generic web access, we compare four configurations that toggle the two independently (the four rows of \Cref{tab:end-user-eval}).
 Each configuration is run on ten random instances, with one-shot solver wall-time capped at 90~s.
-For each run we record three quantities: tokens spent overall, solver wall-time, and the objective value obtained by the solver (full setup in Appendix~\ref{app:end-user}).
+For each run we record three quantities: tokens spent overall, solver wall-time, and the objective value obtained by the solver.
 
 \Cref{tab:end-user-eval} summarizes the outcomes. \emph{With \texttt{pred}, the agent picks the right reduction every time.} Every \texttt{pred}-enabled run lands on the same path (spin-glass / QUBO) and the same solver (simulated annealing on the Ising form), matches the \emph{best-of-four} objective on every instance, and cuts solver wall-time by a factor of $3$--$6$, at the cost of roughly $2{\times}$ more AI tokens (details in Appendix \Cref{tab:end-user-solver-table}).
 
@@ -537,7 +537,7 @@ This reduction graph can be improved in several directions: one is to refine \em
 Karp~\cite{karp1972} established 21~reductions; Garey and Johnson~\cite{garey1979} expanded the catalogue to hundreds of NP-complete problems with reduction sketches; Lucas~\cite{lucas2014} gave explicit Ising formulations for Karp's list.
 The Karp DSL~\cite{Zhang2022Karp} and REDNP~\cite{Creus2014REDNP} let students write and auto-check reductions but provide no reusable graph.
 PyQUBO~\cite{Zaman2021PyQUBO}, qubovert~\cite{Iosue2022qubovert}, QUBO.jl~\cite{Monteiro2022ToQUBO}, and D-Wave Ocean~\cite{DWaveOcean2026} compile problems into QUBO/Ising but support no inter-type reductions.
-ProblemReductions.jl~\cite{gao2025programming}, our Julia prototype with 18~types~\cite{Liu2023GenericTN}, motivated the present work.
+ProblemReductions.jl~\cite{gao2025programming}, an earlier Julia prototype with 18~types~\cite{Liu2023GenericTN}, motivated the present work.
 Our library differs by connecting \emph{many} source types to \emph{many} targets with composable overhead and inverse maps, maintained by AI agents.
 
 \textbf{AI coding agents: capabilities and limitations.}
