@@ -9,10 +9,6 @@ Answer: We agree. Under NeurIPS Contribution Types, this submission is **Use-ins
 
 The need it addresses is one this community is beginning to ask about: *which scientific tasks were out of reach before, and only become possible with today's AI agents?* A reduction library is a clean instance. Finding a reduction and proving it correct is hard and takes human insight, but the literature already contains hundreds of proved rules. What was missing is the code. Writing one rule is a small, mechanical job, and there are hundreds of them, spread over decades of papers and subfields that few people span. That is too much tedious work for a researcher and too specialized for an engineer, so nobody did it. Agents can do this volume, and every rule can be checked automatically (the replies below analyze these checks and what they miss in the manuscript). Agents make mistakes, but tests catch them. This paper reports one such build.
 
-What agents can and cannot build is an AI question, which is why we brought the study here rather than to a complexity theory or software venue. Two groups of readers can also use the library itself. One group builds solvers. A good solver for a single target such as ILP, QUBO, or SAT becomes a solver for every problem that reduces to that target, and the library supplies both the reductions and a large set of problems to test on. The other group works on quantum computing, where claiming an advantage means first putting a hard problem into a form the hardware accepts. The library lists those paths and what each one costs, so a path can be chosen by search instead of by hand. We also need these readers. The library is open and built for outside contributions, and the solvers, new problems, and bug reports they bring are what will let it grow beyond what our own group can maintain.
-
-Where the draft still falls short of a strong Use-inspired paper is evaluation and transferable insight: we under-measure maintainer and domain-expert outcomes, and we under-analyze which harness choices matter. The replies below and the revision address those gaps; we do not claim to turn this into a methods paper.
-
 > *The evaluation is also too thin for the claims. [...] I would have liked to see direct evidence: how much maintainer time was saved, how many agent-written PRs failed, how many errors were caught during review, and whether outside domain experts could actually use the no-code contribution route successfully.*
 
 Answer: To provide this evidence, we went back through the complete development record of the main construction phase: every issue, pull request, review comment, and project-board event, cross-checked against the git history. The table summarizes what happened at each pipeline stage; three findings follow.
@@ -68,7 +64,20 @@ We thank the reviewer for their feedback. Following are our responses to each in
 
 > *W1: Limited algorithmic depth in the case study. The end-user utility experiment (Section 4.2) is based on a single problem class (signed-weight Maximum Cut).*
 
-Answer: [TODO: broader end-user evaluation.]
+Answer: We agree that one problem class was too narrow. We therefore repeated the same comparison, switching web search and `pred` on and off one at a time, on three more problems: maximum-likelihood ranking, two-color PaintShop, and bounded closest vector. Each problem used ten random instances, a fresh agent and working directory, one 90-second solver call, and an independent check against the original problem.
+
+
+| Source problem             | Bare AI  | Web only | `pred`   | `pred` + web |
+| -------------------------- | -------- | -------- | -------- | ------------ |
+| Maximum-likelihood ranking | 2/10     | 1/10     | 1/10     | 2/10         |
+| Two-color PaintShop        | 0/10     | 1/10     | 2/10     | **5/10**     |
+| Bounded closest vector     | 4/10     | 2/10     | **6/10** | **6/10**     |
+| **Total**                  | **6/30** | **4/30** | **9/30** | **13/30**    |
+
+
+This remains a simple case study, not the contribution of the paper. The contribution is the library and the harness that built it. The case study is useful mainly for what it teaches about downstream use. Giving the agent only a short Markdown skill on how to call `pred` is not enough. With that skill alone, `pred` reaches 9/30 accepted answers, while `pred` + web reaches 13/30. The graph can change where the agent goes, but a usable answer still depends on what is run after the reduction.
+
+That lesson is exactly why we think the artifact matters. Before a shared reduction library, each agent or solver stack reinvented problem modeling on its own. With a common graph, those later pieces can share one narrative: match a natural problem to a typed node, walk a tested path to a solver-ready form, and map the answer back. Path ranking, solver bindings, formulation comparison, and hardware-aware choice can all sit on top of that shared substrate. None of them is in the present experiment, and none of them needs to be invented from scratch for each new problem. Once that shared story exists, later systems can improve on top of it in many ways, and almost any of those ways is better than asking each agent to rediscover modeling and reduction from scratch. We will broaden Section 4.2 with this multiclass illustration and state clearly that the case study is a starting point for such workflows, not a claim that a skill alone finishes the job.
 
 > *W2: Dependency on specific LLM capabilities. It is unclear how sensitive the harness engineering framework is to the underlying model's capabilities, or how often human maintainers had to intervene during the "headless" implementation phases.*
 
@@ -107,17 +116,17 @@ Fraction requiring human correction: at Final Review, human logical or semantic 
 
 Misses by the verification stack: final human review caught one vacuous-budget reduction after every automated check passed (described in our reply to Reviewer c6QA). Separately, after merge, humans re-examined about 70 rules and found **8 unsound constructions (about 11% of that focused subset)** and 7 further rules with extraction, overhead, or panic defects. The unsound reductions were removed, and reduction verification became a default gate. This is a focused-subgroup result, not a library-wide escape estimate. We therefore describe the artifact as tested and reviewed, not formally verified.
 
-> *Section 1.2 is dense. The paper introduces "primitive reduction rules," "size features," "reduction overhead" without walking you through a single end-to-end example in the main text.*
+> *Section 1.2 is dense. The paper introduces "primitive reduction rules," "size features," "reduction overhead" without walking you through a single end-to-end example in the main text. Clarity suffers from oscillation between mathematical formalism in Section 1 and engineering description in Section 2.*
 
-Answer: [TODO: end-to-end example in Section 1.2.]
+Answer: We agree and will replace the abstract notation in Section 1.2 with one example. Our 150-person team-split problem is Maximum Cut. To solve it on an Ising machine, the library follows Maximum Cut $\to$ SpinGlass $\to$ QUBO, then maps the machine's answer back to a team assignment.
+
+Each arrow is one translation step, which we call a *primitive reduction rule*. It converts an instance into the next form and knows how to translate the resulting solution back. To track the cost of this translation, the library records the counts that determine an instance's size: for Maximum Cut, the numbers of people and scored pairs; for QUBO, the number of binary variables. We call these counts *size measures*. The *reduction overhead* is a formula showing how the input counts determine the output counts—for example, whether $|V|$ people produce $O(|V|)$ or $O(|V|^4)$ QUBO variables.
+
+These details decide whether a reduction is useful, not merely correct. Our library has two valid paths from Maximum Cut to QUBO: one uses $O(|V|)$ variables, while the other uses $O(|V|^4)$. At 150 people, that is the difference between a practical input and an unusable one. Tracking overhead lets the library choose the practical path automatically; composing primitive rules lets each new rule connect many existing problems to new solvers. We will present this example before the terminology and move the composition equation to the appendix.
 
 > *The paper also fails to clearly distinguish what is novel from what is standard practice. The six-stage pipeline looks like a standard build-test-merge workflow with LLM wrappers.*
 
-Answer: Please see Q4 below.
-
-> *Clarity suffers from oscillation between mathematical formalism in Section 1 and engineering description in Section 2.*
-
-Answer: [TODO: bridge the reduction graph and the implementation.]
+Answer: [TODO]
 
 > *How do you verify that a generated reduction rule is correct? What fraction of reductions required human correction of logical errors?*
 
