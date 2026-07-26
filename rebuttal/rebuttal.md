@@ -60,7 +60,7 @@ Answer: We agree and will say "tested and reviewed," not "verified," throughout 
 ## Reviewer yPT8
 
 Rebuttal:
-We thank the reviewer for their feedback. Following are our responses to each individual comment (which are highlighted in italics).
+We thank the reviewer for their feedback. Following are our responses to each individual comment.
 
 > *W1: Limited algorithmic depth in the case study. The end-user utility experiment (Section 4.2) is based on a single problem class (signed-weight Maximum Cut).*
 
@@ -89,7 +89,7 @@ Answer: [TODO: practical overhead measurement.]
 
 > *Q1: In the agentic feature tests, how often did the sub-agents hallucinate bugs that did not actually exist, and how was this noise filtered by the main agent?*
 
-Answer: We re-audited the detailed agentic feature-test records. They contain **69 confirmed defects across 45 PRs (0.97 per audited PR)**; 26 PRs had no confirmed defect. Confirmation required the main agent to reproduce the command or trace the behavior to code before repair. We collapsed repeated reports and multiple symptoms of one root cause within a PR, which prevents retries and verbose sub-agent reports from inflating the count. The reports explicitly record three false alarms filtered this way: an incorrectly framed MCP probe, an allegedly required variant suffix that was not required, and an expected solver-fallback error treated as intended behavior. Because discarded suspicions were not logged systematically, three is a lower bound and does not support a hallucination rate. The 69 confirmed defects were 34 workflow/documentation failures, 15 validation or numeric-domain failures, 10 registration/metadata failures, 8 semantic errors, and 2 weak canonical examples.
+Answer: [TODO]
 
 > *Q2: What is the practical runtime overhead of composing multiple reductions (e.g., 3 hops to QUBO) compared to a hand-crafted, direct reduction for a specific problem?*
 
@@ -105,8 +105,7 @@ Answer: **1 of 168 unique implementation issues (0.6%) directly blocked and requ
 
 ## Reviewer WsAZ
 
-Rebuttal:
-We thank the reviewer for their feedback. Following are our responses to each individual comment (which are highlighted in italics).
+Rebuttal: We thank the reviewer for their feedback. Following are our responses to each individual comment.
 
 > *[...] the paper never reports what fraction of reductions required human correction of logical errors, or how often the verification stack misses a semantically incorrect reduction. Without that data, we cannot assess how tight the human bottleneck is.*
 
@@ -130,7 +129,7 @@ Answer: [TODO]
 
 > *How do you verify that a generated reduction rule is correct? What fraction of reductions required human correction of logical errors?*
 
-Answer: Please see our response to the first comment above: 1.7% of shipped contributions needed human logical correction at Final Review, and the post-merge re-examination of ~70 rules found ~11% of them unsound. [TODO: describe the verification stack itself.]
+Answer:  [TODO]
 
 > *Can you walk through one non-trivial reduction end-to-end, showing what the agent produced versus what required human intervention?*
 
@@ -138,11 +137,13 @@ Answer: [TODO: end-to-end walkthrough; the vacuous-budget MinimumVertexCover-to-
 
 > *How do you handle cases where composed overhead makes a reduction path practically useless?*
 
-Answer: We have one measured instance: human testing across reduction paths exposed a pathological, nondeterministically selected QAP-to-ILP path, and the fix made path selection overhead-aware and deterministic. [TODO: general overhead-handling policy.]
+Answer: When routing a problem to a solver (e.g., MIS to QUBO), we compare candidate paths by composed size overhead, not only by reachability. Each edge records how source sizes map to target sizes (e.g., graph order \(n\) to QUBO variable count). We compose these maps along each path and drop any path that another dominates on every size measure (variables, constraints, \ldots) and is strictly smaller on at least one measure. Given a concrete instance and a size budget, we also check the actual constructed sizes.
+
+Example: one MIS-to-QUBO route maps \(n\) vertices to \(n\) QUBO variables; another through Clique and ILP adds auxiliaries and, on a 128-vertex instance, yields 4,192 variables instead of 128. We discard the latter. If every remaining path exceeds the budget, we report that no practical route exists rather than silently returning an unusable encoding. Domain experts seek reductions that stay useful under realistic sizes; we develop and rank paths in the library by that same practical criterion.
 
 > *Which parts of the harness are actually novel versus standard automation with LLM wrappers?*
 
-Answer: The development record shows the difference in practice. A build-test wrapper gates on compilation and tests; here, 76.6% of flawed proposals were repaired *before any code was written*, agentic feature tests (an AI sub-agent role-playing an end user) failed 32.4% of the PRs they reviewed, and 94.3% of corrected contributions cleared Final Review in one round. The human role is complementary, not supervisory of each step: designing solver-backed and brute-force test oracles, re-checking ~70 rules for soundness, and deciding repair versus removal. [TODO: sharpen the novelty statement (advisor versus automation skills, abstract steps).]
+Answer: [TODO: novelty statement.]
 
 > *How many domain experts used the no-code contribution route, and what was their experience?*
 
