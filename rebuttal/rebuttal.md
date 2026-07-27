@@ -4,77 +4,74 @@ Rebuttal: We thank the reviewer for their feedback. Following are our responses 
 
 > *My main concern is that the paper feels much more like an engineering report than a research paper. The work does not introduce a new learning method, a new agent architecture, a new optimization algorithm, a theoretical result, or a benchmark.*
 
-Answer: We agree. Under NeurIPS Contribution Types, this submission is **Use-inspired**. It addresses a real application need instead of proposing a general-purpose ML method.
+Answer: 
+This concern judges the paper by the wrong standard. We do not claim any of the items listed above.
 
-The need it addresses is one this community is beginning to ask about. *Which scientific tasks were out of reach before, and only become possible with today's AI agents?* A reduction library is a clean instance. Finding a reduction and proving it correct is hard and takes human insight, but the literature already contains hundreds of proved rules. What was missing is the code. Writing one rule is a small, mechanical job, and there are hundreds of them, spread over decades of papers and subfields that few people span. That is too much tedious work for a researcher and too specialized for an engineer, so nobody did it. Agents can do this volume, and every rule can be checked automatically (the replies below analyze these checks and what they miss in the manuscript). Agents make mistakes, but tests catch them. This paper reports one such build.
+First, our high-level contribution is one question: *which scientific tasks were out of reach before, and only become possible with today’s AI agents?* As Section 1 states, a large, checkable reduction library is one concrete instance of that question. The literature already has hundreds of proved reductions. But nobody built the library before. More importantly, correctness for this task is well defined: an agent-written reduction can be falsified by an input counterexample, so the task is unusually well suited to agent development. This paper studies that build as evidence for the question above. It is not a software changelog.
+
+Second, the research object is not a new ML module. It is a domain-specific harness (Secs. 2–3). As Section 1 states, the harness rests on three parts: a skill-based automation pipeline, a no-code contribution route for domain experts, and a multilayer verification stack. The pipeline looks like build–test–merge because, for reductions, verification is the product. That does not make the work “ordinary SE plus LLM wrappers.” The harness fixes where agents may act, what must pass before merge, and how experts contribute without writing code. The replies below analyze this harness in detail. That analysis shows the design is not simple engineering.
+
+Third, under NeurIPS Contribution Types, this submission is Use-inspired. It addresses a real application need instead of proposing a general-purpose ML method.
+
+In short, the importance of this work should not be judged by that checklist.
 
 > *The evaluation is also too thin for the claims. [...] I would have liked to see direct evidence: how much maintainer time was saved, how many agent-written PRs failed, how many errors were caught during review, and whether outside domain experts could actually use the no-code contribution route successfully.*
 
-Answer: We re-audited the main construction phase (every issue, PR, review comment, board event, and the matching git history) and read the checks by *job*.
+Answer: Yes. Six domain experts used the no-code contribution route strictly. They filed structured issues and never touched the Rust code. The harness is what makes that possible. It takes over the routine of software maintenance, so humans spend their time on architecture and on creative work such as proposing algorithms that are not yet in the literature.
 
-**No-code coverage.** Of **265** rules in v0.5.0, about **20** came from the pre-agent Julia prototype cited in Related Work. The other ~**245** entered through the issue-only path (structured proposal, then validate/repair, then agent implement, then review gates).
-
-**Scale vs. that prototype**.
+**1. No-code coverage and scale.** Of 265 rules in v0.5.0, about 20 came from the pre-agent Julia prototype cited in Related Work. The other ~245 entered through the path introduced in the manuscript. Against that prototype, rule throughput rose about 30×.
 
 
-|                       | Julia prototype (Related Work) | This library (v0.5.0) |
-| --------------------- | ------------------------------ | --------------------- |
-| Main build window     | ~6 months (Jul-Dec 2024 dense) | ~3 months             |
-| Problem types / rules | 17 / 17                        | 190 / 265             |
-| Source size           | ~4.3k lines                    | 170k+ lines           |
+|                       | Julia prototype | This library (v0.5.0) |
+| --------------------- | --------------- | --------------------- |
+| Main build window     | ~6 months       | ~3 months             |
+| Problem types / rules | 17 / 17         | 190 / 265             |
+| Source size           | ~4.3k lines     | 170k+ lines           |
 
 
-**1. Issue quality (Propose → Validate).** Domain experts file structured issues; the quality gate in `check-issue` checks `usefulness`, `effort`, `correctness`, and `writing quality` before any code is written.
+**2. Issue quality (Propose → Validate).** Domain experts file structured issues; the quality gate in `check-issue` checks usefulness, effort, correctness, and writing quality before any code is written.
 
 
-| Outcome                                       | Count                  |
-| --------------------------------------------- | ---------------------- |
-| Proposed issues                               | **381**                |
-| Passed quality gate                           | **214**                |
-| Entered `fix-issue`                           | **167**                |
-| … repaired by the agent (mechanical failures) | **128 (76.6%)** of 167 |
-| … stopped / On Hold (needs human decision)    | **39 (23.4%)** of 167  |
+| Outcome                                       | Count              |
+| --------------------------------------------- | ------------------ |
+| Proposed issues                               | 381                |
+| Passed quality gate                           | 214                |
+| Entered `fix-issue`                           | 167                |
+| … repaired by the agent (mechanical failures) | 128 (76.6%) of 167 |
+| … stopped / On Hold (needs human decision)    | 39 (23.4%) of 167  |
 
 
-Of the **167** that entered `fix-issue`, most failures were mechanical. An agent can fix them by searching the literature and writing simple scripts, without human review. In the record, that meant filling in missing fields in the issue template (size fields, complexity bounds, etc.) (**66%** of 167), fixing incomplete or wrong examples (**46%**), correcting wrong size measures in the overhead table (**19%**), defining missing symbols (**17%**), completing incomplete algorithm steps (**8%**), and correcting wrong citations or textual descriptions (**77%**). 
+Of the 167 that entered `fix-issue`, most failures were mechanical. An agent can fix them by searching the literature and writing simple scripts, without human review. In the record, that meant filling in missing fields in the issue template (size fields, complexity bounds, etc.) (66% of 167), fixing incomplete or wrong examples (46%), correcting wrong size measures in the overhead table (19%), defining missing symbols (17%), completing incomplete algorithm steps (8%), and correcting wrong citations or textual descriptions (77%). 
 
-The rest need a human decision. When a credible literature record is missing, that is where the domain expert matters: these reduction algorithms are unlikely to be established by a few simple repair rounds. The **39** stopped issues looked like this.
-
-
-| What the record shows                                          | Count  |
-| -------------------------------------------------------------- | ------ |
-| The reduction algorithm was incomplete, unverifiable, or wrong | **22** |
-| Prerequisite not in the library                                | **12** |
-| Useless to the reduction graph (already covered or isomorphic) | **5**  |
+The rest need a human decision. When a credible literature record is missing, that is where the domain expert matters: these reduction algorithms are unlikely to be established by a few simple repair rounds. The 39 stopped issues looked like this.
 
 
-**2. Review (Stage 4 → Final Review).** After implementation, compile-time checks, unit tests, and round-trip tests are hard merge gates. Above them sits a layer the submission undersold by leaving it in Appendix G: agentic feature testing, review from a user's perspective. It is the only black-box layer in the stack, and it does two jobs. It checks the user surface — CLI help text, workflow, registration — which accounted for **64%** of confirmed findings across audited PRs. And it tests adversarially: the agent attacks each implemented rule through the real CLI, feeding it batches of random and edge-case instances and checking every mapped-back solution against the original problem (**33%** of confirmed findings). In the later phase of development, this adversarial mode became our most effective correctness review, because it catches semantic defects that in-code tests cannot see; one example is a vacuous budget that kept every fixture green while dropping the optimization objective. Overall, agentic feature testing confirmed **0.97** defects per PR (**63.4%** of audited PRs had a finding).
-
-What remains for humans is not code reading: at no point in the project did we review by reading PR diffs. The human role is merge authority and oracle design, and much of the recorded "human intervention" reduces to invoker work — pointing an attacking agent at a rule and acting on its verdict. The final-review record shows what this means in practice. Across **355** merged logical additions, the human action was merge or hold; humans stepped in on semantics only **4** times (**1.7%** of shipped contributions), and **1** attempt was rejected. All other repair was agent work driven by test findings: **296** additions merged after one repair round, **41** were clean, and **18** were reworked.
-
-
-**3. What the weaker regime cost (an ablation).** For most of the v0.5.0 build we had not yet recognized how much the adversarial mode mattered: agentic feature testing put no hard requirement on the number or construction of random instances. Once we did, we ran the strengthened test retroactively over ~**70** non-ILP rules already merged in v0.5.0 — the same rules, with and without the stronger adversarial layer. It exposed **16** defects across 15 rules, including **8** unsound constructions that had passed the weaker stack; humans chose repair vs. removal. The v0.6.0 development cycle enforces instance count and construction requirements in agentic feature testing as a hard gate. In the revision we will promote agentic feature testing from Appendix G into the main text, report this ablation, and add a defect taxonomy appendix.
-
-**Direct answers to the four asks.**
+| What the record shows                                          | Count |
+| -------------------------------------------------------------- | ----- |
+| The reduction algorithm was incomplete, unverifiable, or wrong | 22    |
+| Prerequisite not in the library                                | 12    |
+| Useless to the reduction graph (already covered or isomorphic) | 5     |
 
 
-| Ask                        | Record                                                                                                                                                                |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Agent PRs failed?          | Repair gate **128/167** fixed, **39/167 (23.4%)** stopped; **1** rejected at final review; **1/168** impl. hard-blocks                                                |
-| Errors caught in review?   | Agentic tests **0.97** confirmed defects / audited PR; agents applied fixes; merge-gate humans **4 / 351 (1.7%)**; retroactive strengthened adversarial test over ~**70** v0.5.0 rules found **8** unsound |
-| Maintainer time?           | Proxy from the scale table above. Hand path ~**6** months for **17** rules; no-code path ~**3** months for **265** rules                                              |
-| Outside experts / no-code? | ~**245/265** rules via that route; [TODO named cases + experience note]                                                                                               |
+**3. Review (Stage 4 → Final Review).** After implementation, compile-time checks, unit tests, and round-trip tests are hard merge gates. These are close to a standard software test pipeline. What differs is agentic feature testing. An AI agent role-plays an end user in a fresh context that has never seen the implementation, and reviews the change through the real CLI. 
 
+The agentic feature test does two jobs. First, it checks the user interface, including CLI help text, workflow, and registration (64% of confirmed findings in audited PRs). Second, it tries to find counterexamples for each implemented rule through the CLI. From a user's perspective, it inputs many instances of the kind that arise in practice, reduces them, maps solutions back, and checks each result against an exact solve of the original problem. This accounted for 33% of confirmed findings. 
+
+This second job works because a reduction can be checked on concrete instances. In ordinary software, tests can pass and still say little about whether the code is usable. For a reduction, one failing instance is enough to reject the rule. After this kind of testing, the library is at least known to be usable in practice. Overall, agentic feature testing confirmed 0.97 defects per PR, and 63.4% of audited PRs had a finding.
+
+Finally, once the architecture is fixed, maintainers barely need to think through each change. We follow the pipeline in the paper and act on the agent's report. At final-review, we never reviewed by reading the code. The early weeks were spent locking down architecture and skills. By week 8.5 the library had only 23 problem types and 52 rules. After the full pipeline was in place, most of the build was routine submission. In under five weeks the library grew to 190 types and 265 rules.
 
 > *The harness itself is also not evaluated carefully enough. [...] there is no ablation showing which parts mattered.*
 
-Answer: [TODO ablation discussion. One measured ablation already exists: the retroactive adversarial re-test in the reply above (~70 v0.5.0 rules under the weak vs. strengthened agentic feature-testing regime; 16 defects, 8 unsound). v0.6.0 enforces the strengthened regime as a hard gate.]
+Answer: [TODO ablation discussion. One measured comparison: about 70 already merged non-ILP rules, with and without hard requirements on instance count and construction in agentic feature testing; 16 defects, 8 unsound. v0.6.0 enforces those requirements as a hard gate.]
 
 > *I also think the paper should be more careful with the word "verified." The reductions are tested and reviewed, but they are not formally verified.*
 
-Answer: We agree and will say "tested and reviewed" throughout the revision. The wording matches our own record. When we re-tested about **70** merged v0.5.0 rules under the strengthened adversarial regime (the ablation above), **8** unsound constructions had passed the earlier automated stack. Those rules were removed, and reduction verification became a default gate. We will report both this measured result and its limits in the revision.
+Answer: We agree and will say "tested and reviewed" throughout the revision. Formal proof is not what we claim. What we do claim is practical usability. Our tests include finding counterexamples on many instances of the kind that arise in practice. For a reduction, one failing instance is enough to reject the rule. After this kind of testing, the library is at least known to be usable. Most software tasks do not have this property. On SWE-bench-style work, the success rule is often hard to quantify. Even a full pass of the written tests may still leave the code unusable. That is why we avoid the word "verified," and why we still stand behind "tested and reviewed" as a practical claim.
 
 ---
+
+
 
 ## Reviewer yPT8
 
@@ -86,12 +83,12 @@ We thank the reviewer for their feedback. Following are our responses to each in
 Answer: We agree that one problem class was too narrow. We therefore repeated the same comparison, switching web search and `pred` on and off one at a time, on three more problems (maximum-likelihood ranking, two-color PaintShop, and bounded closest vector). Each problem used ten random instances, a fresh agent and working directory, one 90-second solver call, and an independent check against the original problem.
 
 
-| Source problem             | Bare AI  | Web only | `pred`   | `pred` + web |
-| -------------------------- | -------- | -------- | -------- | ------------ |
-| Maximum-likelihood ranking | 2/10     | 1/10     | 1/10     | 2/10         |
-| Two-color PaintShop        | 0/10     | 1/10     | 2/10     | **5/10**     |
-| Bounded closest vector     | 4/10     | 2/10     | **6/10** | **6/10**     |
-| **Total**                  | **6/30** | **4/30** | **9/30** | **13/30**    |
+| Source problem             | Bare AI | Web only | `pred` | `pred` + web |
+| -------------------------- | ------- | -------- | ------ | ------------ |
+| Maximum-likelihood ranking | 2/10    | 1/10     | 1/10   | 2/10         |
+| Two-color PaintShop        | 0/10    | 1/10     | 2/10   | 5/10         |
+| Bounded closest vector     | 4/10    | 2/10     | 6/10   | 6/10         |
+| **Total**                  | 6/30    | 4/30     | 9/30   | 13/30        |
 
 
 This remains a simple case study, not the contribution of the paper. The contribution is the library and the harness that built it. The case study is useful mainly for what it teaches about downstream use. Giving the agent only a short Markdown skill on how to call `pred` is not enough. With that skill alone, `pred` reaches 9/30 accepted answers, while `pred` + web reaches 13/30. The graph can change where the agent goes, but a usable answer still depends on what is run after the reduction.
@@ -100,7 +97,7 @@ That lesson is exactly why we think the artifact matters. Before a shared reduct
 
 > *W2: Dependency on specific LLM capabilities. It is unclear how sensitive the harness engineering framework is to the underlying model's capabilities, or how often human maintainers had to intervene during the "headless" implementation phases.*
 
-Answer: For intervention frequency, see our reply to Reviewer c6QA. In brief, **1 of 168** unique implementation issues (**0.6%**) directly blocked; merge-gate semantic interventions happened **4** times (**1.7%** of **351** shipped contributions); maintainers operated without reading agent PR diffs as the review method. The retroactive adversarial re-test numbers are in that same reply. [TODO sensitivity to the underlying model's capabilities.]
+Answer: For intervention frequency, see our reply to Reviewer c6QA. In brief, 1 of 168 unique implementation issues (0.6%) directly blocked; merge-gate semantic interventions happened 4 times (1.7% of 351 shipped contributions); maintainers operated without reading agent PR diffs as the review method. The retroactive adversarial re-test numbers are in that same reply. [TODO sensitivity to the underlying model's capabilities.]
 
 > *W3: Overhead of the reductions. [...] the paper does not extensively evaluate the practical performance degradation caused by composing multiple reductions (e.g., the constant factors involved in a 3-hop reduction to QUBO).*
 
@@ -126,9 +123,11 @@ The recommended path matches the direct encoder entry by entry (128 variables, 0
 
 > *Q3: How frequently did the automated implementation agent fail to produce a compiling or correct reduction, requiring the issue to be moved to the "On Hold" column for human intervention?*
 
-Answer: **1 of 168** unique implementation issues (**0.6%**) directly blocked and required human intervention. Of On Hold transitions in that phase, **92%** were routine claim locks, so the column count overstates implementation failure if read as a failure queue. Of proposals that entered repair, **39 / 167 (23.4%)** stopped at the pre-implementation gate and **128 / 167 (76.6%)** were repaired automatically. **1** rule was rejected at Final Review. The **4** merge-gate semantic interventions are in our reply to Reviewer c6QA.
+Answer: 1 of 168 unique implementation issues (0.6%) directly blocked and required human intervention. Of On Hold transitions in that phase, 92% were routine claim locks, so the column count overstates implementation failure if read as a failure queue. Of proposals that entered repair, 39 / 167 (23.4%) stopped at the pre-implementation gate and 128 / 167 (76.6%) were repaired automatically. 1 rule was rejected at Final Review. The 4 merge-gate semantic interventions are in our reply to Reviewer c6QA.
 
 ---
+
+
 
 ## Reviewer WsAZ
 
@@ -138,9 +137,9 @@ Rebuttal: We thank the reviewer for their feedback. Following are our responses 
 
 Answer: See our reply to Reviewer c6QA for the layered reading of the checks. Short version follows.
 
-Human semantic correction at the merge gate numbered **4** interventions (**1.7%** of **351** shipped contributions). Agents applied repairs from round-trip and agentic feature tests. Maintainers did not use line-by-line diff reading as the correction path. Before implementation, **39 / 167** proposals that entered repair were stopped as irreparable.
+Human semantic correction at the merge gate numbered 4 interventions (1.7% of 351 shipped contributions). Agents applied repairs from round-trip and agentic feature tests. Maintainers did not use line-by-line diff reading as the correction path. Before implementation, 39 / 167 proposals that entered repair were stopped as irreparable.
 
-The misses include the vacuous-budget case, plus the retroactive strengthened adversarial re-test of about **70** v0.5.0 rules that found **8** unsound constructions (and **7** further extraction/overhead/panic defects). Humans then design stronger oracles and keep removal authority. We will describe the artifact as tested and reviewed. The audit is why that wording is required.
+The misses include the vacuous-budget case, plus the retroactive strengthened adversarial re-test of about 70 v0.5.0 rules that found 8 unsound constructions (and 7 further extraction/overhead/panic defects). Humans then design stronger oracles and keep removal authority. We will describe the artifact as tested and reviewed. The audit is why that wording is required.
 
 > *Section 1.2 is dense. The paper introduces "primitive reduction rules," "size features," "reduction overhead" without walking you through a single end-to-end example in the main text. Clarity suffers from oscillation between mathematical formalism in Section 1 and engineering description in Section 2.*
 
