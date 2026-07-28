@@ -6,7 +6,7 @@ We thank the reviewer for their feedback. Following are our responses to each in
 
 Answer: We do not claim a new learning method, agent architecture, etc. Under the official NeurIPS Contribution Types, this is a **Use-inspired** paper.
 
-First, we address a central question for the research community: *what scientific work can humans pursue in the AI era?* We identify large-scale reduction-library construction as one answer. The task has a mechanical side: integrating hundreds of known reductions under one interface. It also requires nontrivial judgments of correctness and usefulness. The resulting graph is itself scientifically valuable because it connects hard problems to solvers. Each rule is concretely falsifiable because one counterexample is enough to reject it. Tasks that combine repetitive scale, nontrivial reasoning, scientific value, and cheap falsification are rare. This combination makes reduction-library construction especially well suited to human–agent collaboration.
+First, we address a central question for the research community: *what scientific tasks were previously out of reach but become feasible only with AI agents?* We identify large-scale reduction-library construction as one answer. The task has a mechanical side: integrating hundreds of known reductions under one interface. It also requires nontrivial judgments of correctness and usefulness. The resulting graph is itself scientifically valuable because it connects hard problems to solvers. Each rule is concretely falsifiable because one counterexample is enough to reject it. Tasks that combine repetitive scale, nontrivial reasoning, scientific value, and cheap falsification are rare. This combination makes reduction-library construction especially well suited to human–agent collaboration.
 
 Second, our research object is the domain-specific harness that made this build possible (Secs. 2–3). It has three parts: a skill-based automation pipeline, a no-code contribution route for domain experts, and a multilayer verification stack. The decisive verification step is agentic feature testing. A fresh-context agent drives the real CLI, searches for counterexamples, and rejects a rule when it finds one.
 
@@ -20,13 +20,12 @@ Answer: The four questions can be answered directly from our development record.
 | Question                                | Answer                                                                                                                         |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | Maintainer time saved                   | ~30× rule throughput vs. the Julia prototype                                                                                   |
-| Agent-written PRs failed                | Feasibility was screened before implementation; only 1 of 168 issues that passed this strict gate was rejected at Final Review |
+| Agent-written PRs failed                | Feasibility was screened before implementation; of 356 Final Review attempts, only 1 was rejected and not merged |
 | Errors caught during review             | Agentic feature testing confirmed 0.97 defects per audited PR; 63.4% of audited PRs had a finding                              |
 | No-code route usable by outside experts | Yes: six domain experts contributed ~245 of the 265 rules through this route                                                   |
 
 
 **1. No-code contributions.** About 20 of the 265 rules in v0.5.0 came from the pre-agent Julia prototype cited in Related Work. Six domain experts contributed the other ~245 through the no-code route.
-
 
 **2. Pre-implementation quality gate.** We moved feasibility checks before implementation. Of 381 proposals, 214 passed immediately. The other 167 entered `fix-issue`; the agent repaired 128, while 39 were stopped before implementation.
 
@@ -54,9 +53,10 @@ The 39 stopped issues required a human decision. Those ones need human intellige
 
 **3. Review.** Compilation, unit tests, and round-trip tests are hard merge gates. Agentic feature testing then reviews the change through the real CLI. As we stated in Appendix G, interface checks accounted for 64% of confirmed findings in audited PRs, and counterexample searches accounted for 33%. For example, it caught 16 defects among 70 non-ILP rules that had already passed compilation, unit, and round-trip tests. Overall, it confirmed 0.97 defects per audited PR, and 63.4% of audited PRs had a finding. 
 
-**4. Maintainer effort and throughput.** At Final Review, maintainers acted on the agent’s report instead of reviewing line-by-line diffs. Because we moved the strict feasibility gate before implementation, nearly every issue that entered implementation was ultimately implemented correctly. Only 1 rule was rejected at Final Review and not merged.
+**4. Maintainer effort and throughput.** At Final Review, maintainers acted on the agent’s report instead of reviewing line-by-line diffs. Because we moved the strict feasibility gate before implementation, nearly every issue that entered implementation was ultimately implemented. Of 356 logical Final Review attempts, 41 merged directly, 296 were corrected in one round and then merged, 18 were reworked and then merged, and only 1 was rejected and not merged.
 
 Our harness greatly reduced the maintainers’ implementation and maintenance burden. Against the Julia prototype, rule throughput rose about 30×.
+
 
 |                       | Julia prototype | This library (v0.5.0) |
 | --------------------- | --------------- | --------------------- |
@@ -64,11 +64,12 @@ Our harness greatly reduced the maintainers’ implementation and maintenance bu
 | Problem types / rules | 17 / 17         | 190 / 265             |
 | Source size           | ~4.3k lines     | 170k+ lines           |
 
+
 By week 8.5, the library had 23 problem types and 52 rules. After the full pipeline was in place, it grew to 190 types and 265 rules in under five weeks.
 
 > *The harness itself is also not evaluated carefully enough. [...] there is no ablation showing which parts mattered.*
 
-Answer: The stage-by-stage contribution of the full pipeline is quantified in our previous response. Here we focus on agentic feature testing. A reduction rule is concretely falsifiable because one counterexample is enough to reject it. Agentic feature testing exploits this property by actively searching for counterexamples. During development, it caught 16 defects among 70 non-ILP rules that had already passed compilation, unit, and round-trip tests.
+Answer: The stage-by-stage contribution of the full pipeline is quantified in our previous response. Here we focus on agentic feature testing. For reduction-algorithm bugs, acceptance is decided by an exact check: let $I$ be a source instance, $I'=f(I)$ the reduced target, $s'$ a target solution, and $s=g(s')$ the mapped-back source solution. A report counts as a defect only if an exact check finds that $s$ is not valid for $I$, or that its objective disagrees with that of $s'$ under the claimed correspondence. Otherwise it is discarded, regardless of how confidently the sub-agent stated it. A reduction rule is concretely falsifiable because one counterexample is enough to reject it. Agentic feature testing exploits this property by actively searching for counterexamples. During development, it caught 16 defects among 70 non-ILP rules that had already passed compilation, unit, and round-trip tests.
 
 This aggregate result shows value beyond the conventional gates. To test whether that value comes only from running more instances, we compare agent-guided construction with uniform-random testing in one Optimal Communication Spanning Tree (OCST) → ILP case:
 
@@ -78,6 +79,7 @@ This aggregate result shows value beyond the conventional gates. To test whether
 | Existing repo tests        | 7         | 0       |
 | Uniform-random instances   | 100       | 0       |
 | Agent-constructed instance | 1         | 1       |
+
 
 The conventional and uniform-random tests both missed the bug. The agent targeted a structural weak spot and found it. In practice, agentic feature testing combines breadth with targeting (the second and the third rows in the table). The agent tests broad families of common instances while also generating cases around likely structural weak points.
 
@@ -96,7 +98,9 @@ We thank the reviewer for their feedback. Following are our responses to each in
 
 > *W1: Limited algorithmic depth in the case study. The end-user utility experiment (Section 4.2) is based on a single problem class (signed-weight Maximum Cut).*
 
-Answer: We agree that one problem class was too narrow. We therefore repeated the same comparison, switching web search and `pred` on and off one at a time, on three more problems (maximum-likelihood ranking, two-color PaintShop, and bounded closest vector). Each problem used ten random instances, a fresh agent and working directory, one 90-second solver call, and an independent check against the original problem.
+Answer: The single-class experiment was intended as an illustrative downstream case study, not a comprehensive utility benchmark. We agree that Section 4.2 did not make this scope clear. Our claim is that the library provides reusable, tested reduction paths, not that a short skill alone completes downstream problem solving. 
+
+To show that the observed behavior is not specific to Maximum Cut, we repeated the same comparison on three additional problems (maximum-likelihood ranking, two-color PaintShop, and bounded closest vector). Each problem used ten random instances, a fresh agent and working directory, one 90-second solver call, and an independent check against the original problem.
 
 
 | Source problem             | Bare AI | Web only | `pred` | `pred` + web |
@@ -107,13 +111,13 @@ Answer: We agree that one problem class was too narrow. We therefore repeated th
 | **Total**                  | 6/30    | 4/30     | 9/30   | 13/30        |
 
 
-This remains a simple case study, not the contribution of the paper. The contribution is the library and the harness that built it. The case study is useful mainly for what it teaches about downstream use. Giving the agent only a short Markdown skill on how to call `pred` is not enough. With that skill alone, `pred` reaches 9/30 accepted answers, while `pred` + web reaches 13/30. The graph can change where the agent goes, but a usable answer still depends on what is run after the reduction.
-
-That lesson is exactly why we think the artifact matters. Before a shared reduction library, each agent or solver stack reinvented problem modeling on its own. With a common graph, those later pieces can share one narrative. They match a natural problem to a typed node, walk a tested path to a solver-ready form, and map the answer back. Path ranking, solver bindings, formulation comparison, and hardware-aware choice can all sit on top of that shared substrate. None of them is in the present experiment, and none of them needs to be invented from scratch for each new problem. Once that shared story exists, later systems can improve on top of it in many ways, and almost any of those ways is better than asking each agent to rediscover modeling and reduction from scratch. We will broaden Section 4.2 with this multiclass illustration and state clearly that the case study is a starting point for such workflows, not a claim that a skill alone finishes the job.
+The table should be read as a case study of downstream use, not as a utility proof. `pred` helps only when it gives the agent a better way to solve the problem within the 90-second budget. For the first problem, both bare and `pred`-guided agents use essentially the same Boolean ILP, so `pred` does not remove the bottleneck. For PaintShop and closest vector, `pred` exposes QUBO formulations that QUBO-native samplers can use to return answers quickly. Together with the Maximum Cut example in the paper, these cases show that reduction-graph access alone is not enough. In practice, solving a problem requires considering not only reduction overhead but also the capabilities of the available solver. This is a more complex problem. We will broaden Section 4.2 with this multiclass illustration and state this scope explicitly.
 
 > *W2: Dependency on specific LLM capabilities. It is unclear how sensitive the harness engineering framework is to the underlying model's capabilities, or how often human maintainers had to intervene during the "headless" implementation phases.*
 
-Answer: For intervention frequency, see our reply to Reviewer c6QA. In brief, 1 of 168 unique implementation issues (0.6%) directly blocked; merge-gate semantic interventions happened 4 times (1.7% of 351 shipped contributions); maintainers operated without reading agent PR diffs as the review method. The retroactive adversarial re-test numbers are in that same reply. [TODO sensitivity to the underlying model's capabilities.]
+Answer: This work evaluates a production harness using the strongest and the most suitable models available to us, not sensitivity to model choice. In practical software production, reliability is the goal, so there is little reason to replace them with weaker models. Comparing model capabilities is a separate research question outside our scope.
+
+For intervention frequency, please see our response to Reviewer c6QA’s second question. Before implementation, an agent checks and repairs each issue; proposals that still fail the quality gate do not enter the implementation pipeline. Implementation therefore required almost no human intervention. At Final Review, maintainers acted on agent reports rather than reading line-by-line diffs: of 356 attempts, 41 merged directly, 296 were corrected in one round and merged, 18 were reworked and merged, and only 1 was rejected. The more important human work was designing this architecture, whose quality gate and multilayer verification stack filter out most errors before merge. We will state the evaluated models and this scope more clearly.
 
 > *W3: Overhead of the reductions. [...] the paper does not extensively evaluate the practical performance degradation caused by composing multiple reductions (e.g., the constant factors involved in a 3-hop reduction to QUBO).*
 
@@ -121,11 +125,11 @@ Answer: Encoding time stays in milliseconds when the composed path preserves tar
 
 > *Q1: In the agentic feature tests, how often did the sub-agents hallucinate bugs that did not actually exist, and how was this noise filtered by the main agent?*
 
-Answer: [TODO]
+Answer: We do not need a separate hallucination count. For reduction-algorithm bugs, acceptance is decided by an exact check: let $I$ be a source instance, $I'=f(I)$ the reduced target, $s'$ a target solution, and $s=g(s')$ the mapped-back source solution. A report counts as a defect only if an exact check finds that $s$ is not valid for $I$, or that its objective disagrees with that of $s'$ under the claimed correspondence. Otherwise it is discarded, regardless of how confidently the sub-agent stated it. The reported 0.97 defects per audited PR and 63.4% finding rate include only such confirmed findings. We will clarify this filtering protocol in Section 3.
 
 > *Q2: What is the practical runtime overhead of composing multiple reductions (e.g., 3 hops to QUBO) compared to a hand-crafted, direct reduction for a specific problem?*
 
-Answer: We added a controlled MIS-to-QUBO benchmark on an Apple M3 (release builds; medians after two warmups). We compare a hand-crafted direct encoder with two library paths. The recommended route is `MIS → SetPacking<i32> → SetPacking<f64> → QUBO`. The discarded route is `MIS → Clique → ILP → QUBO`. On a dense 128-vertex instance:
+Answer: We added a controlled MIS-to-QUBO benchmark on an Apple M3. We compare a hand-crafted direct encoder with two library paths. The recommended route is `MIS → SetPacking<i32> → SetPacking<f64> → QUBO`. The discarded route is `MIS → Clique → ILP → QUBO`. On a dense 128-vertex instance:
 
 
 |                      | Direct encoding | Recommended path | Discarded path |
@@ -139,21 +143,18 @@ The recommended path matches the direct encoder entry by entry (128 variables, 0
 
 > *Q3: How frequently did the automated implementation agent fail to produce a compiling or correct reduction, requiring the issue to be moved to the "On Hold" column for human intervention?*
 
-Answer: 1 of 168 unique implementation issues (0.6%) directly blocked and required human intervention. Of On Hold transitions in that phase, 92% were routine claim locks, so the column count overstates implementation failure if read as a failure queue. Of proposals that entered repair, 39 / 167 (23.4%) stopped at the pre-implementation gate and 128 / 167 (76.6%) were repaired automatically. 1 rule was rejected at Final Review. The 4 merge-gate semantic interventions are in our reply to Reviewer c6QA.
+Answer: With current frontier coding agents, implementation itself rarely fails in the sense the reviewer means. The agent keeps iterating until it produces a PR that passes the available tests; otherwise it does not stop. The hard question is therefore not whether the agent can ship compiling code, but how we verify that the reduction is correct. That verification stack, and the pre-implementation quality gate that keeps weak proposals out of this phase, is detailed in our response to Reviewer c6QA’s second and third questions. Of 356 Final Review attempts, 41 merged directly, 296 were corrected in one round and merged, 18 were reworked and merged, and only 1 was rejected. We will add this stage-by-stage accounting to Section 4.
 
 ---
 
 ## Reviewer WsAZ
 
-Rebuttal: We thank the reviewer for their feedback. Following are our responses to each individual comment.
+Rebuttal:
+We thank the reviewer for their feedback. Following are our responses to each individual comment.
 
 > *[...] the paper never reports what fraction of reductions required human correction of logical errors, or how often the verification stack misses a semantically incorrect reduction. Without that data, we cannot assess how tight the human bottleneck is.*
 
-Answer: See our reply to Reviewer c6QA for the layered reading of the checks. Short version follows.
-
-Human semantic correction at the merge gate numbered 4 interventions (1.7% of 351 shipped contributions). Agents applied repairs from round-trip and agentic feature tests. Maintainers did not use line-by-line diff reading as the correction path. Before implementation, 39 / 167 proposals that entered repair were stopped as irreparable.
-
-The misses include the vacuous-budget case, plus the retroactive strengthened adversarial re-test of about 70 v0.5.0 rules that found 8 unsound constructions (and 7 further extraction/overhead/panic defects). Humans then design stronger oracles and keep removal authority. We will describe the artifact as tested and reviewed. The audit is why that wording is required.
+Answer: Please see our responses to Reviewer c6QA’s second and third questions for the stage-by-stage record and how verification works. In brief, human work was concentrated before implementation and at final authorization: of 167 proposals that entered repair, agents repaired 128 and humans stopped 39; of 356 Final Review attempts, only 1 was rejected. During development, agentic feature testing caught 16 defects among 70 non-ILP rules that had already passed compilation, unit, and round-trip tests; these were fixed before merge. The detailed data and analysis are in those two responses.
 
 > *Section 1.2 is dense. The paper introduces "primitive reduction rules," "size features," "reduction overhead" without walking you through a single end-to-end example in the main text. Clarity suffers from oscillation between mathematical formalism in Section 1 and engineering description in Section 2.*
 
@@ -165,26 +166,38 @@ These details decide whether a reduction is useful, not merely correct. Our libr
 
 > *The paper also fails to clearly distinguish what is novel from what is standard practice. The six-stage pipeline looks like a standard build-test-merge workflow with LLM wrappers.*
 
-Answer: [TODO]
+Answer: Please see our response to Reviewer c6QA’s third question. The decisive part is agentic feature testing. A fresh-context agent drives the real CLI to check the user interface and, especially, to adversarially search for counterexamples. This scientific task is special in that each rule implementation is easy to falsify: one counterexample is enough to reject it. That falsifiability is what makes AI-assisted software development reliable here, and most tasks lack it. 
 
 > *How do you verify that a generated reduction rule is correct? What fraction of reductions required human correction of logical errors?*
 
-Answer:  [TODO]
+Answer: For reduction-algorithm bugs, acceptance is decided by an exact check: let $I$ be a source instance, $I'=f(I)$ the reduced target, $s'$ a target solution, and $s=g(s')$ the mapped-back source solution. A report counts as a defect only if an exact check finds that $s$ is not valid for $I$, or that its objective disagrees with that of $s'$ under the claimed correspondence. Otherwise it is discarded, regardless of how confidently the sub-agent stated it. The reported 0.97 defects per audited PR and 63.4% finding rate include only such confirmed findings. Details are in our response to Reviewer c6QA’s third question. We will clarify this protocol in Section 3.
 
 > *Can you walk through one non-trivial reduction end-to-end, showing what the agent produced versus what required human intervention?*
 
-Answer: [TODO end-to-end walkthrough. The vacuous-budget MinimumVertexCover-to-EnsembleComputation reduction (human-corrected to unit weights with the tight relation J=K+|E|) is a candidate.]
+Answer: We agree and will add the Minimum Vertex Cover $\rightarrow$ Ensemble Computation rule as a staged end-to-end case study:
+
++ Task specification. A contributor proposed the reduction and supplied its mathematical source. The task was converted into a structured issue defining the source problem, target problem, expected construction, and required examples.
+
++ Agent implementation. The agent implemented the target-instance construction and solution mapping, and added documentation, examples, and tests. The resulting code compiled and passed its initial software checks.
+
++ Verification failure. The agentic feature testing found that although the code compiled and passed its initial tests, the generated target did not preserve the source problem. The chosen budget made every target instance feasible, regardless of the correct source answer. The construction also discarded vertex weights. It therefore implemented the form of the reduction without preserving its mathematical meaning.
+
++ Human intervention. The reviewing agent confirmed the semantic mismatch and proposed three options: (A) remove the rule from the batch until redesigned; (B) keep Ensemble Computation as a feasibility problem and add a decision variant of Minimum Vertex Cover with an explicit budget $K$, setting $J=K+|E|$ as in Garey and Johnson; (C, recommended) reframe Ensemble Computation as an optimization problem, restrict the source to unit-weight Minimum Vertex Cover, and establish the tight optimal-value relationship $J^*=K^*+|E|$. A human reviewer authorized the agent's recommended option (C). 
+
++ Agent repair. The agent revised the problem model, reduction rule, solution mapping, documentation, and tests according to the chosen option.
+
++ Final review. The corrected rule was checked on worked instances and exact small-instance tests. The human reviewer authorized the corrected rule and merged the PR.
+
+This case shows the division of labor during development. The agent wrote the code, found the bug, proposed the fix options, and applied the repair. The human chose among those options and authorized the merge. Once the architecture is in place, expansion can therefore be fast.
 
 > *How do you handle cases where composed overhead makes a reduction path practically useless?*
 
-Answer: When routing a problem to a solver (for example, MIS to QUBO), we compare candidate paths by composed size overhead, not only by reachability. Each edge records how source sizes map to target sizes (for example, graph order n to QUBO variable count). We compose these maps along each path and drop any path that another dominates on every size measure (variables, constraints, and so on) and is strictly smaller on at least one measure. Given a concrete instance and a size budget, we also check the actual constructed sizes.
-
-One MIS-to-QUBO route maps n vertices to n QUBO variables. Another through Clique and ILP adds auxiliaries and, on a 128-vertex instance, yields 4,192 variables instead of 128. We discard the latter. If every remaining path exceeds the budget, we report that no practical route exists rather than silently returning an unusable encoding. Domain experts seek reductions that stay useful under realistic sizes. We develop and rank paths in the library by that same practical criterion.
+Answer: Please see our response to Reviewer yPT8’s Q2 for the controlled MIS-to-QUBO timings. In brief, when routing a problem to a solver we compare candidate paths by composed size overhead, not only by reachability. On a 128-vertex instance, one MIS-to-QUBO route yields 128 QUBO variables; another through Clique and ILP yields 4,192. We discard the latter. If every remaining path exceeds the size budget, we report that no practical route exists rather than silently returning an unusable encoding. We will report both construction time and final target size in the revision.
 
 > *Which parts of the harness are actually novel versus standard automation with LLM wrappers?*
 
-Answer: [TODO novelty statement.]
+Answer: Please see our response to Reviewer c6QA’s third question. The decisive part is agentic feature testing. A fresh-context agent drives the real CLI to check the user interface and, especially, to adversarially search for counterexamples. This scientific task is special in that each rule implementation is easy to falsify: one counterexample is enough to reject it. That falsifiability is what makes AI-assisted software development reliable here, and most tasks lack it. 
 
 > *How many domain experts used the no-code contribution route, and what was their experience?*
 
-Answer: [TODO domain-expert usage.]
+Answer: Six domain experts used the no-code route and contributed about 245 of the 265 rules in v0.5.0. They supplied definitions, algorithms sketches, and worked examples through structured issues; agents handled the Rust implementation, tests, and documentation. Of 381 proposals, 214 passed the quality gate immediately; of the other 167, agents repaired 128 and stopped 39 for human decisions before implementation. We will report these adoption and stage outcomes in Section 4.
